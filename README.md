@@ -1,36 +1,157 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# UI Design System
 
-## Getting Started
+A reusable UI design system starter built on top of the shadcn ecosystem, Base UI primitives, Tailwind CSS v4, and React 19.
 
-First, run the development server:
+This repository serves two purposes:
+
+- a source workspace for building and documenting components
+- a CLI-distributed template that can install the design system into another project
+
+## What This Project Includes
+
+- `components/`
+  Core UI components and RHF wrappers
+- `constants/`
+  Shared constants used by the design system
+- `hooks/`
+  Reusable hooks
+- `lib/`
+  Utilities and helper functions
+- `app/components/...`
+  Internal component usage guide pages
+- `bin/install.cjs`
+  CLI installer used by `npx github:xizot/ui-design-system`
+
+## Stack
+
+- Next.js App Router
+- React 19
+- Tailwind CSS v4
+- shadcn-based component structure
+- Base UI primitives
+- React Hook Form
+- Zod
+- TanStack Table
+- Nuqs
+
+## Installation via CLI
+
+After pushing this repository to GitHub as `xizot/ui-design-system`, consumers can install it with:
+
+```bash
+npx github:xizot/ui-design-system
+```
+
+The CLI installs the design system into a dedicated target folder:
+
+```text
+design-system/
+  components/
+  constants/
+  hooks/
+  lib/
+```
+
+## CLI Behavior
+
+The installer uses a guided flow:
+
+1. Component files
+   It checks for existing files inside `design-system/` and asks whether to overwrite, skip, or review conflicts one by one.
+2. Dependencies
+   It checks the target project's `package.json`, detects missing runtime dependencies, and asks whether they should be installed automatically.
+
+Supported package managers:
+
+- `pnpm`
+- `yarn`
+- `bun`
+- `npm`
+
+## Import Path for Consumers
+
+The usage guides should document imports from the installed target path, for example:
+
+```tsx
+import { Button } from "@/design-system/components/ui/button";
+```
+
+This is the public consumption path after the CLI copies files into a project.
+
+## Internal Docs App
+
+This repository includes an internal docs shell under `app/components`.
+
+The docs layout is structured as:
+
+- top header
+- left sidebar
+- center usage guide content
+- right table of contents
+
+Each component guide is a dedicated page, for example:
+
+```text
+app/components/button/page.tsx
+app/components/input/page.tsx
+app/components/select/page.tsx
+```
+
+There is no dynamic route requirement for component guides. Each page is authored explicitly.
+
+## Authoring a Component Guide
+
+Use [`GUIDE_TEMPLATE.md`](./GUIDE_TEMPLATE.md) as the source template when creating a new component documentation page.
+
+Current guide conventions:
+
+- each component has its own page
+- sections should be wrapped in `Card`
+- usages should be grouped in `Tabs`
+- each usage tab should include:
+  - a preview
+  - a matching code sample
+
+For components with multiple important states or variants, the guide should document each one explicitly instead of showing a single generic example.
+
+## Local Development
+
+Run the docs app locally:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Run type-checking:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npx tsc --noEmit
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Maintaining the Design System
 
-## Learn More
+### Adding a new component
 
-To learn more about Next.js, take a look at the following resources:
+1. Add the source file under `components/`
+2. If needed, add supporting code in `constants/`, `hooks/`, or `lib/`
+3. Create or update the guide page under `app/components/<component-name>/page.tsx`
+4. Commit and push
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Adding a new runtime dependency
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+When a new component depends on a new package, update both:
 
-## Deploy on Vercel
+1. `package.json`
+2. `bin/install.cjs` in the `runtimeDependencies` list
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Without both updates, the CLI will not install that dependency for downstream consumers.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Adding a new folder to be copied by the CLI
+
+Update `directoriesToCopy` inside [`bin/install.cjs`](./bin/install.cjs).
+
+## Notes
+
+- The source is written with relative imports so copied files do not depend on local alias configuration.
+- The CLI is designed to be safe for existing projects by prompting before overwriting files.
+- The docs app is internal to this repository; the CLI only installs the design system source folders into the target project.
