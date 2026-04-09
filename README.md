@@ -140,6 +140,33 @@ Run type-checking:
 npx tsc --noEmit
 ```
 
+## GitHub Pages
+
+This repository is configured to publish the internal docs app to GitHub Pages.
+
+- Repository URL: `https://github.com/xizot/ui-design-system`
+- Pages URL: `https://xizot.github.io/ui-design-system/`
+- Workflow file: `.github/workflows/gh-pages.yml`
+
+How it works:
+
+- `next.config.ts` uses static export with `output: "export"`
+- GitHub Actions builds the site and uploads the `out/` directory
+- during the Pages build, the app is served under the repository base path `/ui-design-system`
+
+To enable it:
+
+1. Push this repository to GitHub.
+2. Open `Settings -> Pages`.
+3. Set `Source` to `GitHub Actions`.
+4. Push to `main` or run the workflow manually from the `Actions` tab.
+
+Once deployed, the component docs will be available at:
+
+```text
+https://xizot.github.io/ui-design-system/components/
+```
+
 ## Maintaining the Design System
 
 ### Adding a new component

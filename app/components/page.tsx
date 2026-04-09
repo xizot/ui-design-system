@@ -1,10 +1,33 @@
 import Link from "next/link";
 
-import { getAllComponentGuides } from "@/lib/component-guides";
+const guides = [
+  {
+    slug: "button",
+    name: "Button",
+    group: "ui",
+    importPath: "@/design-system/components/ui/button",
+  },
+  {
+    slug: "input",
+    name: "Input",
+    group: "ui",
+    importPath: "@/design-system/components/ui/input",
+  },
+  {
+    slug: "combobox",
+    name: "Combobox",
+    group: "ui",
+    importPath: "@/design-system/components/ui/combobox",
+  },
+  {
+    slug: "accordion",
+    name: "Accordion",
+    group: "ui",
+    importPath: "@/design-system/components/ui/accordion",
+  },
+];
 
 export default function ComponentsIndexPage() {
-  const guides = getAllComponentGuides();
-
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">

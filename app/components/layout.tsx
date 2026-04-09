@@ -1,15 +1,19 @@
 import Link from "next/link";
 
-import { getAllComponentGuides } from "@/lib/component-guides";
 import { cn } from "@/lib/utils";
+
+const guides = [
+  { slug: "button", name: "Button", group: "ui" as const },
+  { slug: "input", name: "Input", group: "ui" as const },
+  { slug: "combobox", name: "Combobox", group: "ui" as const },
+  { slug: "accordion", name: "Accordion", group: "ui" as const },
+];
 
 export default function ComponentsLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const guides = getAllComponentGuides();
-
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.04),transparent_36%),linear-gradient(180deg,var(--background),color-mix(in_oklab,var(--background),var(--muted)_36%))]">
       <header className="sticky top-0 z-30 border-b border-border/70 bg-background/85 backdrop-blur">

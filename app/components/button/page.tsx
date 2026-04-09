@@ -8,16 +8,15 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChevronRightIcon, PlusIcon } from "lucide-react";
-import { getComponentGuide } from "@/lib/component-guides";
 import { cn } from "@/lib/utils";
 
+const guide = {
+  name: "Button",
+  group: "ui",
+  importPath: "@/design-system/components/ui/button",
+} as const;
+
 export default function ButtonGuidePage() {
-  const guide = getComponentGuide("button");
-
-  if (!guide) {
-    return null;
-  }
-
   const usageSamples = [
     {
       id: "variants",
