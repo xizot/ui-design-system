@@ -209,6 +209,7 @@ export default function ComponentGuidePage() {
 - Table
 - Tabs
 - Textarea
+- Theme Toggle
 - Toggle
 - Toggle Group
 - Tooltip

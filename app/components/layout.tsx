@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 const guides = [
   { slug: 'accordion', name: 'Accordion', group: 'ui' as const },
@@ -60,6 +61,7 @@ const guides = [
   { slug: 'toggle', name: 'Toggle', group: 'ui' as const },
   { slug: 'toggle-group', name: 'Toggle Group', group: 'ui' as const },
   { slug: 'textarea', name: 'Textarea', group: 'ui' as const },
+  { slug: 'theme-toggle', name: 'Theme Toggle', group: 'ui' as const },
   { slug: 'rhf-checkbox', name: 'RHF Checkbox', group: 'rhf' as const },
   { slug: 'rhf-combobox', name: 'RHF Combobox', group: 'rhf' as const },
   { slug: 'rhf-error-message', name: 'RHF Error Message', group: 'rhf' as const },
@@ -90,12 +92,15 @@ export default function ComponentsLayout({
             <span className="hidden h-4 w-px bg-border md:block" />
             <p className="text-sm text-muted-foreground">Component usage guide template</p>
           </div>
-          <Link
-            href="/components"
-            className="rounded-full border border-border/70 bg-card px-4 py-2 text-sm font-medium transition hover:border-foreground/20 hover:bg-accent"
-          >
-            Browse Components
-          </Link>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Link
+              href="/components"
+              className="rounded-full border border-border/70 bg-card px-4 py-2 text-sm font-medium transition hover:border-foreground/20 hover:bg-accent"
+            >
+              Browse Components
+            </Link>
+          </div>
         </div>
       </header>
 

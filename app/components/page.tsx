@@ -326,6 +326,12 @@ const guides = [
     importPath: '@/design-system/components/ui/textarea',
   },
   {
+    slug: 'theme-toggle',
+    name: 'Theme Toggle',
+    group: 'ui',
+    importPath: '@/design-system/components/ui/theme-toggle',
+  },
+  {
     slug: 'rhf-checkbox',
     name: 'RHF Checkbox',
     group: 'rhf',
