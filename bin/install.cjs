@@ -9,6 +9,7 @@ const packageRoot = path.resolve(__dirname, "..");
 const projectRoot = process.cwd();
 const installRootName = "design-system";
 const targetRoot = path.join(projectRoot, installRootName);
+const command = process.argv[2] ?? "init";
 const directoriesToCopy = ["components", "constants", "hooks", "lib"];
 const runtimeDependencies = [
   "@base-ui/react",
@@ -68,6 +69,18 @@ const color = {
 
 function printSection(title) {
   console.log(`\n${color.bold(color.cyan(title))}`);
+}
+
+function printHelp() {
+  console.log(color.bold("UI Design System CLI"));
+  console.log("");
+  console.log("Usage:");
+  console.log("  npx github:xizot/ui-design-system init");
+  console.log("  npx github:xizot/ui-design-system");
+  console.log("");
+  console.log("Commands:");
+  console.log("  init    Install the design system into ./design-system");
+  console.log("  help    Show this help message");
 }
 
 function printList(items, limit = 10) {
@@ -365,6 +378,19 @@ function printSummary() {
 }
 
 async function main() {
+  if (command === "help" || command === "--help" || command === "-h") {
+    printHelp();
+    return;
+  }
+
+  if (command !== "init") {
+    console.error(color.red(`Unknown command: ${command}`));
+    console.log("");
+    printHelp();
+    process.exitCode = 1;
+    return;
+  }
+
   const copied = [];
   const existingFiles = [];
 

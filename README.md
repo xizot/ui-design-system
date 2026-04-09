@@ -39,7 +39,19 @@ This repository serves two purposes:
 After pushing this repository to GitHub as `xizot/ui-design-system`, consumers can install it with:
 
 ```bash
+npx github:xizot/ui-design-system init
+```
+
+Shortcut:
+
+```bash
 npx github:xizot/ui-design-system
+```
+
+Show help:
+
+```bash
+npx github:xizot/ui-design-system help
 ```
 
 The CLI installs the design system into a dedicated target folder:
