@@ -11,6 +11,7 @@ const installRootName = 'design-system';
 const targetRoot = path.join(projectRoot, installRootName);
 const command = process.argv[2] ?? 'init';
 const directoriesToCopy = ['components', 'constants', 'hooks', 'lib'];
+const rootFilesToCopy = ['AGENTS.md'];
 const runtimeDependencies = [
   '@base-ui/react',
   '@tanstack/react-table',
@@ -359,6 +360,28 @@ async function maybeInstallDependencies() {
   installDependencies(missingDependencies);
 }
 
+function copyRootFiles() {
+  printSection('Step 3: Agent Rules');
+
+  for (const fileName of rootFilesToCopy) {
+    const sourcePath = path.join(packageRoot, fileName);
+    const targetPath = path.join(projectRoot, fileName);
+
+    if (!fs.existsSync(sourcePath)) {
+      console.log(color.gray(`Skipping missing file: ${fileName}`));
+      continue;
+    }
+
+    if (fs.existsSync(targetPath)) {
+      console.log(color.yellow(`Already exists, skipping: ${fileName}`));
+      continue;
+    }
+
+    fs.copyFileSync(sourcePath, targetPath);
+    console.log(color.green(`Copied: ${fileName}`));
+  }
+}
+
 function printSummary() {
   printSection('Summary');
   console.log(`Target: ${targetRoot}`);
@@ -437,6 +460,7 @@ async function main() {
   }
 
   await maybeInstallDependencies();
+  copyRootFiles();
   printSummary();
 }
 

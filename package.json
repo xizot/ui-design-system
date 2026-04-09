@@ -10,6 +10,7 @@
     "components",
     "hooks",
     "lib",
+    "AGENTS.md",
     "README.md",
     "package.json"
   ],
