@@ -2,6 +2,13 @@ import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+  FieldTitle,
+} from '@/components/ui/field';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 
@@ -100,58 +107,86 @@ export function Example() {
 }`,
   },
   {
-    id: 'with-cards',
-    label: 'With Cards',
+    id: 'choice-cards',
+    label: 'Choice Cards',
     preview: (
-      <RadioGroup defaultValue="card-one" className="grid grid-cols-2 gap-4 max-w-md">
-        <div>
-          <RadioGroupItem value="card-one" id="card-one" className="peer sr-only" />
-          <Label
-            htmlFor="card-one"
-            className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-          >
-            <span className="text-sm font-semibold">Card One</span>
-            <span className="text-xs text-muted-foreground">$10/month</span>
-          </Label>
-        </div>
-        <div>
-          <RadioGroupItem value="card-two" id="card-two" className="peer sr-only" />
-          <Label
-            htmlFor="card-two"
-            className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-          >
-            <span className="text-sm font-semibold">Card Two</span>
-            <span className="text-xs text-muted-foreground">$20/month</span>
-          </Label>
-        </div>
+      <RadioGroup defaultValue="plus" className="max-w-sm">
+        <FieldLabel htmlFor="plus-plan">
+          <Field orientation="horizontal">
+            <FieldContent>
+              <FieldTitle>Plus</FieldTitle>
+              <FieldDescription>
+                For individuals and small teams.
+              </FieldDescription>
+            </FieldContent>
+            <RadioGroupItem value="plus" id="plus-plan" />
+          </Field>
+        </FieldLabel>
+        <FieldLabel htmlFor="pro-plan">
+          <Field orientation="horizontal">
+            <FieldContent>
+              <FieldTitle>Pro</FieldTitle>
+              <FieldDescription>For growing businesses.</FieldDescription>
+            </FieldContent>
+            <RadioGroupItem value="pro" id="pro-plan" />
+          </Field>
+        </FieldLabel>
+        <FieldLabel htmlFor="enterprise-plan">
+          <Field orientation="horizontal">
+            <FieldContent>
+              <FieldTitle>Enterprise</FieldTitle>
+              <FieldDescription>
+                For large teams and enterprises.
+              </FieldDescription>
+            </FieldContent>
+            <RadioGroupItem value="enterprise" id="enterprise-plan" />
+          </Field>
+        </FieldLabel>
       </RadioGroup>
     ),
-    code: `import { RadioGroup, RadioGroupItem } from "@/design-system/components/ui/radio-group";
-import { Label } from "@/design-system/components/ui/label";
+    code: `import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+  FieldTitle,
+} from "@/components/ui/field";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-export function Example() {
+export function RadioGroupChoiceCard() {
   return (
-    <RadioGroup defaultValue="card-one" className="grid grid-cols-2 gap-4">
-      <div>
-        <RadioGroupItem value="card-one" id="card-one" className="peer sr-only" />
-        <Label
-          htmlFor="card-one"
-          className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary"
-        >
-          <span className="text-sm font-semibold">Card One</span>
-          <span className="text-xs text-muted-foreground">$10/month</span>
-        </Label>
-      </div>
-      <div>
-        <RadioGroupItem value="card-two" id="card-two" className="peer sr-only" />
-        <Label
-          htmlFor="card-two"
-          className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary"
-        >
-          <span className="text-sm font-semibold">Card Two</span>
-          <span className="text-xs text-muted-foreground">$20/month</span>
-        </Label>
-      </div>
+    <RadioGroup defaultValue="plus" className="max-w-sm">
+      <FieldLabel htmlFor="plus-plan">
+        <Field orientation="horizontal">
+          <FieldContent>
+            <FieldTitle>Plus</FieldTitle>
+            <FieldDescription>
+              For individuals and small teams.
+            </FieldDescription>
+          </FieldContent>
+          <RadioGroupItem value="plus" id="plus-plan" />
+        </Field>
+      </FieldLabel>
+      <FieldLabel htmlFor="pro-plan">
+        <Field orientation="horizontal">
+          <FieldContent>
+            <FieldTitle>Pro</FieldTitle>
+            <FieldDescription>For growing businesses.</FieldDescription>
+          </FieldContent>
+          <RadioGroupItem value="pro" id="pro-plan" />
+        </Field>
+      </FieldLabel>
+      <FieldLabel htmlFor="enterprise-plan">
+        <Field orientation="horizontal">
+          <FieldContent>
+            <FieldTitle>Enterprise</FieldTitle>
+            <FieldDescription>
+              For large teams and enterprises.
+            </FieldDescription>
+          </FieldContent>
+          <RadioGroupItem value="enterprise" id="enterprise-plan" />
+        </Field>
+      </FieldLabel>
     </RadioGroup>
   );
 }`,
