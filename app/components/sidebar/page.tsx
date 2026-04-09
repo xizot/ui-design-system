@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import { AppSidebar as AppSidebar04 } from '@/internal-components/sidebar-04/app-sidebar';
 import { AppSidebar as AppSidebar07 } from '@/internal-components/sidebar-07/app-sidebar';
 import { AppSidebar as AppSidebar08 } from '@/internal-components/sidebar-08/app-sidebar';
 import {
@@ -34,6 +35,166 @@ const props = [
 ];
 
 const usageSamples = [
+  {
+    id: 'sidebar-04',
+    label: 'Sidebar 04',
+    description: 'Floating sidebar variant for documentation-style navigation with nested sub-items.',
+    preview: (
+      <div className="overflow-hidden rounded-[18px] border border-border/70" style={{ height: 500, transform: 'translateZ(0)' }}>
+        <SidebarProvider style={{ '--sidebar-width': '19rem' } as React.CSSProperties}>
+          <AppSidebar04 />
+          <SidebarInset>
+            <header className="flex h-16 shrink-0 items-center gap-2 px-4">
+              <SidebarTrigger className="-ml-1" />
+              <Separator orientation="vertical" className="mr-2 data-vertical:h-4 data-vertical:self-auto" />
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem className="hidden md:block">
+                    <BreadcrumbLink href="#">Build Your Application</BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator className="hidden md:block" />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+            </header>
+            <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+              <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+                <div className="aspect-video rounded-xl bg-muted/50" />
+                <div className="aspect-video rounded-xl bg-muted/50" />
+                <div className="aspect-video rounded-xl bg-muted/50" />
+              </div>
+              <div className="min-h-[100px] flex-1 rounded-xl bg-muted/50" />
+            </div>
+          </SidebarInset>
+        </SidebarProvider>
+      </div>
+    ),
+    files: [
+      {
+        name: 'page.tsx',
+        code: `import { AppSidebar } from "./app-sidebar"
+import {
+  Breadcrumb, BreadcrumbItem, BreadcrumbLink,
+  BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator,
+} from "@/design-system/components/ui/breadcrumb"
+import { Separator } from "@/design-system/components/ui/separator"
+import {
+  SidebarInset, SidebarProvider, SidebarTrigger,
+} from "@/design-system/components/ui/sidebar"
+
+export default function Page() {
+  return (
+    <SidebarProvider style={{ "--sidebar-width": "19rem" } as React.CSSProperties}>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 items-center gap-2 px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 data-vertical:h-4" />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink href="#">Build Your Application</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </header>
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+          {/* page content */}
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
+  )
+}`,
+      },
+      {
+        name: 'app-sidebar.tsx',
+        code: `"use client"
+
+import * as React from "react"
+import {
+  Sidebar, SidebarContent, SidebarGroup, SidebarHeader,
+  SidebarMenu, SidebarMenuButton, SidebarMenuItem,
+  SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem,
+} from "@/design-system/components/ui/sidebar"
+import { GalleryVerticalEndIcon } from "lucide-react"
+
+const data = {
+  navMain: [
+    {
+      title: "Getting Started",
+      url: "#",
+      items: [
+        { title: "Installation", url: "#" },
+        { title: "Project Structure", url: "#" },
+      ],
+    },
+    {
+      title: "Build Your Application",
+      url: "#",
+      items: [
+        { title: "Routing", url: "#" },
+        { title: "Data Fetching", url: "#", isActive: true },
+        { title: "Rendering", url: "#" },
+        // ...more items
+      ],
+    },
+  ],
+}
+
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  return (
+    <Sidebar variant="floating" {...props}>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" render={<a href="#" />}>
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                <GalleryVerticalEndIcon className="size-4" />
+              </div>
+              <div className="flex flex-col gap-0.5 leading-none">
+                <span className="font-medium">Documentation</span>
+                <span>v1.0.0</span>
+              </div>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarMenu className="gap-2">
+            {data.navMain.map((item) => (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton render={<a href={item.url} className="font-medium" />}>
+                  {item.title}
+                </SidebarMenuButton>
+                {item.items?.length ? (
+                  <SidebarMenuSub className="ml-0 border-l-0 px-1.5">
+                    {item.items.map((sub) => (
+                      <SidebarMenuSubItem key={sub.title}>
+                        <SidebarMenuSubButton isActive={sub.isActive} render={<a href={sub.url} />}>
+                          {sub.title}
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                    ))}
+                  </SidebarMenuSub>
+                ) : null}
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
+  )
+}`,
+      },
+    ],
+  },
   {
     id: 'sidebar-07',
     label: 'Sidebar 07',
