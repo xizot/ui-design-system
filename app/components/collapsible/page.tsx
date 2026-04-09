@@ -1,13 +1,9 @@
-"use client";
+'use client';
 
 import React, { useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -28,22 +24,18 @@ const props = [
 
 function CollapsibleExample() {
   const [isOpen, setIsOpen] = React.useState(false);
-  
+
   return (
-    <Collapsible
-      open={isOpen}
-      onOpenChange={setIsOpen}
-      className="flex w-[350px] flex-col gap-2"
-    >
+    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="flex w-[350px] flex-col gap-2">
       <div className="flex items-center justify-between gap-4 px-4">
         <h4 className="text-sm font-semibold">Order #4189</h4>
-        <CollapsibleTrigger 
+        <CollapsibleTrigger
           render={
             <Button variant="ghost" size="icon" className="size-8">
               <ChevronsUpDown />
               <span className="sr-only">Toggle details</span>
             </Button>
-          } 
+          }
         />
       </div>
       <div className="flex items-center justify-between rounded-md border px-4 py-2 text-sm">

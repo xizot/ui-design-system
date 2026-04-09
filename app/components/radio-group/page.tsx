@@ -115,9 +115,7 @@ export function Example() {
           <Field orientation="horizontal">
             <FieldContent>
               <FieldTitle>Plus</FieldTitle>
-              <FieldDescription>
-                For individuals and small teams.
-              </FieldDescription>
+              <FieldDescription>For individuals and small teams.</FieldDescription>
             </FieldContent>
             <RadioGroupItem value="plus" id="plus-plan" />
           </Field>
@@ -135,9 +133,7 @@ export function Example() {
           <Field orientation="horizontal">
             <FieldContent>
               <FieldTitle>Enterprise</FieldTitle>
-              <FieldDescription>
-                For large teams and enterprises.
-              </FieldDescription>
+              <FieldDescription>For large teams and enterprises.</FieldDescription>
             </FieldContent>
             <RadioGroupItem value="enterprise" id="enterprise-plan" />
           </Field>

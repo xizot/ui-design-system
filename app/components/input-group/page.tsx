@@ -1,11 +1,7 @@
 import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  InputGroup,
-  InputGroupInput,
-  InputGroupAddon,
-} from '@/components/ui/input-group';
+import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/input-group';
 import { Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 

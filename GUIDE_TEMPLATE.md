@@ -153,6 +153,7 @@ export default function ComponentGuidePage() {
 ## Components có trong design system
 
 ### UI Components
+
 - Accordion
 - Alert
 - Alert Dialog
@@ -213,13 +214,14 @@ export default function ComponentGuidePage() {
 - Tooltip
 
 ### Client Components (cách dùng useEffect cho title)
+
 - Command
 - Sonner
 
 ## Template cho Client Components
 
 ```tsx
-"use client";
+'use client';
 
 import { useEffect } from 'react';
 import type { Metadata } from 'next';
@@ -243,9 +245,8 @@ export default function ComponentGuidePage() {
 
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
-      <main className="min-w-0">
-        {/* Rest of the component */}
-      </main>
+      <main className="min-w-0">{/* Rest of the component */}</main>
     </div>
   );
 }
+```

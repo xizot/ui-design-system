@@ -135,7 +135,8 @@ export default function ToggleGroupGuidePage() {
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            A toggle group component that allows single or multiple selection from a set of toggle buttons.
+            A toggle group component that allows single or multiple selection from a set of toggle
+            buttons.
           </p>
         </section>
 

@@ -126,7 +126,8 @@ export default function ToggleGuidePage() {
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            A toggle component that can be pressed and unpressed, often used for toolbars or formatting options.
+            A toggle component that can be pressed and unpressed, often used for toolbars or
+            formatting options.
           </p>
         </section>
 
@@ -134,9 +135,7 @@ export default function ToggleGuidePage() {
           <Card id="import" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
-              <CardDescription>
-                Import the Toggle component from the design system.
-              </CardDescription>
+              <CardDescription>Import the Toggle component from the design system.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">

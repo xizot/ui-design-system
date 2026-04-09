@@ -112,7 +112,8 @@ export default function TabsGuidePage() {
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            A set of layered sections of content that allow users to navigate between different views.
+            A set of layered sections of content that allow users to navigate between different
+            views.
           </p>
         </section>
 
@@ -120,9 +121,7 @@ export default function TabsGuidePage() {
           <Card id="import" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
-              <CardDescription>
-                Import the Tabs component from the design system.
-              </CardDescription>
+              <CardDescription>Import the Tabs component from the design system.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">

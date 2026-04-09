@@ -26,9 +26,7 @@ const props = [
 ];
 
 function TextareaExample() {
-  return (
-    <Textarea placeholder="Type your message here..." rows={4} />
-  );
+  return <Textarea placeholder="Type your message here..." rows={4} />;
 }
 
 const usageSamples = [
@@ -45,13 +43,7 @@ export function TextareaDemo() {
   {
     id: 'disabled',
     label: 'Disabled',
-    preview: (
-      <Textarea 
-        placeholder="Disabled textarea" 
-        disabled 
-        rows={3}
-      />
-    ),
+    preview: <Textarea placeholder="Disabled textarea" disabled rows={3} />,
     code: `import { Textarea } from "@/components/ui/textarea";
 
 export function Example() {
@@ -68,7 +60,7 @@ export function Example() {
     id: 'with-value',
     label: 'With Value',
     preview: (
-      <Textarea 
+      <Textarea
         defaultValue="This is a default value in the textarea. You can edit this text."
         rows={4}
       />
