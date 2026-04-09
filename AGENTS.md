@@ -24,28 +24,29 @@ All visual values must be derived from the theme system defined in `app/globals.
 
 Use Tailwind semantic color utilities that map to CSS variables defined in `app/globals.css`:
 
-| Purpose | Tailwind utility |
-|---|---|
-| Page background | `bg-background` |
-| Default text | `text-foreground` |
-| Muted text / labels | `text-muted-foreground` |
-| Card / surface | `bg-card`, `text-card-foreground` |
-| Popover / dropdown | `bg-popover`, `text-popover-foreground` |
-| Primary action | `bg-primary`, `text-primary-foreground` |
-| Secondary / subtle | `bg-secondary`, `text-secondary-foreground` |
-| Muted fill | `bg-muted` |
-| Accent / hover fill | `bg-accent`, `text-accent-foreground` |
-| Destructive / danger | `bg-destructive`, `text-destructive` |
-| Border | `border-border` |
-| Input border | `border-input` |
-| Focus ring | `ring-ring` |
-| Sidebar surface | `bg-sidebar`, `text-sidebar-foreground` |
-| Sidebar primary | `bg-sidebar-primary`, `text-sidebar-primary-foreground` |
-| Sidebar accent | `bg-sidebar-accent`, `text-sidebar-accent-foreground` |
-| Sidebar border | `border-sidebar-border` |
-| Charts | `text-chart-1` … `text-chart-5` |
+| Purpose              | Tailwind utility                                        |
+| -------------------- | ------------------------------------------------------- |
+| Page background      | `bg-background`                                         |
+| Default text         | `text-foreground`                                       |
+| Muted text / labels  | `text-muted-foreground`                                 |
+| Card / surface       | `bg-card`, `text-card-foreground`                       |
+| Popover / dropdown   | `bg-popover`, `text-popover-foreground`                 |
+| Primary action       | `bg-primary`, `text-primary-foreground`                 |
+| Secondary / subtle   | `bg-secondary`, `text-secondary-foreground`             |
+| Muted fill           | `bg-muted`                                              |
+| Accent / hover fill  | `bg-accent`, `text-accent-foreground`                   |
+| Destructive / danger | `bg-destructive`, `text-destructive`                    |
+| Border               | `border-border`                                         |
+| Input border         | `border-input`                                          |
+| Focus ring           | `ring-ring`                                             |
+| Sidebar surface      | `bg-sidebar`, `text-sidebar-foreground`                 |
+| Sidebar primary      | `bg-sidebar-primary`, `text-sidebar-primary-foreground` |
+| Sidebar accent       | `bg-sidebar-accent`, `text-sidebar-accent-foreground`   |
+| Sidebar border       | `border-sidebar-border`                                 |
+| Charts               | `text-chart-1` … `text-chart-5`                         |
 
 Rules:
+
 - Do not hardcode color values (`#fff`, `oklch(...)`, `rgb(...)`) directly in className or style props.
 - Do not use Tailwind palette utilities (`bg-gray-100`, `text-blue-500`, etc.) — use semantic tokens only.
 - Only use hardcoded values when a semantic token cannot express the intent (e.g. a decorative gradient overlay in a one-off illustration). Document why in a comment.
@@ -55,13 +56,14 @@ Rules:
 
 Fonts are registered as CSS variables and mapped through `@theme inline` in `app/globals.css`:
 
-| Usage | Tailwind utility |
-|---|---|
-| Body / default | `font-sans` (maps to `--font-sans`) |
+| Usage            | Tailwind utility                          |
+| ---------------- | ----------------------------------------- |
+| Body / default   | `font-sans` (maps to `--font-sans`)       |
 | Monospace / code | `font-mono` (maps to `--font-geist-mono`) |
-| Headings | `font-heading` (maps to `--font-sans`) |
+| Headings         | `font-heading` (maps to `--font-sans`)    |
 
 Rules:
+
 - Do not hardcode `font-family` in style props or arbitrary Tailwind values like `font-['Inter']`.
 - Do not add new font imports without updating both the CSS variable in `app/globals.css` and the `@theme inline` mapping.
 - Use Tailwind's type scale for size (`text-sm`, `text-base`, `text-lg`, …) — do not use arbitrary `text-[13px]` unless no standard step fits.
@@ -71,17 +73,18 @@ Rules:
 
 Radius is defined as a single base variable `--radius: 0.625rem` and scaled through `@theme inline`:
 
-| Token | Computed value |
-|---|---|
-| `rounded-sm` | `calc(var(--radius) * 0.6)` |
-| `rounded-md` | `calc(var(--radius) * 0.8)` |
-| `rounded-lg` | `var(--radius)` |
-| `rounded-xl` | `calc(var(--radius) * 1.4)` |
+| Token         | Computed value              |
+| ------------- | --------------------------- |
+| `rounded-sm`  | `calc(var(--radius) * 0.6)` |
+| `rounded-md`  | `calc(var(--radius) * 0.8)` |
+| `rounded-lg`  | `var(--radius)`             |
+| `rounded-xl`  | `calc(var(--radius) * 1.4)` |
 | `rounded-2xl` | `calc(var(--radius) * 1.8)` |
 | `rounded-3xl` | `calc(var(--radius) * 2.2)` |
 | `rounded-4xl` | `calc(var(--radius) * 2.6)` |
 
 Rules:
+
 - Always use `rounded-{size}` utilities — never `rounded-[12px]` or inline `borderRadius` style props.
 - Components, cards, and modals must share the same radius scale so the UI feels consistent when `--radius` is changed.
 

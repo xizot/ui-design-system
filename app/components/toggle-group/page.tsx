@@ -70,7 +70,7 @@ export function ToggleGroupDemo() {
     id: 'single',
     label: 'Single Selection',
     preview: (
-      <ToggleGroup variant="outline" defaultValue="left">
+      <ToggleGroup variant="outline">
         <ToggleGroupItem value="left" aria-label="Align left">
           <AlignLeft className="h-4 w-4" />
         </ToggleGroupItem>
@@ -87,7 +87,7 @@ import { AlignLeft, AlignCenter, AlignRight } from "lucide-react";
 
 export function Example() {
   return (
-    <ToggleGroup variant="outline" defaultValue="left">
+    <ToggleGroup variant="outline" >
       <ToggleGroupItem value="left" aria-label="Align left">
         <AlignLeft className="h-4 w-4" />
       </ToggleGroupItem>
@@ -105,7 +105,7 @@ export function Example() {
     id: 'text-only',
     label: 'Text Only',
     preview: (
-      <ToggleGroup variant="outline" defaultValue="left">
+      <ToggleGroup variant="outline">
         <ToggleGroupItem value="left">Left</ToggleGroupItem>
         <ToggleGroupItem value="center">Center</ToggleGroupItem>
         <ToggleGroupItem value="right">Right</ToggleGroupItem>
@@ -115,7 +115,7 @@ export function Example() {
 
 export function Example() {
   return (
-    <ToggleGroup variant="outline" defaultValue="left">
+    <ToggleGroup variant="outline" >
       <ToggleGroupItem value="left">Left</ToggleGroupItem>
       <ToggleGroupItem value="center">Center</ToggleGroupItem>
       <ToggleGroupItem value="right">Right</ToggleGroupItem>

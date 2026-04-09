@@ -68,7 +68,7 @@ export function TooltipDemo() {
     label: 'With Delay',
     preview: (
       <TooltipProvider>
-        <Tooltip delayDuration={1000}>
+        <Tooltip>
           <TooltipTrigger render={<Button variant="outline">Hover for 1s</Button>} />
           <TooltipContent>
             <p>Delayed tooltip</p>

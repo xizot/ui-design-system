@@ -31,11 +31,15 @@ export default function ThemeToggleGuidePage() {
                   </pre>
                 </div>
               </div>
-              
+
               <div>
                 <h3 className="text-lg font-medium">2. Create ThemeProvider</h3>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Create a provider component at <code className="bg-muted px-1 py-0.5 rounded">components/providers/theme-provider.tsx</code>:
+                  Create a provider component at{' '}
+                  <code className="bg-muted px-1 py-0.5 rounded">
+                    components/providers/theme-provider.tsx
+                  </code>
+                  :
                 </p>
                 <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-[#111111] p-4">
                   <pre className="text-sm text-white">
@@ -88,7 +92,11 @@ export default function RootLayout({
               <div>
                 <h3 className="text-lg font-medium">4. Create ThemeToggle component</h3>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Create the toggle component at <code className="bg-muted px-1 py-0.5 rounded">components/ui/theme-toggle.tsx</code>:
+                  Create the toggle component at{' '}
+                  <code className="bg-muted px-1 py-0.5 rounded">
+                    components/ui/theme-toggle.tsx
+                  </code>
+                  :
                 </p>
                 <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-[#111111] p-4">
                   <pre className="text-sm text-white">
@@ -122,7 +130,8 @@ export function ThemeToggle() {
               <div>
                 <h3 className="text-lg font-medium">5. Add CSS variables for dark mode</h3>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Update your <code className="bg-muted px-1 py-0.5 rounded">app/globals.css</code> with dark mode variables:
+                  Update your <code className="bg-muted px-1 py-0.5 rounded">app/globals.css</code>{' '}
+                  with dark mode variables:
                 </p>
                 <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-[#111111] p-4">
                   <pre className="text-sm text-white">
@@ -255,7 +264,9 @@ export function Navigation() {
                     <td className="px-4 py-3 font-medium">attribute</td>
                     <td className="px-4 py-3 text-muted-foreground">string</td>
                     <td className="px-4 py-3 text-muted-foreground">"class"</td>
-                    <td className="px-4 py-3 text-muted-foreground">HTML attribute to apply theme to</td>
+                    <td className="px-4 py-3 text-muted-foreground">
+                      HTML attribute to apply theme to
+                    </td>
                   </tr>
                   <tr className="border-b border-border/70">
                     <td className="px-4 py-3 font-medium">defaultTheme</td>
@@ -267,13 +278,17 @@ export function Navigation() {
                     <td className="px-4 py-3 font-medium">enableSystem</td>
                     <td className="px-4 py-3 text-muted-foreground">boolean</td>
                     <td className="px-4 py-3 text-muted-foreground">true</td>
-                    <td className="px-4 py-3 text-muted-foreground">Enable system theme detection</td>
+                    <td className="px-4 py-3 text-muted-foreground">
+                      Enable system theme detection
+                    </td>
                   </tr>
                   <tr>
                     <td className="px-4 py-3 font-medium">disableTransitionOnChange</td>
                     <td className="px-4 py-3 text-muted-foreground">boolean</td>
                     <td className="px-4 py-3 text-muted-foreground">false</td>
-                    <td className="px-4 py-3 text-muted-foreground">Disable transitions when changing theme</td>
+                    <td className="px-4 py-3 text-muted-foreground">
+                      Disable transitions when changing theme
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -284,7 +299,8 @@ export function Navigation() {
             <h2 className="text-2xl font-semibold">useTheme Hook</h2>
             <div className="mt-4 space-y-4">
               <p className="text-sm text-muted-foreground">
-                The <code className="bg-muted px-1 py-0.5 rounded">useTheme</code> hook from next-themes provides access to theme state and controls:
+                The <code className="bg-muted px-1 py-0.5 rounded">useTheme</code> hook from
+                next-themes provides access to theme state and controls:
               </p>
               <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-[#111111] p-4">
                 <pre className="text-sm text-white">
@@ -336,7 +352,9 @@ export function ThemeInfo() {
                     <tr>
                       <td className="px-4 py-3 font-medium">resolvedTheme</td>
                       <td className="px-4 py-3 text-muted-foreground">string</td>
-                      <td className="px-4 py-3 text-muted-foreground">Actual theme being applied</td>
+                      <td className="px-4 py-3 text-muted-foreground">
+                        Actual theme being applied
+                      </td>
                     </tr>
                   </tbody>
                 </table>

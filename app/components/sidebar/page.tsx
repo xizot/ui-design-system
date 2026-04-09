@@ -38,15 +38,22 @@ const usageSamples = [
   {
     id: 'sidebar-04',
     label: 'Sidebar 04',
-    description: 'Floating sidebar variant for documentation-style navigation with nested sub-items.',
+    description:
+      'Floating sidebar variant for documentation-style navigation with nested sub-items.',
     preview: (
-      <div className="overflow-hidden rounded-[18px] border border-border/70" style={{ height: 500, transform: 'translateZ(0)' }}>
+      <div
+        className="overflow-hidden rounded-[18px] border border-border/70"
+        style={{ height: 500, transform: 'translateZ(0)' }}
+      >
         <SidebarProvider style={{ '--sidebar-width': '19rem' } as React.CSSProperties}>
           <AppSidebar04 />
           <SidebarInset>
             <header className="flex h-16 shrink-0 items-center gap-2 px-4">
               <SidebarTrigger className="-ml-1" />
-              <Separator orientation="vertical" className="mr-2 data-vertical:h-4 data-vertical:self-auto" />
+              <Separator
+                orientation="vertical"
+                className="mr-2 data-vertical:h-4 data-vertical:self-auto"
+              />
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem className="hidden md:block">
@@ -200,14 +207,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     label: 'Sidebar 07',
     description: 'Collapsible icon sidebar with team switcher and rail.',
     preview: (
-      <div className="overflow-hidden rounded-[18px] border border-border/70" style={{ height: 500, transform: 'translateZ(0)' }}>
+      <div
+        className="overflow-hidden rounded-[18px] border border-border/70"
+        style={{ height: 500, transform: 'translateZ(0)' }}
+      >
         <SidebarProvider>
           <AppSidebar07 />
           <SidebarInset>
             <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
               <div className="flex items-center gap-2 px-4">
                 <SidebarTrigger className="-ml-1" />
-                <Separator orientation="vertical" className="mr-2 data-vertical:h-4 data-vertical:self-auto" />
+                <Separator
+                  orientation="vertical"
+                  className="mr-2 data-vertical:h-4 data-vertical:self-auto"
+                />
                 <Breadcrumb>
                   <BreadcrumbList>
                     <BreadcrumbItem className="hidden md:block">
@@ -505,16 +518,23 @@ export function NavUser({ user }: { user: { name: string; email: string; avatar:
   {
     id: 'sidebar-08',
     label: 'Sidebar 08',
-    description: 'Inset sidebar with app logo header, collapsible nav, projects, secondary nav, and user footer.',
+    description:
+      'Inset sidebar with app logo header, collapsible nav, projects, secondary nav, and user footer.',
     preview: (
-      <div className="overflow-hidden rounded-[18px] border border-border/70" style={{ height: 500, transform: 'translateZ(0)' }}>
+      <div
+        className="overflow-hidden rounded-[18px] border border-border/70"
+        style={{ height: 500, transform: 'translateZ(0)' }}
+      >
         <SidebarProvider>
           <AppSidebar08 />
           <SidebarInset>
             <header className="flex h-16 shrink-0 items-center gap-2">
               <div className="flex items-center gap-2 px-4">
                 <SidebarTrigger className="-ml-1" />
-                <Separator orientation="vertical" className="mr-2 data-vertical:h-4 data-vertical:self-auto" />
+                <Separator
+                  orientation="vertical"
+                  className="mr-2 data-vertical:h-4 data-vertical:self-auto"
+                />
                 <Breadcrumb>
                   <BreadcrumbList>
                     <BreadcrumbItem className="hidden md:block">
