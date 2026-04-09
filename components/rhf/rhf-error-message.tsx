@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useFormState, type Control, type FieldValues, type Path } from "react-hook-form";
+import { useFormState, type Control, type FieldValues, type Path } from 'react-hook-form';
 
-import { cn, get, hasValue } from "../../lib/utils";
+import { cn, get, hasValue } from '../../lib/utils';
 
 type RHFErrorMessageProps<T extends FieldValues> = {
   name: Path<T>;
@@ -23,7 +23,13 @@ function RHFErrorMessage<T extends FieldValues = FieldValues>({
   const error = get<string>(formState.errors, `${name}.message`);
 
   return (
-    <p className={cn("hidden text-xs text-destructive", hasValue(error) && "input-error mt-1.5 block", className)}>
+    <p
+      className={cn(
+        'hidden text-xs text-destructive',
+        hasValue(error) && 'input-error mt-1.5 block',
+        className,
+      )}
+    >
       {error}
     </p>
   );

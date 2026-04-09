@@ -49,7 +49,7 @@ Ví dụ:
 Hiển thị đoạn import ngắn gọn:
 
 ```tsx
-import { Button } from "@/design-system/components/ui/button";
+import { Button } from '@/design-system/components/ui/button';
 ```
 
 ### 3. Props
@@ -62,11 +62,11 @@ Render dưới dạng bảng:
 
 Ví dụ:
 
-| Prop | Type | Default |
-| --- | --- | --- |
-| `variant` | `"default" \| "outline"` | `"default"` |
-| `size` | `"default" \| "sm"` | `"default"` |
-| `className` | `string` | `--` |
+| Prop        | Type                     | Default     |
+| ----------- | ------------------------ | ----------- |
+| `variant`   | `"default" \| "outline"` | `"default"` |
+| `size`      | `"default" \| "sm"`      | `"default"` |
+| `className` | `string`                 | `--`        |
 
 ### 4. Usages
 

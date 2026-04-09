@@ -1,23 +1,15 @@
-"use client";
+'use client';
 
-import type { FieldValues } from "react-hook-form";
-import { useController } from "react-hook-form";
+import type { FieldValues } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 
-import { cn } from "../../lib/utils";
-import { Label } from "../ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
-import type { RHFControlProps } from "./types";
+import { cn } from '../../lib/utils';
+import { Label } from '../ui/label';
+import { Select, SelectContent, SelectTrigger, SelectValue } from '../ui/select';
+import type { RHFControlProps } from './types';
 
 type RHFSelectProps<T extends FieldValues = FieldValues> = RHFControlProps<T> &
-  Omit<
-    React.ComponentProps<typeof Select>,
-    "name" | "value" | "defaultValue" | "onValueChange"
-  > & {
+  Omit<React.ComponentProps<typeof Select>, 'name' | 'value' | 'defaultValue' | 'onValueChange'> & {
     placeholder?: string;
     triggerClassName?: string;
     contentClassName?: string;
@@ -42,7 +34,10 @@ function RHFSelect<T extends FieldValues = FieldValues>({
   children,
   ...props
 }: RHFSelectProps<T>) {
-  const { field, fieldState: { error } } = useController({
+  const {
+    field,
+    fieldState: { error },
+  } = useController({
     control,
     name,
   });
@@ -54,7 +49,7 @@ function RHFSelect<T extends FieldValues = FieldValues>({
   };
 
   return (
-    <div className={cn("w-full space-y-1.5", wrapperClassName)}>
+    <div className={cn('w-full space-y-1.5', wrapperClassName)}>
       {label ? (
         <Label htmlFor={id} className={labelClassName}>
           {label}
@@ -62,13 +57,11 @@ function RHFSelect<T extends FieldValues = FieldValues>({
         </Label>
       ) : null}
       {description ? (
-        <p className={cn("text-sm text-muted-foreground", descriptionClassName)}>
-          {description}
-        </p>
+        <p className={cn('text-sm text-muted-foreground', descriptionClassName)}>{description}</p>
       ) : null}
       <Select
         {...props}
-        value={field.value ?? ""}
+        value={field.value ?? ''}
         onValueChange={handleValueChange}
         name={field.name}
       >
@@ -78,7 +71,9 @@ function RHFSelect<T extends FieldValues = FieldValues>({
         <SelectContent className={contentClassName}>{children}</SelectContent>
       </Select>
       {error ? (
-        <p className={cn("text-sm text-destructive", errorClassName)}>{String(error.message ?? "")}</p>
+        <p className={cn('text-sm text-destructive', errorClassName)}>
+          {String(error.message ?? '')}
+        </p>
       ) : null}
     </div>
   );

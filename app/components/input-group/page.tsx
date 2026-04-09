@@ -1,25 +1,24 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { InputGroup, InputGroupButton, InputGroupText, InputGroupInput } from "@/components/ui/input-group";
-import { cn } from "@/lib/utils";
+  InputGroup,
+  InputGroupButton,
+  InputGroupText,
+  InputGroupInput,
+} from '@/components/ui/input-group';
+import { cn } from '@/lib/utils';
 
 const guide = {
-  name: "Input Group",
-  group: "ui",
-  importPath: "@/design-system/components/ui/input-group",
+  name: 'Input Group',
+  group: 'ui',
+  importPath: '@/design-system/components/ui/input-group',
 } as const;
 
 export default function InputGroupGuidePage() {
   const usageSamples = [
     {
-      id: "default",
-      label: "Default",
+      id: 'default',
+      label: 'Default',
       preview: (
         <div className="flex items-center justify-center">
           <InputGroup>
@@ -38,8 +37,8 @@ export function Example() {
 }`,
     },
     {
-      id: "with-button",
-      label: "With Button",
+      id: 'with-button',
+      label: 'With Button',
       preview: (
         <div className="flex items-center justify-center">
           <InputGroup>
@@ -60,8 +59,8 @@ export function Example() {
 }`,
     },
     {
-      id: "with-addon",
-      label: "With Addon",
+      id: 'with-addon',
+      label: 'With Addon',
       preview: (
         <div className="flex items-center justify-center">
           <InputGroup>
@@ -90,9 +89,7 @@ export function Example() {
           <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
             {guide.group}
           </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight">
-            {guide.name}
-          </h1>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
             Input Group component dùng để kết hợp nhiều input hoặc button thành một nhóm thống nhất.
           </p>
@@ -102,9 +99,7 @@ export function Example() {
           <Card id="import" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
-              <CardDescription>
-                Import trực tiếp từ source path của component.
-              </CardDescription>
+              <CardDescription>Import trực tiếp từ source path của component.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
@@ -134,45 +129,38 @@ export function Example() {
                   <tbody>
                     {[
                       {
-                        component: "InputGroup",
-                        name: "className",
-                        type: "string",
-                        defaultValue: "--",
+                        component: 'InputGroup',
+                        name: 'className',
+                        type: 'string',
+                        defaultValue: '--',
                       },
                       {
-                        component: "InputGroupInput",
-                        name: "className",
-                        type: "string",
-                        defaultValue: "--",
+                        component: 'InputGroupInput',
+                        name: 'className',
+                        type: 'string',
+                        defaultValue: '--',
                       },
                       {
-                        component: "InputGroupButton",
-                        name: "children",
-                        type: "ReactNode",
-                        defaultValue: "--",
+                        component: 'InputGroupButton',
+                        name: 'children',
+                        type: 'ReactNode',
+                        defaultValue: '--',
                       },
                       {
-                        component: "InputGroupText",
-                        name: "children",
-                        type: "ReactNode",
-                        defaultValue: "--",
+                        component: 'InputGroupText',
+                        name: 'children',
+                        type: 'ReactNode',
+                        defaultValue: '--',
                       },
                     ].map((prop, index, array) => (
                       <tr
                         key={`${prop.component}-${prop.name}`}
-                        className={cn(
-                          index !== array.length - 1 &&
-                            "border-b border-border/70",
-                        )}
+                        className={cn(index !== array.length - 1 && 'border-b border-border/70')}
                       >
                         <td className="px-4 py-3 font-medium">{prop.component}</td>
                         <td className="px-4 py-3 font-medium">{prop.name}</td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.type}
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.defaultValue}
-                        </td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.type}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.defaultValue}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -185,7 +173,8 @@ export function Example() {
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
               <CardDescription>
-                Mỗi cách dùng quan trọng nên có tab riêng, để preview và code bám đúng use case thay vì dùng một snippet chung.
+                Mỗi cách dùng quan trọng nên có tab riêng, để preview và code bám đúng use case thay
+                vì dùng một snippet chung.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -199,11 +188,7 @@ export function Example() {
                 </TabsList>
 
                 {usageSamples.map((sample) => (
-                  <TabsContent
-                    key={sample.id}
-                    value={sample.id}
-                    className="space-y-5"
-                  >
+                  <TabsContent key={sample.id} value={sample.id} className="space-y-5">
                     <div className="rounded-[20px] border border-dashed border-border bg-[linear-gradient(135deg,rgba(0,0,0,0.02),transparent)] p-8">
                       <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card shadow-sm">
                         {sample.preview}
@@ -229,19 +214,13 @@ export function Example() {
             TOC
           </p>
           <nav className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <a
-              href="#import"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#import" className="block transition hover:text-foreground">
               Import
             </a>
             <a href="#props" className="block transition hover:text-foreground">
               Props
             </a>
-            <a
-              href="#usages"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#usages" className="block transition hover:text-foreground">
               Usages
             </a>
           </nav>

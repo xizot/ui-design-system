@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Empty,
   EmptyHeader,
@@ -12,39 +6,37 @@ import {
   EmptyTitle,
   EmptyDescription,
   EmptyContent,
-} from "@/components/ui/empty";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { InboxIcon, PlusIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/empty';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { InboxIcon, PlusIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const guide = {
-  name: "Empty",
-  group: "ui",
-  importPath: "@/design-system/components/ui/empty",
+  name: 'Empty',
+  group: 'ui',
+  importPath: '@/design-system/components/ui/empty',
 } as const;
 
 const props = [
-  { name: "className", type: "string", defaultValue: "--" },
-  { name: "children", type: "ReactNode", defaultValue: "--" },
+  { name: 'className', type: 'string', defaultValue: '--' },
+  { name: 'children', type: 'ReactNode', defaultValue: '--' },
 ];
 
 const emptyMediaProps = [
-  { name: "variant", type: `"default" | "icon"`, defaultValue: `"default"` },
-  { name: "className", type: "string", defaultValue: "--" },
+  { name: 'variant', type: `"default" | "icon"`, defaultValue: `"default"` },
+  { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
 const usageSamples = [
   {
-    id: "default",
-    label: "Default",
+    id: 'default',
+    label: 'Default',
     preview: (
       <Empty>
         <EmptyHeader>
           <EmptyTitle>No items found</EmptyTitle>
-          <EmptyDescription>
-            Get started by creating your first item.
-          </EmptyDescription>
+          <EmptyDescription>Get started by creating your first item.</EmptyDescription>
         </EmptyHeader>
         <Button>
           <PlusIcon />
@@ -79,8 +71,8 @@ export function Example() {
 }`,
   },
   {
-    id: "with-icon",
-    label: "With Icon",
+    id: 'with-icon',
+    label: 'With Icon',
     preview: (
       <Empty>
         <EmptyHeader>
@@ -88,9 +80,7 @@ export function Example() {
             <InboxIcon />
           </EmptyMedia>
           <EmptyTitle>No messages</EmptyTitle>
-          <EmptyDescription>
-            Your inbox is empty. New messages will appear here.
-          </EmptyDescription>
+          <EmptyDescription>Your inbox is empty. New messages will appear here.</EmptyDescription>
         </EmptyHeader>
         <Button variant="outline">Refresh</Button>
       </Empty>
@@ -123,8 +113,8 @@ export function Example() {
 }`,
   },
   {
-    id: "with-content",
-    label: "With Content",
+    id: 'with-content',
+    label: 'With Content',
     preview: (
       <Empty>
         <EmptyHeader>
@@ -187,12 +177,10 @@ export default function EmptyGuidePage() {
           <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
             {guide.group}
           </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight">
-            {guide.name}
-          </h1>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            Empty state component for displaying when there is no data to show.
-            Composed of multiple sub-components for flexible layouts.
+            Empty state component for displaying when there is no data to show. Composed of multiple
+            sub-components for flexible layouts.
           </p>
         </section>
 
@@ -200,9 +188,7 @@ export default function EmptyGuidePage() {
           <Card id="import" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
-              <CardDescription>
-                Import the empty components from the design system.
-              </CardDescription>
+              <CardDescription>Import the empty components from the design system.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
@@ -221,9 +207,7 @@ export default function EmptyGuidePage() {
           <Card id="props" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
-              <CardDescription>
-                Empty component sub-components and their props.
-              </CardDescription>
+              <CardDescription>Empty component sub-components and their props.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div>
@@ -241,17 +225,11 @@ export default function EmptyGuidePage() {
                       {props.map((prop, index) => (
                         <tr
                           key={prop.name}
-                          className={cn(
-                            index !== props.length - 1 && "border-b border-border/70",
-                          )}
+                          className={cn(index !== props.length - 1 && 'border-b border-border/70')}
                         >
                           <td className="px-4 py-3 font-medium">{prop.name}</td>
-                          <td className="px-4 py-3 text-muted-foreground">
-                            {prop.type}
-                          </td>
-                          <td className="px-4 py-3 text-muted-foreground">
-                            {prop.defaultValue}
-                          </td>
+                          <td className="px-4 py-3 text-muted-foreground">{prop.type}</td>
+                          <td className="px-4 py-3 text-muted-foreground">{prop.defaultValue}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -275,16 +253,12 @@ export default function EmptyGuidePage() {
                         <tr
                           key={prop.name}
                           className={cn(
-                            index !== emptyMediaProps.length - 1 && "border-b border-border/70",
+                            index !== emptyMediaProps.length - 1 && 'border-b border-border/70',
                           )}
                         >
                           <td className="px-4 py-3 font-medium">{prop.name}</td>
-                          <td className="px-4 py-3 text-muted-foreground">
-                            {prop.type}
-                          </td>
-                          <td className="px-4 py-3 text-muted-foreground">
-                            {prop.defaultValue}
-                          </td>
+                          <td className="px-4 py-3 text-muted-foreground">{prop.type}</td>
+                          <td className="px-4 py-3 text-muted-foreground">{prop.defaultValue}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -297,9 +271,7 @@ export default function EmptyGuidePage() {
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
-              <CardDescription>
-                Common empty state patterns and layouts.
-              </CardDescription>
+              <CardDescription>Common empty state patterns and layouts.</CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">
@@ -312,11 +284,7 @@ export default function EmptyGuidePage() {
                 </TabsList>
 
                 {usageSamples.map((sample) => (
-                  <TabsContent
-                    key={sample.id}
-                    value={sample.id}
-                    className="space-y-5"
-                  >
+                  <TabsContent key={sample.id} value={sample.id} className="space-y-5">
                     <div className="rounded-[20px] border border-dashed border-border bg-[linear-gradient(135deg,rgba(0,0,0,0.02),transparent)] p-8">
                       <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
                         {sample.preview}
@@ -342,19 +310,13 @@ export default function EmptyGuidePage() {
             TOC
           </p>
           <nav className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <a
-              href="#import"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#import" className="block transition hover:text-foreground">
               Import
             </a>
             <a href="#props" className="block transition hover:text-foreground">
               Props
             </a>
-            <a
-              href="#usages"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#usages" className="block transition hover:text-foreground">
               Usages
             </a>
           </nav>

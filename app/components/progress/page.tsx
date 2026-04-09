@@ -1,36 +1,24 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Progress,
-  ProgressLabel,
-  ProgressValue,
-} from "@/components/ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress, ProgressLabel, ProgressValue } from '@/components/ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
 
 const guide = {
-  name: "Progress",
-  group: "ui",
-  importPath: "@/design-system/components/ui/progress",
+  name: 'Progress',
+  group: 'ui',
+  importPath: '@/design-system/components/ui/progress',
 } as const;
 
 const props = [
-  { name: "value", type: "number", defaultValue: "0" },
-  { name: "className", type: "string", defaultValue: "--" },
+  { name: 'value', type: 'number', defaultValue: '0' },
+  { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
 const usageSamples = [
   {
-    id: "default",
-    label: "Default",
-    preview: (
-      <Progress value={60} />
-    ),
+    id: 'default',
+    label: 'Default',
+    preview: <Progress value={60} />,
     code: `import { Progress } from "@/design-system/components/ui/progress";
 
 export function Example() {
@@ -38,8 +26,8 @@ export function Example() {
 }`,
   },
   {
-    id: "with-label",
-    label: "With Label",
+    id: 'with-label',
+    label: 'With Label',
     preview: (
       <div className="w-full max-w-md">
         <Progress value={60}>
@@ -64,8 +52,8 @@ export function Example() {
 }`,
   },
   {
-    id: "values",
-    label: "Values",
+    id: 'values',
+    label: 'Values',
     preview: (
       <div className="w-full max-w-md space-y-4">
         <Progress value={0}>
@@ -125,11 +113,10 @@ export default function ProgressGuidePage() {
           <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
             {guide.group}
           </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight">
-            {guide.name}
-          </h1>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.
+            Displays an indicator showing the completion progress of a task, typically displayed as
+            a progress bar.
           </p>
         </section>
 
@@ -155,9 +142,7 @@ export default function ProgressGuidePage() {
           <Card id="props" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
-              <CardDescription>
-                Progress component props.
-              </CardDescription>
+              <CardDescription>Progress component props.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-hidden rounded-2xl border border-border/70">
@@ -173,17 +158,11 @@ export default function ProgressGuidePage() {
                     {props.map((prop, index) => (
                       <tr
                         key={prop.name}
-                        className={cn(
-                          index !== props.length - 1 && "border-b border-border/70",
-                        )}
+                        className={cn(index !== props.length - 1 && 'border-b border-border/70')}
                       >
                         <td className="px-4 py-3 font-medium">{prop.name}</td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.type}
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.defaultValue}
-                        </td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.type}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.defaultValue}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -195,9 +174,7 @@ export default function ProgressGuidePage() {
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
-              <CardDescription>
-                Common progress patterns and configurations.
-              </CardDescription>
+              <CardDescription>Common progress patterns and configurations.</CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">
@@ -210,11 +187,7 @@ export default function ProgressGuidePage() {
                 </TabsList>
 
                 {usageSamples.map((sample) => (
-                  <TabsContent
-                    key={sample.id}
-                    value={sample.id}
-                    className="space-y-5"
-                  >
+                  <TabsContent key={sample.id} value={sample.id} className="space-y-5">
                     <div className="rounded-[20px] border border-dashed border-border bg-[linear-gradient(135deg,rgba(0,0,0,0.02),transparent)] p-8">
                       <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
                         {sample.preview}
@@ -240,19 +213,13 @@ export default function ProgressGuidePage() {
             TOC
           </p>
           <nav className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <a
-              href="#import"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#import" className="block transition hover:text-foreground">
               Import
             </a>
             <a href="#props" className="block transition hover:text-foreground">
               Props
             </a>
-            <a
-              href="#usages"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#usages" className="block transition hover:text-foreground">
               Usages
             </a>
           </nav>

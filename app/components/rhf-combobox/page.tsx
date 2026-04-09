@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Combobox,
   ComboboxContent,
@@ -12,40 +6,40 @@ import {
   ComboboxInput,
   ComboboxItem,
   ComboboxList,
-} from "@/components/ui/combobox";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/combobox';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
 
 const guide = {
-  name: "RHF Combobox",
-  group: "rhf",
-  importPath: "@/design-system/components/rhf",
+  name: 'RHF Combobox',
+  group: 'rhf',
+  importPath: '@/design-system/components/rhf',
 } as const;
 
 const props = [
-  { name: "control", type: "Control<T>", defaultValue: "--" },
-  { name: "name", type: "Path<T>", defaultValue: "--" },
-  { name: "items", type: "string[]", defaultValue: "--" },
-  { name: "label", type: "string", defaultValue: "--" },
-  { name: "description", type: "string", defaultValue: "--" },
-  { name: "required", type: "boolean", defaultValue: "false" },
-  { name: "placeholder", type: "string", defaultValue: "--" },
-  { name: "callback", type: "(newValue: string) => void", defaultValue: "--" },
-  { name: "inputClassName", type: "string", defaultValue: "--" },
-  { name: "contentClassName", type: "string", defaultValue: "--" },
-  { name: "listClassName", type: "string", defaultValue: "--" },
-  { name: "wrapperClassName", type: "string", defaultValue: "--" },
-  { name: "labelClassName", type: "string", defaultValue: "--" },
-  { name: "descriptionClassName", type: "string", defaultValue: "--" },
-  { name: "errorClassName", type: "string", defaultValue: "--" },
+  { name: 'control', type: 'Control<T>', defaultValue: '--' },
+  { name: 'name', type: 'Path<T>', defaultValue: '--' },
+  { name: 'items', type: 'string[]', defaultValue: '--' },
+  { name: 'label', type: 'string', defaultValue: '--' },
+  { name: 'description', type: 'string', defaultValue: '--' },
+  { name: 'required', type: 'boolean', defaultValue: 'false' },
+  { name: 'placeholder', type: 'string', defaultValue: '--' },
+  { name: 'callback', type: '(newValue: string) => void', defaultValue: '--' },
+  { name: 'inputClassName', type: 'string', defaultValue: '--' },
+  { name: 'contentClassName', type: 'string', defaultValue: '--' },
+  { name: 'listClassName', type: 'string', defaultValue: '--' },
+  { name: 'wrapperClassName', type: 'string', defaultValue: '--' },
+  { name: 'labelClassName', type: 'string', defaultValue: '--' },
+  { name: 'descriptionClassName', type: 'string', defaultValue: '--' },
+  { name: 'errorClassName', type: 'string', defaultValue: '--' },
 ];
 
-const frameworks = ["Next.js", "SvelteKit", "Nuxt.js", "Remix", "Astro"];
+const frameworks = ['Next.js', 'SvelteKit', 'Nuxt.js', 'Remix', 'Astro'];
 
 const usageSamples = [
   {
-    id: "basic",
-    label: "Basic",
+    id: 'basic',
+    label: 'Basic',
     preview: (
       <div className="w-full max-w-md space-y-4 p-4">
         <div className="space-y-1.5">
@@ -99,11 +93,10 @@ export default function RHFComboboxGuidePage() {
           <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
             {guide.group}
           </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight">
-            {guide.name}
-          </h1>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            A React Hook Form combobox component with built-in error handling and validation support.
+            A React Hook Form combobox component with built-in error handling and validation
+            support.
           </p>
         </section>
 
@@ -125,9 +118,7 @@ export default function RHFComboboxGuidePage() {
           <Card id="props" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
-              <CardDescription>
-                RHF Combobox component props.
-              </CardDescription>
+              <CardDescription>RHF Combobox component props.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-hidden rounded-2xl border border-border/70">
@@ -143,17 +134,11 @@ export default function RHFComboboxGuidePage() {
                     {props.map((prop, index) => (
                       <tr
                         key={prop.name}
-                        className={cn(
-                          index !== props.length - 1 && "border-b border-border/70",
-                        )}
+                        className={cn(index !== props.length - 1 && 'border-b border-border/70')}
                       >
                         <td className="px-4 py-3 font-medium">{prop.name}</td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.type}
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.defaultValue}
-                        </td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.type}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.defaultValue}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -165,9 +150,7 @@ export default function RHFComboboxGuidePage() {
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
-              <CardDescription>
-                Common RHF Combobox patterns and configurations.
-              </CardDescription>
+              <CardDescription>Common RHF Combobox patterns and configurations.</CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">
@@ -180,11 +163,7 @@ export default function RHFComboboxGuidePage() {
                 </TabsList>
 
                 {usageSamples.map((sample) => (
-                  <TabsContent
-                    key={sample.id}
-                    value={sample.id}
-                    className="space-y-5"
-                  >
+                  <TabsContent key={sample.id} value={sample.id} className="space-y-5">
                     <div className="rounded-[20px] border border-dashed border-border bg-[linear-gradient(135deg,rgba(0,0,0,0.02),transparent)] p-8">
                       <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
                         {sample.preview}
@@ -210,19 +189,13 @@ export default function RHFComboboxGuidePage() {
             TOC
           </p>
           <nav className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <a
-              href="#import"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#import" className="block transition hover:text-foreground">
               Import
             </a>
             <a href="#props" className="block transition hover:text-foreground">
               Props
             </a>
-            <a
-              href="#usages"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#usages" className="block transition hover:text-foreground">
               Usages
             </a>
           </nav>

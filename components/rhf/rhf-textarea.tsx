@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import { useController, type FieldValues } from "react-hook-form";
+import { useController, type FieldValues } from 'react-hook-form';
 
-import { cn } from "../../lib/utils";
-import { Badge } from "../ui/badge";
-import { Label } from "../ui/label";
-import { Textarea } from "../ui/textarea";
-import { RHFErrorMessage } from "./rhf-error-message";
-import type { RHFRegisterProps } from "./types";
+import { cn } from '../../lib/utils';
+import { Badge } from '../ui/badge';
+import { Label } from '../ui/label';
+import { Textarea } from '../ui/textarea';
+import { RHFErrorMessage } from './rhf-error-message';
+import type { RHFRegisterProps } from './types';
 
 const ERROR_CLASSES = [
-  "has-[.input-error]:[&_textarea]:pr-8",
-  "has-[.input-error]:[&_textarea]:border-destructive",
-  "has-[.input-error]:[&_textarea]:focus-visible:border-transparent",
-  "has-[.input-error]:[&_textarea]:focus-visible:ring-2",
-  "has-[.input-error]:[&_textarea]:focus-visible:ring-destructive",
-].join(" ");
+  'has-[.input-error]:[&_textarea]:pr-8',
+  'has-[.input-error]:[&_textarea]:border-destructive',
+  'has-[.input-error]:[&_textarea]:focus-visible:border-transparent',
+  'has-[.input-error]:[&_textarea]:focus-visible:ring-2',
+  'has-[.input-error]:[&_textarea]:focus-visible:ring-destructive',
+].join(' ');
 
 type RHFTextareaProps<T extends FieldValues = FieldValues> = RHFRegisterProps<T> &
-  Omit<React.ComponentProps<typeof Textarea>, "name"> & {
+  Omit<React.ComponentProps<typeof Textarea>, 'name'> & {
     callback?: (newValue: string) => void;
     showMaxLength?: boolean;
   };
@@ -47,17 +47,15 @@ function RHFTextarea<T extends FieldValues = FieldValues>({
   });
 
   return (
-    <div className={cn("w-full space-y-1.5", wrapperClassName)}>
+    <div className={cn('w-full space-y-1.5', wrapperClassName)}>
       {label ? (
-        <Label htmlFor={props.id || String(name)} className={cn("block leading-5", labelClassName)}>
+        <Label htmlFor={props.id || String(name)} className={cn('block leading-5', labelClassName)}>
           {label}
           {required ? <span className="ml-1 text-destructive">*</span> : null}
         </Label>
       ) : null}
       {description ? (
-        <p className={cn("text-sm text-muted-foreground", descriptionClassName)}>
-          {description}
-        </p>
+        <p className={cn('text-sm text-muted-foreground', descriptionClassName)}>{description}</p>
       ) : null}
       <div className={cn(ERROR_CLASSES)}>
         <div className="relative">
@@ -65,7 +63,7 @@ function RHFTextarea<T extends FieldValues = FieldValues>({
             {...props}
             {...registered}
             id={props.id || String(name)}
-            className={cn("w-full", props.className)}
+            className={cn('w-full', props.className)}
             maxLength={maxLength}
             rows={rows}
           />
@@ -80,16 +78,12 @@ function RHFTextarea<T extends FieldValues = FieldValues>({
 }
 
 type TextAreaBadgeProps<T extends FieldValues> = {
-  control: RHFRegisterProps<T>["control"];
-  name: RHFRegisterProps<T>["name"];
+  control: RHFRegisterProps<T>['control'];
+  name: RHFRegisterProps<T>['name'];
   maxLength: number;
 };
 
-function TextAreaBadge<T extends FieldValues>({
-  control,
-  name,
-  maxLength,
-}: TextAreaBadgeProps<T>) {
+function TextAreaBadge<T extends FieldValues>({ control, name, maxLength }: TextAreaBadgeProps<T>) {
   const { field } = useController({ control, name });
 
   return (

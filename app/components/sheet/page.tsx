@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Sheet,
   SheetContent,
@@ -12,29 +6,29 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/sheet';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { cn } from '@/lib/utils';
 
 const guide = {
-  name: "Sheet",
-  group: "ui",
-  importPath: "@/design-system/components/ui/sheet",
+  name: 'Sheet',
+  group: 'ui',
+  importPath: '@/design-system/components/ui/sheet',
 } as const;
 
 const props = [
-  { name: "side", type: `"top" | "right" | "bottom" | "left"`, defaultValue: `"right"` },
-  { name: "showCloseButton", type: "boolean", defaultValue: "true" },
-  { name: "className", type: "string", defaultValue: "--" },
+  { name: 'side', type: `"top" | "right" | "bottom" | "left"`, defaultValue: `"right"` },
+  { name: 'showCloseButton', type: 'boolean', defaultValue: 'true' },
+  { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
 const usageSamples = [
   {
-    id: "default",
-    label: "Default (Right)",
+    id: 'default',
+    label: 'Default (Right)',
     preview: (
       <Sheet>
         <SheetTrigger render={<Button variant="outline">Open Sheet</Button>} />
@@ -97,17 +91,15 @@ export function Example() {
 }`,
   },
   {
-    id: "left",
-    label: "Left Side",
+    id: 'left',
+    label: 'Left Side',
     preview: (
       <Sheet>
         <SheetTrigger render={<Button variant="outline">Open Left</Button>} />
         <SheetContent side="left">
           <SheetHeader>
             <SheetTitle>Left Panel</SheetTitle>
-            <SheetDescription>
-              This sheet slides in from the left side.
-            </SheetDescription>
+            <SheetDescription>This sheet slides in from the left side.</SheetDescription>
           </SheetHeader>
         </SheetContent>
       </Sheet>
@@ -139,17 +131,15 @@ export function Example() {
 }`,
   },
   {
-    id: "top",
-    label: "Top Side",
+    id: 'top',
+    label: 'Top Side',
     preview: (
       <Sheet>
         <SheetTrigger render={<Button variant="outline">Open Top</Button>} />
         <SheetContent side="top">
           <SheetHeader>
             <SheetTitle>Top Panel</SheetTitle>
-            <SheetDescription>
-              This sheet slides in from the top.
-            </SheetDescription>
+            <SheetDescription>This sheet slides in from the top.</SheetDescription>
           </SheetHeader>
         </SheetContent>
       </Sheet>
@@ -181,17 +171,15 @@ export function Example() {
 }`,
   },
   {
-    id: "bottom",
-    label: "Bottom Side",
+    id: 'bottom',
+    label: 'Bottom Side',
     preview: (
       <Sheet>
         <SheetTrigger render={<Button variant="outline">Open Bottom</Button>} />
         <SheetContent side="bottom">
           <SheetHeader>
             <SheetTitle>Bottom Panel</SheetTitle>
-            <SheetDescription>
-              This sheet slides in from the bottom.
-            </SheetDescription>
+            <SheetDescription>This sheet slides in from the bottom.</SheetDescription>
           </SheetHeader>
         </SheetContent>
       </Sheet>
@@ -232,11 +220,10 @@ export default function SheetGuidePage() {
           <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
             {guide.group}
           </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight">
-            {guide.name}
-          </h1>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            Extends the Dialog component to display content that complements the main content of the screen.
+            Extends the Dialog component to display content that complements the main content of the
+            screen.
           </p>
         </section>
 
@@ -244,9 +231,7 @@ export default function SheetGuidePage() {
           <Card id="import" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
-              <CardDescription>
-                Import the sheet components from the design system.
-              </CardDescription>
+              <CardDescription>Import the sheet components from the design system.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
@@ -265,9 +250,7 @@ export default function SheetGuidePage() {
           <Card id="props" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
-              <CardDescription>
-                SheetContent component props.
-              </CardDescription>
+              <CardDescription>SheetContent component props.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-hidden rounded-2xl border border-border/70">
@@ -283,17 +266,11 @@ export default function SheetGuidePage() {
                     {props.map((prop, index) => (
                       <tr
                         key={prop.name}
-                        className={cn(
-                          index !== props.length - 1 && "border-b border-border/70",
-                        )}
+                        className={cn(index !== props.length - 1 && 'border-b border-border/70')}
                       >
                         <td className="px-4 py-3 font-medium">{prop.name}</td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.type}
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.defaultValue}
-                        </td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.type}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.defaultValue}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -305,9 +282,7 @@ export default function SheetGuidePage() {
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
-              <CardDescription>
-                Common sheet patterns and configurations.
-              </CardDescription>
+              <CardDescription>Common sheet patterns and configurations.</CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">
@@ -320,11 +295,7 @@ export default function SheetGuidePage() {
                 </TabsList>
 
                 {usageSamples.map((sample) => (
-                  <TabsContent
-                    key={sample.id}
-                    value={sample.id}
-                    className="space-y-5"
-                  >
+                  <TabsContent key={sample.id} value={sample.id} className="space-y-5">
                     <div className="rounded-[20px] border border-dashed border-border bg-[linear-gradient(135deg,rgba(0,0,0,0.02),transparent)] p-8">
                       <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
                         {sample.preview}
@@ -350,19 +321,13 @@ export default function SheetGuidePage() {
             TOC
           </p>
           <nav className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <a
-              href="#import"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#import" className="block transition hover:text-foreground">
               Import
             </a>
             <a href="#props" className="block transition hover:text-foreground">
               Props
             </a>
-            <a
-              href="#usages"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#usages" className="block transition hover:text-foreground">
               Usages
             </a>
           </nav>

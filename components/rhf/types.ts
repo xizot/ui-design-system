@@ -1,13 +1,7 @@
-"use client";
+'use client';
 
-import type * as React from "react";
-import type {
-  Control,
-  FieldPathValue,
-  FieldValues,
-  Path,
-  UseFormRegister,
-} from "react-hook-form";
+import type * as React from 'react';
+import type { Control, FieldPathValue, FieldValues, Path, UseFormRegister } from 'react-hook-form';
 
 type RHFControlProps<T extends FieldValues = FieldValues> = {
   control: Control<T>;
@@ -15,10 +9,10 @@ type RHFControlProps<T extends FieldValues = FieldValues> = {
   label?: React.ReactNode;
   description?: React.ReactNode;
   required?: boolean;
-  wrapperClassName?: React.ComponentProps<"div">["className"];
-  labelClassName?: React.ComponentProps<"div">["className"];
-  descriptionClassName?: React.ComponentProps<"div">["className"];
-  errorClassName?: React.ComponentProps<"p">["className"];
+  wrapperClassName?: React.ComponentProps<'div'>['className'];
+  labelClassName?: React.ComponentProps<'div'>['className'];
+  descriptionClassName?: React.ComponentProps<'div'>['className'];
+  errorClassName?: React.ComponentProps<'p'>['className'];
 };
 
 type RHFRegisterProps<T extends FieldValues = FieldValues> = RHFControlProps<T> & {

@@ -1,10 +1,10 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
-const isGitHubPagesBuild = process.env.GITHUB_ACTIONS === "true";
-const repoBasePath = "/ui-design-system";
+const isGitHubPagesBuild = process.env.GITHUB_ACTIONS === 'true';
+const repoBasePath = '/ui-design-system';
 
 const nextConfig: NextConfig = {
-  output: "export",
+  output: 'export',
   trailingSlash: true,
   images: {
     unoptimized: true,

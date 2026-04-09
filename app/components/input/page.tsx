@@ -1,52 +1,46 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
 
 const guide = {
-  name: "Input",
-  group: "ui",
-  importPath: "@/design-system/components/ui/input",
+  name: 'Input',
+  group: 'ui',
+  importPath: '@/design-system/components/ui/input',
 } as const;
 
 const props = [
   {
-    name: "type",
+    name: 'type',
     type: `React.ComponentProps<"input">["type"]`,
     defaultValue: `"text" | browser default`,
   },
   {
-    name: "className",
-    type: "string",
-    defaultValue: "--",
+    name: 'className',
+    type: 'string',
+    defaultValue: '--',
   },
   {
-    name: "placeholder",
-    type: "string",
-    defaultValue: "--",
+    name: 'placeholder',
+    type: 'string',
+    defaultValue: '--',
   },
   {
-    name: "disabled",
-    type: "boolean",
-    defaultValue: "false",
+    name: 'disabled',
+    type: 'boolean',
+    defaultValue: 'false',
   },
   {
-    name: "aria-invalid",
-    type: "boolean",
-    defaultValue: "false",
+    name: 'aria-invalid',
+    type: 'boolean',
+    defaultValue: 'false',
   },
 ];
 
 const usageSamples = [
   {
-    id: "basic",
-    label: "Basic",
+    id: 'basic',
+    label: 'Basic',
     preview: (
       <div className="grid w-full max-w-md gap-4">
         <Input placeholder="Enter your email" />
@@ -65,8 +59,8 @@ export function Example() {
 }`,
   },
   {
-    id: "states",
-    label: "States",
+    id: 'states',
+    label: 'States',
     preview: (
       <div className="grid w-full max-w-md gap-4">
         <Input defaultValue="john@example.com" />
@@ -87,8 +81,8 @@ export function Example() {
 }`,
   },
   {
-    id: "file",
-    label: "File",
+    id: 'file',
+    label: 'File',
     preview: (
       <div className="w-full max-w-md">
         <Input type="file" />
@@ -110,12 +104,10 @@ export default function InputGuidePage() {
           <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
             {guide.group}
           </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight">
-            {guide.name}
-          </h1>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            Text input primitive built on Base UI input, styled for common form
-            states such as default, disabled, invalid, and file upload.
+            Text input primitive built on Base UI input, styled for common form states such as
+            default, disabled, invalid, and file upload.
           </p>
         </section>
 
@@ -124,8 +116,7 @@ export default function InputGuidePage() {
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
               <CardDescription>
-                Import the public input component from the installed design
-                system path.
+                Import the public input component from the installed design system path.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -139,8 +130,7 @@ export default function InputGuidePage() {
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
               <CardDescription>
-                The component forwards native input props and adds built-in
-                invalid styling.
+                The component forwards native input props and adds built-in invalid styling.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -157,17 +147,11 @@ export default function InputGuidePage() {
                     {props.map((prop, index) => (
                       <tr
                         key={prop.name}
-                        className={cn(
-                          index !== props.length - 1 && "border-b border-border/70",
-                        )}
+                        className={cn(index !== props.length - 1 && 'border-b border-border/70')}
                       >
                         <td className="px-4 py-3 font-medium">{prop.name}</td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.type}
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.defaultValue}
-                        </td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.type}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.defaultValue}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -180,8 +164,8 @@ export default function InputGuidePage() {
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
               <CardDescription>
-                The guide separates the most common input states into focused
-                usage tabs instead of showing a single generic example.
+                The guide separates the most common input states into focused usage tabs instead of
+                showing a single generic example.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -195,11 +179,7 @@ export default function InputGuidePage() {
                 </TabsList>
 
                 {usageSamples.map((sample) => (
-                  <TabsContent
-                    key={sample.id}
-                    value={sample.id}
-                    className="space-y-5"
-                  >
+                  <TabsContent key={sample.id} value={sample.id} className="space-y-5">
                     <div className="rounded-[20px] border border-dashed border-border bg-[linear-gradient(135deg,rgba(0,0,0,0.02),transparent)] p-8">
                       <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
                         {sample.preview}
@@ -225,19 +205,13 @@ export default function InputGuidePage() {
             TOC
           </p>
           <nav className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <a
-              href="#import"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#import" className="block transition hover:text-foreground">
               Import
             </a>
             <a href="#props" className="block transition hover:text-foreground">
               Props
             </a>
-            <a
-              href="#usages"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#usages" className="block transition hover:text-foreground">
               Usages
             </a>
           </nav>

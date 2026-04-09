@@ -37,7 +37,7 @@ jobs:
 
       - name: Build static export
         env:
-          GITHUB_ACTIONS: "true"
+          GITHUB_ACTIONS: 'true'
         run: npm run build
 
       - name: Upload Pages artifact

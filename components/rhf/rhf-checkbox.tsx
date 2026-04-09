@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import type { FieldValues } from "react-hook-form";
-import { useController } from "react-hook-form";
+import type { FieldValues } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 
-import { cn } from "../../lib/utils";
-import { Checkbox } from "../ui/checkbox";
-import { Label } from "../ui/label";
-import type { RHFBeforeChange, RHFControlProps } from "./types";
+import { cn } from '../../lib/utils';
+import { Checkbox } from '../ui/checkbox';
+import { Label } from '../ui/label';
+import type { RHFBeforeChange, RHFControlProps } from './types';
 
 type RHFCheckboxProps<T extends FieldValues = FieldValues> = RHFControlProps<T> &
   Omit<
     React.ComponentProps<typeof Checkbox>,
-    "name" | "checked" | "defaultChecked" | "onCheckedChange"
+    'name' | 'checked' | 'defaultChecked' | 'onCheckedChange'
   > & {
     callback?: (newValue: boolean) => void;
     onBeforeChange?: RHFBeforeChange<T>;
@@ -31,7 +31,10 @@ function RHFCheckbox<T extends FieldValues = FieldValues>({
   onBeforeChange,
   ...props
 }: RHFCheckboxProps<T>) {
-  const { field, fieldState: { error } } = useController({
+  const {
+    field,
+    fieldState: { error },
+  } = useController({
     control,
     name,
   });
@@ -53,11 +56,9 @@ function RHFCheckbox<T extends FieldValues = FieldValues>({
   };
 
   return (
-    <div className={cn("w-fit space-y-1.5", wrapperClassName)}>
+    <div className={cn('w-fit space-y-1.5', wrapperClassName)}>
       {description ? (
-        <p className={cn("text-sm text-muted-foreground", descriptionClassName)}>
-          {description}
-        </p>
+        <p className={cn('text-sm text-muted-foreground', descriptionClassName)}>{description}</p>
       ) : null}
       <div className="flex items-center gap-3">
         <Checkbox
@@ -77,7 +78,9 @@ function RHFCheckbox<T extends FieldValues = FieldValues>({
         ) : null}
       </div>
       {error ? (
-        <p className={cn("text-sm text-destructive", errorClassName)}>{String(error.message ?? "")}</p>
+        <p className={cn('text-sm text-destructive', errorClassName)}>
+          {String(error.message ?? '')}
+        </p>
       ) : null}
     </div>
   );

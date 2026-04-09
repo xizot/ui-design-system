@@ -1,40 +1,35 @@
-"use client";
+'use client';
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Toaster } from "@/components/ui/sonner";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import { cn } from "@/lib/utils";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Toaster } from '@/components/ui/sonner';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
 
 const guide = {
-  name: "Sonner",
-  group: "ui",
-  importPath: "@/design-system/components/ui/sonner",
+  name: 'Sonner',
+  group: 'ui',
+  importPath: '@/design-system/components/ui/sonner',
 } as const;
 
 const props = [
-  { name: "position", type: `"top-left" | "top-center" | "top-right" | "bottom-left" | "bottom-center" | "bottom-right"`, defaultValue: `"bottom-right"` },
-  { name: "richColors", type: "boolean", defaultValue: "false" },
-  { name: "closeButton", type: "boolean", defaultValue: "false" },
-  { name: "duration", type: "number", defaultValue: "4000" },
+  {
+    name: 'position',
+    type: `"top-left" | "top-center" | "top-right" | "bottom-left" | "bottom-center" | "bottom-right"`,
+    defaultValue: `"bottom-right"`,
+  },
+  { name: 'richColors', type: 'boolean', defaultValue: 'false' },
+  { name: 'closeButton', type: 'boolean', defaultValue: 'false' },
+  { name: 'duration', type: 'number', defaultValue: '4000' },
 ];
 
 const usageSamples = [
   {
-    id: "simple",
-    label: "Simple Toast",
+    id: 'simple',
+    label: 'Simple Toast',
     preview: (
-      <Button
-        variant="outline"
-        onClick={() => toast("Event has been created")}
-      >
+      <Button variant="outline" onClick={() => toast('Event has been created')}>
         Show Toast
       </Button>
     ),
@@ -53,14 +48,14 @@ export function Example() {
 }`,
   },
   {
-    id: "with-description",
-    label: "With Description",
+    id: 'with-description',
+    label: 'With Description',
     preview: (
       <Button
         variant="outline"
         onClick={() =>
-          toast("Event has been created", {
-            description: "Monday, January 3rd at 6:00pm",
+          toast('Event has been created', {
+            description: 'Monday, January 3rd at 6:00pm',
           })
         }
       >
@@ -86,13 +81,10 @@ export function Example() {
 }`,
   },
   {
-    id: "success",
-    label: "Success",
+    id: 'success',
+    label: 'Success',
     preview: (
-      <Button
-        variant="outline"
-        onClick={() => toast.success("Event has been created")}
-      >
+      <Button variant="outline" onClick={() => toast.success('Event has been created')}>
         Success Toast
       </Button>
     ),
@@ -111,13 +103,10 @@ export function Example() {
 }`,
   },
   {
-    id: "error",
-    label: "Error",
+    id: 'error',
+    label: 'Error',
     preview: (
-      <Button
-        variant="outline"
-        onClick={() => toast.error("Event has not been created")}
-      >
+      <Button variant="outline" onClick={() => toast.error('Event has not been created')}>
         Error Toast
       </Button>
     ),
@@ -145,9 +134,7 @@ export default function SonnerGuidePage() {
           <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
             {guide.group}
           </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight">
-            {guide.name}
-          </h1>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
             An opinionated toast component for React. Built on top of sonner with theming support.
           </p>
@@ -212,9 +199,7 @@ export default function SonnerGuidePage() {
           <Card id="props" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>3. Props</CardTitle>
-              <CardDescription>
-                Toaster component props.
-              </CardDescription>
+              <CardDescription>Toaster component props.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-hidden rounded-2xl border border-border/70">
@@ -230,17 +215,11 @@ export default function SonnerGuidePage() {
                     {props.map((prop, index) => (
                       <tr
                         key={prop.name}
-                        className={cn(
-                          index !== props.length - 1 && "border-b border-border/70",
-                        )}
+                        className={cn(index !== props.length - 1 && 'border-b border-border/70')}
                       >
                         <td className="px-4 py-3 font-medium">{prop.name}</td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.type}
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.defaultValue}
-                        </td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.type}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.defaultValue}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -252,9 +231,7 @@ export default function SonnerGuidePage() {
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>4. Usages</CardTitle>
-              <CardDescription>
-                Common toast patterns and configurations.
-              </CardDescription>
+              <CardDescription>Common toast patterns and configurations.</CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">
@@ -267,11 +244,7 @@ export default function SonnerGuidePage() {
                 </TabsList>
 
                 {usageSamples.map((sample) => (
-                  <TabsContent
-                    key={sample.id}
-                    value={sample.id}
-                    className="space-y-5"
-                  >
+                  <TabsContent key={sample.id} value={sample.id} className="space-y-5">
                     <div className="rounded-[20px] border border-dashed border-border bg-[linear-gradient(135deg,rgba(0,0,0,0.02),transparent)] p-8">
                       <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
                         {sample.preview}
@@ -297,10 +270,7 @@ export default function SonnerGuidePage() {
             TOC
           </p>
           <nav className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <a
-              href="#import"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#import" className="block transition hover:text-foreground">
               Import
             </a>
             <a href="#setup" className="block transition hover:text-foreground">
@@ -309,10 +279,7 @@ export default function SonnerGuidePage() {
             <a href="#props" className="block transition hover:text-foreground">
               Props
             </a>
-            <a
-              href="#usages"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#usages" className="block transition hover:text-foreground">
               Usages
             </a>
           </nav>

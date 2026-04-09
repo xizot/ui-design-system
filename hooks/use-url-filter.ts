@@ -1,9 +1,9 @@
-import { ALL_OPTION, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from "../constants/common";
-import { hasValue } from "../lib/utils";
-import { PaginationState, SortingState, Updater } from "@tanstack/react-table";
-import type { inferParserType, ParserMap } from "nuqs";
-import { createParser, parseAsInteger, parseAsString, useQueryStates } from "nuqs";
-import { useCallback, useMemo } from "react";
+import { ALL_OPTION, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '../constants/common';
+import { hasValue } from '../lib/utils';
+import { PaginationState, SortingState, Updater } from '@tanstack/react-table';
+import type { inferParserType, ParserMap } from 'nuqs';
+import { createParser, parseAsInteger, parseAsString, useQueryStates } from 'nuqs';
+import { useCallback, useMemo } from 'react';
 
 export type BaseKeyNames = {
   page: string;

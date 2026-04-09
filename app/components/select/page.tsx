@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Select,
   SelectContent,
@@ -14,29 +8,29 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
 
 const guide = {
-  name: "Select",
-  group: "ui",
-  importPath: "@/design-system/components/ui/select",
+  name: 'Select',
+  group: 'ui',
+  importPath: '@/design-system/components/ui/select',
 } as const;
 
 const props = [
-  { name: "size", type: `"sm" | "default"`, defaultValue: `"default"` },
-  { name: "value", type: "string", defaultValue: "--" },
-  { name: "defaultValue", type: "string", defaultValue: "--" },
-  { name: "onValueChange", type: "(value: string) => void", defaultValue: "--" },
-  { name: "disabled", type: "boolean", defaultValue: "false" },
-  { name: "className", type: "string", defaultValue: "--" },
+  { name: 'size', type: `"sm" | "default"`, defaultValue: `"default"` },
+  { name: 'value', type: 'string', defaultValue: '--' },
+  { name: 'defaultValue', type: 'string', defaultValue: '--' },
+  { name: 'onValueChange', type: '(value: string) => void', defaultValue: '--' },
+  { name: 'disabled', type: 'boolean', defaultValue: 'false' },
+  { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
 const usageSamples = [
   {
-    id: "default",
-    label: "Default",
+    id: 'default',
+    label: 'Default',
     preview: (
       <Select>
         <SelectTrigger className="w-64">
@@ -75,8 +69,8 @@ export function Example() {
 }`,
   },
   {
-    id: "small",
-    label: "Small",
+    id: 'small',
+    label: 'Small',
     preview: (
       <Select>
         <SelectTrigger size="sm" className="w-64">
@@ -113,8 +107,8 @@ export function Example() {
 }`,
   },
   {
-    id: "with-groups",
-    label: "With Groups",
+    id: 'with-groups',
+    label: 'With Groups',
     preview: (
       <Select>
         <SelectTrigger className="w-64">
@@ -174,8 +168,8 @@ export function Example() {
 }`,
   },
   {
-    id: "disabled",
-    label: "Disabled",
+    id: 'disabled',
+    label: 'Disabled',
     preview: (
       <Select disabled>
         <SelectTrigger className="w-64">
@@ -217,9 +211,7 @@ export default function SelectGuidePage() {
           <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
             {guide.group}
           </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight">
-            {guide.name}
-          </h1>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
             Displays a list of options for the user to pick from, triggered by a button.
           </p>
@@ -252,9 +244,7 @@ export default function SelectGuidePage() {
           <Card id="props" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
-              <CardDescription>
-                Select component props.
-              </CardDescription>
+              <CardDescription>Select component props.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-hidden rounded-2xl border border-border/70">
@@ -270,17 +260,11 @@ export default function SelectGuidePage() {
                     {props.map((prop, index) => (
                       <tr
                         key={prop.name}
-                        className={cn(
-                          index !== props.length - 1 && "border-b border-border/70",
-                        )}
+                        className={cn(index !== props.length - 1 && 'border-b border-border/70')}
                       >
                         <td className="px-4 py-3 font-medium">{prop.name}</td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.type}
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.defaultValue}
-                        </td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.type}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.defaultValue}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -292,9 +276,7 @@ export default function SelectGuidePage() {
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
-              <CardDescription>
-                Common select patterns and configurations.
-              </CardDescription>
+              <CardDescription>Common select patterns and configurations.</CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">
@@ -307,11 +289,7 @@ export default function SelectGuidePage() {
                 </TabsList>
 
                 {usageSamples.map((sample) => (
-                  <TabsContent
-                    key={sample.id}
-                    value={sample.id}
-                    className="space-y-5"
-                  >
+                  <TabsContent key={sample.id} value={sample.id} className="space-y-5">
                     <div className="rounded-[20px] border border-dashed border-border bg-[linear-gradient(135deg,rgba(0,0,0,0.02),transparent)] p-8">
                       <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
                         {sample.preview}
@@ -337,19 +315,13 @@ export default function SelectGuidePage() {
             TOC
           </p>
           <nav className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <a
-              href="#import"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#import" className="block transition hover:text-foreground">
               Import
             </a>
             <a href="#props" className="block transition hover:text-foreground">
               Props
             </a>
-            <a
-              href="#usages"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#usages" className="block transition hover:text-foreground">
               Usages
             </a>
           </nav>

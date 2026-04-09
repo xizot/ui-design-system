@@ -1,28 +1,20 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
 
 const guide = {
-  name: "Skeleton",
-  group: "ui",
-  importPath: "@/design-system/components/ui/skeleton",
+  name: 'Skeleton',
+  group: 'ui',
+  importPath: '@/design-system/components/ui/skeleton',
 } as const;
 
-const props = [
-  { name: "className", type: "string", defaultValue: "--" },
-];
+const props = [{ name: 'className', type: 'string', defaultValue: '--' }];
 
 const usageSamples = [
   {
-    id: "default",
-    label: "Default",
+    id: 'default',
+    label: 'Default',
     preview: (
       <div className="flex items-center space-x-4">
         <Skeleton className="h-12 w-12 rounded-full" />
@@ -47,8 +39,8 @@ export function Example() {
 }`,
   },
   {
-    id: "card",
-    label: "Card",
+    id: 'card',
+    label: 'Card',
     preview: (
       <div className="flex flex-col space-y-3 w-[300px]">
         <Skeleton className="h-[125px] w-full rounded-xl" />
@@ -73,8 +65,8 @@ export function Example() {
 }`,
   },
   {
-    id: "complex",
-    label: "Complex",
+    id: 'complex',
+    label: 'Complex',
     preview: (
       <div className="space-y-4 w-[400px]">
         <div className="flex items-center space-x-4">
@@ -124,9 +116,7 @@ export default function SkeletonGuidePage() {
           <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
             {guide.group}
           </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight">
-            {guide.name}
-          </h1>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
             Use to show a placeholder while content is loading.
           </p>
@@ -150,9 +140,7 @@ export default function SkeletonGuidePage() {
           <Card id="props" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
-              <CardDescription>
-                Skeleton component props.
-              </CardDescription>
+              <CardDescription>Skeleton component props.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-hidden rounded-2xl border border-border/70">
@@ -168,17 +156,11 @@ export default function SkeletonGuidePage() {
                     {props.map((prop, index) => (
                       <tr
                         key={prop.name}
-                        className={cn(
-                          index !== props.length - 1 && "border-b border-border/70",
-                        )}
+                        className={cn(index !== props.length - 1 && 'border-b border-border/70')}
                       >
                         <td className="px-4 py-3 font-medium">{prop.name}</td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.type}
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.defaultValue}
-                        </td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.type}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.defaultValue}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -190,9 +172,7 @@ export default function SkeletonGuidePage() {
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
-              <CardDescription>
-                Common skeleton patterns and configurations.
-              </CardDescription>
+              <CardDescription>Common skeleton patterns and configurations.</CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">
@@ -205,11 +185,7 @@ export default function SkeletonGuidePage() {
                 </TabsList>
 
                 {usageSamples.map((sample) => (
-                  <TabsContent
-                    key={sample.id}
-                    value={sample.id}
-                    className="space-y-5"
-                  >
+                  <TabsContent key={sample.id} value={sample.id} className="space-y-5">
                     <div className="rounded-[20px] border border-dashed border-border bg-[linear-gradient(135deg,rgba(0,0,0,0.02),transparent)] p-8">
                       <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
                         {sample.preview}
@@ -235,19 +211,13 @@ export default function SkeletonGuidePage() {
             TOC
           </p>
           <nav className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <a
-              href="#import"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#import" className="block transition hover:text-foreground">
               Import
             </a>
             <a href="#props" className="block transition hover:text-foreground">
               Props
             </a>
-            <a
-              href="#usages"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#usages" className="block transition hover:text-foreground">
               Usages
             </a>
           </nav>

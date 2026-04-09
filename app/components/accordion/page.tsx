@@ -1,40 +1,30 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/accordion';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
 
 const guide = {
-  name: "Accordion",
-  group: "ui",
-  importPath: "@/design-system/components/ui/accordion",
+  name: 'Accordion',
+  group: 'ui',
+  importPath: '@/design-system/components/ui/accordion',
 } as const;
 
-const props = [
-  { name: "className", type: "string", defaultValue: "--" },
-];
+const props = [{ name: 'className', type: 'string', defaultValue: '--' }];
 
 const usageSamples = [
   {
-    id: "default",
-    label: "Default",
+    id: 'default',
+    label: 'Default',
     preview: (
       <Accordion className="w-full max-w-md">
         <AccordionItem value="item-1">
           <AccordionTrigger>Is it accessible?</AccordionTrigger>
-          <AccordionContent>
-            Yes. It adheres to the WAI-ARIA design pattern.
-          </AccordionContent>
+          <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-2">
           <AccordionTrigger>Is it styled?</AccordionTrigger>
@@ -77,21 +67,17 @@ export function Example() {
 }`,
   },
   {
-    id: "multiple",
-    label: "Multiple",
+    id: 'multiple',
+    label: 'Multiple',
     preview: (
       <Accordion className="w-full max-w-md">
         <AccordionItem value="item-1">
           <AccordionTrigger>Can I open multiple items?</AccordionTrigger>
-          <AccordionContent>
-            Yes. Multiple items can be open at once.
-          </AccordionContent>
+          <AccordionContent>Yes. Multiple items can be open at once.</AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-2">
           <AccordionTrigger>Is it collapsible?</AccordionTrigger>
-          <AccordionContent>
-            Yes. All items can be collapsed by default.
-          </AccordionContent>
+          <AccordionContent>Yes. All items can be collapsed by default.</AccordionContent>
         </AccordionItem>
       </Accordion>
     ),
@@ -125,9 +111,7 @@ export default function AccordionGuidePage() {
           <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
             {guide.group}
           </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight">
-            {guide.name}
-          </h1>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
             A vertically stacked set of interactive headings that each reveal a section of content.
           </p>
@@ -156,9 +140,7 @@ export default function AccordionGuidePage() {
           <Card id="props" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
-              <CardDescription>
-                Accordion component props.
-              </CardDescription>
+              <CardDescription>Accordion component props.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-hidden rounded-2xl border border-border/70">
@@ -174,17 +156,11 @@ export default function AccordionGuidePage() {
                     {props.map((prop, index) => (
                       <tr
                         key={prop.name}
-                        className={cn(
-                          index !== props.length - 1 && "border-b border-border/70",
-                        )}
+                        className={cn(index !== props.length - 1 && 'border-b border-border/70')}
                       >
                         <td className="px-4 py-3 font-medium">{prop.name}</td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.type}
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.defaultValue}
-                        </td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.type}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.defaultValue}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -196,9 +172,7 @@ export default function AccordionGuidePage() {
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
-              <CardDescription>
-                Common accordion patterns and configurations.
-              </CardDescription>
+              <CardDescription>Common accordion patterns and configurations.</CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">
@@ -211,11 +185,7 @@ export default function AccordionGuidePage() {
                 </TabsList>
 
                 {usageSamples.map((sample) => (
-                  <TabsContent
-                    key={sample.id}
-                    value={sample.id}
-                    className="space-y-5"
-                  >
+                  <TabsContent key={sample.id} value={sample.id} className="space-y-5">
                     <div className="rounded-[20px] border border-dashed border-border bg-[linear-gradient(135deg,rgba(0,0,0,0.02),transparent)] p-8">
                       <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
                         {sample.preview}
@@ -241,19 +211,13 @@ export default function AccordionGuidePage() {
             TOC
           </p>
           <nav className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <a
-              href="#import"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#import" className="block transition hover:text-foreground">
               Import
             </a>
             <a href="#props" className="block transition hover:text-foreground">
               Props
             </a>
-            <a
-              href="#usages"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#usages" className="block transition hover:text-foreground">
               Usages
             </a>
           </nav>

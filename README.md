@@ -85,7 +85,7 @@ Supported package managers:
 The usage guides should document imports from the installed target path, for example:
 
 ```tsx
-import { Button } from "@/design-system/components/ui/button";
+import { Button } from '@/design-system/components/ui/button';
 ```
 
 This is the public consumption path after the CLI copies files into a project.

@@ -1,22 +1,17 @@
-"use client";
+'use client';
 
-import type { FieldValues } from "react-hook-form";
-import { useController } from "react-hook-form";
+import type { FieldValues } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 
-import { cn } from "../../lib/utils";
-import { Label } from "../ui/label";
-import {
-  Combobox,
-  ComboboxContent,
-  ComboboxInput,
-  ComboboxList,
-} from "../ui/combobox";
-import type { RHFControlProps } from "./types";
+import { cn } from '../../lib/utils';
+import { Label } from '../ui/label';
+import { Combobox, ComboboxContent, ComboboxInput, ComboboxList } from '../ui/combobox';
+import type { RHFControlProps } from './types';
 
 type RHFComboboxProps<T extends FieldValues = FieldValues> = RHFControlProps<T> &
   Omit<
     React.ComponentProps<typeof Combobox>,
-    "name" | "value" | "defaultValue" | "onValueChange"
+    'name' | 'value' | 'defaultValue' | 'onValueChange'
   > & {
     placeholder?: string;
     inputClassName?: string;
@@ -44,7 +39,10 @@ function RHFCombobox<T extends FieldValues = FieldValues>({
   children,
   ...props
 }: RHFComboboxProps<T>) {
-  const { field, fieldState: { error } } = useController({
+  const {
+    field,
+    fieldState: { error },
+  } = useController({
     control,
     name,
   });
@@ -56,7 +54,7 @@ function RHFCombobox<T extends FieldValues = FieldValues>({
   };
 
   return (
-    <div className={cn("w-full space-y-1.5", wrapperClassName)}>
+    <div className={cn('w-full space-y-1.5', wrapperClassName)}>
       {label ? (
         <Label htmlFor={id} className={labelClassName}>
           {label}
@@ -64,13 +62,11 @@ function RHFCombobox<T extends FieldValues = FieldValues>({
         </Label>
       ) : null}
       {description ? (
-        <p className={cn("text-sm text-muted-foreground", descriptionClassName)}>
-          {description}
-        </p>
+        <p className={cn('text-sm text-muted-foreground', descriptionClassName)}>{description}</p>
       ) : null}
       <Combobox
         {...props}
-        value={field.value ?? ""}
+        value={field.value ?? ''}
         onValueChange={handleValueChange}
         name={field.name}
       >
@@ -85,7 +81,9 @@ function RHFCombobox<T extends FieldValues = FieldValues>({
         </ComboboxContent>
       </Combobox>
       {error ? (
-        <p className={cn("text-sm text-destructive", errorClassName)}>{String(error.message ?? "")}</p>
+        <p className={cn('text-sm text-destructive', errorClassName)}>
+          {String(error.message ?? '')}
+        </p>
       ) : null}
     </div>
   );

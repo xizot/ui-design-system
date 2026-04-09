@@ -1,44 +1,35 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
 
 const guide = {
-  name: "RHF Checkbox",
-  group: "rhf",
-  importPath: "@/design-system/components/rhf",
+  name: 'RHF Checkbox',
+  group: 'rhf',
+  importPath: '@/design-system/components/rhf',
 } as const;
 
 const props = [
-  { name: "control", type: "Control<T>", defaultValue: "--" },
-  { name: "name", type: "Path<T>", defaultValue: "--" },
-  { name: "label", type: "string", defaultValue: "--" },
-  { name: "description", type: "string", defaultValue: "--" },
-  { name: "required", type: "boolean", defaultValue: "false" },
-  { name: "callback", type: "(newValue: boolean) => void", defaultValue: "--" },
-  { name: "onBeforeChange", type: "RHFBeforeChange<T>", defaultValue: "--" },
-  { name: "wrapperClassName", type: "string", defaultValue: "--" },
-  { name: "labelClassName", type: "string", defaultValue: "--" },
-  { name: "descriptionClassName", type: "string", defaultValue: "--" },
-  { name: "errorClassName", type: "string", defaultValue: "--" },
+  { name: 'control', type: 'Control<T>', defaultValue: '--' },
+  { name: 'name', type: 'Path<T>', defaultValue: '--' },
+  { name: 'label', type: 'string', defaultValue: '--' },
+  { name: 'description', type: 'string', defaultValue: '--' },
+  { name: 'required', type: 'boolean', defaultValue: 'false' },
+  { name: 'callback', type: '(newValue: boolean) => void', defaultValue: '--' },
+  { name: 'onBeforeChange', type: 'RHFBeforeChange<T>', defaultValue: '--' },
+  { name: 'wrapperClassName', type: 'string', defaultValue: '--' },
+  { name: 'labelClassName', type: 'string', defaultValue: '--' },
+  { name: 'descriptionClassName', type: 'string', defaultValue: '--' },
+  { name: 'errorClassName', type: 'string', defaultValue: '--' },
 ];
 
 const usageSamples = [
   {
-    id: "basic",
-    label: "Basic",
+    id: 'basic',
+    label: 'Basic',
     preview: (
       <div className="w-full max-w-md space-y-4 p-4">
         <div className="flex items-center gap-3">
-          <input
-            type="checkbox"
-            className="h-4 w-4 rounded border border-input"
-          />
+          <input type="checkbox" className="h-4 w-4 rounded border border-input" />
           <label className="text-sm font-medium">Accept terms and conditions</label>
         </div>
       </div>
@@ -63,8 +54,8 @@ function Example() {
 }`,
   },
   {
-    id: "with-description",
-    label: "With Description",
+    id: 'with-description',
+    label: 'With Description',
     preview: (
       <div className="w-full max-w-md space-y-4 p-4">
         <div className="space-y-1.5">
@@ -72,10 +63,7 @@ function Example() {
             By checking this box, you agree to our terms of service
           </p>
           <div className="flex items-center gap-3">
-            <input
-              type="checkbox"
-              className="h-4 w-4 rounded border border-input"
-            />
+            <input type="checkbox" className="h-4 w-4 rounded border border-input" />
             <label className="text-sm font-medium">
               I agree to the terms <span className="ml-1 text-destructive">*</span>
             </label>
@@ -114,11 +102,10 @@ export default function RHFCheckboxGuidePage() {
           <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
             {guide.group}
           </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight">
-            {guide.name}
-          </h1>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            A React Hook Form checkbox component with built-in error handling and validation support.
+            A React Hook Form checkbox component with built-in error handling and validation
+            support.
           </p>
         </section>
 
@@ -140,9 +127,7 @@ export default function RHFCheckboxGuidePage() {
           <Card id="props" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
-              <CardDescription>
-                RHF Checkbox component props.
-              </CardDescription>
+              <CardDescription>RHF Checkbox component props.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-hidden rounded-2xl border border-border/70">
@@ -158,17 +143,11 @@ export default function RHFCheckboxGuidePage() {
                     {props.map((prop, index) => (
                       <tr
                         key={prop.name}
-                        className={cn(
-                          index !== props.length - 1 && "border-b border-border/70",
-                        )}
+                        className={cn(index !== props.length - 1 && 'border-b border-border/70')}
                       >
                         <td className="px-4 py-3 font-medium">{prop.name}</td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.type}
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.defaultValue}
-                        </td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.type}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.defaultValue}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -180,9 +159,7 @@ export default function RHFCheckboxGuidePage() {
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
-              <CardDescription>
-                Common RHF Checkbox patterns and configurations.
-              </CardDescription>
+              <CardDescription>Common RHF Checkbox patterns and configurations.</CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">
@@ -195,11 +172,7 @@ export default function RHFCheckboxGuidePage() {
                 </TabsList>
 
                 {usageSamples.map((sample) => (
-                  <TabsContent
-                    key={sample.id}
-                    value={sample.id}
-                    className="space-y-5"
-                  >
+                  <TabsContent key={sample.id} value={sample.id} className="space-y-5">
                     <div className="rounded-[20px] border border-dashed border-border bg-[linear-gradient(135deg,rgba(0,0,0,0.02),transparent)] p-8">
                       <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
                         {sample.preview}
@@ -225,19 +198,13 @@ export default function RHFCheckboxGuidePage() {
             TOC
           </p>
           <nav className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <a
-              href="#import"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#import" className="block transition hover:text-foreground">
               Import
             </a>
             <a href="#props" className="block transition hover:text-foreground">
               Props
             </a>
-            <a
-              href="#usages"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#usages" className="block transition hover:text-foreground">
               Usages
             </a>
           </nav>

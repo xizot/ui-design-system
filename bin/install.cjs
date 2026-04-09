@@ -1,38 +1,38 @@
 #!/usr/bin/env node
 
-const { spawnSync } = require("node:child_process");
-const fs = require("node:fs");
-const path = require("node:path");
-const readline = require("node:readline");
+const { spawnSync } = require('node:child_process');
+const fs = require('node:fs');
+const path = require('node:path');
+const readline = require('node:readline');
 
-const packageRoot = path.resolve(__dirname, "..");
+const packageRoot = path.resolve(__dirname, '..');
 const projectRoot = process.cwd();
-const installRootName = "design-system";
+const installRootName = 'design-system';
 const targetRoot = path.join(projectRoot, installRootName);
-const command = process.argv[2] ?? "init";
-const directoriesToCopy = ["components", "constants", "hooks", "lib"];
+const command = process.argv[2] ?? 'init';
+const directoriesToCopy = ['components', 'constants', 'hooks', 'lib'];
 const runtimeDependencies = [
-  "@base-ui/react",
-  "@tanstack/react-table",
-  "class-variance-authority",
-  "clsx",
-  "cmdk",
-  "date-fns",
-  "embla-carousel-react",
-  "input-otp",
-  "lucide-react",
-  "next-themes",
-  "nuqs",
-  "react",
-  "react-day-picker",
-  "react-dom",
-  "react-hook-form",
-  "react-resizable-panels",
-  "recharts",
-  "sonner",
-  "tailwind-merge",
-  "vaul",
-  "zod",
+  '@base-ui/react',
+  '@tanstack/react-table',
+  'class-variance-authority',
+  'clsx',
+  'cmdk',
+  'date-fns',
+  'embla-carousel-react',
+  'input-otp',
+  'lucide-react',
+  'next-themes',
+  'nuqs',
+  'react',
+  'react-day-picker',
+  'react-dom',
+  'react-hook-form',
+  'react-resizable-panels',
+  'recharts',
+  'sonner',
+  'tailwind-merge',
+  'vaul',
+  'zod',
 ];
 
 function ensureDirectoryExists(directoryPath) {
@@ -72,15 +72,15 @@ function printSection(title) {
 }
 
 function printHelp() {
-  console.log(color.bold("UI Design System CLI"));
-  console.log("");
-  console.log("Usage:");
-  console.log("  npx github:xizot/ui-design-system init");
-  console.log("  npx github:xizot/ui-design-system");
-  console.log("");
-  console.log("Commands:");
-  console.log("  init    Install the design system into ./design-system");
-  console.log("  help    Show this help message");
+  console.log(color.bold('UI Design System CLI'));
+  console.log('');
+  console.log('Usage:');
+  console.log('  npx github:xizot/ui-design-system init');
+  console.log('  npx github:xizot/ui-design-system');
+  console.log('');
+  console.log('Commands:');
+  console.log('  init    Install the design system into ./design-system');
+  console.log('  help    Show this help message');
 }
 
 function printList(items, limit = 10) {
@@ -117,35 +117,33 @@ function collectExistingFiles(sourceDir, targetDir, existingFiles = []) {
 
 async function askConflictStrategy(existingFiles) {
   if (existingFiles.length === 0) {
-    conflictState.defaultAction = "overwrite";
+    conflictState.defaultAction = 'overwrite';
     return;
   }
 
-  printSection("Step 1: Components");
-  console.log("Existing files were found in the target project:");
+  printSection('Step 1: Components');
+  console.log('Existing files were found in the target project:');
   printList(existingFiles);
-  console.log("");
-  console.log("Choose how to handle those existing files:");
-  console.log("  1. Overwrite all");
-  console.log("  2. Skip existing");
-  console.log("  3. Review one by one");
+  console.log('');
+  console.log('Choose how to handle those existing files:');
+  console.log('  1. Overwrite all');
+  console.log('  2. Skip existing');
+  console.log('  3. Review one by one');
 
-  const answer = await askQuestion(
-    "Select an option (1/2/3, default: 3): "
-  );
+  const answer = await askQuestion('Select an option (1/2/3, default: 3): ');
 
   switch (answer) {
-    case "1":
-    case "overwrite":
-      conflictState.defaultAction = "overwrite";
+    case '1':
+    case 'overwrite':
+      conflictState.defaultAction = 'overwrite';
       return;
-    case "3":
-    case "ask":
+    case '3':
+    case 'ask':
       conflictState.defaultAction = null;
       return;
-    case "2":
-    case "skip":
-      conflictState.defaultAction = "skip";
+    case '2':
+    case 'skip':
+      conflictState.defaultAction = 'skip';
       return;
     default:
       conflictState.defaultAction = null;
@@ -159,20 +157,18 @@ async function askConflictAction(targetPath) {
   }
 
   const relativeTargetPath = path.relative(targetRoot, targetPath) || targetPath;
-  console.log("");
+  console.log('');
   console.log(color.yellow(`Existing file: ${relativeTargetPath}`));
-  const answer = await askQuestion(
-    "Choose 1 to overwrite or 2 to skip (default: 2): "
-  );
+  const answer = await askQuestion('Choose 1 to overwrite or 2 to skip (default: 2): ');
 
   switch (answer) {
-    case "1":
-    case "overwrite":
-      return "overwrite";
-    case "2":
-    case "skip":
+    case '1':
+    case 'overwrite':
+      return 'overwrite';
+    case '2':
+    case 'skip':
     default:
-      return "skip";
+      return 'skip';
   }
 }
 
@@ -191,7 +187,7 @@ async function copyDirectory(sourceDir, targetDir) {
     if (entry.isSymbolicLink()) {
       if (fs.existsSync(targetPath)) {
         const action = await askConflictAction(targetPath);
-        if (action === "skip") {
+        if (action === 'skip') {
           conflictState.skipped.push(path.relative(targetRoot, targetPath));
           continue;
         }
@@ -201,7 +197,7 @@ async function copyDirectory(sourceDir, targetDir) {
       try {
         fs.unlinkSync(targetPath);
       } catch (error) {
-        if (error.code !== "ENOENT") {
+        if (error.code !== 'ENOENT') {
           throw error;
         }
       }
@@ -212,7 +208,7 @@ async function copyDirectory(sourceDir, targetDir) {
 
     if (fs.existsSync(targetPath)) {
       const action = await askConflictAction(targetPath);
-      if (action === "skip") {
+      if (action === 'skip') {
         conflictState.skipped.push(path.relative(targetRoot, targetPath));
         continue;
       }
@@ -225,16 +221,18 @@ async function copyDirectory(sourceDir, targetDir) {
 }
 
 function getTargetPackageJson() {
-  const packageJsonPath = path.join(projectRoot, "package.json");
+  const packageJsonPath = path.join(projectRoot, 'package.json');
 
   if (!fs.existsSync(packageJsonPath)) {
     return null;
   }
 
   try {
-    return JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
+    return JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
   } catch (error) {
-    console.warn(color.yellow("Skipping dependency install because target package.json is invalid JSON."));
+    console.warn(
+      color.yellow('Skipping dependency install because target package.json is invalid JSON.'),
+    );
     return null;
   }
 }
@@ -251,35 +249,38 @@ function getMissingDependencies(packageJson) {
 }
 
 function detectPackageManager() {
-  if (fs.existsSync(path.join(projectRoot, "pnpm-lock.yaml"))) {
-    return "pnpm";
+  if (fs.existsSync(path.join(projectRoot, 'pnpm-lock.yaml'))) {
+    return 'pnpm';
   }
 
-  if (fs.existsSync(path.join(projectRoot, "yarn.lock"))) {
-    return "yarn";
+  if (fs.existsSync(path.join(projectRoot, 'yarn.lock'))) {
+    return 'yarn';
   }
 
-  if (fs.existsSync(path.join(projectRoot, "bun.lockb")) || fs.existsSync(path.join(projectRoot, "bun.lock"))) {
-    return "bun";
+  if (
+    fs.existsSync(path.join(projectRoot, 'bun.lockb')) ||
+    fs.existsSync(path.join(projectRoot, 'bun.lock'))
+  ) {
+    return 'bun';
   }
 
-  if (fs.existsSync(path.join(projectRoot, "package-lock.json"))) {
-    return "npm";
+  if (fs.existsSync(path.join(projectRoot, 'package-lock.json'))) {
+    return 'npm';
   }
 
-  return "npm";
+  return 'npm';
 }
 
 function getInstallCommand(packageManager, dependencies) {
   switch (packageManager) {
-    case "pnpm":
-      return { command: "pnpm", args: ["add", ...dependencies] };
-    case "yarn":
-      return { command: "yarn", args: ["add", ...dependencies] };
-    case "bun":
-      return { command: "bun", args: ["add", ...dependencies] };
+    case 'pnpm':
+      return { command: 'pnpm', args: ['add', ...dependencies] };
+    case 'yarn':
+      return { command: 'yarn', args: ['add', ...dependencies] };
+    case 'bun':
+      return { command: 'bun', args: ['add', ...dependencies] };
     default:
-      return { command: "npm", args: ["install", ...dependencies] };
+      return { command: 'npm', args: ['install', ...dependencies] };
   }
 }
 
@@ -301,12 +302,12 @@ function installDependencies(dependencies) {
   const packageManager = detectPackageManager();
   const { command, args } = getInstallCommand(packageManager, dependencies);
 
-  console.log(color.green(`Installing with ${packageManager}: ${dependencies.join(", ")}`));
+  console.log(color.green(`Installing with ${packageManager}: ${dependencies.join(', ')}`));
 
   const result = spawnSync(command, args, {
     cwd: projectRoot,
-    stdio: "inherit",
-    shell: process.platform === "win32",
+    stdio: 'inherit',
+    shell: process.platform === 'win32',
   });
 
   if (result.status !== 0) {
@@ -315,39 +316,43 @@ function installDependencies(dependencies) {
     return false;
   }
 
-  console.log(color.green("Dependencies installed successfully."));
+  console.log(color.green('Dependencies installed successfully.'));
   return true;
 }
 
 async function maybeInstallDependencies() {
-  printSection("Step 2: Dependencies");
+  printSection('Step 2: Dependencies');
   const packageJson = getTargetPackageJson();
 
   if (!packageJson) {
-    console.log(color.gray("No package.json found in the target project root. Skipping dependency installation."));
+    console.log(
+      color.gray(
+        'No package.json found in the target project root. Skipping dependency installation.',
+      ),
+    );
     return;
   }
 
   const missingDependencies = getMissingDependencies(packageJson);
 
   if (missingDependencies.length === 0) {
-    console.log(color.green("All required dependencies are already installed."));
+    console.log(color.green('All required dependencies are already installed.'));
     return;
   }
 
-  console.log("Missing dependencies detected:");
+  console.log('Missing dependencies detected:');
   for (const dependency of missingDependencies) {
     console.log(`  - ${dependency}`);
   }
-  console.log("");
-  console.log("Do you want to install these dependencies now?");
-  console.log("  1. Yes, install now");
-  console.log("  2. No, skip for now");
+  console.log('');
+  console.log('Do you want to install these dependencies now?');
+  console.log('  1. Yes, install now');
+  console.log('  2. No, skip for now');
 
-  const answer = await askQuestion("Select an option (1/2, default: 2): ");
+  const answer = await askQuestion('Select an option (1/2, default: 2): ');
 
-  if (answer !== "1" && answer !== "y" && answer !== "yes") {
-    console.log(color.yellow("Skipped dependency installation."));
+  if (answer !== '1' && answer !== 'y' && answer !== 'yes') {
+    console.log(color.yellow('Skipped dependency installation.'));
     return;
   }
 
@@ -355,37 +360,37 @@ async function maybeInstallDependencies() {
 }
 
 function printSummary() {
-  printSection("Summary");
+  printSection('Summary');
   console.log(`Target: ${targetRoot}`);
   console.log(`Project root: ${projectRoot}`);
   console.log(`Install folder: ${installRootName}`);
-  console.log(`Directories installed: ${directoriesToCopy.join(", ")}`);
+  console.log(`Directories installed: ${directoriesToCopy.join(', ')}`);
   console.log(`Files copied: ${conflictState.copied.length}`);
   console.log(`Files overwritten: ${conflictState.overwritten.length}`);
   console.log(`Files skipped: ${conflictState.skipped.length}`);
 
   if (conflictState.overwritten.length > 0) {
-    console.log("");
-    console.log("Overwritten files:");
+    console.log('');
+    console.log('Overwritten files:');
     printList(conflictState.overwritten, 5);
   }
 
   if (conflictState.skipped.length > 0) {
-    console.log("");
-    console.log("Skipped files:");
+    console.log('');
+    console.log('Skipped files:');
     printList(conflictState.skipped, 5);
   }
 }
 
 async function main() {
-  if (command === "help" || command === "--help" || command === "-h") {
+  if (command === 'help' || command === '--help' || command === '-h') {
     printHelp();
     return;
   }
 
-  if (command !== "init") {
+  if (command !== 'init') {
     console.error(color.red(`Unknown command: ${command}`));
-    console.log("");
+    console.log('');
     printHelp();
     process.exitCode = 1;
     return;
@@ -394,7 +399,7 @@ async function main() {
   const copied = [];
   const existingFiles = [];
 
-  console.log(color.bold(color.cyan("UI Design System Installer")));
+  console.log(color.bold(color.cyan('UI Design System Installer')));
   console.log(color.gray(`Source: ${packageRoot}`));
   console.log(color.gray(`Project root: ${projectRoot}`));
   console.log(color.gray(`Install target: ${targetRoot}`));
@@ -426,7 +431,7 @@ async function main() {
   }
 
   if (copied.length === 0) {
-    console.error(color.red("No source directories were found to install."));
+    console.error(color.red('No source directories were found to install.'));
     process.exitCode = 1;
     return;
   }

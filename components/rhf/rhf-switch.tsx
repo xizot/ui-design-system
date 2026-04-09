@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import type { FieldValues } from "react-hook-form";
-import { useController } from "react-hook-form";
+import type { FieldValues } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 
-import { cn } from "../../lib/utils";
-import { Label } from "../ui/label";
-import { Switch } from "../ui/switch";
-import type { RHFBeforeChange, RHFControlProps } from "./types";
+import { cn } from '../../lib/utils';
+import { Label } from '../ui/label';
+import { Switch } from '../ui/switch';
+import type { RHFBeforeChange, RHFControlProps } from './types';
 
 type RHFSwitchProps<T extends FieldValues = FieldValues> = RHFControlProps<T> &
   Omit<
     React.ComponentProps<typeof Switch>,
-    "name" | "checked" | "defaultChecked" | "onCheckedChange"
+    'name' | 'checked' | 'defaultChecked' | 'onCheckedChange'
   > & {
     callback?: (newValue: boolean) => void;
     onBeforeChange?: RHFBeforeChange<T>;
@@ -31,7 +31,10 @@ function RHFSwitch<T extends FieldValues = FieldValues>({
   onBeforeChange,
   ...props
 }: RHFSwitchProps<T>) {
-  const { field, fieldState: { error } } = useController({
+  const {
+    field,
+    fieldState: { error },
+  } = useController({
     control,
     name,
   });
@@ -53,15 +56,13 @@ function RHFSwitch<T extends FieldValues = FieldValues>({
   };
 
   return (
-    <div className={cn("w-fit space-y-1.5", wrapperClassName)}>
+    <div className={cn('w-fit space-y-1.5', wrapperClassName)}>
       {description ? (
-        <p className={cn("text-sm text-muted-foreground", descriptionClassName)}>
-          {description}
-        </p>
+        <p className={cn('text-sm text-muted-foreground', descriptionClassName)}>{description}</p>
       ) : null}
       <div className="flex items-center gap-3">
         {label ? (
-          <Label htmlFor={id} className={cn("flex-1 cursor-pointer select-none", labelClassName)}>
+          <Label htmlFor={id} className={cn('flex-1 cursor-pointer select-none', labelClassName)}>
             {label}
             {required ? <span className="ml-1 text-destructive">*</span> : null}
           </Label>
@@ -77,7 +78,9 @@ function RHFSwitch<T extends FieldValues = FieldValues>({
         />
       </div>
       {error ? (
-        <p className={cn("text-sm text-destructive", errorClassName)}>{String(error.message ?? "")}</p>
+        <p className={cn('text-sm text-destructive', errorClassName)}>
+          {String(error.message ?? '')}
+        </p>
       ) : null}
     </div>
   );

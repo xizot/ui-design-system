@@ -1,36 +1,30 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
   InputOTPSeparator,
-} from "@/components/ui/input-otp";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/input-otp';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
 
 const guide = {
-  name: "Input OTP",
-  group: "ui",
-  importPath: "@/design-system/components/ui/input-otp",
+  name: 'Input OTP',
+  group: 'ui',
+  importPath: '@/design-system/components/ui/input-otp',
 } as const;
 
 const props = [
-  { name: "maxLength", type: "number", defaultValue: "6" },
-  { name: "containerClassName", type: "string", defaultValue: "--" },
-  { name: "className", type: "string", defaultValue: "--" },
-  { name: "disabled", type: "boolean", defaultValue: "false" },
+  { name: 'maxLength', type: 'number', defaultValue: '6' },
+  { name: 'containerClassName', type: 'string', defaultValue: '--' },
+  { name: 'className', type: 'string', defaultValue: '--' },
+  { name: 'disabled', type: 'boolean', defaultValue: 'false' },
 ];
 
 const usageSamples = [
   {
-    id: "default",
-    label: "Default",
+    id: 'default',
+    label: 'Default',
     preview: (
       <InputOTP maxLength={6}>
         <InputOTPGroup>
@@ -65,8 +59,8 @@ export function Example() {
 }`,
   },
   {
-    id: "with-separator",
-    label: "With Separator",
+    id: 'with-separator',
+    label: 'With Separator',
     preview: (
       <InputOTP maxLength={6}>
         <InputOTPGroup>
@@ -108,8 +102,8 @@ export function Example() {
 }`,
   },
   {
-    id: "disabled",
-    label: "Disabled",
+    id: 'disabled',
+    label: 'Disabled',
     preview: (
       <InputOTP maxLength={6} disabled>
         <InputOTPGroup>
@@ -153,12 +147,10 @@ export default function InputOTPGuidePage() {
           <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
             {guide.group}
           </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight">
-            {guide.name}
-          </h1>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            Input OTP component for entering one-time passwords and verification codes.
-            Built with input-otp library for robust OTP input handling.
+            Input OTP component for entering one-time passwords and verification codes. Built with
+            input-otp library for robust OTP input handling.
           </p>
         </section>
 
@@ -185,9 +177,7 @@ export default function InputOTPGuidePage() {
           <Card id="props" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
-              <CardDescription>
-                InputOTP component props.
-              </CardDescription>
+              <CardDescription>InputOTP component props.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-hidden rounded-2xl border border-border/70">
@@ -203,17 +193,11 @@ export default function InputOTPGuidePage() {
                     {props.map((prop, index) => (
                       <tr
                         key={prop.name}
-                        className={cn(
-                          index !== props.length - 1 && "border-b border-border/70",
-                        )}
+                        className={cn(index !== props.length - 1 && 'border-b border-border/70')}
                       >
                         <td className="px-4 py-3 font-medium">{prop.name}</td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.type}
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {prop.defaultValue}
-                        </td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.type}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.defaultValue}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -225,9 +209,7 @@ export default function InputOTPGuidePage() {
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
-              <CardDescription>
-                Common OTP input patterns and configurations.
-              </CardDescription>
+              <CardDescription>Common OTP input patterns and configurations.</CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">
@@ -240,11 +222,7 @@ export default function InputOTPGuidePage() {
                 </TabsList>
 
                 {usageSamples.map((sample) => (
-                  <TabsContent
-                    key={sample.id}
-                    value={sample.id}
-                    className="space-y-5"
-                  >
+                  <TabsContent key={sample.id} value={sample.id} className="space-y-5">
                     <div className="rounded-[20px] border border-dashed border-border bg-[linear-gradient(135deg,rgba(0,0,0,0.02),transparent)] p-8">
                       <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
                         {sample.preview}
@@ -270,19 +248,13 @@ export default function InputOTPGuidePage() {
             TOC
           </p>
           <nav className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <a
-              href="#import"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#import" className="block transition hover:text-foreground">
               Import
             </a>
             <a href="#props" className="block transition hover:text-foreground">
               Props
             </a>
-            <a
-              href="#usages"
-              className="block transition hover:text-foreground"
-            >
+            <a href="#usages" className="block transition hover:text-foreground">
               Usages
             </a>
           </nav>
