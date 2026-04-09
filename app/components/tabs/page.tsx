@@ -1,18 +1,12 @@
 import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  InputGroup,
-  InputGroupInput,
-  InputGroupAddon,
-} from '@/components/ui/input-group';
-import { Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const guide = {
-  name: 'Input Group',
+  name: 'Tabs',
   group: 'ui',
-  importPath: '@/design-system/components/ui/input-group',
+  importPath: '@/design-system/components/ui/tabs',
 } as const;
 
 export const metadata: Metadata = {
@@ -20,17 +14,23 @@ export const metadata: Metadata = {
   description: `${guide.name} component documentation`,
 };
 
-function InputGroupExample() {
+const props = [
+  { name: 'defaultValue', type: 'string', defaultValue: '--' },
+  { name: 'value', type: 'string', defaultValue: '--' },
+  { name: 'onValueChange', type: '(value: string) => void', defaultValue: '--' },
+  { name: 'className', type: 'string', defaultValue: '--' },
+];
+
+function TabsExample() {
   return (
-    <div className="flex flex-col items-center gap-4">
-      <InputGroup className="max-w-xs">
-        <InputGroupInput placeholder="Search..." />
-        <InputGroupAddon>
-          <Search />
-        </InputGroupAddon>
-        <InputGroupAddon align="inline-end">12 results</InputGroupAddon>
-      </InputGroup>
-    </div>
+    <Tabs defaultValue="account" className="w-[400px]">
+      <TabsList>
+        <TabsTrigger value="account">Account</TabsTrigger>
+        <TabsTrigger value="password">Password</TabsTrigger>
+      </TabsList>
+      <TabsContent value="account">Make changes to your account here.</TabsContent>
+      <TabsContent value="password">Change your password here.</TabsContent>
+    </Tabs>
   );
 }
 
@@ -38,74 +38,71 @@ const usageSamples = [
   {
     id: 'basic',
     label: 'Basic',
-    preview: <InputGroupExample />,
-    code: `import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group";
-import { Search } from "lucide-react";
+    preview: <TabsExample />,
+    code: `import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-export function InputGroupDemo() {
+export function TabsDemo() {
   return (
-    <InputGroup className="max-w-xs">
-      <InputGroupInput placeholder="Search..." />
-      <InputGroupAddon>
-        <Search />
-      </InputGroupAddon>
-      <InputGroupAddon align="inline-end">12 results</InputGroupAddon>
-    </InputGroup>
+    <Tabs defaultValue="account" className="w-[400px]">
+      <TabsList>
+        <TabsTrigger value="account">Account</TabsTrigger>
+        <TabsTrigger value="password">Password</TabsTrigger>
+      </TabsList>
+      <TabsContent value="account">Make changes to your account here.</TabsContent>
+      <TabsContent value="password">Change your password here.</TabsContent>
+    </Tabs>
   );
 }`,
   },
   {
-    id: 'prefix',
-    label: 'Prefix',
+    id: 'vertical',
+    label: 'Vertical',
     preview: (
-      <div className="flex items-center justify-center">
-        <InputGroup className="max-w-xs">
-          <InputGroupAddon align="inline-start">https://</InputGroupAddon>
-          <InputGroupInput placeholder="example.com" />
-        </InputGroup>
+      <div className="flex w-[400px] flex-col gap-4">
+        <Tabs defaultValue="tab1" className="w-full">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="tab1">Tab 1</TabsTrigger>
+            <TabsTrigger value="tab2">Tab 2</TabsTrigger>
+            <TabsTrigger value="tab3">Tab 3</TabsTrigger>
+          </TabsList>
+          <TabsContent value="tab1" className="mt-4">
+            Content for tab 1
+          </TabsContent>
+          <TabsContent value="tab2" className="mt-4">
+            Content for tab 2
+          </TabsContent>
+          <TabsContent value="tab3" className="mt-4">
+            Content for tab 3
+          </TabsContent>
+        </Tabs>
       </div>
     ),
-    code: `import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group";
+    code: `import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export function Example() {
   return (
-    <InputGroup className="max-w-xs">
-      <InputGroupAddon align="inline-start">https://</InputGroupAddon>
-      <InputGroupInput placeholder="example.com" />
-    </InputGroup>
-  );
-}`,
-  },
-  {
-    id: 'icon-only',
-    label: 'Icon Only',
-    preview: (
-      <div className="flex items-center justify-center">
-        <InputGroup className="max-w-xs">
-          <InputGroupInput placeholder="Search..." />
-          <InputGroupAddon>
-            <Search />
-          </InputGroupAddon>
-        </InputGroup>
-      </div>
-    ),
-    code: `import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group";
-import { Search } from "lucide-react";
-
-export function Example() {
-  return (
-    <InputGroup className="max-w-xs">
-      <InputGroupInput placeholder="Search..." />
-      <InputGroupAddon>
-        <Search />
-      </InputGroupAddon>
-    </InputGroup>
+    <Tabs defaultValue="tab1" className="w-full">
+      <TabsList className="grid w-full grid-cols-3">
+        <TabsTrigger value="tab1">Tab 1</TabsTrigger>
+        <TabsTrigger value="tab2">Tab 2</TabsTrigger>
+        <TabsTrigger value="tab3">Tab 3</TabsTrigger>
+      </TabsList>
+      <TabsContent value="tab1" className="mt-4">
+        Content for tab 1
+      </TabsContent>
+      <TabsContent value="tab2" className="mt-4">
+        Content for tab 2
+      </TabsContent>
+      <TabsContent value="tab3" className="mt-4">
+        Content for tab 3
+      </TabsContent>
+    </Tabs>
   );
 }`,
   },
 ];
 
-export default function InputGroupGuidePage() {
+export default function TabsGuidePage() {
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">
@@ -115,7 +112,7 @@ export default function InputGroupGuidePage() {
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            Input Group component dùng để kết hợp nhiều input hoặc button thành một nhóm thống nhất.
+            A set of layered sections of content that allow users to navigate between different views.
           </p>
         </section>
 
@@ -123,11 +120,13 @@ export default function InputGroupGuidePage() {
           <Card id="import" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
-              <CardDescription>Import trực tiếp từ source path của component.</CardDescription>
+              <CardDescription>
+                Import the Tabs component from the design system.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
-                <code className="text-sm">{`import { InputGroup, InputGroupItem } from "${guide.importPath}"`}</code>
+                <code className="text-sm">{`import { Tabs, TabsContent, TabsList, TabsTrigger } from "${guide.importPath}"`}</code>
               </div>
             </CardContent>
           </Card>
@@ -135,53 +134,24 @@ export default function InputGroupGuidePage() {
           <Card id="props" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
-              <CardDescription>
-                Props quan trọng nên phản ánh đúng khả năng chính của component hiện tại.
-              </CardDescription>
+              <CardDescription>Tabs component props.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-hidden rounded-2xl border border-border/70">
                 <table className="w-full text-left text-sm">
                   <thead className="bg-muted/40 text-muted-foreground">
                     <tr>
-                      <th className="px-4 py-3 font-medium">Component</th>
                       <th className="px-4 py-3 font-medium">Prop</th>
                       <th className="px-4 py-3 font-medium">Type</th>
                       <th className="px-4 py-3 font-medium">Default</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {[
-                      {
-                        component: 'InputGroup',
-                        name: 'className',
-                        type: 'string',
-                        defaultValue: '--',
-                      },
-                      {
-                        component: 'InputGroupInput',
-                        name: 'className',
-                        type: 'string',
-                        defaultValue: '--',
-                      },
-                      {
-                        component: 'InputGroupButton',
-                        name: 'children',
-                        type: 'ReactNode',
-                        defaultValue: '--',
-                      },
-                      {
-                        component: 'InputGroupText',
-                        name: 'children',
-                        type: 'ReactNode',
-                        defaultValue: '--',
-                      },
-                    ].map((prop, index, array) => (
+                    {props.map((prop, index) => (
                       <tr
-                        key={`${prop.component}-${prop.name}`}
-                        className={cn(index !== array.length - 1 && 'border-b border-border/70')}
+                        key={prop.name}
+                        className={cn(index !== props.length - 1 && 'border-b border-border/70')}
                       >
-                        <td className="px-4 py-3 font-medium">{prop.component}</td>
                         <td className="px-4 py-3 font-medium">{prop.name}</td>
                         <td className="px-4 py-3 text-muted-foreground">{prop.type}</td>
                         <td className="px-4 py-3 text-muted-foreground">{prop.defaultValue}</td>
@@ -196,10 +166,7 @@ export default function InputGroupGuidePage() {
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
-              <CardDescription>
-                Mỗi cách dùng quan trọng nên có tab riêng, để preview và code bám đúng use case thay
-                vì dùng một snippet chung.
-              </CardDescription>
+              <CardDescription>Common Tabs patterns and configurations.</CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">
@@ -214,7 +181,7 @@ export default function InputGroupGuidePage() {
                 {usageSamples.map((sample) => (
                   <TabsContent key={sample.id} value={sample.id} className="space-y-5">
                     <div className="rounded-[20px] border border-dashed border-border bg-[linear-gradient(135deg,rgba(0,0,0,0.02),transparent)] p-8">
-                      <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card shadow-sm">
+                      <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
                         {sample.preview}
                       </div>
                     </div>

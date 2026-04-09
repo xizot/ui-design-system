@@ -17,48 +17,133 @@ export const metadata: Metadata = {
 
 const props = [{ name: 'className', type: 'string', defaultValue: '--' }];
 
-const usageSamples = [
-  {
-    id: 'default',
-    label: 'Default',
-    preview: (
-      <div className="flex items-center gap-4">
+function KbdExample() {
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <KbdGroup>
         <Kbd>Ctrl</Kbd>
         <span>+</span>
-        <Kbd>C</Kbd>
+        <Kbd>B</Kbd>
+      </KbdGroup>
+      <KbdGroup>
+        <Kbd>Ctrl</Kbd>
+        <Kbd>Shift</Kbd>
+        <Kbd>P</Kbd>
+      </KbdGroup>
+    </div>
+  );
+}
+
+const usageSamples = [
+  {
+    id: 'basic',
+    label: 'Basic',
+    preview: (
+      <div className="flex flex-col items-center gap-4">
+        <KbdGroup>
+          <Kbd>Ctrl</Kbd>
+          <span>+</span>
+          <Kbd>B</Kbd>
+        </KbdGroup>
+        <KbdGroup>
+          <Kbd>Ctrl</Kbd>
+          <Kbd>Shift</Kbd>
+          <Kbd>P</Kbd>
+        </KbdGroup>
       </div>
     ),
-    code: `import { Kbd } from "@/design-system/components/ui/kbd";
+    code: `import { Kbd, KbdGroup } from "@/components/ui/kbd";
 
-export function Example() {
+export function KbdDemo() {
   return (
-    <div className="flex items-center gap-4">
-      <Kbd>Ctrl</Kbd>
-      <span>+</span>
-      <Kbd>C</Kbd>
+    <div className="flex flex-col items-center gap-4">
+      <KbdGroup>
+        <Kbd>Ctrl</Kbd>
+        <span>+</span>
+        <Kbd>B</Kbd>
+      </KbdGroup>
+      <KbdGroup>
+        <Kbd>Ctrl</Kbd>
+        <Kbd>Shift</Kbd>
+        <Kbd>P</Kbd>
+      </KbdGroup>
     </div>
   );
 }`,
   },
   {
-    id: 'kbd-group',
-    label: 'Kbd Group',
+    id: 'symbols',
+    label: 'Symbols',
     preview: (
-      <KbdGroup>
-        <Kbd>Cmd</Kbd>
-        <Kbd>Shift</Kbd>
-        <Kbd>P</Kbd>
-      </KbdGroup>
+      <div className="flex flex-col items-center gap-4">
+        <KbdGroup>
+          <Kbd>Ctrl</Kbd>
+          <Kbd>Alt</Kbd>
+          <Kbd>Delete</Kbd>
+        </KbdGroup>
+        <KbdGroup>
+          <Kbd>Ctrl</Kbd>
+          <span>+</span>
+          <Kbd>Shift</Kbd>
+          <span>+</span>
+          <Kbd>N</Kbd>
+        </KbdGroup>
+      </div>
     ),
-    code: `import { Kbd, KbdGroup } from "@/design-system/components/ui/kbd";
+    code: `import { Kbd, KbdGroup } from "@/components/ui/kbd";
 
 export function Example() {
   return (
-    <KbdGroup>
-      <Kbd>Cmd</Kbd>
-      <Kbd>Shift</Kbd>
-      <Kbd>P</Kbd>
-    </KbdGroup>
+    <div className="flex flex-col items-center gap-4">
+      <KbdGroup>
+        <Kbd>Ctrl</Kbd>
+        <Kbd>Alt</Kbd>
+        <Kbd>Delete</Kbd>
+      </KbdGroup>
+      <KbdGroup>
+        <Kbd>Ctrl</Kbd>
+        <span>+</span>
+        <Kbd>Shift</Kbd>
+        <span>+</span>
+        <Kbd>N</Kbd>
+      </KbdGroup>
+    </div>
+  );
+}`,
+  },
+  {
+    id: 'unicode',
+    label: 'Unicode Symbols',
+    preview: (
+      <div className="flex flex-col items-center gap-4">
+        <KbdGroup>
+          <Kbd>Ctrl</Kbd>
+          <span>+</span>
+          <Kbd>B</Kbd>
+        </KbdGroup>
+        <KbdGroup>
+          <Kbd>Ctrl</Kbd>
+          <Kbd>Shift</Kbd>
+          <Kbd>P</Kbd>
+        </KbdGroup>
+      </div>
+    ),
+    code: `import { Kbd, KbdGroup } from "@/components/ui/kbd";
+
+export function Example() {
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <KbdGroup>
+        <Kbd>Ctrl</Kbd>
+        <span>+</span>
+        <Kbd>B</Kbd>
+      </KbdGroup>
+      <KbdGroup>
+        <Kbd>Ctrl</Kbd>
+        <Kbd>Shift</Kbd>
+        <Kbd>P</Kbd>
+      </KbdGroup>
+    </div>
   );
 }`,
   },
@@ -90,7 +175,7 @@ export function Example() {
         </div>
       </div>
     ),
-    code: `import { Kbd, KbdGroup } from "@/design-system/components/ui/kbd";
+    code: `import { Kbd, KbdGroup } from "@/components/ui/kbd";
 
 export function Example() {
   return (

@@ -1,6 +1,15 @@
-import type { Metadata } from 'next';
+"use client";
+
+import React, { useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const guide = {
@@ -8,11 +17,6 @@ const guide = {
   group: 'ui',
   importPath: '@/design-system/components/ui/collapsible',
 } as const;
-
-export const metadata: Metadata = {
-  title: `${guide.name} - UI Design System`,
-  description: `${guide.name} component documentation`,
-};
 
 const props = [
   { name: 'open', type: 'boolean', defaultValue: 'false' },
@@ -22,38 +26,91 @@ const props = [
   { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
+function CollapsibleExample() {
+  const [isOpen, setIsOpen] = React.useState(false);
+  
+  return (
+    <Collapsible
+      open={isOpen}
+      onOpenChange={setIsOpen}
+      className="flex w-[350px] flex-col gap-2"
+    >
+      <div className="flex items-center justify-between gap-4 px-4">
+        <h4 className="text-sm font-semibold">Order #4189</h4>
+        <CollapsibleTrigger 
+          render={
+            <Button variant="ghost" size="icon" className="size-8">
+              <ChevronsUpDown />
+              <span className="sr-only">Toggle details</span>
+            </Button>
+          } 
+        />
+      </div>
+      <div className="flex items-center justify-between rounded-md border px-4 py-2 text-sm">
+        <span className="text-muted-foreground">Status</span>
+        <span className="font-medium">Shipped</span>
+      </div>
+      <CollapsibleContent className="flex flex-col gap-2">
+        <div className="rounded-md border px-4 py-2 text-sm">
+          <p className="font-medium">Shipping address</p>
+          <p className="text-muted-foreground">100 Market St, San Francisco</p>
+        </div>
+        <div className="rounded-md border px-4 py-2 text-sm">
+          <p className="font-medium">Items</p>
+          <p className="text-muted-foreground">2x Studio Headphones</p>
+        </div>
+      </CollapsibleContent>
+    </Collapsible>
+  );
+}
+
 const usageSamples = [
   {
     id: 'basic',
     label: 'Basic',
-    preview: (
-      <div className="w-full max-w-sm p-4">
-        <div className="rounded-lg border border-border bg-card p-4">
-          <button className="w-full flex items-center justify-between text-sm font-medium">
-            <span>Click to expand</span>
-            <span>▼</span>
-          </button>
-          <div className="mt-2 text-sm text-muted-foreground">
-            This is the collapsible content that can be shown or hidden.
-          </div>
-        </div>
-      </div>
-    ),
-    code: `import {
+    preview: <CollapsibleExample />,
+    code: `import React from 'react';
+import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/design-system/components/ui/collapsible";
+} from "@/components/ui/collapsible";
+import { Button } from "@/components/ui/button";
+import { ChevronsUpDown } from "lucide-react";
 
-function Example() {
+export function CollapsibleDemo() {
+  const [isOpen, setIsOpen] = React.useState(false);
+  
   return (
-    <Collapsible>
-      <CollapsibleTrigger className="w-full flex items-center justify-between">
-        <span>Click to expand</span>
-        <span>▼</span>
-      </CollapsibleTrigger>
-      <CollapsibleContent className="mt-2">
-        This is the collapsible content that can be shown or hidden.
+    <Collapsible
+      open={isOpen}
+      onOpenChange={setIsOpen}
+      className="flex w-[350px] flex-col gap-2"
+    >
+      <div className="flex items-center justify-between gap-4 px-4">
+        <h4 className="text-sm font-semibold">Order #4189</h4>
+        <CollapsibleTrigger 
+          render={
+            <Button variant="ghost" size="icon" className="size-8">
+              <ChevronsUpDown />
+              <span className="sr-only">Toggle details</span>
+            </Button>
+          } 
+        />
+      </div>
+      <div className="flex items-center justify-between rounded-md border px-4 py-2 text-sm">
+        <span className="text-muted-foreground">Status</span>
+        <span className="font-medium">Shipped</span>
+      </div>
+      <CollapsibleContent className="flex flex-col gap-2">
+        <div className="rounded-md border px-4 py-2 text-sm">
+          <p className="font-medium">Shipping address</p>
+          <p className="text-muted-foreground">100 Market St, San Francisco</p>
+        </div>
+        <div className="rounded-md border px-4 py-2 text-sm">
+          <p className="font-medium">Items</p>
+          <p className="text-muted-foreground">2x Studio Headphones</p>
+        </div>
       </CollapsibleContent>
     </Collapsible>
   );
@@ -62,6 +119,10 @@ function Example() {
 ];
 
 export default function CollapsibleGuidePage() {
+  useEffect(() => {
+    document.title = `${guide.name} - UI Design System`;
+  }, []);
+
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">

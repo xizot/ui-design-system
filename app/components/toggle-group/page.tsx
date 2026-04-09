@@ -1,18 +1,14 @@
 import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  InputGroup,
-  InputGroupInput,
-  InputGroupAddon,
-} from '@/components/ui/input-group';
-import { Search } from 'lucide-react';
+import { Bold, Italic, Underline, AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const guide = {
-  name: 'Input Group',
+  name: 'Toggle Group',
   group: 'ui',
-  importPath: '@/design-system/components/ui/input-group',
+  importPath: '@/design-system/components/ui/toggle-group',
 } as const;
 
 export const metadata: Metadata = {
@@ -20,17 +16,29 @@ export const metadata: Metadata = {
   description: `${guide.name} component documentation`,
 };
 
-function InputGroupExample() {
+const props = [
+  { name: 'variant', type: `"default" | "outline"`, defaultValue: `"default"` },
+  { name: 'multiple', type: 'boolean', defaultValue: 'false' },
+  { name: 'value', type: 'string | string[]', defaultValue: '--' },
+  { name: 'defaultValue', type: 'string | string[]', defaultValue: '--' },
+  { name: 'onValueChange', type: '(value: string | string[]) => void', defaultValue: '--' },
+  { name: 'disabled', type: 'boolean', defaultValue: 'false' },
+  { name: 'className', type: 'string', defaultValue: '--' },
+];
+
+function ToggleGroupExample() {
   return (
-    <div className="flex flex-col items-center gap-4">
-      <InputGroup className="max-w-xs">
-        <InputGroupInput placeholder="Search..." />
-        <InputGroupAddon>
-          <Search />
-        </InputGroupAddon>
-        <InputGroupAddon align="inline-end">12 results</InputGroupAddon>
-      </InputGroup>
-    </div>
+    <ToggleGroup variant="outline" multiple>
+      <ToggleGroupItem value="bold" aria-label="Toggle bold">
+        <Bold className="h-4 w-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="italic" aria-label="Toggle italic">
+        <Italic className="h-4 w-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="strikethrough" aria-label="Toggle strikethrough">
+        <Underline className="h-4 w-4" />
+      </ToggleGroupItem>
+    </ToggleGroup>
   );
 }
 
@@ -38,74 +46,86 @@ const usageSamples = [
   {
     id: 'basic',
     label: 'Basic',
-    preview: <InputGroupExample />,
-    code: `import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group";
-import { Search } from "lucide-react";
+    preview: <ToggleGroupExample />,
+    code: `import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Bold, Italic, Underline } from "lucide-react";
 
-export function InputGroupDemo() {
+export function ToggleGroupDemo() {
   return (
-    <InputGroup className="max-w-xs">
-      <InputGroupInput placeholder="Search..." />
-      <InputGroupAddon>
-        <Search />
-      </InputGroupAddon>
-      <InputGroupAddon align="inline-end">12 results</InputGroupAddon>
-    </InputGroup>
+    <ToggleGroup variant="outline" multiple>
+      <ToggleGroupItem value="bold" aria-label="Toggle bold">
+        <Bold className="h-4 w-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="italic" aria-label="Toggle italic">
+        <Italic className="h-4 w-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="strikethrough" aria-label="Toggle strikethrough">
+        <Underline className="h-4 w-4" />
+      </ToggleGroupItem>
+    </ToggleGroup>
   );
 }`,
   },
   {
-    id: 'prefix',
-    label: 'Prefix',
+    id: 'single',
+    label: 'Single Selection',
     preview: (
-      <div className="flex items-center justify-center">
-        <InputGroup className="max-w-xs">
-          <InputGroupAddon align="inline-start">https://</InputGroupAddon>
-          <InputGroupInput placeholder="example.com" />
-        </InputGroup>
-      </div>
+      <ToggleGroup variant="outline" defaultValue="left">
+        <ToggleGroupItem value="left" aria-label="Align left">
+          <AlignLeft className="h-4 w-4" />
+        </ToggleGroupItem>
+        <ToggleGroupItem value="center" aria-label="Align center">
+          <AlignCenter className="h-4 w-4" />
+        </ToggleGroupItem>
+        <ToggleGroupItem value="right" aria-label="Align right">
+          <AlignRight className="h-4 w-4" />
+        </ToggleGroupItem>
+      </ToggleGroup>
     ),
-    code: `import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group";
+    code: `import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { AlignLeft, AlignCenter, AlignRight } from "lucide-react";
 
 export function Example() {
   return (
-    <InputGroup className="max-w-xs">
-      <InputGroupAddon align="inline-start">https://</InputGroupAddon>
-      <InputGroupInput placeholder="example.com" />
-    </InputGroup>
+    <ToggleGroup variant="outline" defaultValue="left">
+      <ToggleGroupItem value="left" aria-label="Align left">
+        <AlignLeft className="h-4 w-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="center" aria-label="Align center">
+        <AlignCenter className="h-4 w-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="right" aria-label="Align right">
+        <AlignRight className="h-4 w-4" />
+      </ToggleGroupItem>
+    </ToggleGroup>
   );
 }`,
   },
   {
-    id: 'icon-only',
-    label: 'Icon Only',
+    id: 'text-only',
+    label: 'Text Only',
     preview: (
-      <div className="flex items-center justify-center">
-        <InputGroup className="max-w-xs">
-          <InputGroupInput placeholder="Search..." />
-          <InputGroupAddon>
-            <Search />
-          </InputGroupAddon>
-        </InputGroup>
-      </div>
+      <ToggleGroup variant="outline" defaultValue="left">
+        <ToggleGroupItem value="left">Left</ToggleGroupItem>
+        <ToggleGroupItem value="center">Center</ToggleGroupItem>
+        <ToggleGroupItem value="right">Right</ToggleGroupItem>
+      </ToggleGroup>
     ),
-    code: `import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group";
-import { Search } from "lucide-react";
+    code: `import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 export function Example() {
   return (
-    <InputGroup className="max-w-xs">
-      <InputGroupInput placeholder="Search..." />
-      <InputGroupAddon>
-        <Search />
-      </InputGroupAddon>
-    </InputGroup>
+    <ToggleGroup variant="outline" defaultValue="left">
+      <ToggleGroupItem value="left">Left</ToggleGroupItem>
+      <ToggleGroupItem value="center">Center</ToggleGroupItem>
+      <ToggleGroupItem value="right">Right</ToggleGroupItem>
+    </ToggleGroup>
   );
 }`,
   },
 ];
 
-export default function InputGroupGuidePage() {
+export default function ToggleGroupGuidePage() {
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">
@@ -115,7 +135,7 @@ export default function InputGroupGuidePage() {
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            Input Group component dùng để kết hợp nhiều input hoặc button thành một nhóm thống nhất.
+            A toggle group component that allows single or multiple selection from a set of toggle buttons.
           </p>
         </section>
 
@@ -123,11 +143,13 @@ export default function InputGroupGuidePage() {
           <Card id="import" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
-              <CardDescription>Import trực tiếp từ source path của component.</CardDescription>
+              <CardDescription>
+                Import the Toggle Group component from the design system.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
-                <code className="text-sm">{`import { InputGroup, InputGroupItem } from "${guide.importPath}"`}</code>
+                <code className="text-sm">{`import { ToggleGroup, ToggleGroupItem } from "${guide.importPath}"`}</code>
               </div>
             </CardContent>
           </Card>
@@ -135,53 +157,24 @@ export default function InputGroupGuidePage() {
           <Card id="props" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
-              <CardDescription>
-                Props quan trọng nên phản ánh đúng khả năng chính của component hiện tại.
-              </CardDescription>
+              <CardDescription>Toggle Group component props.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-hidden rounded-2xl border border-border/70">
                 <table className="w-full text-left text-sm">
                   <thead className="bg-muted/40 text-muted-foreground">
                     <tr>
-                      <th className="px-4 py-3 font-medium">Component</th>
                       <th className="px-4 py-3 font-medium">Prop</th>
                       <th className="px-4 py-3 font-medium">Type</th>
                       <th className="px-4 py-3 font-medium">Default</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {[
-                      {
-                        component: 'InputGroup',
-                        name: 'className',
-                        type: 'string',
-                        defaultValue: '--',
-                      },
-                      {
-                        component: 'InputGroupInput',
-                        name: 'className',
-                        type: 'string',
-                        defaultValue: '--',
-                      },
-                      {
-                        component: 'InputGroupButton',
-                        name: 'children',
-                        type: 'ReactNode',
-                        defaultValue: '--',
-                      },
-                      {
-                        component: 'InputGroupText',
-                        name: 'children',
-                        type: 'ReactNode',
-                        defaultValue: '--',
-                      },
-                    ].map((prop, index, array) => (
+                    {props.map((prop, index) => (
                       <tr
-                        key={`${prop.component}-${prop.name}`}
-                        className={cn(index !== array.length - 1 && 'border-b border-border/70')}
+                        key={prop.name}
+                        className={cn(index !== props.length - 1 && 'border-b border-border/70')}
                       >
-                        <td className="px-4 py-3 font-medium">{prop.component}</td>
                         <td className="px-4 py-3 font-medium">{prop.name}</td>
                         <td className="px-4 py-3 text-muted-foreground">{prop.type}</td>
                         <td className="px-4 py-3 text-muted-foreground">{prop.defaultValue}</td>
@@ -196,10 +189,7 @@ export default function InputGroupGuidePage() {
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
-              <CardDescription>
-                Mỗi cách dùng quan trọng nên có tab riêng, để preview và code bám đúng use case thay
-                vì dùng một snippet chung.
-              </CardDescription>
+              <CardDescription>Common Toggle Group patterns and configurations.</CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">
@@ -214,7 +204,7 @@ export default function InputGroupGuidePage() {
                 {usageSamples.map((sample) => (
                   <TabsContent key={sample.id} value={sample.id} className="space-y-5">
                     <div className="rounded-[20px] border border-dashed border-border bg-[linear-gradient(135deg,rgba(0,0,0,0.02),transparent)] p-8">
-                      <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card shadow-sm">
+                      <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
                         {sample.preview}
                       </div>
                     </div>

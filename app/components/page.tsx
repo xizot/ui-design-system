@@ -290,10 +290,40 @@ const guides = [
     importPath: '@/design-system/components/ui/switch',
   },
   {
+    slug: 'tabs',
+    name: 'Tabs',
+    group: 'ui',
+    importPath: '@/design-system/components/ui/tabs',
+  },
+  {
     slug: 'table',
     name: 'Table',
     group: 'ui',
     importPath: '@/design-system/components/ui/table',
+  },
+  {
+    slug: 'tooltip',
+    name: 'Tooltip',
+    group: 'ui',
+    importPath: '@/design-system/components/ui/tooltip',
+  },
+  {
+    slug: 'toggle',
+    name: 'Toggle',
+    group: 'ui',
+    importPath: '@/design-system/components/ui/toggle',
+  },
+  {
+    slug: 'toggle-group',
+    name: 'Toggle Group',
+    group: 'ui',
+    importPath: '@/design-system/components/ui/toggle-group',
+  },
+  {
+    slug: 'textarea',
+    name: 'Textarea',
+    group: 'ui',
+    importPath: '@/design-system/components/ui/textarea',
   },
   {
     slug: 'rhf-checkbox',

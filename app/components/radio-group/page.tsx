@@ -29,16 +29,16 @@ const usageSamples = [
     id: 'default',
     label: 'Default',
     preview: (
-      <RadioGroup defaultValue="comfortable">
-        <div className="flex items-center space-x-2">
+      <RadioGroup defaultValue="comfortable" className="w-fit">
+        <div className="flex items-center gap-3">
           <RadioGroupItem value="default" id="r1" />
           <Label htmlFor="r1">Default</Label>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-3">
           <RadioGroupItem value="comfortable" id="r2" />
           <Label htmlFor="r2">Comfortable</Label>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-3">
           <RadioGroupItem value="compact" id="r3" />
           <Label htmlFor="r3">Compact</Label>
         </div>
@@ -49,16 +49,16 @@ import { Label } from "@/design-system/components/ui/label";
 
 export function Example() {
   return (
-    <RadioGroup defaultValue="comfortable">
-      <div className="flex items-center space-x-2">
+    <RadioGroup defaultValue="comfortable" className="w-fit">
+      <div className="flex items-center gap-3">
         <RadioGroupItem value="default" id="r1" />
         <Label htmlFor="r1">Default</Label>
       </div>
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center gap-3">
         <RadioGroupItem value="comfortable" id="r2" />
         <Label htmlFor="r2">Comfortable</Label>
       </div>
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center gap-3">
         <RadioGroupItem value="compact" id="r3" />
         <Label htmlFor="r3">Compact</Label>
       </div>

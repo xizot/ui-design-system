@@ -1,6 +1,10 @@
-import type { Metadata } from 'next';
+"use client";
+
+import React, { useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ChartContainer, type ChartConfig } from '@/components/ui/chart';
+import { BarChart, Bar } from 'recharts';
 import { cn } from '@/lib/utils';
 
 const guide = {
@@ -9,60 +13,89 @@ const guide = {
   importPath: '@/design-system/components/ui/chart',
 } as const;
 
-export const metadata: Metadata = {
-  title: `${guide.name} - UI Design System`,
-  description: `${guide.name} component documentation`,
-};
-
 const props = [
   { name: 'data', type: 'ChartData', defaultValue: '--' },
   { name: 'config', type: 'ChartConfig', defaultValue: '--' },
   { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
+const chartData = [
+  { month: "January", desktop: 186, mobile: 80 },
+  { month: "February", desktop: 305, mobile: 200 },
+  { month: "March", desktop: 237, mobile: 120 },
+  { month: "April", desktop: 73, mobile: 190 },
+  { month: "May", desktop: 209, mobile: 130 },
+  { month: "June", desktop: 214, mobile: 140 },
+];
+
+const chartConfig = {
+  desktop: {
+    label: "Desktop",
+    color: "#2563eb",
+  },
+  mobile: {
+    label: "Mobile",
+    color: "#60a5fa",
+  },
+} satisfies ChartConfig;
+
+function ChartExample() {
+  return (
+    <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+      <BarChart accessibilityLayer data={chartData}>
+        <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
+        <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+      </BarChart>
+    </ChartContainer>
+  );
+}
+
 const usageSamples = [
   {
     id: 'bar',
     label: 'Bar Chart',
-    preview: (
-      <div className="w-full max-w-sm p-4">
-        <div className="rounded-lg border border-border bg-card p-4">
-          <div className="flex items-end justify-between h-40 gap-2">
-            <div className="w-full bg-primary/80 rounded-t" style={{ height: '60%' }} />
-            <div className="w-full bg-primary/80 rounded-t" style={{ height: '80%' }} />
-            <div className="w-full bg-primary/80 rounded-t" style={{ height: '40%' }} />
-            <div className="w-full bg-primary/80 rounded-t" style={{ height: '90%' }} />
-            <div className="w-full bg-primary/80 rounded-t" style={{ height: '50%' }} />
-          </div>
-        </div>
-      </div>
-    ),
-    code: `import { Chart } from "@/design-system/components/ui/chart";
+    preview: <ChartExample />,
+    code: `import { ChartContainer, type ChartConfig } from "@/components/ui/chart";
+import { BarChart, Bar } from "recharts";
 
-function Example() {
-  const data = [
-    { name: "Jan", value: 60 },
-    { name: "Feb", value: 80 },
-    { name: "Mar", value: 40 },
-    { name: "Apr", value: 90 },
-    { name: "May", value: 50 },
-  ];
+const chartData = [
+  { month: "January", desktop: 186, mobile: 80 },
+  { month: "February", desktop: 305, mobile: 200 },
+  { month: "March", desktop: 237, mobile: 120 },
+  { month: "April", desktop: 73, mobile: 190 },
+  { month: "May", desktop: 209, mobile: 130 },
+  { month: "June", desktop: 214, mobile: 140 },
+];
 
+const chartConfig = {
+  desktop: {
+    label: "Desktop",
+    color: "#2563eb",
+  },
+  mobile: {
+    label: "Mobile",
+    color: "#60a5fa",
+  },
+} satisfies ChartConfig;
+
+export function ChartExample() {
   return (
-    <Chart
-      data={data}
-      config={{
-        type: "bar",
-        xKey: "name",
-        yKey: "value",
-      }}
-    />
+    <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+      <BarChart accessibilityLayer data={chartData}>
+        <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
+        <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+      </BarChart>
+    </ChartContainer>
   );
 }`,
   },
 ];
 
 export default function ChartGuidePage() {
+  useEffect(() => {
+    document.title = `${guide.name} - UI Design System`;
+  }, []);
+
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">

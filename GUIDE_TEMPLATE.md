@@ -149,3 +149,103 @@ export default function ComponentGuidePage() {
 - Không dùng route động cho docs
 - Chỉ tạo page thật, ví dụ `app/components/button/page.tsx`
 - Có thể dùng lại layout chung ở `app/components/layout.tsx`
+
+## Components có trong design system
+
+### UI Components
+- Accordion
+- Alert
+- Alert Dialog
+- Aspect Ratio
+- Avatar
+- Badge
+- Breadcrumb
+- Button
+- Calendar
+- Card
+- Checkbox
+- Collapsible
+- Combobox
+- Command
+- Context Menu
+- Dialog
+- Direction
+- Dropdown Menu
+- Empty
+- Field
+- Hover Card
+- Input
+- Input Group
+- Input OTP
+- Item
+- Kbd
+- Label
+- Menubar
+- Native Select
+- Navigation Menu
+- Pagination
+- Popover
+- Progress
+- Radio Group
+- Resizable
+- RHF Checkbox
+- RHF Combobox
+- RHF Error Message
+- RHF Input
+- RHF Select
+- RHF Switch
+- RHF Textarea
+- Scroll Area
+- Select
+- Separator
+- Sheet
+- Sidebar
+- Skeleton
+- Slider
+- Sonner
+- Spinner
+- Switch
+- Table
+- Tabs
+- Textarea
+- Toggle
+- Toggle Group
+- Tooltip
+
+### Client Components (cách dùng useEffect cho title)
+- Command
+- Sonner
+
+## Template cho Client Components
+
+```tsx
+"use client";
+
+import { useEffect } from 'react';
+import type { Metadata } from 'next';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
+
+const guide = {
+  name: 'ComponentName',
+  group: 'ui',
+  importPath: '@/design-system/components/ui/component',
+} as const;
+
+// Component không export metadata vì là client component
+// Thay vào dùng useEffect
+
+export default function ComponentGuidePage() {
+  useEffect(() => {
+    document.title = `${guide.name} - UI Design System`;
+  }, []);
+
+  return (
+    <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
+      <main className="min-w-0">
+        {/* Rest of the component */}
+      </main>
+    </div>
+  );
+}

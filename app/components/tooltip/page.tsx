@@ -1,18 +1,19 @@
 import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
-  InputGroup,
-  InputGroupInput,
-  InputGroupAddon,
-} from '@/components/ui/input-group';
-import { Search } from 'lucide-react';
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 
 const guide = {
-  name: 'Input Group',
+  name: 'Tooltip',
   group: 'ui',
-  importPath: '@/design-system/components/ui/input-group',
+  importPath: '@/design-system/components/ui/tooltip',
 } as const;
 
 export const metadata: Metadata = {
@@ -20,17 +21,24 @@ export const metadata: Metadata = {
   description: `${guide.name} component documentation`,
 };
 
-function InputGroupExample() {
+const props = [
+  { name: 'children', type: 'ReactNode', defaultValue: '--' },
+  { name: 'delayDuration', type: 'number', defaultValue: '700' },
+  { name: 'skipDelayDuration', type: 'number', defaultValue: '300' },
+  { name: 'disableHoverableContent', type: 'boolean', defaultValue: 'false' },
+  { name: 'className', type: 'string', defaultValue: '--' },
+];
+
+function TooltipExample() {
   return (
-    <div className="flex flex-col items-center gap-4">
-      <InputGroup className="max-w-xs">
-        <InputGroupInput placeholder="Search..." />
-        <InputGroupAddon>
-          <Search />
-        </InputGroupAddon>
-        <InputGroupAddon align="inline-end">12 results</InputGroupAddon>
-      </InputGroup>
-    </div>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger render={<Button variant="outline">Hover</Button>} />
+        <TooltipContent>
+          <p>Add to library</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
 
@@ -38,74 +46,128 @@ const usageSamples = [
   {
     id: 'basic',
     label: 'Basic',
-    preview: <InputGroupExample />,
-    code: `import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group";
-import { Search } from "lucide-react";
+    preview: <TooltipExample />,
+    code: `import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 
-export function InputGroupDemo() {
+export function TooltipDemo() {
   return (
-    <InputGroup className="max-w-xs">
-      <InputGroupInput placeholder="Search..." />
-      <InputGroupAddon>
-        <Search />
-      </InputGroupAddon>
-      <InputGroupAddon align="inline-end">12 results</InputGroupAddon>
-    </InputGroup>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger render={<Button variant="outline">Hover</Button>} />
+        <TooltipContent>
+          <p>Add to library</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }`,
   },
   {
-    id: 'prefix',
-    label: 'Prefix',
+    id: 'with-delay',
+    label: 'With Delay',
     preview: (
-      <div className="flex items-center justify-center">
-        <InputGroup className="max-w-xs">
-          <InputGroupAddon align="inline-start">https://</InputGroupAddon>
-          <InputGroupInput placeholder="example.com" />
-        </InputGroup>
-      </div>
+      <TooltipProvider>
+        <Tooltip delayDuration={1000}>
+          <TooltipTrigger render={<Button variant="outline">Hover for 1s</Button>} />
+          <TooltipContent>
+            <p>Delayed tooltip</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     ),
-    code: `import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group";
+    code: `import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 
 export function Example() {
   return (
-    <InputGroup className="max-w-xs">
-      <InputGroupAddon align="inline-start">https://</InputGroupAddon>
-      <InputGroupInput placeholder="example.com" />
-    </InputGroup>
+    <TooltipProvider>
+      <Tooltip delayDuration={1000}>
+        <TooltipTrigger render={<Button variant="outline">Hover for 1s />} />
+        <TooltipContent>
+          <p>Delayed tooltip</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }`,
   },
   {
-    id: 'icon-only',
-    label: 'Icon Only',
+    id: 'side-positions',
+    label: 'Side Positions',
     preview: (
-      <div className="flex items-center justify-center">
-        <InputGroup className="max-w-xs">
-          <InputGroupInput placeholder="Search..." />
-          <InputGroupAddon>
-            <Search />
-          </InputGroupAddon>
-        </InputGroup>
+      <div className="flex gap-4">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger render={<Button variant="outline">Top</Button>} />
+            <TooltipContent side="top">
+              <p>Top tooltip</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger render={<Button variant="outline">Right</Button>} />
+            <TooltipContent side="right">
+              <p>Right tooltip</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger render={<Button variant="outline">Bottom</Button>} />
+            <TooltipContent side="bottom">
+              <p>Bottom tooltip</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger render={<Button variant="outline">Left</Button>} />
+            <TooltipContent side="left">
+              <p>Left tooltip</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
     ),
-    code: `import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group";
-import { Search } from "lucide-react";
+    code: `import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 
 export function Example() {
   return (
-    <InputGroup className="max-w-xs">
-      <InputGroupInput placeholder="Search..." />
-      <InputGroupAddon>
-        <Search />
-      </InputGroupAddon>
-    </InputGroup>
+    <div className="flex gap-4">
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger render={<Button variant="outline">Top />} />
+          <TooltipContent side="top">
+            <p>Top tooltip</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      {/* More tooltips for other sides */}
+    </div>
   );
 }`,
   },
 ];
 
-export default function InputGroupGuidePage() {
+export default function TooltipGuidePage() {
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">
@@ -115,7 +177,7 @@ export default function InputGroupGuidePage() {
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            Input Group component dùng để kết hợp nhiều input hoặc button thành một nhóm thống nhất.
+            A popup that displays information related to an element when the user hovers over it.
           </p>
         </section>
 
@@ -123,11 +185,18 @@ export default function InputGroupGuidePage() {
           <Card id="import" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
-              <CardDescription>Import trực tiếp từ source path của component.</CardDescription>
+              <CardDescription>
+                Import the Tooltip component from the design system.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
-                <code className="text-sm">{`import { InputGroup, InputGroupItem } from "${guide.importPath}"`}</code>
+                <code className="text-sm">{`import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "${guide.importPath}"`}</code>
               </div>
             </CardContent>
           </Card>
@@ -135,53 +204,24 @@ export default function InputGroupGuidePage() {
           <Card id="props" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
-              <CardDescription>
-                Props quan trọng nên phản ánh đúng khả năng chính của component hiện tại.
-              </CardDescription>
+              <CardDescription>Tooltip component props.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-hidden rounded-2xl border border-border/70">
                 <table className="w-full text-left text-sm">
                   <thead className="bg-muted/40 text-muted-foreground">
                     <tr>
-                      <th className="px-4 py-3 font-medium">Component</th>
                       <th className="px-4 py-3 font-medium">Prop</th>
                       <th className="px-4 py-3 font-medium">Type</th>
                       <th className="px-4 py-3 font-medium">Default</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {[
-                      {
-                        component: 'InputGroup',
-                        name: 'className',
-                        type: 'string',
-                        defaultValue: '--',
-                      },
-                      {
-                        component: 'InputGroupInput',
-                        name: 'className',
-                        type: 'string',
-                        defaultValue: '--',
-                      },
-                      {
-                        component: 'InputGroupButton',
-                        name: 'children',
-                        type: 'ReactNode',
-                        defaultValue: '--',
-                      },
-                      {
-                        component: 'InputGroupText',
-                        name: 'children',
-                        type: 'ReactNode',
-                        defaultValue: '--',
-                      },
-                    ].map((prop, index, array) => (
+                    {props.map((prop, index) => (
                       <tr
-                        key={`${prop.component}-${prop.name}`}
-                        className={cn(index !== array.length - 1 && 'border-b border-border/70')}
+                        key={prop.name}
+                        className={cn(index !== props.length - 1 && 'border-b border-border/70')}
                       >
-                        <td className="px-4 py-3 font-medium">{prop.component}</td>
                         <td className="px-4 py-3 font-medium">{prop.name}</td>
                         <td className="px-4 py-3 text-muted-foreground">{prop.type}</td>
                         <td className="px-4 py-3 text-muted-foreground">{prop.defaultValue}</td>
@@ -196,10 +236,7 @@ export default function InputGroupGuidePage() {
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
-              <CardDescription>
-                Mỗi cách dùng quan trọng nên có tab riêng, để preview và code bám đúng use case thay
-                vì dùng một snippet chung.
-              </CardDescription>
+              <CardDescription>Common Tooltip patterns and configurations.</CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">
@@ -214,7 +251,7 @@ export default function InputGroupGuidePage() {
                 {usageSamples.map((sample) => (
                   <TabsContent key={sample.id} value={sample.id} className="space-y-5">
                     <div className="rounded-[20px] border border-dashed border-border bg-[linear-gradient(135deg,rgba(0,0,0,0.02),transparent)] p-8">
-                      <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card shadow-sm">
+                      <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
                         {sample.preview}
                       </div>
                     </div>
