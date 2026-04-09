@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import { useEffect } from 'react';
 
 const guide = {
   name: 'Sonner',
@@ -127,6 +128,10 @@ export function Example() {
 ];
 
 export default function SonnerGuidePage() {
+  useEffect(() => {
+    document.title = `${guide.name} - UI Design System`;
+  }, []);
+
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">

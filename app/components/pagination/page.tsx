@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Pagination,
@@ -16,6 +17,11 @@ const guide = {
   group: 'ui',
   importPath: '@/design-system/components/ui/pagination',
 } as const;
+
+export const metadata: Metadata = {
+  title: `${guide.name} - UI Design System`,
+  description: `${guide.name} component documentation`,
+};
 
 const props = [
   { name: 'isActive', type: 'boolean', defaultValue: 'false' },

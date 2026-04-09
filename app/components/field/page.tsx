@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Field,
@@ -15,6 +16,11 @@ const guide = {
   group: 'ui',
   importPath: '@/design-system/components/ui/field',
 } as const;
+
+export const metadata: Metadata = {
+  title: `${guide.name} - UI Design System`,
+  description: `${guide.name} component documentation`,
+};
 
 const props = [{ name: 'className', type: 'string', defaultValue: '--' }];
 

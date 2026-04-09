@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -8,6 +9,11 @@ const guide = {
   group: 'ui',
   importPath: '@/design-system/components/ui/slider',
 } as const;
+
+export const metadata: Metadata = {
+  title: `${guide.name} - UI Design System`,
+  description: `${guide.name} component documentation`,
+};
 
 const props = [
   { name: 'value', type: 'number | number[]', defaultValue: '--' },

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Popover,
@@ -18,6 +19,11 @@ const guide = {
   group: 'ui',
   importPath: '@/design-system/components/ui/popover',
 } as const;
+
+export const metadata: Metadata = {
+  title: `${guide.name} - UI Design System`,
+  description: `${guide.name} component documentation`,
+};
 
 const props = [
   { name: 'side', type: `"top" | "right" | "bottom" | "left"`, defaultValue: `"bottom"` },

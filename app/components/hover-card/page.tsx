@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -10,6 +11,11 @@ const guide = {
   group: 'ui',
   importPath: '@/design-system/components/ui/hover-card',
 } as const;
+
+export const metadata: Metadata = {
+  title: `${guide.name} - UI Design System`,
+  description: `${guide.name} component documentation`,
+};
 
 const props = [
   {

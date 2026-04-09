@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Dialog,
@@ -19,6 +20,11 @@ const guide = {
   group: 'ui',
   importPath: '@/design-system/components/ui/dialog',
 } as const;
+
+export const metadata: Metadata = {
+  title: `${guide.name} - UI Design System`,
+  description: `${guide.name} component documentation`,
+};
 
 const props = [
   { name: 'open', type: 'boolean', defaultValue: '--' },

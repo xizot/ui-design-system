@@ -13,12 +13,18 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import type { Metadata } from 'next';
 
 const guide = {
   name: 'Alert Dialog',
   group: 'ui',
   importPath: '@/design-system/components/ui/alert-dialog',
 } as const;
+
+export const metadata: Metadata = {
+  title: `${guide.name} - UI Design System`,
+  description: `${guide.name} component documentation`,
+};
 
 const props = [
   { name: 'open', type: 'boolean', defaultValue: '--' },

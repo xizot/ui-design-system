@@ -1,4 +1,10 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Components - UI Design System',
+  description: 'Browse all UI components in the design system',
+};
 
 const guides = [
   {

@@ -1,4 +1,27 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import type { Metadata } from "next";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuGroup,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuRadioGroup,
+  ContextMenuRadioItem,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuSub,
+  ContextMenuSubContent,
+  ContextMenuSubTrigger,
+  ContextMenuTrigger,
+  ContextMenuCheckboxItem,
+} from '@/components/ui/context-menu';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 
@@ -8,42 +31,166 @@ const guide = {
   importPath: '@/design-system/components/ui/context-menu',
 } as const;
 
+export const metadata: Metadata = {
+  title: `${guide.name} - UI Design System`,
+  description: `${guide.name} component documentation`,
+};
+
 const props = [
   { name: 'open', type: 'boolean', defaultValue: 'false' },
   { name: 'onOpenChange', type: '(open: boolean) => void', defaultValue: '--' },
   { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
+function ContextMenuExample() {
+  return (
+    <ContextMenu>
+      <ContextMenuTrigger className="flex aspect-video w-full max-w-xs items-center justify-center rounded-xl border border-dashed text-sm">
+        <span className="hidden pointer-fine:inline-block">
+          Right click here
+        </span>
+        <span className="hidden pointer-coarse:inline-block">
+          Long press here
+        </span>
+      </ContextMenuTrigger>
+      <ContextMenuContent className="w-48">
+        <ContextMenuGroup>
+          <ContextMenuItem>
+            Back
+            <ContextMenuShortcut>⌘[</ContextMenuShortcut>
+          </ContextMenuItem>
+          <ContextMenuItem disabled>
+            Forward
+            <ContextMenuShortcut>⌘]</ContextMenuShortcut>
+          </ContextMenuItem>
+          <ContextMenuItem>
+            Reload
+            <ContextMenuShortcut>⌘R</ContextMenuShortcut>
+          </ContextMenuItem>
+          <ContextMenuSub>
+            <ContextMenuSubTrigger>More Tools</ContextMenuSubTrigger>
+            <ContextMenuSubContent className="w-44">
+              <ContextMenuGroup>
+                <ContextMenuItem>Save Page...</ContextMenuItem>
+                <ContextMenuItem>Create Shortcut...</ContextMenuItem>
+                <ContextMenuItem>Name Window...</ContextMenuItem>
+              </ContextMenuGroup>
+              <ContextMenuSeparator />
+              <ContextMenuGroup>
+                <ContextMenuItem>Developer Tools</ContextMenuItem>
+              </ContextMenuGroup>
+              <ContextMenuSeparator />
+              <ContextMenuGroup>
+                <ContextMenuItem variant="destructive">Delete</ContextMenuItem>
+              </ContextMenuGroup>
+            </ContextMenuSubContent>
+          </ContextMenuSub>
+        </ContextMenuGroup>
+        <ContextMenuSeparator />
+        <ContextMenuGroup>
+          <ContextMenuCheckboxItem checked>
+            Show Bookmarks
+          </ContextMenuCheckboxItem>
+          <ContextMenuCheckboxItem>Show Full URLs</ContextMenuCheckboxItem>
+        </ContextMenuGroup>
+        <ContextMenuSeparator />
+        <ContextMenuGroup>
+          <ContextMenuRadioGroup value="pedro">
+            <ContextMenuLabel>People</ContextMenuLabel>
+            <ContextMenuRadioItem value="pedro">
+              Pedro Duarte
+            </ContextMenuRadioItem>
+            <ContextMenuRadioItem value="colm">Colm Tuite</ContextMenuRadioItem>
+          </ContextMenuRadioGroup>
+        </ContextMenuGroup>
+      </ContextMenuContent>
+    </ContextMenu>
+  );
+}
+
 const usageSamples = [
   {
     id: 'basic',
     label: 'Basic',
-    preview: (
-      <div className="w-full max-w-sm p-4">
-        <div className="rounded-lg border border-border bg-card p-4">
-          <p className="text-sm text-muted-foreground">
-            Right-click anywhere to see the context menu
-          </p>
-        </div>
-      </div>
-    ),
+    preview: <ContextMenuExample />,
     code: `import {
   ContextMenu,
   ContextMenuContent,
+  ContextMenuGroup,
   ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuRadioGroup,
+  ContextMenuRadioItem,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuSub,
+  ContextMenuSubContent,
+  ContextMenuSubTrigger,
   ContextMenuTrigger,
+  ContextMenuCheckboxItem,
 } from "@/design-system/components/ui/context-menu";
 
-function Example() {
+export function ContextMenuDemo() {
   return (
     <ContextMenu>
-      <ContextMenuTrigger className="p-4 border rounded">
-        Right-click anywhere to see the context menu
+      <ContextMenuTrigger className="flex aspect-video w-full max-w-xs items-center justify-center rounded-xl border border-dashed text-sm">
+        <span className="hidden pointer-fine:inline-block">
+          Right click here
+        </span>
+        <span className="hidden pointer-coarse:inline-block">
+          Long press here
+        </span>
       </ContextMenuTrigger>
-      <ContextMenuContent>
-        <ContextMenuItem>Copy</ContextMenuItem>
-        <ContextMenuItem>Paste</ContextMenuItem>
-        <ContextMenuItem>Delete</ContextMenuItem>
+      <ContextMenuContent className="w-48">
+        <ContextMenuGroup>
+          <ContextMenuItem>
+            Back
+            <ContextMenuShortcut>⌘[</ContextMenuShortcut>
+          </ContextMenuItem>
+          <ContextMenuItem disabled>
+            Forward
+            <ContextMenuShortcut>⌘]</ContextMenuShortcut>
+          </ContextMenuItem>
+          <ContextMenuItem>
+            Reload
+            <ContextMenuShortcut>⌘R</ContextMenuShortcut>
+          </ContextMenuItem>
+          <ContextMenuSub>
+            <ContextMenuSubTrigger>More Tools</ContextMenuSubTrigger>
+            <ContextMenuSubContent className="w-44">
+              <ContextMenuGroup>
+                <ContextMenuItem>Save Page...</ContextMenuItem>
+                <ContextMenuItem>Create Shortcut...</ContextMenuItem>
+                <ContextMenuItem>Name Window...</ContextMenuItem>
+              </ContextMenuGroup>
+              <ContextMenuSeparator />
+              <ContextMenuGroup>
+                <ContextMenuItem>Developer Tools</ContextMenuItem>
+              </ContextMenuGroup>
+              <ContextMenuSeparator />
+              <ContextMenuGroup>
+                <ContextMenuItem variant="destructive">Delete</ContextMenuItem>
+              </ContextMenuGroup>
+            </ContextMenuSubContent>
+          </ContextMenuSub>
+        </ContextMenuGroup>
+        <ContextMenuSeparator />
+        <ContextMenuGroup>
+          <ContextMenuCheckboxItem checked>
+            Show Bookmarks
+          </ContextMenuCheckboxItem>
+          <ContextMenuCheckboxItem>Show Full URLs</ContextMenuCheckboxItem>
+        </ContextMenuGroup>
+        <ContextMenuSeparator />
+        <ContextMenuGroup>
+          <ContextMenuRadioGroup value="pedro">
+            <ContextMenuLabel>People</ContextMenuLabel>
+            <ContextMenuRadioItem value="pedro">
+              Pedro Duarte
+            </ContextMenuRadioItem>
+            <ContextMenuRadioItem value="colm">Colm Tuite</ContextMenuRadioItem>
+          </ContextMenuRadioGroup>
+        </ContextMenuGroup>
       </ContextMenuContent>
     </ContextMenu>
   );

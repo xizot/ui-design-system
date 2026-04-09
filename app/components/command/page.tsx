@@ -1,6 +1,23 @@
+"use client";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from '@/components/ui/command';
+import { Button } from '@/components/ui/button';
+import { HomeIcon, InboxIcon, FileTextIcon, FolderIcon, PlusIcon } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import * as React from 'react';
+import { useEffect } from 'react';
 
 const guide = {
   name: 'Command',
@@ -14,71 +31,117 @@ const props = [
   { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
+function CommandExample() {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <div className="flex flex-col gap-4">
+      <Button onClick={() => setOpen(true)} variant="outline" className="w-fit">
+        Open Menu
+      </Button>
+      <CommandDialog open={open} onOpenChange={setOpen}>
+        <Command>
+          <CommandInput placeholder="Type a command or search..." />
+          <CommandList>
+            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandGroup heading="Navigation">
+              <CommandItem>
+                <HomeIcon />
+                <span>Home</span>
+                <CommandShortcut>⌘H</CommandShortcut>
+              </CommandItem>
+              <CommandItem>
+                <InboxIcon />
+                <span>Inbox</span>
+                <CommandShortcut>⌘I</CommandShortcut>
+              </CommandItem>
+              <CommandItem>
+                <FileTextIcon />
+                <span>Documents</span>
+                <CommandShortcut>⌘D</CommandShortcut>
+              </CommandItem>
+              <CommandItem>
+                <FolderIcon />
+                <span>Folders</span>
+                <CommandShortcut>⌘F</CommandShortcut>
+              </CommandItem>
+            </CommandGroup>
+            <CommandSeparator />
+            <CommandGroup heading="Actions">
+              <CommandItem>
+                <PlusIcon />
+                <span>New File</span>
+                <CommandShortcut>⌘N</CommandShortcut>
+              </CommandItem>
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </CommandDialog>
+    </div>
+  );
+}
+
 const usageSamples = [
   {
     id: 'basic',
     label: 'Basic',
-    preview: (
-      <div className="w-full max-w-sm p-4">
-        <div className="rounded-lg border border-border bg-card p-4">
-          <input
-            type="text"
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            placeholder="Type a command or search..."
-          />
-          <div className="mt-2 space-y-1">
-            <div className="flex items-center gap-2 p-2 rounded-md hover:bg-accent cursor-pointer">
-              <span className="text-sm">New Project</span>
-              <span className="ml-auto text-xs text-muted-foreground">⌘N</span>
-            </div>
-            <div className="flex items-center gap-2 p-2 rounded-md hover:bg-accent cursor-pointer">
-              <span className="text-sm">Search</span>
-              <span className="ml-auto text-xs text-muted-foreground">⌘K</span>
-            </div>
-            <div className="flex items-center gap-2 p-2 rounded-md hover:bg-accent cursor-pointer">
-              <span className="text-sm">Settings</span>
-              <span className="ml-auto text-xs text-muted-foreground">⌘,</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    ),
-    code: `import {
+    preview: <CommandExample />,
+    code: `"use client";
+
+import * as React from "react";
+import {
   Command,
   CommandDialog,
-  CommandInput,
-  CommandList,
-  CommandItem,
+  CommandEmpty,
   CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
 } from "@/design-system/components/ui/command";
-import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { HomeIcon, InboxIcon } from "lucide-react";
 
-function Example() {
-  const [open, setOpen] = useState(false);
+export function Example() {
+  const [open, setOpen] = React.useState(false);
 
   return (
-    <CommandDialog open={open} onOpenChange={setOpen}>
-      <CommandInput placeholder="Type a command or search..." />
-      <CommandList>
-        <CommandGroup>
-          <CommandItem onSelect={() => setOpen(false)}>
-            New Project
-          </CommandItem>
-          <CommandItem onSelect={() => setOpen(false)}>
-            Search
-          </CommandItem>
-          <CommandItem onSelect={() => setOpen(false)}>
-            Settings
-          </CommandItem>
-        </CommandGroup>
-      </CommandList>
-    </CommandDialog>
+    <div className="flex flex-col gap-4">
+      <Button onClick={() => setOpen(true)} variant="outline" className="w-fit">
+        Open Menu
+      </Button>
+      <CommandDialog open={open} onOpenChange={setOpen}>
+        <Command>
+          <CommandInput placeholder="Type a command or search..." />
+          <CommandList>
+            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandGroup heading="Navigation">
+              <CommandItem>
+                <HomeIcon />
+                <span>Home</span>
+                <CommandShortcut>⌘H</CommandShortcut>
+              </CommandItem>
+              <CommandItem>
+                <InboxIcon />
+                <span>Inbox</span>
+                <CommandShortcut>⌘I</CommandShortcut>
+              </CommandItem>
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </CommandDialog>
+    </div>
   );
 }`,
   },
 ];
 
 export default function CommandGuidePage() {
+  useEffect(() => {
+    document.title = `${guide.name} - UI Design System`;
+  }, []);
+
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">

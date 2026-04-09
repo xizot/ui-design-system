@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
@@ -7,6 +8,11 @@ const guide = {
   group: 'ui',
   importPath: '@/design-system/components/ui/aspect-ratio',
 } as const;
+
+export const metadata: Metadata = {
+  title: `${guide.name} - UI Design System`,
+  description: `${guide.name} component documentation`,
+};
 
 const props = [
   { name: 'ratio', type: 'number', defaultValue: '1' },

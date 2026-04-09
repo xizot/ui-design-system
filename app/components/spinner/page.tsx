@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Spinner } from '@/components/ui/spinner';
 import { Button } from '@/components/ui/button';
@@ -9,6 +10,11 @@ const guide = {
   group: 'ui',
   importPath: '@/design-system/components/ui/spinner',
 } as const;
+
+export const metadata: Metadata = {
+  title: `${guide.name} - UI Design System`,
+  description: `${guide.name} component documentation`,
+};
 
 const props = [{ name: 'className', type: 'string', defaultValue: '--' }];
 
