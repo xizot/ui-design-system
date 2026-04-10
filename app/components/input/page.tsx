@@ -1,8 +1,8 @@
-import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import type { Metadata } from 'next';
 
 const guide = {
   name: 'Input',
@@ -37,9 +37,19 @@ const props = [
     defaultValue: 'false',
   },
   {
-    name: 'aria-invalid',
+    name: 'label',
+    type: 'string | React.ReactNode',
+    defaultValue: '--',
+  },
+  {
+    name: 'required',
     type: 'boolean',
     defaultValue: 'false',
+  },
+  {
+    name: 'error',
+    type: 'string',
+    defaultValue: '--',
   },
 ];
 
@@ -71,7 +81,7 @@ export function Example() {
       <div className="grid w-full max-w-md gap-4">
         <Input defaultValue="john@example.com" />
         <Input disabled value="Disabled value" readOnly />
-        <Input aria-invalid defaultValue="Invalid value" />
+        <Input error="Invalid value" defaultValue="Invalid value" />
       </div>
     ),
     code: `import { Input } from "@/design-system/components/ui/input";
@@ -81,7 +91,7 @@ export function Example() {
     <div className="grid w-full max-w-md gap-4">
       <Input defaultValue="john@example.com" />
       <Input disabled value="Disabled value" readOnly />
-      <Input aria-invalid defaultValue="Invalid value" />
+      <Input error="Invalid value" defaultValue="Invalid value" />
     </div>
   );
 }`,

@@ -1,8 +1,8 @@
-import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import type { Metadata } from 'next';
 
 const guide = {
   name: 'Slider',
@@ -32,13 +32,13 @@ const usageSamples = [
     label: 'Default',
     preview: (
       <div className="w-full max-w-sm">
-        <Slider defaultValue={[50]} max={100} step={1} />
+        <Slider defaultValue={[75]} max={100} step={1} className="mx-auto w-full max-w-xs" />
       </div>
     ),
     code: `import { Slider } from "@/design-system/components/ui/slider";
 
 export function Example() {
-  return <Slider defaultValue={[50]} max={100} step={1} />;
+  return <Slider defaultValue={[75]} max={100} step={1} className="mx-auto w-full max-w-xs" />;
 }`,
   },
   {
@@ -46,13 +46,13 @@ export function Example() {
     label: 'Range',
     preview: (
       <div className="w-full max-w-sm">
-        <Slider defaultValue={[25, 75]} max={100} step={1} />
+        <Slider defaultValue={[25, 75]} max={100} step={1} className="mx-auto w-full max-w-xs" />
       </div>
     ),
     code: `import { Slider } from "@/design-system/components/ui/slider";
 
 export function Example() {
-  return <Slider defaultValue={[25, 75]} max={100} step={1} />;
+  return <Slider defaultValue={[25, 75]} max={100} step={1} className="mx-auto w-full max-w-xs" />;
 }`,
   },
   {
@@ -65,14 +65,14 @@ export function Example() {
             <span className="text-sm font-medium">Volume</span>
             <span className="text-sm text-muted-foreground">50%</span>
           </div>
-          <Slider defaultValue={[50]} max={100} step={1} />
+          <Slider defaultValue={[50]} max={100} step={1} className="mx-auto w-full max-w-xs" />
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Brightness</span>
             <span className="text-sm text-muted-foreground">75%</span>
           </div>
-          <Slider defaultValue={[75]} max={100} step={1} />
+          <Slider defaultValue={[75]} max={100} step={1} className="mx-auto w-full max-w-xs" />
         </div>
       </div>
     ),
@@ -86,7 +86,14 @@ export function Example() {
           <span className="text-sm font-medium">Volume</span>
           <span className="text-sm text-muted-foreground">50%</span>
         </div>
-        <Slider defaultValue={[50]} max={100} step={1} />
+        <Slider defaultValue={[50]} max={100} step={1} className="mx-auto w-full max-w-xs" />
+      </div>
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-medium">Brightness</span>
+          <span className="text-sm text-muted-foreground">75%</span>
+        </div>
+        <Slider defaultValue={[75]} max={100} step={1} className="mx-auto w-full max-w-xs" />
       </div>
     </div>
   );

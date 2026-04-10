@@ -3,9 +3,9 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { cn } from '@/lib/utils';
 
 const guides = [
   { slug: 'accordion', name: 'Accordion', group: 'ui' as const },
@@ -63,10 +63,10 @@ const guides = [
   { slug: 'textarea', name: 'Textarea', group: 'ui' as const },
   { slug: 'theme-toggle', name: 'Theme Toggle', group: 'ui' as const },
   { slug: 'rhf-checkbox', name: 'RHF Checkbox', group: 'rhf' as const },
-  { slug: 'rhf-combobox', name: 'RHF Combobox', group: 'rhf' as const },
   { slug: 'rhf-error-message', name: 'RHF Error Message', group: 'rhf' as const },
   { slug: 'rhf-input', name: 'RHF Input', group: 'rhf' as const },
-  { slug: 'rhf-select', name: 'RHF Select', group: 'rhf' as const },
+  { slug: 'rhf-multiple-combobox', name: 'RHF Multiple Combobox', group: 'rhf' as const },
+  { slug: 'rhf-single-combobox', name: 'RHF Single Combobox', group: 'rhf' as const },
   { slug: 'rhf-switch', name: 'RHF Switch', group: 'rhf' as const },
   { slug: 'rhf-textarea', name: 'RHF Textarea', group: 'rhf' as const },
 ];

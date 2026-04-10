@@ -2,13 +2,14 @@
 
 import { useForm } from 'react-hook-form';
 
-import { RHFSwitch } from '@/components/rhf';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import { RHFMultipleCombobox } from '@/components/rhf';
+import type { ComboboxBaseOption } from '@/components/ui/single-combobox';
 
 const guide = {
-  name: 'RHF Switch',
+  name: 'RHF Multiple Combobox',
   group: 'rhf',
   importPath: '@/design-system/components/rhf',
 } as const;
@@ -16,15 +17,37 @@ const guide = {
 const props = [
   { name: 'control', type: 'Control<T>', defaultValue: '--' },
   { name: 'name', type: 'Path<T>', defaultValue: '--' },
-  { name: 'label', type: 'string', defaultValue: '--' },
+  { name: 'options', type: 'ComboboxBaseOption[]', defaultValue: '--' },
+  { name: 'label', type: 'string | React.ReactNode', defaultValue: '--' },
   { name: 'description', type: 'string', defaultValue: '--' },
   { name: 'required', type: 'boolean', defaultValue: 'false' },
-  { name: 'callback', type: '(newValue: boolean) => void', defaultValue: '--' },
-  { name: 'onBeforeChange', type: 'RHFBeforeChange<T>', defaultValue: '--' },
+  { name: 'disabled', type: 'boolean', defaultValue: 'false' },
+  { name: 'placeholder', type: 'string', defaultValue: 'Chọn...' },
+  { name: 'showMenuCode', type: 'boolean', defaultValue: 'true' },
+  { name: 'showSelectedCode', type: 'boolean', defaultValue: 'false' },
+  { name: 'searchPlaceholder', type: 'string', defaultValue: 'Tìm kiếm...' },
+  { name: 'emptyMessage', type: 'string', defaultValue: 'Không tìm thấy kết quả' },
+  { name: 'requireApply', type: 'boolean', defaultValue: 'false' },
+  { name: 'cancelText', type: 'string', defaultValue: 'Hủy' },
+  { name: 'applyText', type: 'string', defaultValue: 'Áp dụng' },
+  { name: 'limitTags', type: 'number', defaultValue: '--' },
+  { name: 'autoResize', type: 'boolean', defaultValue: 'false' },
+  { name: 'showArrowIcon', type: 'boolean', defaultValue: 'true' },
+  { name: 'showClearIcon', type: 'boolean', defaultValue: 'true' },
+  { name: 'onSelectedRender', type: '(selectedId, selectedOption) => React.ReactNode', defaultValue: '--' },
+  { name: 'callback', type: '(values: (string | number)[], options: TOption[]) => void', defaultValue: '--' },
   { name: 'wrapperClassName', type: 'string', defaultValue: '--' },
   { name: 'labelClassName', type: 'string', defaultValue: '--' },
   { name: 'descriptionClassName', type: 'string', defaultValue: '--' },
   { name: 'errorClassName', type: 'string', defaultValue: '--' },
+];
+
+const departments: ComboboxBaseOption[] = [
+  { id: '1', code: 'IT', name: 'Công nghệ thông tin' },
+  { id: '2', code: 'FIN', name: 'Tài chính' },
+  { id: '3', code: 'HR', name: 'Nhân sự' },
+  { id: '4', code: 'MKT', name: 'Marketing' },
+  { id: '5', code: 'OPS', name: 'Vận hành' },
 ];
 
 const usageSamples = [
@@ -33,77 +56,205 @@ const usageSamples = [
     label: 'Basic',
     preview: (
       <div className="w-full max-w-md space-y-4 p-4">
-        <RHFSwitchExample />
+        <RHFMultipleComboboxExample />
       </div>
     ),
-    code: `import { RHFSwitch } from "@/design-system/components/rhf";
+    code: `import { RHFMultipleCombobox } from "@/design-system/components/rhf";
 import { useForm } from "react-hook-form";
+import type { ComboboxBaseOption } from "@/design-system/components/ui/single-combobox";
 
-function Example() {
+const departments: ComboboxBaseOption[] = [
+  { id: '1', code: 'IT', name: 'Công nghệ thông tin' },
+  { id: '2', code: 'FIN', name: 'Tài chính' },
+  { id: '3', code: 'HR', name: 'Nhân sự' },
+];
+
+export function ExampleCombobox() {
   const { control } = useForm({
     defaultValues: {
-      notifications: false,
+      departments: [],
     },
   });
 
   return (
-    <RHFSwitch
+    <RHFMultipleCombobox
       control={control}
-      name="notifications"
+      name="departments"
+      options={departments}
+      label="Phòng ban"
+      placeholder="Chọn phòng ban"
     />
   );
 }`,
   },
   {
-    id: 'with-label',
-    label: 'With Label',
+    id: 'with-apply',
+    label: 'Require Apply',
     preview: (
       <div className="w-full max-w-md space-y-4 p-4">
-        <RHFSwitchWithLabelExample />
+        <RHFMultipleComboboxWithApplyExample />
       </div>
     ),
-    code: `import { RHFSwitch } from "@/design-system/components/rhf";
+    code: `import { RHFMultipleCombobox } from "@/design-system/components/rhf";
 import { useForm } from "react-hook-form";
 
-function Example() {
+export function ExampleCombobox() {
   const { control } = useForm({
     defaultValues: {
-      notifications: false,
+      departments: [],
     },
   });
 
   return (
-    <RHFSwitch
+    <RHFMultipleCombobox
       control={control}
-      name="notifications"
-      label="Enable notifications"
+      name="departments"
+      options={departments}
+      label="Phòng ban"
+      placeholder="Chọn phòng ban"
+      requireApply={true}
+    />
+  );
+}`,
+  },
+  {
+    id: 'with-limit',
+    label: 'Limit Tags',
+    preview: (
+      <div className="w-full max-w-md space-y-4 p-4">
+        <RHFMultipleComboboxWithLimitExample />
+      </div>
+    ),
+    code: `import { RHFMultipleCombobox } from "@/design-system/components/rhf";
+import { useForm } from "react-hook-form";
+
+export function ExampleCombobox() {
+  const { control } = useForm({
+    defaultValues: {
+      departments: [],
+    },
+  });
+
+  return (
+    <RHFMultipleCombobox
+      control={control}
+      name="departments"
+      options={departments}
+      label="Phòng ban"
+      placeholder="Chọn phòng ban"
+      limitTags={2}
+    />
+  );
+}`,
+  },
+  {
+    id: 'auto-resize',
+    label: 'Auto Resize',
+    preview: (
+      <div className="w-full max-w-md space-y-4 p-4">
+        <RHFMultipleComboboxAutoResizeExample />
+      </div>
+    ),
+    code: `import { RHFMultipleCombobox } from "@/design-system/components/rhf";
+import { useForm } from "react-hook-form";
+
+export function ExampleCombobox() {
+  const { control } = useForm({
+    defaultValues: {
+      departments: [],
+    },
+  });
+
+  return (
+    <RHFMultipleCombobox
+      control={control}
+      name="departments"
+      options={departments}
+      label="Phòng ban"
+      placeholder="Chọn phòng ban"
+      autoResize={true}
     />
   );
 }`,
   },
 ];
 
-function RHFSwitchExample() {
+function RHFMultipleComboboxExample() {
   const { control } = useForm({
     defaultValues: {
-      notifications: false,
+      departments: [],
     },
   });
 
-  return <RHFSwitch control={control} name="notifications" />;
+  return (
+    <RHFMultipleCombobox
+      control={control}
+      name="departments"
+      options={departments}
+      label="Phòng ban"
+      placeholder="Chọn phòng ban"
+    />
+  );
 }
 
-function RHFSwitchWithLabelExample() {
+function RHFMultipleComboboxWithApplyExample() {
   const { control } = useForm({
     defaultValues: {
-      notifications: false,
+      departments: [],
     },
   });
 
-  return <RHFSwitch control={control} name="notifications" label="Enable notifications" />;
+  return (
+    <RHFMultipleCombobox
+      control={control}
+      name="departments"
+      options={departments}
+      label="Phòng ban"
+      placeholder="Chọn phòng ban"
+      requireApply
+    />
+  );
 }
 
-export default function RHFSwitchGuidePage() {
+function RHFMultipleComboboxWithLimitExample() {
+  const { control } = useForm({
+    defaultValues: {
+      departments: [],
+    },
+  });
+
+  return (
+    <RHFMultipleCombobox
+      control={control}
+      name="departments"
+      options={departments}
+      label="Phòng ban"
+      placeholder="Chọn phòng ban"
+      limitTags={2}
+    />
+  );
+}
+
+function RHFMultipleComboboxAutoResizeExample() {
+  const { control } = useForm({
+    defaultValues: {
+      departments: [],
+    },
+  });
+
+  return (
+    <RHFMultipleCombobox
+      control={control}
+      name="departments"
+      options={departments}
+      label="Phòng ban"
+      placeholder="Chọn phòng ban"
+      autoResize
+    />
+  );
+}
+
+export default function RHFMultipleComboboxGuidePage() {
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">
@@ -113,7 +264,7 @@ export default function RHFSwitchGuidePage() {
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            A React Hook Form switch component with built-in error handling and validation support.
+            React Hook Form wrapper cho MultipleCombobox với hỗ trợ validation và error handling tích hợp.
           </p>
         </section>
 
@@ -122,12 +273,12 @@ export default function RHFSwitchGuidePage() {
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
               <CardDescription>
-                Import the RHF Switch component from the design system.
+                Import RHFMultipleCombobox component từ design system.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
-                <code className="text-sm">{`import { RHFSwitch } from "${guide.importPath}";`}</code>
+                <code className="text-sm">{`import { RHFMultipleCombobox } from "${guide.importPath}";`}</code>
               </div>
             </CardContent>
           </Card>
@@ -135,7 +286,7 @@ export default function RHFSwitchGuidePage() {
           <Card id="props" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
-              <CardDescription>RHF Switch component props.</CardDescription>
+              <CardDescription>RHFMultipleCombobox component props.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-hidden rounded-2xl border border-border/70">
@@ -167,7 +318,7 @@ export default function RHFSwitchGuidePage() {
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
-              <CardDescription>Common RHF Switch patterns and configurations.</CardDescription>
+              <CardDescription>Các pattern và cấu hình RHFMultipleCombobox phổ biến.</CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">

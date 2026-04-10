@@ -1,7 +1,7 @@
 export { RHFCheckbox } from './rhf-checkbox';
-export { RHFCombobox } from './rhf-combobox';
 export { RHFErrorMessage } from './rhf-error-message';
 export { RHFInput } from './rhf-input';
-export { RHFSelect } from './rhf-select';
+export { RHFMultipleCombobox } from './rhf-multiple-combobox';
+export { RHFSingleCombobox } from './rhf-single-combobox';
 export { RHFSwitch } from './rhf-switch';
 export { RHFTextarea } from './rhf-textarea';

@@ -338,12 +338,6 @@ const guides = [
     importPath: '@/design-system/components/rhf',
   },
   {
-    slug: 'rhf-combobox',
-    name: 'RHF Combobox',
-    group: 'rhf',
-    importPath: '@/design-system/components/rhf',
-  },
-  {
     slug: 'rhf-error-message',
     name: 'RHF Error Message',
     group: 'rhf',
@@ -352,12 +346,6 @@ const guides = [
   {
     slug: 'rhf-input',
     name: 'RHF Input',
-    group: 'rhf',
-    importPath: '@/design-system/components/rhf',
-  },
-  {
-    slug: 'rhf-select',
-    name: 'RHF Select',
     group: 'rhf',
     importPath: '@/design-system/components/rhf',
   },

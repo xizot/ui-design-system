@@ -1,4 +1,8 @@
-import type { Metadata } from 'next';
+'use client';
+
+import { useForm } from 'react-hook-form';
+
+import { RHFInput } from '@/components/rhf';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
@@ -8,11 +12,6 @@ const guide = {
   group: 'rhf',
   importPath: '@/design-system/components/rhf',
 } as const;
-
-export const metadata: Metadata = {
-  title: `${guide.name} - UI Design System`,
-  description: `${guide.name} component documentation`,
-};
 
 const props = [
   { name: 'control', type: 'Control<T>', defaultValue: '--' },
@@ -34,14 +33,7 @@ const usageSamples = [
     label: 'Basic',
     preview: (
       <div className="w-full max-w-md space-y-4 p-4">
-        <div className="space-y-1.5">
-          <label className="block text-sm font-medium leading-5">Email</label>
-          <input
-            type="email"
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            placeholder="Enter your email"
-          />
-        </div>
+        <RHFInputExample />
       </div>
     ),
     code: `import { RHFInput } from "@/design-system/components/rhf";
@@ -60,27 +52,18 @@ function Example() {
       register={register}
       name="email"
       label="Email"
+      type="email"
       placeholder="Enter your email"
     />
   );
 }`,
   },
   {
-    id: 'with-validation',
-    label: 'With Validation',
+    id: 'with-label',
+    label: 'With Label',
     preview: (
       <div className="w-full max-w-md space-y-4 p-4">
-        <div className="space-y-1.5">
-          <label className="block text-sm font-medium leading-5">
-            Password <span className="ml-1 text-destructive">*</span>
-          </label>
-          <input
-            type="password"
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            placeholder="Enter your password"
-          />
-          <p className="text-sm text-muted-foreground">Minimum 8 characters</p>
-        </div>
+        <RHFInputWithLabelExample />
       </div>
     ),
     code: `import { RHFInput } from "@/design-system/components/rhf";
@@ -89,7 +72,7 @@ import { useForm } from "react-hook-form";
 function Example() {
   const { control, register } = useForm({
     defaultValues: {
-      password: "",
+      email: "",
     },
   });
 
@@ -97,17 +80,106 @@ function Example() {
     <RHFInput
       control={control}
       register={register}
-      name="password"
-      label="Password"
-      description="Minimum 8 characters"
+      name="email"
+      label="Email"
+      type="email"
+      placeholder="Enter your email"
+    />
+  );
+}`,
+  },
+  {
+    id: 'with-error',
+    label: 'With Error',
+    preview: (
+      <div className="w-full max-w-md space-y-4 p-4">
+        <RHFInputWithErrorExample />
+      </div>
+    ),
+    code: `import { RHFInput } from "@/design-system/components/rhf";
+import { useForm } from "react-hook-form";
+
+function Example() {
+  const { control, register } = useForm({
+    defaultValues: {
+      email: "",
+    },
+    mode: "onBlur",
+  });
+
+  return (
+    <RHFInput
+      control={control}
+      register={register}
+      name="email"
+      label="Email"
+      type="email"
+      placeholder="Enter your email"
       required
-      type="password"
-      placeholder="Enter your password"
     />
   );
 }`,
   },
 ];
+
+function RHFInputExample() {
+  const { control, register } = useForm({
+    defaultValues: {
+      email: '',
+    },
+  });
+
+  return (
+    <RHFInput
+      control={control}
+      register={register}
+      name="email"
+      label="Email"
+      type="email"
+      placeholder="Enter your email"
+    />
+  );
+}
+
+function RHFInputWithLabelExample() {
+  const { control, register } = useForm({
+    defaultValues: {
+      email: '',
+    },
+  });
+
+  return (
+    <RHFInput
+      control={control}
+      register={register}
+      name="email"
+      label="Email"
+      type="email"
+      placeholder="Enter your email"
+    />
+  );
+}
+
+function RHFInputWithErrorExample() {
+  const { control, register } = useForm({
+    defaultValues: {
+      email: '',
+    },
+    mode: 'onBlur',
+  });
+
+  return (
+    <RHFInput
+      control={control}
+      register={register}
+      name="email"
+      label="Email"
+      type="email"
+      placeholder="Enter your email"
+      required
+    />
+  );
+}
 
 export default function RHFInputGuidePage() {
   return (

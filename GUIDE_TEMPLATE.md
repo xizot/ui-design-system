@@ -190,10 +190,10 @@ export default function ComponentGuidePage() {
 - Radio Group
 - Resizable
 - RHF Checkbox
-- RHF Combobox
 - RHF Error Message
 - RHF Input
-- RHF Select
+- RHF Multiple Combobox
+- RHF Single Combobox
 - RHF Switch
 - RHF Textarea
 - Scroll Area

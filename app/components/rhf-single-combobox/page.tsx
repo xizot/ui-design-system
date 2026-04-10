@@ -1,17 +1,15 @@
+'use client';
+
+import { useForm } from 'react-hook-form';
+
+import { RHFSingleCombobox } from '@/components/rhf';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Combobox,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxList,
-} from '@/components/ui/combobox';
+import type { ComboboxBaseOption } from '@/components/ui/single-combobox';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 
 const guide = {
-  name: 'RHF Combobox',
+  name: 'RHF Single Combobox',
   group: 'rhf',
   importPath: '@/design-system/components/rhf',
 } as const;
@@ -19,22 +17,34 @@ const guide = {
 const props = [
   { name: 'control', type: 'Control<T>', defaultValue: '--' },
   { name: 'name', type: 'Path<T>', defaultValue: '--' },
-  { name: 'items', type: 'string[]', defaultValue: '--' },
-  { name: 'label', type: 'string', defaultValue: '--' },
+  { name: 'options', type: 'ComboboxBaseOption[]', defaultValue: '--' },
+  { name: 'label', type: 'string | React.ReactNode', defaultValue: '--' },
   { name: 'description', type: 'string', defaultValue: '--' },
   { name: 'required', type: 'boolean', defaultValue: 'false' },
-  { name: 'placeholder', type: 'string', defaultValue: '--' },
-  { name: 'callback', type: '(newValue: string) => void', defaultValue: '--' },
-  { name: 'inputClassName', type: 'string', defaultValue: '--' },
-  { name: 'contentClassName', type: 'string', defaultValue: '--' },
-  { name: 'listClassName', type: 'string', defaultValue: '--' },
+  { name: 'disabled', type: 'boolean', defaultValue: 'false' },
+  { name: 'placeholder', type: 'string', defaultValue: 'Chọn...' },
+  { name: 'showMenuCode', type: 'boolean', defaultValue: 'true' },
+  { name: 'showSelectedCode', type: 'boolean', defaultValue: 'false' },
+  { name: 'searchPlaceholder', type: 'string', defaultValue: 'Tìm kiếm...' },
+  { name: 'emptyMessage', type: 'string', defaultValue: 'Không tìm thấy kết quả' },
+  {
+    name: 'callback',
+    type: '(newValue: string | number | undefined, option: TOption | undefined) => void',
+    defaultValue: '--',
+  },
   { name: 'wrapperClassName', type: 'string', defaultValue: '--' },
   { name: 'labelClassName', type: 'string', defaultValue: '--' },
   { name: 'descriptionClassName', type: 'string', defaultValue: '--' },
   { name: 'errorClassName', type: 'string', defaultValue: '--' },
 ];
 
-const frameworks = ['Next.js', 'SvelteKit', 'Nuxt.js', 'Remix', 'Astro'];
+const departments: ComboboxBaseOption[] = [
+  { id: '1', code: 'IT', name: 'Công nghệ thông tin' },
+  { id: '2', code: 'FIN', name: 'Tài chính' },
+  { id: '3', code: 'HR', name: 'Nhân sự' },
+  { id: '4', code: 'MKT', name: 'Marketing' },
+  { id: '5', code: 'OPS', name: 'Vận hành' },
+];
 
 const usageSamples = [
   {
@@ -42,50 +52,163 @@ const usageSamples = [
     label: 'Basic',
     preview: (
       <div className="w-full max-w-md space-y-4 p-4">
-        <div className="space-y-1.5">
-          <label className="block text-sm font-medium leading-5">Framework</label>
-          <Combobox>
-            <ComboboxInput placeholder="Select a framework" />
-            <ComboboxContent>
-              <ComboboxEmpty>No items found.</ComboboxEmpty>
-              <ComboboxList>
-                {frameworks.map((item) => (
-                  <ComboboxItem key={item} value={item}>
-                    {item}
-                  </ComboboxItem>
-                ))}
-              </ComboboxList>
-            </ComboboxContent>
-          </Combobox>
-        </div>
+        <RHFSingleComboboxExample />
       </div>
     ),
-    code: `import { RHFCombobox } from "@/design-system/components/rhf";
+    code: `import { RHFSingleCombobox } from "@/design-system/components/rhf";
 import { useForm } from "react-hook-form";
+import type { ComboboxBaseOption } from "@/design-system/components/ui/single-combobox";
 
-const frameworks = ["Next.js", "SvelteKit", "Nuxt.js", "Remix", "Astro"];
+const departments: ComboboxBaseOption[] = [
+  { id: '1', code: 'IT', name: 'Công nghệ thông tin' },
+  { id: '2', code: 'FIN', name: 'Tài chính' },
+  { id: '3', code: 'HR', name: 'Nhân sự' },
+];
 
 export function ExampleCombobox() {
   const { control } = useForm({
     defaultValues: {
-      framework: "",
+      department: undefined,
     },
   });
 
   return (
-    <RHFCombobox
+    <RHFSingleCombobox
       control={control}
-      name="framework"
-      items={frameworks}
-      label="Framework"
-      placeholder="Select a framework"
+      name="department"
+      options={departments}
+      label="Phòng ban"
+      placeholder="Chọn phòng ban"
+    />
+  );
+}`,
+  },
+  {
+    id: 'with-code',
+    label: 'Show Code',
+    preview: (
+      <div className="w-full max-w-md space-y-4 p-4">
+        <RHFSingleComboboxWithCodeExample />
+      </div>
+    ),
+    code: `import { RHFSingleCombobox } from "@/design-system/components/rhf";
+import { useForm } from "react-hook-form";
+
+export function ExampleCombobox() {
+  const { control } = useForm({
+    defaultValues: {
+      department: undefined,
+    },
+  });
+
+  return (
+    <RHFSingleCombobox
+      control={control}
+      name="department"
+      options={departments}
+      label="Phòng ban"
+      placeholder="Chọn phòng ban"
+      showMenuCode={true}
+      showSelectedCode={true}
+    />
+  );
+}`,
+  },
+  {
+    id: 'with-validation',
+    label: 'With Validation',
+    preview: (
+      <div className="w-full max-w-md space-y-4 p-4">
+        <RHFSingleComboboxWithValidationExample />
+      </div>
+    ),
+    code: `import { RHFSingleCombobox } from "@/design-system/components/rhf";
+import { useForm } from "react-hook-form";
+
+export function ExampleCombobox() {
+  const { control } = useForm({
+    defaultValues: {
+      department: undefined,
+    },
+    mode: 'onBlur',
+  });
+
+  return (
+    <RHFSingleCombobox
+      control={control}
+      name="department"
+      options={departments}
+      label="Phòng ban"
+      placeholder="Chọn phòng ban"
+      required
+      rules={{
+        required: 'Vui lòng chọn phòng ban',
+      }}
     />
   );
 }`,
   },
 ];
 
-export default function RHFComboboxGuidePage() {
+function RHFSingleComboboxExample() {
+  const { control } = useForm({
+    defaultValues: {
+      department: undefined,
+    },
+  });
+
+  return (
+    <RHFSingleCombobox
+      control={control}
+      name="department"
+      options={departments}
+      label="Phòng ban"
+      placeholder="Chọn phòng ban"
+    />
+  );
+}
+
+function RHFSingleComboboxWithCodeExample() {
+  const { control } = useForm({
+    defaultValues: {
+      department: undefined,
+    },
+  });
+
+  return (
+    <RHFSingleCombobox
+      control={control}
+      name="department"
+      options={departments}
+      label="Phòng ban"
+      placeholder="Chọn phòng ban"
+      showMenuCode
+      showSelectedCode
+    />
+  );
+}
+
+function RHFSingleComboboxWithValidationExample() {
+  const { control } = useForm({
+    defaultValues: {
+      department: undefined,
+    },
+    mode: 'onBlur',
+  });
+
+  return (
+    <RHFSingleCombobox
+      control={control}
+      name="department"
+      options={departments}
+      label="Phòng ban"
+      placeholder="Chọn phòng ban"
+      required
+    />
+  );
+}
+
+export default function RHFSingleComboboxGuidePage() {
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">
@@ -95,8 +218,8 @@ export default function RHFComboboxGuidePage() {
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            A React Hook Form combobox component with built-in error handling and validation
-            support.
+            React Hook Form wrapper cho SingleCombobox với hỗ trợ validation và error handling tích
+            hợp.
           </p>
         </section>
 
@@ -105,12 +228,12 @@ export default function RHFComboboxGuidePage() {
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
               <CardDescription>
-                Import the RHF Combobox component from the design system.
+                Import RHFSingleCombobox component từ design system.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
-                <code className="text-sm">{`import { RHFCombobox } from "${guide.importPath}";`}</code>
+                <code className="text-sm">{`import { RHFSingleCombobox } from "${guide.importPath}";`}</code>
               </div>
             </CardContent>
           </Card>
@@ -118,7 +241,7 @@ export default function RHFComboboxGuidePage() {
           <Card id="props" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
-              <CardDescription>RHF Combobox component props.</CardDescription>
+              <CardDescription>RHFSingleCombobox component props.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-hidden rounded-2xl border border-border/70">
@@ -150,7 +273,7 @@ export default function RHFComboboxGuidePage() {
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
-              <CardDescription>Common RHF Combobox patterns and configurations.</CardDescription>
+              <CardDescription>Các pattern và cấu hình RHFSingleCombobox phổ biến.</CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">

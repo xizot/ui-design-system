@@ -35,6 +35,8 @@ type SingleComboboxProps<T extends ComboboxBaseOption> = {
   showSelectedCode?: boolean;
   searchPlaceholder?: string;
   emptyMessage?: string;
+  showArrowIcon?: boolean;
+  showClearIcon?: boolean;
   className?: string;
   id?: string;
 };
@@ -52,6 +54,8 @@ function SingleCombobox<T extends ComboboxBaseOption>({
   showSelectedCode = false,
   searchPlaceholder = 'Tìm kiếm...',
   emptyMessage = 'Không tìm thấy kết quả',
+  showArrowIcon = true,
+  showClearIcon = true,
   className,
   id,
 }: SingleComboboxProps<T>) {
@@ -135,14 +139,44 @@ function SingleCombobox<T extends ComboboxBaseOption>({
             {selectedLabel ?? placeholder}
           </span>
 
-          {/* Clear + Chevron (z-10, above trigger) */}
-          <div className="relative z-10 flex shrink-0 items-center gap-0.5 pr-2">
-            {hasValue && !disabled && (
-              <ComboboxPrimitive.Clear className="flex size-5 cursor-pointer items-center justify-center rounded text-muted-foreground hover:text-foreground">
-                <XCircleIcon className="size-4" />
-              </ComboboxPrimitive.Clear>
-            )}
-            <ChevronDownIcon className="pointer-events-none size-4 text-muted-foreground" />
+          {/* Clear-all + Chevron (z-10, above trigger) */}
+          <div className="relative z-10 ml-auto flex shrink-0 items-center gap-0.5 self-center py-[9px] pr-2 [&_svg]:size-4">
+            {hasValue && !disabled ? (
+              showClearIcon && showArrowIcon ? (
+                <div className="relative size-4 shrink-0">
+                  <span
+                    className="absolute inset-0 z-10 flex items-center justify-center opacity-0 transition-opacity group-hover/trigger:opacity-100"
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
+                    onClick={() => {
+                      onChange?.(undefined, undefined);
+                    }}
+                  >
+                    <XCircleIcon className="text-muted-foreground" />
+                    <span className="sr-only">Clear</span>
+                  </span>
+                  <span className="absolute inset-0 flex items-center justify-center transition-opacity group-hover/trigger:opacity-0">
+                    <ChevronDownIcon className="text-muted-foreground" />
+                  </span>
+                </div>
+              ) : showClearIcon ? (
+                <button
+                  type="button"
+                  className="flex size-4 cursor-pointer items-center justify-center rounded text-muted-foreground hover:text-foreground"
+                  onClick={() => {
+                    onChange?.(undefined, undefined);
+                  }}
+                >
+                  <XCircleIcon />
+                </button>
+              ) : showArrowIcon ? (
+                <ChevronDownIcon className="text-muted-foreground" />
+              ) : null
+            ) : showArrowIcon ? (
+              <ChevronDownIcon className="text-muted-foreground" />
+            ) : null}
           </div>
         </div>
 
