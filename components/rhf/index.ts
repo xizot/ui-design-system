@@ -5,6 +5,7 @@ export { RHFErrorMessage } from './rhf-error-message';
 export { RHFInput } from './rhf-input';
 export { RHFMultipleCombobox } from './rhf-multiple-combobox';
 export { RHFNumberInput } from './rhf-number-input';
+export { RHFRadioGroup } from './rhf-radio-group';
 export { RHFSingleCombobox } from './rhf-single-combobox';
 export { RHFSwitch } from './rhf-switch';
 export { RHFTextarea } from './rhf-textarea';

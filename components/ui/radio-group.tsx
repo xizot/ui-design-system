@@ -5,23 +5,66 @@ import { RadioGroup as RadioGroupPrimitive } from '@base-ui/react/radio-group';
 
 import { FORM_SIZE_STYLES, type FormSize } from '@/constants/form-sizes';
 import { cn } from '../../lib/utils';
+import { FormErrorMessage } from './form-error-message';
+import { FormLabel } from './form-label';
+import { Label } from './label';
 
-function RadioGroup({ className, ...props }: RadioGroupPrimitive.Props) {
+type RadioGroupProps = RadioGroupPrimitive.Props & {
+  label?: string | React.ReactNode;
+  required?: boolean;
+  labelClassName?: React.ComponentProps<typeof Label>['className'];
+  errorClassName?: React.ComponentProps<'p'>['className'];
+  wrapperClassName?: React.ComponentProps<'div'>['className'];
+  error?: string;
+};
+
+type RadioGroupItemProps = RadioPrimitive.Root.Props & {
+  size?: FormSize;
+  label?: string | React.ReactNode;
+  labelClassName?: React.ComponentProps<typeof Label>['className'];
+  containerClassName?: React.ComponentProps<'div'>['className'];
+};
+
+function RadioGroup({
+  className,
+  label,
+  required,
+  labelClassName,
+  errorClassName,
+  wrapperClassName,
+  error,
+  ...props
+}: RadioGroupProps) {
   return (
-    <RadioGroupPrimitive
-      data-slot="radio-group"
-      className={cn('grid w-full gap-3', className)}
-      {...props}
-    />
+    <div className={cn('w-fit', wrapperClassName)}>
+      {label ? (
+        <FormLabel
+          label={label}
+          htmlFor={props.id}
+          required={required}
+          className={labelClassName}
+        />
+      ) : null}
+      <RadioGroupPrimitive
+        data-slot="radio-group"
+        aria-invalid={!!error}
+        className={cn('grid w-full gap-3', className)}
+        {...props}
+      />
+      {error ? <FormErrorMessage error={error} errorClassName={errorClassName} /> : null}
+    </div>
   );
 }
 
 function RadioGroupItem({
   className,
   size = 'md',
+  label,
+  labelClassName,
+  containerClassName,
   ...props
-}: RadioPrimitive.Root.Props & { size?: FormSize }) {
-  return (
+}: RadioGroupItemProps) {
+  const radio = (
     <RadioPrimitive.Root
       data-slot="radio-group-item"
       className={cn(
@@ -44,6 +87,20 @@ function RadioGroupItem({
       </RadioPrimitive.Indicator>
     </RadioPrimitive.Root>
   );
+
+  if (!label) {
+    return radio;
+  }
+
+  return (
+    <div className={cn('flex items-center gap-2', containerClassName)}>
+      {radio}
+      <Label htmlFor={props.id} className={labelClassName}>
+        {label}
+      </Label>
+    </div>
+  );
 }
 
 export { RadioGroup, RadioGroupItem };
+export type { RadioGroupItemProps, RadioGroupProps };
