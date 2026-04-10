@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Inter } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/sonner';
@@ -41,6 +42,33 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
+        <Script id="style-preset-bootstrap" strategy="beforeInteractive">{`
+          (() => {
+            try {
+              const presetKey = 'design-system-style-preset';
+              const cssKey = 'design-system-style-preset-css';
+              const styleId = 'design-system-style-preset';
+              const preset = window.localStorage.getItem(presetKey);
+              const cssText = window.localStorage.getItem(cssKey);
+
+              if (!preset || !cssText) {
+                return;
+              }
+
+              document.documentElement.dataset.stylePreset = preset;
+
+              let styleElement = document.getElementById(styleId);
+
+              if (!styleElement) {
+                styleElement = document.createElement('style');
+                styleElement.id = styleId;
+                document.head.appendChild(styleElement);
+              }
+
+              styleElement.textContent = cssText;
+            } catch (error) {}
+          })();
+        `}</Script>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

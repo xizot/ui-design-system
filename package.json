@@ -11,6 +11,7 @@
     "components",
     "hooks",
     "lib",
+    "public",
     "AGENTS.md",
     "README.md",
     "package.json"
