@@ -259,7 +259,7 @@ export function DataTable<TData>({
 
   const table = useReactTable({
     data,
-    columns: [selectionColumn, ...columns],
+    columns: onRowSelectionChange ? [selectionColumn, ...columns] : columns,
     state: {
       sorting,
       columnFilters,

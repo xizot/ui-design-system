@@ -263,7 +263,7 @@ function BasicTableDemo() {
   });
 
   return (
-    <div className="h-full">
+    <div className="h-full w-full">
       <DataTable
         data={payments}
         columns={basicColumns}
@@ -290,7 +290,7 @@ function SelectionTableDemo() {
   const selectedCount = Object.keys(rowSelection).length;
 
   return (
-    <div className="space-y-4 h-full">
+    <div className="space-y-4 h-full w-full h-100">
       <div className="flex items-center justify-between">
         <div className="text-sm text-muted-foreground">
           {selectedCount > 0 ? (
@@ -312,7 +312,7 @@ function SelectionTableDemo() {
       </div>
       <DataTable
         data={payments}
-        columns={selectionColumns}
+        columns={basicColumns}
         sorting={sorting}
         onSortingChange={setSorting}
         columnFilters={columnFilters}
@@ -452,7 +452,7 @@ export default function TableGuidePage() {
                   </TabsContent>
                   <TabsContent value="selection">
                     <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-8">
-                      <div className="flex h-100 items-center justify-center rounded-[18px] bg-card p-6 shadow-sm">
+                      <div className="flex items-center justify-center rounded-[18px] bg-card p-6 shadow-sm">
                         <SelectionTableDemo />
                       </div>
                     </div>
