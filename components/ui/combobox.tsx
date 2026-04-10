@@ -3,15 +3,11 @@
 import { Combobox as ComboboxPrimitive } from '@base-ui/react';
 import * as React from 'react';
 
-import {
-  FORM_SIZE_STYLES,
-  FORM_SIZE_TO_ICON_BUTTON_SIZE,
-  type FormSize,
-} from '@/constants/form-sizes';
-import { CheckIcon, ChevronDownIcon, XIcon } from 'lucide-react';
+import { FORM_SIZE_STYLES, type FormSize } from '@/constants/form-sizes';
+import { CheckIcon, ChevronDownIcon, Search, XIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Button } from './button';
-import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from './input-group';
+import { InputGroup, InputGroupAddon, InputGroupInput } from './input-group';
 
 const Combobox = ComboboxPrimitive.Root;
 
@@ -45,12 +41,7 @@ function ComboboxClear({
   formSize?: FormSize;
 }) {
   return (
-    <ComboboxPrimitive.Clear
-      data-slot="combobox-clear"
-      render={<InputGroupButton variant="ghost" size={FORM_SIZE_TO_ICON_BUTTON_SIZE[formSize]} />}
-      className={cn(className)}
-      {...props}
-    >
+    <ComboboxPrimitive.Clear data-slot="combobox-clear" className={cn(className)} {...props}>
       <XIcon className={cn('pointer-events-none', FORM_SIZE_STYLES[formSize].icon)} />
     </ComboboxPrimitive.Clear>
   );
@@ -60,7 +51,6 @@ function ComboboxInput({
   className,
   children,
   disabled = false,
-  showTrigger = true,
   showClear = false,
   formSize = 'md',
   ...props
@@ -75,18 +65,11 @@ function ComboboxInput({
         render={<InputGroupInput disabled={disabled} size={formSize} />}
         {...props}
       />
+      <InputGroupAddon>
+        <Search className="size-5" />
+      </InputGroupAddon>
       <InputGroupAddon align="inline-end">
-        {showTrigger && (
-          <InputGroupButton
-            size={FORM_SIZE_TO_ICON_BUTTON_SIZE[formSize]}
-            variant="ghost"
-            render={<ComboboxTrigger formSize={formSize} />}
-            data-slot="input-group-button"
-            className="group-has-data-[slot=combobox-clear]/input-group:hidden data-pressed:bg-transparent"
-            disabled={disabled}
-          />
-        )}
-        {showClear && <ComboboxClear disabled={disabled} formSize={formSize} />}
+        {showClear && <ComboboxClear disabled={disabled} />}
       </InputGroupAddon>
       {children}
     </InputGroup>
@@ -156,10 +139,10 @@ function ComboboxItem({ className, children, ...props }: ComboboxPrimitive.Item.
       {children}
       <ComboboxPrimitive.ItemIndicator
         render={
-          <span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center" />
+          <span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center text-primary" />
         }
       >
-        <CheckIcon className="pointer-events-none" />
+        <CheckIcon className="pointer-events-none text-primary!" />
       </ComboboxPrimitive.ItemIndicator>
     </ComboboxPrimitive.Item>
   );

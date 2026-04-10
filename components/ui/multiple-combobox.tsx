@@ -1,7 +1,7 @@
 'use client';
 
 import { Combobox as ComboboxPrimitive } from '@base-ui/react';
-import { ChevronDownIcon, XCircleIcon, XIcon } from 'lucide-react';
+import { Check, ChevronDownIcon, XCircleIcon, XIcon } from 'lucide-react';
 import * as React from 'react';
 
 import { FORM_SIZE_STYLES, type FormSize } from '@/constants/form-sizes';
@@ -288,20 +288,21 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
               placeholder={searchPlaceholder}
               showTrigger={false}
               showClear={false}
-              formSize={size}
+              formSize="sm"
             />
           </div>
 
-          <ComboboxList>
+          <ComboboxList className={'px-2'}>
             <ComboboxEmpty>{emptyMessage}</ComboboxEmpty>
             {filteredOptions.map((option) => (
               <ComboboxPrimitive.Item
                 key={option.id}
                 value={option.id}
                 className={cn(
-                  'relative flex w-full cursor-default select-none items-center gap-2 rounded-sm py-1.5 pl-2 pr-2 text-sm outline-hidden',
+                  'mt-px relative flex w-full cursor-default select-none items-center gap-2 rounded-sm py-1.5 px-2 text-sm outline-hidden',
                   'data-highlighted:bg-accent data-highlighted:text-accent-foreground',
                   'data-disabled:pointer-events-none data-disabled:opacity-50',
+                  internalSelectedIds.has(option.id) && 'bg-accent text-accent-foreground',
                 )}
               >
                 <Checkbox
@@ -310,10 +311,17 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
                   tabIndex={-1}
                   aria-hidden={true}
                   className="pointer-events-none"
+                  wrapperClassName="w-full"
+                  label={
+                    <>
+                      {showMenuCode ? `${option.code} - ${option.name}` : option.name}
+                      {internalSelectedIds.has(option.id) && (
+                        <Check className="h-4 w-4 shrink-0 ml-auto text-primary" />
+                      )}
+                    </>
+                  }
+                  labelClassName="font-normal flex w-full"
                 />
-                <span className="flex-1">
-                  {showMenuCode ? `${option.code} - ${option.name}` : option.name}
-                </span>
               </ComboboxPrimitive.Item>
             ))}
           </ComboboxList>

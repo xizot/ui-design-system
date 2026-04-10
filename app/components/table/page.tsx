@@ -1,21 +1,8 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
 import { CodeBlock } from '@/components/ui/code-block';
-import { Input } from '@/components/ui/input';
-import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { DataColumnHeader, DataTable } from '@/components/ui/data-table';
 import {
   Table,
   TableBody,
@@ -31,17 +18,12 @@ import { cn } from '@/lib/utils';
 import {
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
   useReactTable,
-  type Column,
   type ColumnDef,
   type ColumnFiltersState,
   type PaginationState,
   type SortingState,
 } from '@tanstack/react-table';
-import { ArrowDown, ArrowUp, ArrowUpDown, Funnel } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const guide = {
@@ -208,155 +190,31 @@ function TanstackBasicExample() {
   );
 }
 
-type DataColumnOption = { label: string; value: string };
-
-function DataColumnHeader<TData>({
-  column,
-  label,
-  filterOptions,
-  filterValues = [],
-  onFilterChange,
-  align = 'left',
-}: {
-  column?: Column<TData, unknown>;
-  label: string;
-  filterOptions?: DataColumnOption[];
-  filterValues?: string[];
-  onFilterChange?: (values: string[] | null) => void;
-  align?: 'left' | 'right';
-}) {
-  const [open, setOpen] = useState(false);
-  const [search, setSearch] = useState('');
-  const [pending, setPending] = useState<string[]>([]);
-
-  const sorted = column?.getIsSorted() ?? false;
-  const isActiveSorted = sorted !== false;
-  const isActiveFiltered = filterValues.length > 0;
-  const hasFilterOptions = filterOptions && filterOptions.length > 0;
-
-  const handleSortToggle = () => {
-    if (!column) return;
-    const s = column.getIsSorted();
-    if (s === 'desc') column.clearSorting();
-    else column.toggleSorting(s === 'asc');
-  };
-
-  const filteredOptions =
-    filterOptions?.filter((o) => o.label.toLowerCase().includes(search.toLowerCase())) ?? [];
-
-  const handleOpenChange = (nextOpen: boolean) => {
-    if (nextOpen) setPending([...filterValues]);
-    else setSearch('');
-    setOpen(nextOpen);
-  };
-
-  const handleToggle = (value: string) => {
-    setPending((prev) =>
-      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
-    );
-  };
-
-  const handleApply = () => {
-    onFilterChange?.(pending);
-    setOpen(false);
-    setSearch('');
-  };
-
-  const handleClear = () => {
-    onFilterChange?.(null);
-    setPending([]);
-    setOpen(false);
-    setSearch('');
-  };
-
-  return (
-    <div className={cn('flex items-center gap-1', align === 'right' && 'justify-end')}>
-      {column ? (
-        <button className="flex items-center gap-1" onClick={handleSortToggle}>
-          {label}
-          {sorted === 'asc' ? (
-            <ArrowUp className={cn('size-3', isActiveSorted && 'text-primary')} />
-          ) : sorted === 'desc' ? (
-            <ArrowDown className={cn('size-3', isActiveSorted && 'text-primary')} />
-          ) : (
-            <ArrowUpDown className="size-3 opacity-50" />
-          )}
-        </button>
-      ) : (
-        <span>{label}</span>
-      )}
-
-      {hasFilterOptions && (
-        <Popover open={open} onOpenChange={handleOpenChange}>
-          <PopoverTrigger className="flex items-center">
-            <Funnel className={cn('size-3.5', isActiveFiltered ? 'text-primary' : 'opacity-50')} />
-          </PopoverTrigger>
-          <PopoverContent className="w-52 p-0" align="start" sideOffset={8}>
-            <div className="px-2 pt-2">
-              <Input
-                placeholder="Tìm kiếm..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="h-8 text-sm"
-              />
-            </div>
-            <div className="max-h-48 overflow-y-auto py-1">
-              {filteredOptions.length === 0 ? (
-                <p className="py-4 text-center text-sm text-muted-foreground">Không tìm thấy</p>
-              ) : (
-                filteredOptions.map((option) => (
-                  <button
-                    key={option.value}
-                    type="button"
-                    className="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-accent"
-                    onClick={() => handleToggle(option.value)}
-                  >
-                    <Checkbox
-                      checked={pending.includes(option.value)}
-                      onCheckedChange={() => handleToggle(option.value)}
-                      className="pointer-events-none"
-                    />
-                    {option.label}
-                  </button>
-                ))
-              )}
-            </div>
-            <div className="flex gap-2 border-t border-border/70 p-2">
-              <Button variant="outline" size="sm" className="flex-1" onClick={handleClear}>
-                Xóa
-              </Button>
-              <Button size="sm" className="flex-1" onClick={handleApply}>
-                Áp dụng
-              </Button>
-            </div>
-          </PopoverContent>
-        </Popover>
-      )}
-    </div>
-  );
-}
-
-function getPageRange(currentPage: number, pageCount: number): (number | 'ellipsis')[] {
-  if (pageCount <= 7) return Array.from({ length: pageCount }, (_, i) => i);
-
-  const delta = 1;
-  const left = Math.max(1, currentPage - delta);
-  const right = Math.min(pageCount - 2, currentPage + delta);
-  const result: (number | 'ellipsis')[] = [0];
-
-  if (left > 1) result.push('ellipsis');
-  for (let i = left; i <= right; i++) result.push(i);
-  if (right < pageCount - 2) result.push('ellipsis');
-  result.push(pageCount - 1);
-
-  return result;
-}
-
-const statusFilterOptions: DataColumnOption[] = [
+const statusFilterOptions = [
   { label: 'Pending', value: 'pending' },
   { label: 'Processing', value: 'processing' },
   { label: 'Success', value: 'success' },
   { label: 'Failed', value: 'failed' },
+];
+
+const tanstackSortingColumns: ColumnDef<Payment>[] = [
+  { accessorKey: 'id', header: 'ID' },
+  {
+    accessorKey: 'status',
+    header: ({ column }) => (
+      <DataColumnHeader column={column} label="Trạng thái" filterOptions={statusFilterOptions} />
+    ),
+    filterFn: (row, columnId, filterValues: string[]) =>
+      filterValues.includes(row.getValue(columnId)),
+  },
+  { accessorKey: 'email', header: 'Email' },
+  {
+    accessorKey: 'amount',
+    header: ({ column }) => <DataColumnHeader column={column} label="Số tiền" align="right" />,
+    cell: ({ row }) => (
+      <div className="text-right font-medium">${(row.getValue('amount') as number).toFixed(2)}</div>
+    ),
+  },
 ];
 
 function TanstackSortingExample() {
@@ -367,129 +225,17 @@ function TanstackSortingExample() {
     pageSize: DEFAULT_PAGE_SIZE_OPTIONS[0],
   });
 
-  const getFilterValues = (id: string) =>
-    (columnFilters.find((f) => f.id === id)?.value as string[]) ?? [];
-
-  const columns: ColumnDef<Payment>[] = [
-    { accessorKey: 'id', header: 'ID' },
-    {
-      accessorKey: 'status',
-      header: ({ column }) => (
-        <DataColumnHeader
-          column={column}
-          label="Trạng thái"
-          filterOptions={statusFilterOptions}
-          filterValues={getFilterValues('status')}
-          onFilterChange={(values) => column.setFilterValue(values?.length ? values : undefined)}
-        />
-      ),
-      filterFn: (row, columnId, filterValues: string[]) =>
-        filterValues.includes(row.getValue(columnId)),
-    },
-    { accessorKey: 'email', header: 'Email' },
-    {
-      accessorKey: 'amount',
-      header: ({ column }) => <DataColumnHeader column={column} label="Số tiền" align="right" />,
-      cell: ({ row }) => (
-        <div className="text-right font-medium">
-          ${(row.getValue('amount') as number).toFixed(2)}
-        </div>
-      ),
-    },
-  ];
-
-  const table = useReactTable({
-    data: payments,
-    columns,
-    state: { sorting, columnFilters, pagination },
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    onPaginationChange: setPagination,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-  });
-
   return (
-    <div className="w-full space-y-3">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
-                  {flexRender(header.column.columnDef.header, header.getContext())}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <div className="flex items-center justify-end gap-4">
-        <Pagination className="">
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                text=""
-                size="sm"
-                onClick={() => table.previousPage()}
-                className={!table.getCanPreviousPage() ? 'pointer-events-none opacity-50' : ''}
-              />
-            </PaginationItem>
-            {getPageRange(table.getState().pagination.pageIndex, table.getPageCount()).map(
-              (page, i) =>
-                page === 'ellipsis' ? (
-                  <PaginationItem key={`ellipsis-${i}`}>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                ) : (
-                  <PaginationItem key={page}>
-                    <PaginationLink
-                      size="sm"
-                      isActive={table.getState().pagination.pageIndex === page}
-                      onClick={() => table.setPageIndex(page)}
-                    >
-                      {page + 1}
-                    </PaginationLink>
-                  </PaginationItem>
-                ),
-            )}
-            <PaginationItem>
-              <PaginationNext
-                text=""
-                size="sm"
-                onClick={() => table.nextPage()}
-                className={!table.getCanNextPage() ? 'pointer-events-none opacity-50' : ''}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-        <NativeSelect
-          size="sm"
-          className="w-fit shrink-0"
-          value={table.getState().pagination.pageSize}
-          onChange={(e) => table.setPageSize(Number(e.target.value))}
-        >
-          {DEFAULT_PAGE_SIZE_OPTIONS.map((size) => (
-            <NativeSelectOption key={size} value={size}>
-              {size} / trang
-            </NativeSelectOption>
-          ))}
-        </NativeSelect>
-      </div>
-    </div>
+    <DataTable
+      data={payments}
+      columns={tanstackSortingColumns}
+      sorting={sorting}
+      onSortingChange={setSorting}
+      columnFilters={columnFilters}
+      onColumnFiltersChange={setColumnFilters}
+      pagination={pagination}
+      onPaginationChange={setPagination}
+    />
   );
 }
 
@@ -820,7 +566,7 @@ export default function TableGuidePage() {
 
                 <TabsContent value="basic" className="space-y-5">
                   <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-8">
-                    <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
+                    <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card p-6 shadow-sm">
                       <TanstackBasicExample />
                     </div>
                   </div>
@@ -895,7 +641,7 @@ export function BasicTable({ data }: { data: Payment[] }) {
 
                 <TabsContent value="sorting" className="space-y-5">
                   <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-8">
-                    <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
+                    <div className="flex h-100 items-center justify-center rounded-[18px] bg-card p-6 shadow-sm">
                       <TanstackSortingExample />
                     </div>
                   </div>

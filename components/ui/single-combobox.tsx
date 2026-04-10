@@ -206,15 +206,19 @@ function SingleCombobox<T extends ComboboxBaseOption>({
               id={inputId}
               placeholder={searchPlaceholder}
               showTrigger={false}
-              showClear={false}
-              formSize={size}
+              showClear={true}
+              formSize={'sm'}
             />
           </div>
 
-          <ComboboxList>
+          <ComboboxList className={'px-2'}>
             <ComboboxEmpty>{emptyMessage}</ComboboxEmpty>
             {filteredOptions.map((option) => (
-              <ComboboxItem key={option.id} value={option.id}>
+              <ComboboxItem
+                key={option.id}
+                value={option.id}
+                className={cn('mt-px', value === option.id && 'bg-accent text-accent-foreground')}
+              >
                 {showMenuCode ? `${option.code} - ${option.name}` : option.name}
               </ComboboxItem>
             ))}
