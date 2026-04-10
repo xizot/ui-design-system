@@ -65,6 +65,7 @@ const guides = [
   { slug: 'tabs', name: 'Tabs', group: 'ui' as const },
   { slug: 'textarea', name: 'Textarea', group: 'ui' as const },
   { slug: 'theme-toggle', name: 'Theme Toggle', group: 'ui' as const },
+  { slug: 'time-picker', name: 'Time Picker', group: 'ui' as const },
   { slug: 'toggle', name: 'Toggle', group: 'ui' as const },
   { slug: 'toggle-group', name: 'Toggle Group', group: 'ui' as const },
   { slug: 'tooltip', name: 'Tooltip', group: 'ui' as const },

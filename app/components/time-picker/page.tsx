@@ -1,27 +1,23 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-
-import { RHFTimePicker } from '@/components/rhf';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { CodeBlock } from '@/components/ui/code-block';
+import { TimePicker, type TimeValue } from '@/components/ui/time-picker';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 
 const guide = {
-  name: 'RHF Time Picker',
-  group: 'rhf',
-  importPath: '@/design-system/components/rhf',
+  name: 'Time Picker',
+  group: 'ui',
+  importPath: '@/design-system/components/ui/time-picker',
 } as const;
 
 const props = [
-  { name: 'control', type: 'Control<T>', defaultValue: '--' },
-  { name: 'name', type: 'Path<T>', defaultValue: '--' },
-  { name: 'label', type: 'string', defaultValue: '--' },
+  { name: 'value', type: 'TimeValue', defaultValue: '--' },
+  { name: 'onChange', type: '(value: TimeValue) => void', defaultValue: '--' },
   { name: 'showSeconds', type: 'boolean', defaultValue: 'true' },
   { name: 'className', type: 'string', defaultValue: '--' },
-  { name: 'wrapperClassName', type: 'string', defaultValue: '--' },
-  { name: 'required', type: 'boolean', defaultValue: 'false' },
 ];
 
 const usageSamples = [
@@ -30,25 +26,26 @@ const usageSamples = [
     label: 'Basic',
     preview: (
       <div className="w-full max-w-md space-y-4 p-4">
-        <RHFTimePickerExample />
+        <TimePickerExample />
       </div>
     ),
-    code: `import { RHFTimePicker } from "@/design-system/components/rhf";
-import { useForm } from "react-hook-form";
+    code: `import { TimePicker, type TimeValue } from "@/design-system/components/ui/time-picker";
+import { useState } from "react";
 
 function Example() {
-  const { control } = useForm({
-    defaultValues: {
-      time: "09:30:00",
-    },
+  const [value, setValue] = useState<TimeValue>({
+    hour: "09",
+    minute: "30",
+    second: "00"
   });
 
   return (
-    <RHFTimePicker
-      control={control}
-      name="time"
-      label="Time"
-    />
+    <div className="h-80">
+      <TimePicker
+        value={value}
+        onChange={setValue}
+      />
+    </div>
   );
 }`,
   },
@@ -57,56 +54,107 @@ function Example() {
     label: 'Without Seconds',
     preview: (
       <div className="w-full max-w-md space-y-4 p-4">
-        <RHFTimePickerWithoutSecondsExample />
+        <TimePickerWithoutSecondsExample />
       </div>
     ),
-    code: `import { RHFTimePicker } from "@/design-system/components/rhf";
-import { useForm } from "react-hook-form";
+    code: `import { TimePicker, type TimeValue } from "@/design-system/components/ui/time-picker";
+import { useState } from "react";
 
 function Example() {
-  const { control } = useForm({
-    defaultValues: {
-      time: "14:45",
-    },
+  const [value, setValue] = useState<TimeValue>({
+    hour: "14",
+    minute: "45",
+    second: "00"
   });
 
   return (
-    <RHFTimePicker
-      control={control}
-      name="time"
-      label="Time"
-      showSeconds={false}
-    />
+    <div className="h-80">
+      <TimePicker
+        value={value}
+        onChange={setValue}
+        showSeconds={false}
+      />
+    </div>
+  );
+}`,
+  },
+  {
+    id: 'custom-height',
+    label: 'Custom Height',
+    preview: (
+      <div className="w-full max-w-md space-y-4 p-4">
+        <TimePickerCustomHeightExample />
+      </div>
+    ),
+    code: `import { TimePicker, type TimeValue } from "@/design-system/components/ui/time-picker";
+import { useState } from "react";
+
+function Example() {
+  const [value, setValue] = useState<TimeValue>({
+    hour: "18",
+    minute: "15",
+    second: "30"
+  });
+
+  return (
+    <div className="h-96">
+      <TimePicker
+        value={value}
+        onChange={setValue}
+        className="h-full"
+      />
+    </div>
   );
 }`,
   },
 ];
 
-function RHFTimePickerExample() {
-  const { control } = useForm({
-    defaultValues: {
-      time: '09:30:00',
-    },
+function TimePickerExample() {
+  const [value, setValue] = useState<TimeValue>({
+    hour: '09',
+    minute: '30',
+    second: '00',
   });
 
-  return <RHFTimePicker control={control} name="time" label="Time" />;
+  return (
+    <div className="h-80">
+      <TimePicker value={value} onChange={setValue} />
+    </div>
+  );
 }
 
-function RHFTimePickerWithoutSecondsExample() {
-  const { control } = useForm({
-    defaultValues: {
-      time: '14:45',
-    },
+function TimePickerWithoutSecondsExample() {
+  const [value, setValue] = useState<TimeValue>({
+    hour: '14',
+    minute: '45',
+    second: '00',
   });
 
-  return <RHFTimePicker control={control} name="time" label="Time" showSeconds={false} />;
+  return (
+    <div className="h-80">
+      <TimePicker value={value} onChange={setValue} showSeconds={false} />
+    </div>
+  );
 }
 
-export default function RHFTimePickerGuidePage() {
+function TimePickerCustomHeightExample() {
+  const [value, setValue] = useState<TimeValue>({
+    hour: '18',
+    minute: '15',
+    second: '30',
+  });
+
+  return (
+    <div className="h-96">
+      <TimePicker value={value} onChange={setValue} className="h-full" />
+    </div>
+  );
+}
+
+export default function TimePickerGuidePage() {
   useEffect(() => {
     document.title = `${guide.name} - UI Design System`;
   }, []);
-
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">
@@ -116,8 +164,8 @@ export default function RHFTimePickerGuidePage() {
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            React Hook Form wrapper cho Time Picker với hỗ trợ validation và error handling tích
-            hợp.
+            A time picker component with scrollable columns for hours, minutes, and seconds selection.
+            Supports both 12-hour and 24-hour formats with customizable seconds display.
           </p>
         </section>
 
@@ -126,20 +174,22 @@ export default function RHFTimePickerGuidePage() {
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
               <CardDescription>
-                Import the RHF Time Picker component from the design system.
+                Import the Time Picker component from the design system.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
-                <code className="text-sm">{`import { RHFTimePicker } from "${guide.importPath}";`}</code>
-              </div>
+              <CodeBlock
+                code={`import { TimePicker, type TimeValue } from "${guide.importPath}"`}
+                id="import"
+                className="bg-muted/30"
+              />
             </CardContent>
           </Card>
 
           <Card id="props" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
-              <CardDescription>RHF Time Picker component props.</CardDescription>
+              <CardDescription>Time Picker component props.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-hidden rounded-2xl border border-border/70">
@@ -168,10 +218,33 @@ export default function RHFTimePickerGuidePage() {
             </CardContent>
           </Card>
 
+          <Card id="types" className="rounded-[24px] border-border/70">
+            <CardHeader>
+              <CardTitle>3. Types</CardTitle>
+              <CardDescription>Type definitions used by the Time Picker component.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <h4 className="font-semibold mb-2">TimeValue</h4>
+                  <CodeBlock
+                    code={`export type TimeValue = {
+  hour: string;
+  minute: string;
+  second: string;
+};`}
+                    id="timevalue-type"
+                    className="bg-muted/30"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
-              <CardTitle>3. Usages</CardTitle>
-              <CardDescription>Các pattern và cấu hình RHFTimePicker phổ biến.</CardDescription>
+              <CardTitle>4. Usages</CardTitle>
+              <CardDescription>Common Time Picker patterns and configurations.</CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">
@@ -191,11 +264,7 @@ export default function RHFTimePickerGuidePage() {
                       </div>
                     </div>
 
-                    <div className="overflow-x-auto rounded-2xl border border-border/70 bg-card p-5 text-card-foreground">
-                      <pre className="text-sm leading-6">
-                        <code>{sample.code}</code>
-                      </pre>
-                    </div>
+                    <CodeBlock code={sample.code} id={sample.id} />
                   </TabsContent>
                 ))}
               </Tabs>
@@ -215,6 +284,9 @@ export default function RHFTimePickerGuidePage() {
             </a>
             <a href="#props" className="block transition hover:text-foreground">
               Props
+            </a>
+            <a href="#types" className="block transition hover:text-foreground">
+              Types
             </a>
             <a href="#usages" className="block transition hover:text-foreground">
               Usages
