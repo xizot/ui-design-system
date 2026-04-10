@@ -30,13 +30,46 @@ type Payment = {
   amount: number;
   status: 'pending' | 'processing' | 'success' | 'failed';
   email: string;
-  date?: string;
-  method?: string;
-  category?: string;
-  description?: string;
+  date: string;
+  method: string;
+  category: string;
+  description: string;
 };
 
-const payments: Payment[] = [
+const PAYMENT_METHODS = [
+  { id: 1, code: 'credit_card', name: 'Credit Card' },
+  { id: 2, code: 'bank_transfer', name: 'Bank Transfer' },
+  { id: 3, code: 'paypal', name: 'PayPal' },
+  { id: 4, code: 'cash', name: 'Cash' },
+  { id: 5, code: 'crypto', name: 'Crypto' },
+] as const;
+
+const PAYMENT_CATEGORIES = ['food', 'transport', 'shopping', 'bills', 'entertainment'] as const;
+
+const PAYMENT_CATEGORY_LABELS: Record<(typeof PAYMENT_CATEGORIES)[number], string> = {
+  food: 'Food',
+  transport: 'Transport',
+  shopping: 'Shopping',
+  bills: 'Bills',
+  entertainment: 'Entertainment',
+};
+
+const PAYMENT_DESCRIPTIONS = [
+  'Payment for services',
+  'Online purchase',
+  'Subscription renewal',
+  'Utility bill payment',
+  'Restaurant expense',
+] as const;
+
+const PAYMENT_STATUS_ORDER: Record<Payment['status'], number> = {
+  pending: 0,
+  processing: 1,
+  success: 2,
+  failed: 3,
+};
+
+const basePayments: Array<Pick<Payment, 'id' | 'amount' | 'status' | 'email'>> = [
   { id: 'PAY001', amount: 316, status: 'success', email: 'ken99@yahoo.com' },
   { id: 'PAY002', amount: 242, status: 'success', email: 'abe45@gmail.com' },
   { id: 'PAY003', amount: 837, status: 'processing', email: 'monserrat44@gmail.com' },
@@ -139,6 +172,21 @@ const payments: Payment[] = [
   { id: 'PAY100', amount: 705, status: 'success', email: 'una.v@gmail.com' },
 ];
 
+const payments: Payment[] = basePayments.map((payment, index) => {
+  const method = PAYMENT_METHODS[index % PAYMENT_METHODS.length];
+  const category = PAYMENT_CATEGORIES[index % PAYMENT_CATEGORIES.length];
+  const date = new Date();
+  date.setDate(date.getDate() - (index % 30));
+
+  return {
+    ...payment,
+    date: date.toLocaleDateString('vi-VN'),
+    method: method.code,
+    category,
+    description: PAYMENT_DESCRIPTIONS[index % PAYMENT_DESCRIPTIONS.length],
+  };
+});
+
 const statusFilterOptions = [
   { id: 1, code: 'pending', name: 'Pending' },
   { id: 2, code: 'processing', name: 'Processing' },
@@ -154,6 +202,9 @@ const basicColumns: ColumnDef<Payment>[] = [
     header: ({ column }) => (
       <DataColumnHeader column={column} label="Status" filterOptions={statusFilterOptions} />
     ),
+    sortingFn: (rowA, rowB, columnId) =>
+      PAYMENT_STATUS_ORDER[rowA.getValue(columnId) as Payment['status']] -
+      PAYMENT_STATUS_ORDER[rowB.getValue(columnId) as Payment['status']],
     filterFn: (row, columnId, filterValues: string[]) =>
       filterValues.includes(row.getValue(columnId)),
   },
@@ -168,55 +219,38 @@ const basicColumns: ColumnDef<Payment>[] = [
   {
     accessorKey: 'date',
     header: 'Date',
-    cell: ({ row }) => {
-      const date = new Date();
-      date.setDate(date.getDate() - (row.index % 30));
-      return date.toLocaleDateString('vi-VN');
-    },
   },
   {
     accessorKey: 'method',
     header: ({ column }) => (
-      <DataColumnHeader
-        column={column}
-        label="Method"
-        filterOptions={[
-          { id: 1, code: 'credit_card', name: 'Credit Card' },
-          { id: 2, code: 'bank_transfer', name: 'Bank Transfer' },
-          { id: 3, code: 'paypal', name: 'PayPal' },
-          { id: 4, code: 'cash', name: 'Cash' },
-          { id: 5, code: 'crypto', name: 'Crypto' },
-        ]}
-      />
+      <DataColumnHeader column={column} label="Method" filterOptions={[...PAYMENT_METHODS]} />
     ),
+    cell: ({ row }) => {
+      const method = PAYMENT_METHODS.find((item) => item.code === row.getValue('method'));
+      return method?.name ?? row.getValue('method');
+    },
+    sortingFn: (rowA, rowB, columnId) =>
+      String(
+        PAYMENT_METHODS.find((item) => item.code === rowA.getValue(columnId))?.name ??
+          rowA.getValue(columnId),
+      ).localeCompare(
+        String(
+          PAYMENT_METHODS.find((item) => item.code === rowB.getValue(columnId))?.name ??
+            rowB.getValue(columnId),
+        ),
+      ),
     filterFn: (row, columnId, filterValues: string[]) =>
       filterValues.includes(row.getValue(columnId)),
-    cell: ({ row }) => {
-      const methods = ['Credit Card', 'Bank Transfer', 'PayPal', 'Cash', 'Crypto'];
-      return methods[row.index % methods.length];
-    },
   },
   {
     accessorKey: 'category',
     header: 'Category',
-    cell: ({ row }) => {
-      const categories = ['Food', 'Transport', 'Shopping', 'Bills', 'Entertainment'];
-      return categories[row.index % categories.length];
-    },
+    cell: ({ row }) =>
+      PAYMENT_CATEGORY_LABELS[row.getValue('category') as keyof typeof PAYMENT_CATEGORY_LABELS],
   },
   {
     accessorKey: 'description',
     header: 'Description',
-    cell: ({ row }) => {
-      const descriptions = [
-        'Payment for services',
-        'Online purchase',
-        'Subscription renewal',
-        'Utility bill payment',
-        'Restaurant expense',
-      ];
-      return descriptions[row.index % descriptions.length];
-    },
   },
 ];
 
@@ -333,10 +367,14 @@ function ActionTableDemo() {
 }
 
 const SORT_ORDER_ENUM = {
-  amount_asc: 1,
-  amount_desc: 2,
-  date_asc: 3,
-  date_desc: 4,
+  status_asc: 1,
+  status_desc: 2,
+  method_asc: 3,
+  method_desc: 4,
+  amount_asc: 5,
+  amount_desc: 6,
+  date_asc: 7,
+  date_desc: 8,
 } as const;
 
 const PARSERS = {
@@ -355,7 +393,6 @@ function UrlFilterTableDemo() {
     createSortingHandlers,
   } = useUrlFilters(PARSERS);
 
-  // ✅ Dùng constant reference thay vì inline object
   const { sortingState, handleSortingChange } = createSortingHandlers(SORT_ORDER_ENUM);
 
   const columnFilters = useMemo(() => {
@@ -529,88 +566,74 @@ export default function TableGuidePage() {
                 </Tabs>
                 <CodeBlock
                   id="tanstack-sorting"
-                  code={`import { useState } from "react";
-import {
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  useReactTable,
-  type ColumnDef,
-  type RowSelectionState,
-  type SortingState,
-} from "@tanstack/react-table";
-import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
-import { DataTable } from "@/design-system/components/ui/data-table";
+                  code={`import { useCallback, useMemo } from "react";
+import { type ColumnFiltersState } from "@tanstack/react-table";
+import { parseAsArrayOf, parseAsInteger, parseAsString } from "nuqs";
+import { DataTable } from "@/components/ui/data-table";
+import { useUrlFilters } from "@/hooks/use-url-filter";
 
-function SortableHeader({ label, sorted, onToggle }) {
-  const isActive = sorted !== false;
-  return (
-    <button
-      className={cn("flex items-center gap-1", isActive && "text-primary")}
-      onClick={onToggle}
-    >
-      {label}
-      {sorted === "asc" ? (
-        <ArrowUp className="size-3" />
-      ) : sorted === "desc" ? (
-        <ArrowDown className="size-3" />
-      ) : (
-        <ArrowUpDown className="size-3 opacity-50" />
-      )}
-    </button>
+const SORT_ORDER_ENUM = {
+  status_asc: 1,
+  status_desc: 2,
+  method_asc: 3,
+  method_desc: 4,
+  amount_asc: 5,
+  amount_desc: 6,
+  date_asc: 7,
+  date_desc: 8,
+} as const;
+
+const PARSERS = {
+  sortOrder: parseAsInteger,
+  status: parseAsArrayOf(parseAsString),
+  method: parseAsArrayOf(parseAsString),
+  category: parseAsArrayOf(parseAsString),
+};
+
+export function UrlFilterTableDemo() {
+  const {
+    filters: urlFilters,
+    paginationState,
+    setFilter,
+    onPaginationChange,
+    createSortingHandlers,
+  } = useUrlFilters(PARSERS);
+
+  const { sortingState, handleSortingChange } = createSortingHandlers(SORT_ORDER_ENUM);
+
+  const columnFilters = useMemo(() => {
+    const next: ColumnFiltersState = [];
+    if (urlFilters.status?.length) next.push({ id: "status", value: urlFilters.status });
+    if (urlFilters.method?.length) next.push({ id: "method", value: urlFilters.method });
+    if (urlFilters.category?.length) next.push({ id: "category", value: urlFilters.category });
+    return next;
+  }, [urlFilters]);
+
+  const handleColumnFiltersChange = useCallback(
+    (updater: ColumnFiltersState | ((old: ColumnFiltersState) => ColumnFiltersState)) => {
+      const next = typeof updater === "function" ? updater(columnFilters) : updater;
+      const toValue = (id: string) =>
+        (next.find((item) => item.id === id)?.value as string[]) ?? null;
+
+      setFilter({
+        status: toValue("status"),
+        method: toValue("method"),
+        category: toValue("category"),
+      });
+    },
+    [columnFilters, setFilter],
   );
-}
-
-const columns: ColumnDef<Payment>[] = [
-  { accessorKey: "id", header: "ID" },
-  {
-    accessorKey: "status",
-    header: ({ column }) => (
-      <SortableHeader
-        label="Status"
-        sorted={column.getIsSorted()}
-        onToggle={() => {
-          const s = column.getIsSorted();
-          if (s === "desc") column.clearSorting();
-          else column.toggleSorting(s === "asc");
-        }}
-      />
-    ),
-  },
-  { accessorKey: "email", header: "Email" },
-  {
-    accessorKey: "amount",
-    header: ({ column }) => (
-      <SortableHeader
-        label="Amount"
-        sorted={column.getIsSorted()}
-        onToggle={() => {
-          const s = column.getIsSorted();
-          if (s === "desc") column.clearSorting();
-          else column.toggleSorting(s === "asc");
-        }}
-      />
-    ),
-    cell: ({ row }) => (
-      <div className="text-right font-medium">
-        \${(row.getValue("amount") as number).toFixed(2)}
-      </div>
-    ),
-  },
-];
-
-export function SortableTable({ data }: { data: Payment[] }) {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
   return (
     <DataTable
-      data={data}
+      data={payments}
       columns={columns}
-      sorting={sorting}
-      onSortingChange={setSorting}
-      rowSelection={rowSelection}
-      onRowSelectionChange={setRowSelection}
+      sorting={sortingState}
+      columnFilters={columnFilters}
+      pagination={paginationState}
+      onSortingChange={handleSortingChange}
+      onColumnFiltersChange={handleColumnFiltersChange}
+      onPaginationChange={onPaginationChange}
     />
   );
 }`}
@@ -632,9 +655,6 @@ export function SortableTable({ data }: { data: Payment[] }) {
             </a>
             <a href="#props" className="block transition hover:text-foreground">
               Props
-            </a>
-            <a href="#usages" className="block transition hover:text-foreground">
-              Usages
             </a>
             <a href="#tanstack" className="block transition hover:text-foreground">
               TanStack Table

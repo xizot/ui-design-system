@@ -259,6 +259,7 @@ export function DataTable<TData>({
   const table = useReactTable({
     data,
     columns: onRowSelectionChange ? [selectionColumn, ...columns] : columns,
+    autoResetPageIndex: false,
     state: {
       sorting,
       columnFilters,
