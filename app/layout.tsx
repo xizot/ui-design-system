@@ -42,7 +42,7 @@ export default function RootLayout({
       )}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col" suppressHydrationWarning>
+      <body className="min-h-screen bg-background text-foreground" suppressHydrationWarning>
         <Script
           id="style-preset-data"
           type="application/json"

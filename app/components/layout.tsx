@@ -119,42 +119,46 @@ export default function ComponentsLayout({
         </div>
       </header>
 
-      <div className="mx-auto grid max-w-[1600px] grid-cols-1 gap-0 px-4 md:px-6 xl:grid-cols-[260px_minmax(0,1fr)]">
-        <aside className="hidden border-r border-border/70 py-8 xl:block">
-          <div className="sticky top-24 pr-6">
-            <div className="mb-5">
-              <TypographySmall className="uppercase tracking-[0.24em]">Components</TypographySmall>
-              <TypographyH4 className="mt-2">Usage Guide</TypographyH4>
+      <div className="mx-auto max-w-[1600px] px-4 md:px-6">
+        <div className="grid grid-cols-1 gap-0 xl:grid-cols-[260px_minmax(0,1fr)]">
+          <aside className="hidden border-r border-border/70 py-8 xl:block">
+            <div className="sticky top-24 pr-6">
+              <div className="mb-5">
+                <TypographySmall className="uppercase tracking-[0.24em]">
+                  Components
+                </TypographySmall>
+                <TypographyH4 className="mt-2">Usage Guide</TypographyH4>
+              </div>
+              <ScrollArea className="h-[calc(100vh-200px)]">
+                <nav className="space-y-1 pr-4">
+                  {guides.map((guide) => {
+                    const path = `/components/${guide.slug}`;
+                    const isActive = pathname === path || pathname.startsWith(`${path}/`);
+                    return (
+                      <Link
+                        key={guide.slug}
+                        href={path}
+                        className={cn(
+                          'flex items-center justify-between rounded-xl px-3 py-2 text-sm transition',
+                          isActive
+                            ? 'bg-accent text-foreground font-medium'
+                            : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
+                        )}
+                      >
+                        <span>{guide.name}</span>
+                        <span className="rounded-full border border-border/70 px-2 py-0.5 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                          {guide.group}
+                        </span>
+                      </Link>
+                    );
+                  })}
+                </nav>
+              </ScrollArea>
             </div>
-            <ScrollArea className="h-[calc(100vh-200px)]">
-              <nav className="space-y-1 pr-4">
-                {guides.map((guide) => {
-                  const path = `/components/${guide.slug}`;
-                  const isActive = pathname === path || pathname.startsWith(`${path}/`);
-                  return (
-                    <Link
-                      key={guide.slug}
-                      href={path}
-                      className={cn(
-                        'flex items-center justify-between rounded-xl px-3 py-2 text-sm transition',
-                        isActive
-                          ? 'bg-accent text-foreground font-medium'
-                          : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
-                      )}
-                    >
-                      <span>{guide.name}</span>
-                      <span className="rounded-full border border-border/70 px-2 py-0.5 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                        {guide.group}
-                      </span>
-                    </Link>
-                  );
-                })}
-              </nav>
-            </ScrollArea>
-          </div>
-        </aside>
+          </aside>
 
-        <div className="min-w-0 p-8">{children}</div>
+          <div className="min-w-0 p-8">{children}</div>
+        </div>
       </div>
     </div>
   );
