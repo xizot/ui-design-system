@@ -1033,4 +1033,3 @@ export default function SidebarGuidePage() {
     </div>
   );
 }
-

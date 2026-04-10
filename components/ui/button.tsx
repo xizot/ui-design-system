@@ -21,8 +21,7 @@ const buttonVariants = cva(
         link: 'text-primary underline-offset-4 hover:underline',
       },
       size: {
-        default:
-          `${FORM_SIZE_STYLES.md.height} ${FORM_SIZE_STYLES.md.padding} ${FORM_SIZE_STYLES.md.text} gap-1.5 in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 ${FORM_SIZE_STYLES.md.svgIcon}`,
+        default: `${FORM_SIZE_STYLES.md.height} ${FORM_SIZE_STYLES.md.padding} ${FORM_SIZE_STYLES.md.text} gap-1.5 in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 ${FORM_SIZE_STYLES.md.svgIcon}`,
         xxs: `${FORM_SIZE_STYLES.xxs.height} ${FORM_SIZE_STYLES.xxs.padding} ${FORM_SIZE_STYLES.xxs.text} gap-1 in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 ${FORM_SIZE_STYLES.xxs.svgIcon}`,
         xs: `${FORM_SIZE_STYLES.xs.height} ${FORM_SIZE_STYLES.xs.padding} ${FORM_SIZE_STYLES.xs.text} gap-1 in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 ${FORM_SIZE_STYLES.xs.svgIcon}`,
         sm: `${FORM_SIZE_STYLES.sm.height} ${FORM_SIZE_STYLES.sm.padding} ${FORM_SIZE_STYLES.sm.text} gap-1 in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 ${FORM_SIZE_STYLES.sm.svgIcon}`,
@@ -31,20 +30,13 @@ const buttonVariants = cva(
         xl: `${FORM_SIZE_STYLES.xl.height} ${FORM_SIZE_STYLES.xl.padding} ${FORM_SIZE_STYLES.xl.text} gap-1.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 ${FORM_SIZE_STYLES.xl.svgIcon}`,
         xxl: `${FORM_SIZE_STYLES.xxl.height} ${FORM_SIZE_STYLES.xxl.padding} ${FORM_SIZE_STYLES.xxl.text} gap-1.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 ${FORM_SIZE_STYLES.xxl.svgIcon}`,
         icon: FORM_SIZE_STYLES.md.iconButton,
-        'icon-xxs':
-          `${FORM_SIZE_STYLES.xxs.iconButton} ${FORM_SIZE_STYLES.xxs.svgIcon}`,
-        'icon-xs':
-          `${FORM_SIZE_STYLES.xs.iconButton} ${FORM_SIZE_STYLES.xs.svgIcon}`,
-        'icon-sm':
-          `${FORM_SIZE_STYLES.sm.iconButton} ${FORM_SIZE_STYLES.sm.svgIcon}`,
-        'icon-md':
-          `${FORM_SIZE_STYLES.md.iconButton} ${FORM_SIZE_STYLES.md.svgIcon}`,
-        'icon-lg':
-          `${FORM_SIZE_STYLES.lg.iconButton} ${FORM_SIZE_STYLES.lg.svgIcon}`,
-        'icon-xl':
-          `${FORM_SIZE_STYLES.xl.iconButton} ${FORM_SIZE_STYLES.xl.svgIcon}`,
-        'icon-xxl':
-          `${FORM_SIZE_STYLES.xxl.iconButton} ${FORM_SIZE_STYLES.xxl.svgIcon}`,
+        'icon-xxs': `${FORM_SIZE_STYLES.xxs.iconButton} ${FORM_SIZE_STYLES.xxs.svgIcon}`,
+        'icon-xs': `${FORM_SIZE_STYLES.xs.iconButton} ${FORM_SIZE_STYLES.xs.svgIcon}`,
+        'icon-sm': `${FORM_SIZE_STYLES.sm.iconButton} ${FORM_SIZE_STYLES.sm.svgIcon}`,
+        'icon-md': `${FORM_SIZE_STYLES.md.iconButton} ${FORM_SIZE_STYLES.md.svgIcon}`,
+        'icon-lg': `${FORM_SIZE_STYLES.lg.iconButton} ${FORM_SIZE_STYLES.lg.svgIcon}`,
+        'icon-xl': `${FORM_SIZE_STYLES.xl.iconButton} ${FORM_SIZE_STYLES.xl.svgIcon}`,
+        'icon-xxl': `${FORM_SIZE_STYLES.xxl.iconButton} ${FORM_SIZE_STYLES.xxl.svgIcon}`,
       },
     },
     defaultVariants: {

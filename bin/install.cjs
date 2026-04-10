@@ -472,7 +472,9 @@ function printSummary() {
   console.log(`Project root: ${projectRoot}`);
   console.log(`Install folder: ${installRootName}`);
   console.log(`Directories installed: ${directoriesToCopy.join(', ')}`);
-  console.log(`Project files available: ${projectFilesToCopy.map((file) => file.label).join(', ')}`);
+  console.log(
+    `Project files available: ${projectFilesToCopy.map((file) => file.label).join(', ')}`,
+  );
   console.log(`Files copied: ${conflictState.copied.length}`);
   console.log(`Files overwritten: ${conflictState.overwritten.length}`);
   console.log(`Files skipped: ${conflictState.skipped.length}`);

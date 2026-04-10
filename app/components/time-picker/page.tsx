@@ -164,8 +164,8 @@ export default function TimePickerGuidePage() {
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            A time picker component with scrollable columns for hours, minutes, and seconds selection.
-            Supports both 12-hour and 24-hour formats with customizable seconds display.
+            A time picker component with scrollable columns for hours, minutes, and seconds
+            selection. Supports both 12-hour and 24-hour formats with customizable seconds display.
           </p>
         </section>
 

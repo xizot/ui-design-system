@@ -3,7 +3,11 @@
 import { Combobox as ComboboxPrimitive } from '@base-ui/react';
 import * as React from 'react';
 
-import { FORM_SIZE_STYLES, FORM_SIZE_TO_ICON_BUTTON_SIZE, type FormSize } from '@/constants/form-sizes';
+import {
+  FORM_SIZE_STYLES,
+  FORM_SIZE_TO_ICON_BUTTON_SIZE,
+  type FormSize,
+} from '@/constants/form-sizes';
 import { CheckIcon, ChevronDownIcon, XIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Button } from './button';
@@ -24,13 +28,11 @@ function ComboboxTrigger({
   formSize?: FormSize;
 }) {
   return (
-    <ComboboxPrimitive.Trigger
-      data-slot="combobox-trigger"
-      className={cn(className)}
-      {...props}
-    >
+    <ComboboxPrimitive.Trigger data-slot="combobox-trigger" className={cn(className)} {...props}>
       {children}
-      <ChevronDownIcon className={cn('pointer-events-none text-muted-foreground', FORM_SIZE_STYLES[formSize].icon)} />
+      <ChevronDownIcon
+        className={cn('pointer-events-none text-muted-foreground', FORM_SIZE_STYLES[formSize].icon)}
+      />
     </ComboboxPrimitive.Trigger>
   );
 }

@@ -8,28 +8,19 @@ function TypographyH1({ className, ...props }: React.ComponentProps<'h1'>) {
 
 function TypographyH2({ className, ...props }: React.ComponentProps<'h2'>) {
   return (
-    <h2
-      className={cn('scroll-m-20 text-2xl font-semibold tracking-tight', className)}
-      {...props}
-    />
+    <h2 className={cn('scroll-m-20 text-2xl font-semibold tracking-tight', className)} {...props} />
   );
 }
 
 function TypographyH3({ className, ...props }: React.ComponentProps<'h3'>) {
   return (
-    <h3
-      className={cn('scroll-m-20 text-xl font-semibold tracking-tight', className)}
-      {...props}
-    />
+    <h3 className={cn('scroll-m-20 text-xl font-semibold tracking-tight', className)} {...props} />
   );
 }
 
 function TypographyH4({ className, ...props }: React.ComponentProps<'h4'>) {
   return (
-    <h4
-      className={cn('scroll-m-20 text-lg font-semibold tracking-tight', className)}
-      {...props}
-    />
+    <h4 className={cn('scroll-m-20 text-lg font-semibold tracking-tight', className)} {...props} />
   );
 }
 

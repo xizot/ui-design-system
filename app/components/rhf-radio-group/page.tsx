@@ -118,11 +118,12 @@ function RHFRadioBasicDemo() {
 }
 
 function RHFRadioValidationDemo() {
-  const { control, handleSubmit, setError, clearErrors, formState, watch } = useForm<ValidationValues>({
-    defaultValues: {
-      status: '',
-    },
-  });
+  const { control, handleSubmit, setError, clearErrors, formState, watch } =
+    useForm<ValidationValues>({
+      defaultValues: {
+        status: '',
+      },
+    });
 
   const status = watch('status');
 
@@ -146,7 +147,8 @@ function RHFRadioValidationDemo() {
       <div className="flex items-center gap-3">
         <Button type="submit">Kiểm tra</Button>
         <span className="text-sm text-muted-foreground">
-          {formState.errors.status?.message || (status ? `Đã chọn: ${status}` : 'Chưa chọn giá trị')}
+          {formState.errors.status?.message ||
+            (status ? `Đã chọn: ${status}` : 'Chưa chọn giá trị')}
         </span>
       </div>
     </form>
@@ -270,4 +272,3 @@ export default function RHFRadioGroupGuidePage() {
     </div>
   );
 }
-
