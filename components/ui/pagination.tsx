@@ -1,8 +1,8 @@
 import * as React from 'react';
 
+import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Button } from './button';
-import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from 'lucide-react';
 
 function Pagination({ className, ...props }: React.ComponentProps<'nav'>) {
   return (
@@ -10,7 +10,7 @@ function Pagination({ className, ...props }: React.ComponentProps<'nav'>) {
       role="navigation"
       aria-label="pagination"
       data-slot="pagination"
-      className={cn('mx-auto flex w-full justify-center', className)}
+      className={cn('flex', className)}
       {...props}
     />
   );
@@ -27,7 +27,7 @@ function PaginationContent({ className, ...props }: React.ComponentProps<'ul'>) 
 }
 
 function PaginationItem({ ...props }: React.ComponentProps<'li'>) {
-  return <li data-slot="pagination-item" {...props} />;
+  return <li data-slot="pagination-item shrink-0" {...props} />;
 }
 
 type PaginationLinkProps = {
@@ -35,12 +35,11 @@ type PaginationLinkProps = {
 } & Pick<React.ComponentProps<typeof Button>, 'size'> &
   React.ComponentProps<'a'>;
 
-function PaginationLink({ className, isActive, size = 'icon', ...props }: PaginationLinkProps) {
+function PaginationLink({ className, isActive, ...props }: PaginationLinkProps) {
   return (
     <Button
-      variant={isActive ? 'outline' : 'ghost'}
-      size={size}
-      className={cn(className)}
+      variant={'ghost'}
+      className={cn('w-8 h-8', className, isActive && 'bg-primary/10! text-primary!')}
       nativeButton={false}
       render={
         <a
@@ -67,7 +66,7 @@ function PaginationPrevious({
       {...props}
     >
       <ChevronLeftIcon data-icon="inline-start" />
-      <span className="hidden sm:block">{text}</span>
+      {text && <span className="hidden sm:block">{text}</span>}
     </PaginationLink>
   );
 }
@@ -84,7 +83,7 @@ function PaginationNext({
       className={cn('pr-2!', className)}
       {...props}
     >
-      <span className="hidden sm:block">{text}</span>
+      {text && <span className="hidden sm:block">{text}</span>}
       <ChevronRightIcon data-icon="inline-end" />
     </PaginationLink>
   );

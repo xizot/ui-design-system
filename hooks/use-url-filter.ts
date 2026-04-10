@@ -1,9 +1,9 @@
-import { ALL_OPTION, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '../constants/common';
-import { hasValue } from '../lib/utils';
 import { PaginationState, SortingState, Updater } from '@tanstack/react-table';
 import type { inferParserType, ParserMap } from 'nuqs';
 import { createParser, parseAsInteger, parseAsString, useQueryStates } from 'nuqs';
 import { useCallback, useMemo } from 'react';
+import { ALL_OPTION, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '../constants/common';
+import { hasValue } from '../lib/utils';
 
 export type BaseKeyNames = {
   page: string;
@@ -92,7 +92,14 @@ export function useUrlFilters<T extends ParserMap, K extends BaseKeyNames = Defa
   );
 
   const [rawFilters, rawSetFilters] = useQueryStates(
-    { ...runtimeBaseParsers, ...parsers } as unknown as T,
+    {
+      ...runtimeBaseParsers,
+      ...parsers,
+      // Ensure sortOrder always has default if not provided in parsers
+      ...(parsers[resolvedKeys.sortOrder]
+        ? {}
+        : { [resolvedKeys.sortOrder]: parseAsInteger.withDefault(0) }),
+    } as unknown as T,
     { shallow: true, history: 'replace' },
   );
 
