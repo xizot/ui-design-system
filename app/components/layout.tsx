@@ -88,7 +88,7 @@ export default function ComponentsLayout({
   const pathname = usePathname();
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.04),transparent_36%),linear-gradient(180deg,var(--background),color-mix(in_oklab,var(--background),var(--muted)_36%))]">
+    <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-30 border-b border-border/70 bg-background/85 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between px-6">
           <div className="flex items-center gap-4">
@@ -142,7 +142,7 @@ export default function ComponentsLayout({
                       )}
                     >
                       <span>{guide.name}</span>
-                      <span className="rounded-full border border-border/70 px-2 py-0.5 text-[10px] uppercase tracking-[0.2em]">
+                      <span className="rounded-full border border-border/70 px-2 py-0.5 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
                         {guide.group}
                       </span>
                     </Link>
