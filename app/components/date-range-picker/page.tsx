@@ -18,7 +18,11 @@ const props = [
   { name: 'label', type: 'string | React.ReactNode', defaultValue: '--' },
   { name: 'value', type: 'DateRange', defaultValue: '--' },
   { name: 'onChange', type: '(range: DateRange | undefined) => void', defaultValue: '--' },
-  { name: 'placeholder', type: '{ from?: string; to?: string }', defaultValue: "{ from: 'From date', to: 'To date' }" },
+  {
+    name: 'placeholder',
+    type: '{ from?: string; to?: string }',
+    defaultValue: "{ from: 'From date', to: 'To date' }",
+  },
   { name: 'dateFormat', type: 'string', defaultValue: "'dd/MM/yyyy'" },
   { name: 'presets', type: 'DateRangePreset[]', defaultValue: '--' },
   { name: 'showPresets', type: 'boolean', defaultValue: '--' },
@@ -133,7 +137,9 @@ export default function DateRangePickerGuidePage() {
           <Card id="import" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
-              <CardDescription>Import the Date Range Picker component from the design system.</CardDescription>
+              <CardDescription>
+                Import the Date Range Picker component from the design system.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
@@ -177,7 +183,9 @@ export default function DateRangePickerGuidePage() {
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
-              <CardDescription>Common Date Range Picker patterns and configurations.</CardDescription>
+              <CardDescription>
+                Common Date Range Picker patterns and configurations.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">

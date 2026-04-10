@@ -126,12 +126,7 @@ function RHFNumberInputExample() {
   });
 
   return (
-    <RHFNumberInput
-      control={control}
-      name="amount"
-      label="Amount"
-      placeholder="Enter amount"
-    />
+    <RHFNumberInput control={control} name="amount" label="Amount" placeholder="Enter amount" />
   );
 }
 
@@ -191,7 +186,9 @@ export default function RHFNumberInputGuidePage() {
           <Card id="import" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
-              <CardDescription>Import the RHF Number Input component from the design system.</CardDescription>
+              <CardDescription>
+                Import the RHF Number Input component from the design system.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
@@ -235,7 +232,9 @@ export default function RHFNumberInputGuidePage() {
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
-              <CardDescription>Common RHF Number Input patterns and configurations.</CardDescription>
+              <CardDescription>
+                Common RHF Number Input patterns and configurations.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">

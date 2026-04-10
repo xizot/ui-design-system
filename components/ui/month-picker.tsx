@@ -57,7 +57,7 @@ function MonthPicker({
   // Scroll to selected month on mount and when selectedMonth changes
   React.useEffect(() => {
     if (!monthContainerRef.current) return;
-    
+
     const timer = setTimeout(() => {
       const monthElement = monthContainerRef.current?.querySelector(
         `[data-month="${selectedMonth}"]`,
@@ -78,7 +78,7 @@ function MonthPicker({
   // Scroll to selected year on mount and when selectedYear changes
   React.useEffect(() => {
     if (!yearContainerRef.current) return;
-    
+
     const timer = setTimeout(() => {
       const yearElement = yearContainerRef.current?.querySelector(
         `[data-year="${selectedYear}"]`,

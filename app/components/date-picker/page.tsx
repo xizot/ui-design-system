@@ -115,14 +115,7 @@ function Example() {
 function DatePickerExample() {
   const [value, setValue] = useState<Date | undefined>(undefined);
 
-  return (
-    <DatePicker
-      label="Date"
-      placeholder="Pick a date"
-      value={value}
-      onChange={setValue}
-    />
-  );
+  return <DatePicker label="Date" placeholder="Pick a date" value={value} onChange={setValue} />;
 }
 
 function DatePickerWithTimeExample() {
@@ -163,7 +156,8 @@ export default function DatePickerGuidePage() {
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            A date picker component with support for date selection, time selection, and month picking.
+            A date picker component with support for date selection, time selection, and month
+            picking.
           </p>
         </section>
 
@@ -171,7 +165,9 @@ export default function DatePickerGuidePage() {
           <Card id="import" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
-              <CardDescription>Import the Date Picker component from the design system.</CardDescription>
+              <CardDescription>
+                Import the Date Picker component from the design system.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">

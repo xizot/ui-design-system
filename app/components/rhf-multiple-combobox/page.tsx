@@ -34,8 +34,16 @@ const props = [
   { name: 'autoResize', type: 'boolean', defaultValue: 'false' },
   { name: 'showArrowIcon', type: 'boolean', defaultValue: 'true' },
   { name: 'showClearIcon', type: 'boolean', defaultValue: 'true' },
-  { name: 'onSelectedRender', type: '(selectedId, selectedOption) => React.ReactNode', defaultValue: '--' },
-  { name: 'callback', type: '(values: (string | number)[], options: TOption[]) => void', defaultValue: '--' },
+  {
+    name: 'onSelectedRender',
+    type: '(selectedId, selectedOption) => React.ReactNode',
+    defaultValue: '--',
+  },
+  {
+    name: 'callback',
+    type: '(values: (string | number)[], options: TOption[]) => void',
+    defaultValue: '--',
+  },
   { name: 'wrapperClassName', type: 'string', defaultValue: '--' },
   { name: 'labelClassName', type: 'string', defaultValue: '--' },
   { name: 'descriptionClassName', type: 'string', defaultValue: '--' },
@@ -264,7 +272,8 @@ export default function RHFMultipleComboboxGuidePage() {
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            React Hook Form wrapper cho MultipleCombobox với hỗ trợ validation và error handling tích hợp.
+            React Hook Form wrapper cho MultipleCombobox với hỗ trợ validation và error handling
+            tích hợp.
           </p>
         </section>
 
@@ -318,7 +327,9 @@ export default function RHFMultipleComboboxGuidePage() {
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
-              <CardDescription>Các pattern và cấu hình RHFMultipleCombobox phổ biến.</CardDescription>
+              <CardDescription>
+                Các pattern và cấu hình RHFMultipleCombobox phổ biến.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">

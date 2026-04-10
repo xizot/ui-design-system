@@ -11,10 +11,7 @@ import {
 import { SingleCombobox } from '@/components/ui/single-combobox';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
-import {
-  SingleComboboxBasicDemo,
-  SingleComboboxWithCodeDemo,
-} from './single-combobox-demo';
+import { SingleComboboxBasicDemo, SingleComboboxWithCodeDemo } from './single-combobox-demo';
 import {
   MultipleComboboxBasicDemo,
   MultipleComboboxWithCodeDemo,
@@ -398,14 +395,17 @@ export default function ComboboxGuidePage() {
           </Card>
         </div>
 
-        <section id="single-combobox" className="mt-12 rounded-[28px] border border-border/70 bg-card px-8 py-10 shadow-sm">
+        <section
+          id="single-combobox"
+          className="mt-12 rounded-[28px] border border-border/70 bg-card px-8 py-10 shadow-sm"
+        >
           <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
             composed
           </p>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight">SingleCombobox</h2>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            Combobox chọn một giá trị duy nhất. Hỗ trợ tìm kiếm theo cả mã và tên, hiển thị label
-            và error tích hợp sẵn.
+            Combobox chọn một giá trị duy nhất. Hỗ trợ tìm kiếm theo cả mã và tên, hiển thị label và
+            error tích hợp sẵn.
           </p>
         </section>
 
@@ -426,8 +426,7 @@ import type { ComboboxBaseOption } from "@/design-system/components/ui/single-co
             <CardHeader>
               <CardTitle>ComboboxBaseOption</CardTitle>
               <CardDescription>
-                Kiểu dữ liệu option bắt buộc. Mọi danh sách truyền vào đều phải có đủ 3 trường
-                này.
+                Kiểu dữ liệu option bắt buộc. Mọi danh sách truyền vào đều phải có đủ 3 trường này.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -514,14 +513,17 @@ import type { ComboboxBaseOption } from "@/design-system/components/ui/single-co
           </Card>
         </div>
 
-        <section id="multiple-combobox" className="mt-12 rounded-[28px] border border-border/70 bg-card px-8 py-10 shadow-sm">
+        <section
+          id="multiple-combobox"
+          className="mt-12 rounded-[28px] border border-border/70 bg-card px-8 py-10 shadow-sm"
+        >
           <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
             composed
           </p>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight">MultipleCombobox</h2>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            Combobox chọn nhiều giá trị, hiển thị các lựa chọn dưới dạng chip. Hỗ trợ tìm kiếm
-            theo cả mã và tên, xoá từng chip hoặc xoá toàn bộ.
+            Combobox chọn nhiều giá trị, hiển thị các lựa chọn dưới dạng chip. Hỗ trợ tìm kiếm theo
+            cả mã và tên, xoá từng chip hoặc xoá toàn bộ.
           </p>
         </section>
 
@@ -542,8 +544,7 @@ import type { ComboboxBaseOption } from "@/design-system/components/ui/single-co
               <CardTitle>Props</CardTitle>
               <CardDescription>
                 Props giống <code className="rounded bg-muted px-1 text-xs">SingleCombobox</code>,
-                khác ở kiểu của{' '}
-                <code className="rounded bg-muted px-1 text-xs">value</code> và{' '}
+                khác ở kiểu của <code className="rounded bg-muted px-1 text-xs">value</code> và{' '}
                 <code className="rounded bg-muted px-1 text-xs">onChange</code>.
               </CardDescription>
             </CardHeader>
