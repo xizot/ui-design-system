@@ -68,7 +68,23 @@ Ví dụ:
 | `size`      | `"default" \| "sm"`      | `"default"` |
 | `className` | `string`                 | `--`        |
 
-### 4. Usages
+### 4. Sizes
+
+Chèn section này cho các component có prop `size`. Hiên thi các size có available:
+
+Ví demo:
+
+```tsx
+<div className="flex items-center gap-4">
+  <Button size="xs">Extra Small</Button>
+  <Button size="sm">Small</Button>
+  <Button size="md">Medium</Button>
+  <Button size="lg">Large</Button>
+  <Button size="xl">Extra Large</Button>
+</div>
+```
+
+### 5. Usages
 
 Không tách preview và code thành 2 section rời.
 Thay vào đó:
@@ -113,8 +129,12 @@ export default function ComponentGuidePage() {
           <h2>2. Props</h2>
         </section>
 
+        <section id="sizes">
+          <h2>3. Sizes</h2>
+        </section>
+
         <section id="usages">
-          <h2>3. Usages</h2>
+          <h2>4. Usages</h2>
         </section>
       </main>
 
@@ -122,6 +142,7 @@ export default function ComponentGuidePage() {
         <nav>
           <a href="#import">Import</a>
           <a href="#props">Props</a>
+          <a href="#sizes">Sizes</a>
           <a href="#usages">Usages</a>
         </nav>
       </aside>

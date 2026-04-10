@@ -23,6 +23,7 @@ type RHFInputProps<T extends FieldValues = FieldValues> = Omit<
 function RHFInput<T extends FieldValues = FieldValues>({
   control,
   name,
+  register,
   callback,
   ...props
 }: RHFInputProps<T>) {

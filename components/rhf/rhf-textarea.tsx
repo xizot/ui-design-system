@@ -37,6 +37,7 @@ function RHFTextarea<T extends FieldValues = FieldValues>({
   showMaxLength = true,
   maxLength = 512,
   rows = 5,
+  register,
   callback,
   ...props
 }: RHFTextareaProps<T>) {
