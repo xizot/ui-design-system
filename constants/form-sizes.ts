@@ -2,6 +2,17 @@ import { cva } from 'class-variance-authority';
 
 export type FormSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
+// Default sizes for form controls
+export const DEFAULT_FORM_CONTROL_SIZE: FormSize = 'md';
+export const DEFAULT_CHECKBOX_SIZE: FormSize = 'sm';
+export const DEFAULT_SWITCH_SIZE: FormSize = 'md';
+export const DEFAULT_INPUT_SIZE: FormSize = 'md';
+export const DEFAULT_TEXTAREA_SIZE: FormSize = 'md';
+export const DEFAULT_SELECT_SIZE: FormSize = 'md';
+export const DEFAULT_BUTTON_SIZE: FormSize = 'md';
+export const DEFAULT_DATE_PICKER_SIZE: FormSize = 'md';
+export const DEFAULT_TIME_PICKER_SIZE: FormSize = 'md';
+
 type FormSizeStyle = {
   height: string;
   text: string;
@@ -37,8 +48,7 @@ export const FORM_SIZE_STYLES: Record<FormSize, FormSizeStyle> = {
     padding: 'px-[var(--form-size-xs-padding-x)] py-[var(--form-size-xs-padding-y)]',
     icon: 'size-[var(--form-size-xs-icon)]',
     iconButton: 'size-[var(--form-size-xs-icon-button)]',
-    switchRoot:
-      'h-[var(--form-size-xs-icon-button)] w-[calc(var(--form-size-xs-icon-button)*1.5)]',
+    switchRoot: 'h-[var(--form-size-xs-icon-button)] w-[calc(var(--form-size-xs-icon-button)*1.5)]',
     radioDot: 'size-[calc(var(--form-size-xs-icon)*0.5)]',
     svgIcon: "[&_svg:not([class*='size-'])]:size-[var(--form-size-xs-icon)]",
   },
@@ -50,8 +60,7 @@ export const FORM_SIZE_STYLES: Record<FormSize, FormSizeStyle> = {
     padding: 'px-[var(--form-size-sm-padding-x)] py-[var(--form-size-sm-padding-y)]',
     icon: 'size-[var(--form-size-sm-icon)]',
     iconButton: 'size-[var(--form-size-sm-icon-button)]',
-    switchRoot:
-      'h-[var(--form-size-sm-icon-button)] w-[calc(var(--form-size-sm-icon-button)*1.5)]',
+    switchRoot: 'h-[var(--form-size-sm-icon-button)] w-[calc(var(--form-size-sm-icon-button)*1.5)]',
     radioDot: 'size-[calc(var(--form-size-sm-icon)*0.5)]',
     svgIcon: "[&_svg:not([class*='size-'])]:size-[var(--form-size-sm-icon)]",
   },
@@ -63,8 +72,7 @@ export const FORM_SIZE_STYLES: Record<FormSize, FormSizeStyle> = {
     padding: 'px-[var(--form-size-md-padding-x)] py-[var(--form-size-md-padding-y)]',
     icon: 'size-[var(--form-size-md-icon)]',
     iconButton: 'size-[var(--form-size-md-icon-button)]',
-    switchRoot:
-      'h-[var(--form-size-md-icon-button)] w-[calc(var(--form-size-md-icon-button)*1.5)]',
+    switchRoot: 'h-[var(--form-size-md-icon-button)] w-[calc(var(--form-size-md-icon-button)*1.5)]',
     radioDot: 'size-[calc(var(--form-size-md-icon)*0.5)]',
     svgIcon: "[&_svg:not([class*='size-'])]:size-[var(--form-size-md-icon)]",
   },
@@ -76,8 +84,7 @@ export const FORM_SIZE_STYLES: Record<FormSize, FormSizeStyle> = {
     padding: 'px-[var(--form-size-lg-padding-x)] py-[var(--form-size-lg-padding-y)]',
     icon: 'size-[var(--form-size-lg-icon)]',
     iconButton: 'size-[var(--form-size-lg-icon-button)]',
-    switchRoot:
-      'h-[var(--form-size-lg-icon-button)] w-[calc(var(--form-size-lg-icon-button)*1.5)]',
+    switchRoot: 'h-[var(--form-size-lg-icon-button)] w-[calc(var(--form-size-lg-icon-button)*1.5)]',
     radioDot: 'size-[calc(var(--form-size-lg-icon)*0.5)]',
     svgIcon: "[&_svg:not([class*='size-'])]:size-[var(--form-size-lg-icon)]",
   },
@@ -89,8 +96,7 @@ export const FORM_SIZE_STYLES: Record<FormSize, FormSizeStyle> = {
     padding: 'px-[var(--form-size-xl-padding-x)] py-[var(--form-size-xl-padding-y)]',
     icon: 'size-[var(--form-size-xl-icon)]',
     iconButton: 'size-[var(--form-size-xl-icon-button)]',
-    switchRoot:
-      'h-[var(--form-size-xl-icon-button)] w-[calc(var(--form-size-xl-icon-button)*1.5)]',
+    switchRoot: 'h-[var(--form-size-xl-icon-button)] w-[calc(var(--form-size-xl-icon-button)*1.5)]',
     radioDot: 'size-[calc(var(--form-size-xl-icon)*0.5)]',
     svgIcon: "[&_svg:not([class*='size-'])]:size-[var(--form-size-xl-icon)]",
   },

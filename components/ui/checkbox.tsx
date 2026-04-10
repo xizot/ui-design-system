@@ -1,6 +1,6 @@
 'use client';
 
-import { FORM_SIZE_STYLES, type FormSize } from '@/constants/form-sizes';
+import { DEFAULT_CHECKBOX_SIZE, FORM_SIZE_STYLES, type FormSize } from '@/constants/form-sizes';
 import { Checkbox as CheckboxPrimitive } from '@base-ui/react/checkbox';
 import { CheckIcon } from 'lucide-react';
 
@@ -24,7 +24,7 @@ function Checkbox({
   labelClassName,
   error,
   errorClassName,
-  size = 'sm',
+  size = DEFAULT_CHECKBOX_SIZE,
   ...props
 }: CheckboxProps) {
   return (
