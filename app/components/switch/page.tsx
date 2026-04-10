@@ -1,9 +1,8 @@
-import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import type { Metadata } from 'next';
 
 const guide = {
   name: 'Switch',
@@ -29,88 +28,52 @@ const usageSamples = [
   {
     id: 'default',
     label: 'Default',
-    preview: (
-      <div className="flex items-center space-x-2">
-        <Switch id="airplane-mode" />
-        <Label htmlFor="airplane-mode">Airplane Mode</Label>
-      </div>
-    ),
+    preview: <Switch id="airplane-mode" label="Airplane Mode" />,
     code: `import { Switch } from "@/design-system/components/ui/switch";
 import { Label } from "@/design-system/components/ui/label";
 
 export function Example() {
   return (
-    <div className="flex items-center space-x-2">
-      <Switch id="airplane-mode" />
-      <Label htmlFor="airplane-mode">Airplane Mode</Label>
-    </div>
+    <Switch id="airplane-mode" label="Airplane Mode" />
   );
 }`,
   },
   {
     id: 'small',
     label: 'Small',
-    preview: (
-      <div className="flex items-center space-x-2">
-        <Switch id="small-switch" size="sm" />
-        <Label htmlFor="small-switch">Small Switch</Label>
-      </div>
-    ),
+    preview: <Switch id="small-switch" size="sm" label="Small Switch" />,
     code: `import { Switch } from "@/design-system/components/ui/switch";
 import { Label } from "@/design-system/components/ui/label";
 
 export function Example() {
   return (
-    <div className="flex items-center space-x-2">
-      <Switch id="small-switch" size="sm" />
-      <Label htmlFor="small-switch">Small Switch</Label>
-    </div>
+    <Switch id="small-switch" size="sm" label="Small Switch" />
   );
 }`,
   },
   {
     id: 'disabled',
     label: 'Disabled',
-    preview: (
-      <div className="flex items-center space-x-2">
-        <Switch id="disabled" disabled />
-        <Label htmlFor="disabled" className="text-muted-foreground">
-          Disabled
-        </Label>
-      </div>
-    ),
+    preview: <Switch id="disabled" disabled label="Disabled" />,
     code: `import { Switch } from "@/design-system/components/ui/switch";
 import { Label } from "@/design-system/components/ui/label";
 
 export function Example() {
   return (
-    <div className="flex items-center space-x-2">
-      <Switch id="disabled" disabled />
-      <Label htmlFor="disabled" className="text-muted-foreground">
-        Disabled
-      </Label>
-    </div>
+    <Switch id="disabled" disabled label="Disabled" />
   );
 }`,
   },
   {
     id: 'checked',
     label: 'Checked',
-    preview: (
-      <div className="flex items-center space-x-2">
-        <Switch id="checked" defaultChecked />
-        <Label htmlFor="checked">Notifications</Label>
-      </div>
-    ),
+    preview: <Switch id="checked" defaultChecked label="Notifications" />,
     code: `import { Switch } from "@/design-system/components/ui/switch";
 import { Label } from "@/design-system/components/ui/label";
 
 export function Example() {
   return (
-    <div className="flex items-center space-x-2">
-      <Switch id="checked" defaultChecked />
-      <Label htmlFor="checked">Notifications</Label>
-    </div>
+    <Switch id="checked" defaultChecked label="Notifications" />
   );
 }`,
   },

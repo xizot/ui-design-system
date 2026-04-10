@@ -1,9 +1,9 @@
-import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/input-group';
-import { Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Search } from 'lucide-react';
+import type { Metadata } from 'next';
 
 const guide = {
   name: 'Input Group',
@@ -24,7 +24,7 @@ function InputGroupExample() {
         <InputGroupAddon>
           <Search />
         </InputGroupAddon>
-        <InputGroupAddon align="inline-end">12 results</InputGroupAddon>
+        <InputGroupAddon align="inline-end">Kg</InputGroupAddon>
       </InputGroup>
     </div>
   );

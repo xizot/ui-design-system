@@ -4,8 +4,8 @@ import type { FieldValues } from 'react-hook-form';
 import { useController } from 'react-hook-form';
 
 import { cn } from '../../lib/utils';
-import { Label } from '../ui/label';
 import { Combobox, ComboboxContent, ComboboxInput, ComboboxList } from '../ui/combobox';
+import { Label } from '../ui/label';
 import type { RHFControlProps } from './types';
 
 type RHFComboboxProps<T extends FieldValues = FieldValues> = RHFControlProps<T> &

@@ -15,7 +15,7 @@
     "package.json"
   ],
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --port 6001",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
