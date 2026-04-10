@@ -22,7 +22,7 @@ import { FormErrorMessage } from '@/components/ui/form-error-message';
 import { FormLabel } from '@/components/ui/form-label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
-import { type FormSize } from '@/constants/form-sizes';
+import { FORM_SIZE_STYLES, type FormSize } from '@/constants/form-sizes';
 import { cn } from '@/lib/utils';
 import type { ComponentProps } from 'react';
 
@@ -250,14 +250,17 @@ function DateRangePicker({
           <PopoverTrigger>
             <div
               className={cn(
-                'group w-full inline-flex items-center justify-between rounded-md border border-border bg-background px-3 py-2 text-sm shadow-sm ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+                'group w-full inline-flex items-center justify-between rounded-md border border-border bg-background shadow-sm ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+                FORM_SIZE_STYLES[size].height,
+                FORM_SIZE_STYLES[size].padding,
+                FORM_SIZE_STYLES[size].text,
                 !value?.from && 'text-muted-foreground',
                 error && 'border-destructive',
                 triggerClassName,
               )}
             >
               <span>{displayValue}</span>
-              <CalendarIcon className="h-4 w-4 opacity-50" />
+              <CalendarIcon className={cn('opacity-50', FORM_SIZE_STYLES[size].icon)} />
             </div>
           </PopoverTrigger>
           <PopoverContent

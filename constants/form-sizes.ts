@@ -1,91 +1,137 @@
-import { cva, type VariantProps } from 'class-variance-authority';
+import { cva } from 'class-variance-authority';
 
-/**
- * Default text size class for form components and labels
- * Uses CSS variable --default-text-size which can be configured in CSS
- */
+export type FormSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
-/**
- * Form component size variants
- * All form components should use these sizes for consistency
- */
+type FormSizeStyle = {
+  height: string;
+  text: string;
+  paddingX: string;
+  paddingY: string;
+  padding: string;
+  icon: string;
+  iconButton: string;
+  switchRoot: string;
+  radioDot: string;
+  svgIcon: string;
+};
+
+export const FORM_SIZE_STYLES: Record<FormSize, FormSizeStyle> = {
+  xxs: {
+    height: 'h-[var(--form-size-xxs-height)]',
+    text: 'text-[length:var(--form-size-xxs-text)]',
+    paddingX: 'px-[var(--form-size-xxs-padding-x)]',
+    paddingY: 'py-[var(--form-size-xxs-padding-y)]',
+    padding: 'px-[var(--form-size-xxs-padding-x)] py-[var(--form-size-xxs-padding-y)]',
+    icon: 'size-[var(--form-size-xxs-icon)]',
+    iconButton: 'size-[var(--form-size-xxs-icon-button)]',
+    switchRoot:
+      'h-[var(--form-size-xxs-icon-button)] w-[calc(var(--form-size-xxs-icon-button)*1.5)]',
+    radioDot: 'size-[calc(var(--form-size-xxs-icon)*0.5)]',
+    svgIcon: "[&_svg:not([class*='size-'])]:size-[var(--form-size-xxs-icon)]",
+  },
+  xs: {
+    height: 'h-[var(--form-size-xs-height)]',
+    text: 'text-[length:var(--form-size-xs-text)]',
+    paddingX: 'px-[var(--form-size-xs-padding-x)]',
+    paddingY: 'py-[var(--form-size-xs-padding-y)]',
+    padding: 'px-[var(--form-size-xs-padding-x)] py-[var(--form-size-xs-padding-y)]',
+    icon: 'size-[var(--form-size-xs-icon)]',
+    iconButton: 'size-[var(--form-size-xs-icon-button)]',
+    switchRoot:
+      'h-[var(--form-size-xs-icon-button)] w-[calc(var(--form-size-xs-icon-button)*1.5)]',
+    radioDot: 'size-[calc(var(--form-size-xs-icon)*0.5)]',
+    svgIcon: "[&_svg:not([class*='size-'])]:size-[var(--form-size-xs-icon)]",
+  },
+  sm: {
+    height: 'h-[var(--form-size-sm-height)]',
+    text: 'text-[length:var(--form-size-sm-text)]',
+    paddingX: 'px-[var(--form-size-sm-padding-x)]',
+    paddingY: 'py-[var(--form-size-sm-padding-y)]',
+    padding: 'px-[var(--form-size-sm-padding-x)] py-[var(--form-size-sm-padding-y)]',
+    icon: 'size-[var(--form-size-sm-icon)]',
+    iconButton: 'size-[var(--form-size-sm-icon-button)]',
+    switchRoot:
+      'h-[var(--form-size-sm-icon-button)] w-[calc(var(--form-size-sm-icon-button)*1.5)]',
+    radioDot: 'size-[calc(var(--form-size-sm-icon)*0.5)]',
+    svgIcon: "[&_svg:not([class*='size-'])]:size-[var(--form-size-sm-icon)]",
+  },
+  md: {
+    height: 'h-[var(--form-size-md-height)]',
+    text: 'text-[length:var(--form-size-md-text)]',
+    paddingX: 'px-[var(--form-size-md-padding-x)]',
+    paddingY: 'py-[var(--form-size-md-padding-y)]',
+    padding: 'px-[var(--form-size-md-padding-x)] py-[var(--form-size-md-padding-y)]',
+    icon: 'size-[var(--form-size-md-icon)]',
+    iconButton: 'size-[var(--form-size-md-icon-button)]',
+    switchRoot:
+      'h-[var(--form-size-md-icon-button)] w-[calc(var(--form-size-md-icon-button)*1.5)]',
+    radioDot: 'size-[calc(var(--form-size-md-icon)*0.5)]',
+    svgIcon: "[&_svg:not([class*='size-'])]:size-[var(--form-size-md-icon)]",
+  },
+  lg: {
+    height: 'h-[var(--form-size-lg-height)]',
+    text: 'text-[length:var(--form-size-lg-text)]',
+    paddingX: 'px-[var(--form-size-lg-padding-x)]',
+    paddingY: 'py-[var(--form-size-lg-padding-y)]',
+    padding: 'px-[var(--form-size-lg-padding-x)] py-[var(--form-size-lg-padding-y)]',
+    icon: 'size-[var(--form-size-lg-icon)]',
+    iconButton: 'size-[var(--form-size-lg-icon-button)]',
+    switchRoot:
+      'h-[var(--form-size-lg-icon-button)] w-[calc(var(--form-size-lg-icon-button)*1.5)]',
+    radioDot: 'size-[calc(var(--form-size-lg-icon)*0.5)]',
+    svgIcon: "[&_svg:not([class*='size-'])]:size-[var(--form-size-lg-icon)]",
+  },
+  xl: {
+    height: 'h-[var(--form-size-xl-height)]',
+    text: 'text-[length:var(--form-size-xl-text)]',
+    paddingX: 'px-[var(--form-size-xl-padding-x)]',
+    paddingY: 'py-[var(--form-size-xl-padding-y)]',
+    padding: 'px-[var(--form-size-xl-padding-x)] py-[var(--form-size-xl-padding-y)]',
+    icon: 'size-[var(--form-size-xl-icon)]',
+    iconButton: 'size-[var(--form-size-xl-icon-button)]',
+    switchRoot:
+      'h-[var(--form-size-xl-icon-button)] w-[calc(var(--form-size-xl-icon-button)*1.5)]',
+    radioDot: 'size-[calc(var(--form-size-xl-icon)*0.5)]',
+    svgIcon: "[&_svg:not([class*='size-'])]:size-[var(--form-size-xl-icon)]",
+  },
+  xxl: {
+    height: 'h-[var(--form-size-xxl-height)]',
+    text: 'text-[length:var(--form-size-xxl-text)]',
+    paddingX: 'px-[var(--form-size-xxl-padding-x)]',
+    paddingY: 'py-[var(--form-size-xxl-padding-y)]',
+    padding: 'px-[var(--form-size-xxl-padding-x)] py-[var(--form-size-xxl-padding-y)]',
+    icon: 'size-[var(--form-size-xxl-icon)]',
+    iconButton: 'size-[var(--form-size-xxl-icon-button)]',
+    switchRoot:
+      'h-[var(--form-size-xxl-icon-button)] w-[calc(var(--form-size-xxl-icon-button)*1.5)]',
+    radioDot: 'size-[calc(var(--form-size-xxl-icon)*0.5)]',
+    svgIcon: "[&_svg:not([class*='size-'])]:size-[var(--form-size-xxl-icon)]",
+  },
+};
+
+export const FORM_SIZE_TO_ICON_BUTTON_SIZE = {
+  xxs: 'icon-xxs',
+  xs: 'icon-xs',
+  sm: 'icon-sm',
+  md: 'icon-md',
+  lg: 'icon-lg',
+  xl: 'icon-xl',
+  xxl: 'icon-xxl',
+} as const satisfies Record<FormSize, string>;
+
 export const formSizeVariants = cva('', {
   variants: {
     size: {
-      xxs: 'h-6 text-xs',
-      xs: 'h-8 text-xs',
-      sm: 'h-9 text-sm',
-      md: 'h-10 text-base',
-      lg: 'h-11 text-base',
-      xl: 'h-12 text-base',
-      xxl: 'h-14 text-lg',
+      xxs: `${FORM_SIZE_STYLES.xxs.height} ${FORM_SIZE_STYLES.xxs.text}`,
+      xs: `${FORM_SIZE_STYLES.xs.height} ${FORM_SIZE_STYLES.xs.text}`,
+      sm: `${FORM_SIZE_STYLES.sm.height} ${FORM_SIZE_STYLES.sm.text}`,
+      md: `${FORM_SIZE_STYLES.md.height} ${FORM_SIZE_STYLES.md.text}`,
+      lg: `${FORM_SIZE_STYLES.lg.height} ${FORM_SIZE_STYLES.lg.text}`,
+      xl: `${FORM_SIZE_STYLES.xl.height} ${FORM_SIZE_STYLES.xl.text}`,
+      xxl: `${FORM_SIZE_STYLES.xxl.height} ${FORM_SIZE_STYLES.xxl.text}`,
     },
   },
   defaultVariants: {
     size: 'md',
   },
 });
-
-export type FormSize = VariantProps<typeof formSizeVariants>['size'];
-
-/**
- * Size mapping for form components
- * - xxs: 24px height (h-6)
- * - xs: 32px height (h-8)
- * - sm: 36px height (h-9)
- * - md: 40px height (h-10) - default
- * - lg: 44px height (h-11)
- * - xl: 48px height (h-12)
- * - xxl: 56px height (h-14)
- */
-export const FORM_SIZES = {
-  xxs: {
-    height: 'h-7',
-    text: 'text-xs',
-    padding: 'px-2 py-1',
-    icon: 'size-3.5',
-    iconButton: 'size-7',
-  },
-  xs: {
-    height: 'h-8',
-    text: 'text-xs',
-    padding: 'px-2.5 py-1.5',
-    icon: 'size-4',
-    iconButton: 'size-8',
-  },
-  sm: {
-    height: 'h-9',
-    text: 'text-sm',
-    padding: 'px-3 py-1.5',
-    icon: 'size-5',
-    iconButton: 'size-9',
-  },
-  md: {
-    height: 'h-10',
-    text: 'text-sm',
-    padding: 'px-4 py-2',
-    icon: 'size-5',
-    iconButton: 'size-10',
-  },
-  lg: {
-    height: 'h-11',
-    text: 'text-base',
-    padding: 'px-4 py-2.5',
-    icon: 'size-6',
-    iconButton: 'size-11',
-  },
-  xl: {
-    height: 'h-12',
-    text: 'text-base',
-    padding: 'px-5 py-3',
-    icon: 'size-6',
-    iconButton: 'size-12',
-  },
-  xxl: {
-    height: 'h-14',
-    text: 'text-lg',
-    padding: 'px-6 py-3.5',
-    icon: 'size-7',
-    iconButton: 'size-14',
-  },
-} as const;

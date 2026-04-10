@@ -46,6 +46,63 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Form Sizes */
+  /* Extra Extra Small */
+  --form-size-xxs-height: 1.75rem;
+  --form-size-xxs-text: 0.75rem;
+  --form-size-xxs-padding-x: 0.5rem;
+  --form-size-xxs-padding-y: 0.25rem;
+  --form-size-xxs-icon: 0.875rem;
+  --form-size-xxs-icon-button: 1.75rem;
+
+  /* Extra Small */
+  --form-size-xs-height: 2rem;
+  --form-size-xs-text: 0.75rem;
+  --form-size-xs-padding-x: 0.625rem;
+  --form-size-xs-padding-y: 0.375rem;
+  --form-size-xs-icon: 1rem;
+  --form-size-xs-icon-button: 2rem;
+
+  /* Small */
+  --form-size-sm-height: 2.25rem;
+  --form-size-sm-text: 0.875rem;
+  --form-size-sm-padding-x: 0.75rem;
+  --form-size-sm-padding-y: 0.375rem;
+  --form-size-sm-icon: 1.25rem;
+  --form-size-sm-icon-button: 2.25rem;
+
+  /* Medium/Base */
+  --form-size-md-height: 2.5rem;
+  --form-size-md-text: 0.875rem;
+  --form-size-md-padding-x: 1rem;
+  --form-size-md-padding-y: 0.5rem;
+  --form-size-md-icon: 1.25rem;
+  --form-size-md-icon-button: 2.5rem;
+
+  /* Large */
+  --form-size-lg-height: 2.75rem;
+  --form-size-lg-text: 1rem;
+  --form-size-lg-padding-x: 1rem;
+  --form-size-lg-padding-y: 0.625rem;
+  --form-size-lg-icon: 1.5rem;
+  --form-size-lg-icon-button: 2.75rem;
+
+  /* Extra Large */
+  --form-size-xl-height: 3rem;
+  --form-size-xl-text: 1rem;
+  --form-size-xl-padding-x: 1.25rem;
+  --form-size-xl-padding-y: 0.75rem;
+  --form-size-xl-icon: 1.5rem;
+  --form-size-xl-icon-button: 3rem;
+
+  /* Extra Extra Large */
+  --form-size-xxl-height: 3.5rem;
+  --form-size-xxl-text: 1.125rem;
+  --form-size-xxl-padding-x: 1.5rem;
+  --form-size-xxl-padding-y: 0.875rem;
+  --form-size-xxl-icon: 1.75rem;
+  --form-size-xxl-icon-button: 3.5rem;
 }
 
 :root {
@@ -121,9 +178,11 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-sans;
   }

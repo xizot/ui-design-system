@@ -4,6 +4,7 @@ import { Combobox as ComboboxPrimitive } from '@base-ui/react';
 import { ChevronDownIcon, XCircleIcon } from 'lucide-react';
 import * as React from 'react';
 
+import { FORM_SIZE_STYLES, type FormSize } from '@/constants/form-sizes';
 import { cn } from '@/lib/utils';
 import {
   Combobox,
@@ -39,6 +40,7 @@ type SingleComboboxProps<T extends ComboboxBaseOption> = {
   showClearIcon?: boolean;
   className?: string;
   id?: string;
+  size?: FormSize;
 };
 
 function SingleCombobox<T extends ComboboxBaseOption>({
@@ -58,6 +60,7 @@ function SingleCombobox<T extends ComboboxBaseOption>({
   showClearIcon = true,
   className,
   id,
+  size = 'md',
 }: SingleComboboxProps<T>) {
   const generatedId = React.useId();
   const inputId = id ?? generatedId;
@@ -117,10 +120,12 @@ function SingleCombobox<T extends ComboboxBaseOption>({
         <div
           ref={anchorRef}
           className={cn(
-            'group/trigger relative flex h-9 w-full items-center overflow-hidden rounded-md border border-input bg-background text-sm shadow-xs transition-[border-color,box-shadow]',
+            'group/trigger relative flex w-full items-center overflow-hidden rounded-md border border-input bg-background shadow-xs transition-[border-color,box-shadow]',
             'focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50',
             disabled && 'pointer-events-none cursor-not-allowed opacity-50',
             error && 'border-destructive focus-within:ring-destructive/20',
+            FORM_SIZE_STYLES[size].height,
+            FORM_SIZE_STYLES[size].text,
           )}
         >
           {/* Full-area trigger button (invisible, z-0) */}
@@ -132,7 +137,8 @@ function SingleCombobox<T extends ComboboxBaseOption>({
           {/* Selected label or placeholder */}
           <span
             className={cn(
-              'pointer-events-none flex-1 truncate px-3',
+              'pointer-events-none flex-1 truncate',
+              FORM_SIZE_STYLES[size].paddingX,
               selectedLabel ? 'text-foreground' : 'text-muted-foreground',
             )}
           >
@@ -140,7 +146,12 @@ function SingleCombobox<T extends ComboboxBaseOption>({
           </span>
 
           {/* Clear-all + Chevron (z-10, above trigger) */}
-          <div className="relative z-10 ml-auto flex shrink-0 items-center gap-0.5 self-center py-[9px] pr-2 [&_svg]:size-4">
+          <div
+            className={cn(
+              'relative z-10 ml-auto flex shrink-0 items-center gap-0.5 self-center pr-2',
+              FORM_SIZE_STYLES[size].svgIcon,
+            )}
+          >
             {hasValue && !disabled ? (
               showClearIcon && showArrowIcon ? (
                 <div className="relative size-4 shrink-0">
@@ -188,6 +199,7 @@ function SingleCombobox<T extends ComboboxBaseOption>({
               placeholder={searchPlaceholder}
               showTrigger={false}
               showClear={false}
+              formSize={size}
             />
           </div>
 

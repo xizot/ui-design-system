@@ -1,8 +1,9 @@
 'use client';
 
 import { Checkbox as CheckboxPrimitive } from '@base-ui/react/checkbox';
-
 import { CheckIcon } from 'lucide-react';
+import { FORM_SIZE_STYLES, type FormSize } from '@/constants/form-sizes';
+
 import { cn } from '../../lib/utils';
 import { FormErrorMessage } from './form-error-message';
 import { FormLabel } from './form-label';
@@ -14,6 +15,7 @@ type CheckboxProps = CheckboxPrimitive.Root.Props & {
   labelClassName?: React.ComponentProps<typeof Label>['className'];
   errorClassName?: React.ComponentProps<'p'>['className'];
   error?: string;
+  size?: FormSize;
 };
 function Checkbox({
   className,
@@ -22,6 +24,7 @@ function Checkbox({
   labelClassName,
   error,
   errorClassName,
+  size = 'md',
   ...props
 }: CheckboxProps) {
   return (
@@ -38,16 +41,17 @@ function Checkbox({
         <CheckboxPrimitive.Root
           data-slot="checkbox"
           className={cn(
-            'peer relative flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-input shadow-xs transition-shadow outline-none group-has-disabled/field:opacity-50 after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 aria-invalid:aria-checked:border-primary dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary',
+            'peer relative flex shrink-0 items-center justify-center rounded-sm border border-input shadow-xs transition-shadow outline-none group-has-disabled/field:opacity-50 after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 aria-invalid:aria-checked:border-primary dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary',
+            FORM_SIZE_STYLES[size].icon,
             className,
           )}
           {...props}
         >
           <CheckboxPrimitive.Indicator
             data-slot="checkbox-indicator"
-            className="grid place-content-center text-current transition-none [&>svg]:size-3.5"
+            className={cn('grid place-content-center text-current transition-none')}
           >
-            <CheckIcon />
+            <CheckIcon className={FORM_SIZE_STYLES[size].icon} />
           </CheckboxPrimitive.Indicator>
         </CheckboxPrimitive.Root>
       </div>

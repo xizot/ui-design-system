@@ -4,6 +4,7 @@ import { Combobox as ComboboxPrimitive } from '@base-ui/react';
 import { ChevronDownIcon, XCircleIcon, XIcon } from 'lucide-react';
 import * as React from 'react';
 
+import { FORM_SIZE_STYLES, type FormSize } from '@/constants/form-sizes';
 import { cn } from '@/lib/utils';
 import { Badge } from './badge';
 import { Button } from './button';
@@ -36,6 +37,7 @@ type MultipleComboboxProps<T extends ComboboxBaseOption> = {
   onSelectedRender?: (selectedId: string | number, selectedOption: T) => React.ReactNode;
   className?: string;
   id?: string;
+  size?: FormSize;
 };
 
 function MultipleCombobox<T extends ComboboxBaseOption>({
@@ -61,6 +63,7 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
   onSelectedRender,
   className,
   id,
+  size = 'md',
 }: MultipleComboboxProps<T>) {
   const generatedId = React.useId();
   const inputId = id ?? generatedId;
@@ -163,16 +166,19 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
         <div
           ref={anchorRef}
           className={cn(
-            'group/trigger relative flex min-h-9 w-full rounded-md border border-input bg-background text-sm shadow-xs transition-[border-color,box-shadow]',
+            'group/trigger relative flex w-full rounded-md border border-input bg-background shadow-xs transition-[border-color,box-shadow]',
             autoResize ? 'items-start' : 'items-stretch',
             'focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50',
             disabled && 'pointer-events-none cursor-not-allowed opacity-50',
             error && 'border-destructive focus-within:ring-destructive/20',
+            FORM_SIZE_STYLES[size].height,
+            FORM_SIZE_STYLES[size].text,
           )}
         >
           <div
             className={cn(
-              'flex min-w-0 flex-1 items-center gap-1 px-2 py-1.5',
+              'flex min-w-0 flex-1 items-center gap-1',
+              FORM_SIZE_STYLES[size].paddingX,
               autoResize && 'flex-wrap',
             )}
           >
@@ -225,7 +231,12 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
           </div>
 
           {/* Clear-all + Chevron (z-10, above trigger) */}
-          <div className="relative ml-auto flex shrink-0 items-center gap-0.5 self-center py-[9px] pr-2 [&_svg]:size-4">
+          <div
+            className={cn(
+              'relative ml-auto flex shrink-0 items-center gap-0.5 self-center pr-2',
+              FORM_SIZE_STYLES[size].svgIcon,
+            )}
+          >
             {externalValues.length > 0 && !disabled ? (
               showClearIcon && showArrowIcon ? (
                 <div className="relative size-4 shrink-0">
@@ -274,6 +285,7 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
               placeholder={searchPlaceholder}
               showTrigger={false}
               showClear={false}
+              formSize={size}
             />
           </div>
 
