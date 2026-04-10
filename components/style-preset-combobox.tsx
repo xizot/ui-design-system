@@ -22,19 +22,15 @@ function ensureStyleElement() {
 }
 
 function StylePresetCombobox() {
-  const [value, setValue] = React.useState<StylePresetId>(() => {
-    if (typeof window === 'undefined') {
-      return 'default';
-    }
+  const [value, setValue] = React.useState<StylePresetId>('default');
 
+  React.useEffect(() => {
     const savedPreset = window.localStorage.getItem(STORAGE_KEY);
 
     if (savedPreset && STYLE_PRESETS.some((preset) => preset.id === savedPreset)) {
-      return savedPreset as StylePresetId;
+      setValue(savedPreset as StylePresetId);
     }
-
-    return 'default';
-  });
+  }, []);
 
   React.useEffect(() => {
     let isCancelled = false;

@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { StylePresetCombobox } from '@/components/style-preset-combobox';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { TypographyH4, TypographyMuted, TypographySmall } from '@/components/ui/typography';
 import { cn } from '@/lib/utils';
 
 const guides = [
@@ -66,6 +67,7 @@ const guides = [
   { slug: 'toggle', name: 'Toggle', group: 'ui' as const },
   { slug: 'toggle-group', name: 'Toggle Group', group: 'ui' as const },
   { slug: 'tooltip', name: 'Tooltip', group: 'ui' as const },
+  { slug: 'typography', name: 'Typography', group: 'ui' as const },
   { slug: 'rhf-checkbox', name: 'RHF Checkbox', group: 'rhf' as const },
   { slug: 'rhf-date-picker', name: 'RHF Date Picker', group: 'rhf' as const },
   { slug: 'rhf-date-range-picker', name: 'RHF Date Range Picker', group: 'rhf' as const },
@@ -99,7 +101,7 @@ export default function ComponentsLayout({
               Design System
             </Link>
             <span className="hidden h-4 w-px bg-border md:block" />
-            <p className="text-sm text-muted-foreground">Component usage guide template</p>
+            <TypographyMuted>Component usage guide template</TypographyMuted>
           </div>
           <div className="flex items-center gap-2">
             <div className="hidden md:block">
@@ -120,10 +122,8 @@ export default function ComponentsLayout({
         <aside className="hidden border-r border-border/70 py-8 xl:block">
           <div className="sticky top-24 pr-6">
             <div className="mb-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-                Components
-              </p>
-              <h2 className="mt-2 text-lg font-semibold">Usage Guide</h2>
+              <TypographySmall className="uppercase tracking-[0.24em]">Components</TypographySmall>
+              <TypographyH4 className="mt-2">Usage Guide</TypographyH4>
             </div>
             <ScrollArea className="h-[calc(100vh-200px)]">
               <nav className="space-y-1 pr-4">
