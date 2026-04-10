@@ -976,18 +976,18 @@ export default function SidebarGuidePage() {
                       <p className="text-sm text-muted-foreground">{sample.description}</p>
                     )}
 
-                    <div className="rounded-[20px] border border-dashed border-border bg-[linear-gradient(135deg,rgba(0,0,0,0.02),transparent)] p-4">
+                    <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-4">
                       {sample.preview}
                     </div>
 
                     <Tabs defaultValue={sample.files[0]?.name} className="gap-0">
-                      <div className="flex items-center rounded-t-2xl border border-border/70 bg-[#111111] px-4 pt-3">
+                      <div className="flex items-center rounded-t-2xl border border-border/70 bg-muted/30 px-4 pt-3">
                         <TabsList className="h-auto gap-0 rounded-none bg-transparent p-0">
                           {sample.files.map((file) => (
                             <TabsTrigger
                               key={file.name}
                               value={file.name}
-                              className="rounded-none border-b-2 border-transparent px-3 pb-3 text-xs text-zinc-400 data-selected:border-white data-selected:text-white"
+                              className="rounded-none border-b-2 border-transparent px-3 pb-3 text-xs text-muted-foreground data-selected:border-foreground data-selected:text-foreground"
                             >
                               {file.name}
                             </TabsTrigger>
@@ -996,7 +996,7 @@ export default function SidebarGuidePage() {
                       </div>
                       {sample.files.map((file) => (
                         <TabsContent key={file.name} value={file.name} className="mt-0">
-                          <div className="overflow-x-auto rounded-b-2xl border border-t-0 border-border/70 bg-[#111111] p-5 text-white">
+                          <div className="overflow-x-auto rounded-b-2xl border border-t-0 border-border/70 bg-card p-5 text-card-foreground">
                             <pre className="text-sm leading-6">
                               <code>{file.code}</code>
                             </pre>
@@ -1033,3 +1033,4 @@ export default function SidebarGuidePage() {
     </div>
   );
 }
+

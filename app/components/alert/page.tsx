@@ -84,10 +84,10 @@ export function Example() {
     id: 'success',
     label: 'Success',
     preview: (
-      <Alert className="border-green-500 text-green-700 dark:text-green-400">
-        <CheckCircle2 className="h-4 w-4 text-green-700 dark:text-green-400" />
-        <AlertTitle className="text-green-700 dark:text-green-400">Success</AlertTitle>
-        <AlertDescription className="text-green-700/80 dark:text-green-400/80">
+      <Alert className="border-primary/30 bg-primary/5 text-foreground">
+        <CheckCircle2 className="h-4 w-4 text-primary" />
+        <AlertTitle className="text-primary">Success</AlertTitle>
+        <AlertDescription className="text-muted-foreground">
           Your changes have been saved successfully.
         </AlertDescription>
       </Alert>
@@ -101,10 +101,10 @@ import { CheckCircle2 } from "lucide-react";
 
 export function Example() {
   return (
-    <Alert className="border-green-500 text-green-700 dark:text-green-400">
-      <CheckCircle2 className="h-4 w-4 text-green-700 dark:text-green-400" />
-      <AlertTitle className="text-green-700 dark:text-green-400">Success</AlertTitle>
-      <AlertDescription className="text-green-700/80 dark:text-green-400/80">
+    <Alert className="border-primary/30 bg-primary/5 text-foreground">
+      <CheckCircle2 className="h-4 w-4 text-primary" />
+      <AlertTitle className="text-primary">Success</AlertTitle>
+      <AlertDescription className="text-muted-foreground">
         Your changes have been saved successfully.
       </AlertDescription>
     </Alert>
@@ -193,13 +193,13 @@ export default function AlertGuidePage() {
 
                 {usageSamples.map((sample) => (
                   <TabsContent key={sample.id} value={sample.id} className="space-y-5">
-                    <div className="rounded-[20px] border border-dashed border-border bg-[linear-gradient(135deg,rgba(0,0,0,0.02),transparent)] p-8">
+                    <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-8">
                       <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
                         {sample.preview}
                       </div>
                     </div>
 
-                    <div className="overflow-x-auto rounded-2xl border border-border/70 bg-[#111111] p-5 text-white">
+                    <div className="overflow-x-auto rounded-2xl border border-border/70 bg-card p-5 text-card-foreground">
                       <pre className="text-sm leading-6">
                         <code>{sample.code}</code>
                       </pre>
@@ -233,3 +233,4 @@ export default function AlertGuidePage() {
     </div>
   );
 }
+

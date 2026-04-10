@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 const props = [
   {
     name: 'variant',
-    type: `"default" | "secondary" | "destructive" | "outline" | "success" | "warning" | "info"`,
+    type: `"default" | "secondary" | "destructive" | "outline" | "ghost" | "link"`,
     defaultValue: `"default"`,
   },
   { name: 'className', type: 'string', defaultValue: '--' },
@@ -54,9 +54,11 @@ export function Example() {
     label: 'Custom Variants',
     preview: (
       <div className="flex gap-2">
-        <Badge className="bg-green-500 hover:bg-green-600">Success</Badge>
-        <Badge className="bg-yellow-500 hover:bg-yellow-600">Warning</Badge>
-        <Badge className="bg-blue-500 hover:bg-blue-600">Info</Badge>
+        <Badge className="bg-primary text-primary-foreground hover:bg-primary/90">Success</Badge>
+        <Badge className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
+          Warning
+        </Badge>
+        <Badge className="bg-accent text-accent-foreground hover:bg-accent/80">Info</Badge>
       </div>
     ),
     code: `import { Badge } from "@/design-system/components/ui/badge";
@@ -64,9 +66,11 @@ export function Example() {
 export function Example() {
   return (
     <div className="flex gap-2">
-      <Badge className="bg-green-500 hover:bg-green-600">Success</Badge>
-      <Badge className="bg-yellow-500 hover:bg-yellow-600">Warning</Badge>
-      <Badge className="bg-blue-500 hover:bg-blue-600">Info</Badge>
+      <Badge className="bg-primary text-primary-foreground hover:bg-primary/90">Success</Badge>
+      <Badge className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
+        Warning
+      </Badge>
+      <Badge className="bg-accent text-accent-foreground hover:bg-accent/80">Info</Badge>
     </div>
   );
 }`,
@@ -149,13 +153,13 @@ export default function BadgeGuidePage() {
 
                 {usageSamples.map((sample) => (
                   <TabsContent key={sample.id} value={sample.id} className="space-y-5">
-                    <div className="rounded-[20px] border border-dashed border-border bg-[linear-gradient(135deg,rgba(0,0,0,0.02),transparent)] p-8">
+                    <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-8">
                       <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
                         {sample.preview}
                       </div>
                     </div>
 
-                    <div className="overflow-x-auto rounded-2xl border border-border/70 bg-[#111111] p-5 text-white">
+                    <div className="overflow-x-auto rounded-2xl border border-border/70 bg-card p-5 text-card-foreground">
                       <pre className="text-sm leading-6">
                         <code>{sample.code}</code>
                       </pre>
@@ -189,3 +193,4 @@ export default function BadgeGuidePage() {
     </div>
   );
 }
+

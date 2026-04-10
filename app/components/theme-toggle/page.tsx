@@ -25,8 +25,8 @@ export default function ThemeToggleGuidePage() {
             <div className="mt-4 space-y-4">
               <div>
                 <h3 className="text-lg font-medium">1. Install next-themes</h3>
-                <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-[#111111] p-4">
-                  <pre className="text-sm text-white">
+                <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-card p-4 text-card-foreground">
+                  <pre className="text-sm text-card-foreground">
                     <code>npm install next-themes</code>
                   </pre>
                 </div>
@@ -41,8 +41,8 @@ export default function ThemeToggleGuidePage() {
                   </code>
                   :
                 </p>
-                <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-[#111111] p-4">
-                  <pre className="text-sm text-white">
+                <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-card p-4 text-card-foreground">
+                  <pre className="text-sm text-card-foreground">
                     <code>{`'use client'
 
 import * as React from 'react'
@@ -61,8 +61,8 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
                 <p className="mt-2 text-sm text-muted-foreground">
                   Update your <code className="bg-muted px-1 py-0.5 rounded">app/layout.tsx</code>:
                 </p>
-                <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-[#111111] p-4">
-                  <pre className="text-sm text-white">
+                <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-card p-4 text-card-foreground">
+                  <pre className="text-sm text-card-foreground">
                     <code>{`import { ThemeProvider } from '@/components/providers/theme-provider'
 
 export default function RootLayout({
@@ -98,8 +98,8 @@ export default function RootLayout({
                   </code>
                   :
                 </p>
-                <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-[#111111] p-4">
-                  <pre className="text-sm text-white">
+                <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-card p-4 text-card-foreground">
+                  <pre className="text-sm text-card-foreground">
                     <code>{`'use client'
 
 import * as React from 'react'
@@ -133,8 +133,8 @@ export function ThemeToggle() {
                   Update your <code className="bg-muted px-1 py-0.5 rounded">app/globals.css</code>{' '}
                   with dark mode variables:
                 </p>
-                <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-[#111111] p-4">
-                  <pre className="text-sm text-white">
+                <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-card p-4 text-card-foreground">
+                  <pre className="text-sm text-card-foreground">
                     <code>{`@layer base {
   :root {
     --background: 0 0% 100%;
@@ -201,8 +201,8 @@ export function ThemeToggle() {
             <div className="mt-4 space-y-4">
               <div>
                 <h3 className="text-lg font-medium">Import and use</h3>
-                <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-[#111111] p-4">
-                  <pre className="text-sm text-white">
+                <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-card p-4 text-card-foreground">
+                  <pre className="text-sm text-card-foreground">
                     <code>{`import { ThemeToggle } from '@/components/ui/theme-toggle'
 
 export default function Header() {
@@ -224,8 +224,8 @@ export default function Header() {
                 <p className="mt-2 text-sm text-muted-foreground">
                   Add the theme toggle to your navigation or header component:
                 </p>
-                <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-[#111111] p-4">
-                  <pre className="text-sm text-white">
+                <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-card p-4 text-card-foreground">
+                  <pre className="text-sm text-card-foreground">
                     <code>{`import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { Button } from '@/components/ui/button'
 
@@ -302,8 +302,8 @@ export function Navigation() {
                 The <code className="bg-muted px-1 py-0.5 rounded">useTheme</code> hook from
                 next-themes provides access to theme state and controls:
               </p>
-              <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-[#111111] p-4">
-                <pre className="text-sm text-white">
+              <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-card p-4 text-card-foreground">
+                <pre className="text-sm text-card-foreground">
                   <code>{`'use client'
 
 import { useTheme } from 'next-themes'
@@ -388,3 +388,4 @@ export function ThemeInfo() {
     </div>
   );
 }
+

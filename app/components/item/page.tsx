@@ -353,13 +353,13 @@ export default function ItemGuidePage() {
 
                 {usageSamples.map((sample) => (
                   <TabsContent key={sample.id} value={sample.id} className="space-y-5">
-                    <div className="rounded-[20px] border border-dashed border-border bg-[linear-gradient(135deg,rgba(0,0,0,0.02),transparent)] p-8">
+                    <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-8">
                       <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
                         {sample.preview}
                       </div>
                     </div>
 
-                    <div className="overflow-x-auto rounded-2xl border border-border/70 bg-[#111111] p-5 text-white">
+                    <div className="overflow-x-auto rounded-2xl border border-border/70 bg-card p-5 text-card-foreground">
                       <pre className="text-sm leading-6">
                         <code>{sample.code}</code>
                       </pre>
@@ -393,3 +393,4 @@ export default function ItemGuidePage() {
     </div>
   );
 }
+
