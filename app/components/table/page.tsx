@@ -485,7 +485,8 @@ export default function TableGuidePage() {
               <CardTitle>3. TanStack Table</CardTitle>
               <CardDescription>
                 Headless table logic dengan <code>@tanstack/react-table</code> &mdash; sorting,
-                filtering, pagination, selection, and actions.
+                filtering, pagination, selection, and actions. URL Filter tab demonstrates{' '}
+                <code>use-url-filter</code> hook integration for URL state synchronization.
               </CardDescription>
             </CardHeader>
             <CardContent>
