@@ -1,9 +1,8 @@
-import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import type { Metadata } from 'next';
 
 const guide = {
   name: 'Checkbox',
@@ -25,6 +24,11 @@ const props = [
     defaultValue: '--',
   },
   { name: 'disabled', type: 'boolean', defaultValue: 'false' },
+  { name: 'label', type: 'string | React.ReactNode', defaultValue: '--' },
+  { name: 'required', type: 'boolean', defaultValue: 'false' },
+  { name: 'error', type: 'string', defaultValue: '--' },
+  { name: 'labelClassName', type: 'string', defaultValue: '--' },
+  { name: 'errorClassName', type: 'string', defaultValue: '--' },
   { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
@@ -33,20 +37,15 @@ const usageSamples = [
     id: 'default',
     label: 'Default',
     preview: (
-      <div className="flex items-center space-x-2">
-        <Checkbox id="terms" />
-        <Label htmlFor="terms">Accept terms and conditions</Label>
+      <div>
+        <Checkbox id="terms" label="Accept terms and conditions" />
       </div>
     ),
     code: `import { Checkbox } from "@/design-system/components/ui/checkbox";
-import { Label } from "@/design-system/components/ui/label";
 
 export function Example() {
   return (
-    <div className="flex items-center space-x-2">
-      <Checkbox id="terms" />
-      <Label htmlFor="terms">Accept terms and conditions</Label>
-    </div>
+    <Checkbox id="terms" label="Accept terms and conditions" />
   );
 }`,
   },
@@ -54,24 +53,55 @@ export function Example() {
     id: 'disabled',
     label: 'Disabled',
     preview: (
-      <div className="flex items-center space-x-2">
-        <Checkbox id="disabled" disabled />
-        <Label htmlFor="disabled" className="text-muted-foreground">
-          Disabled checkbox
-        </Label>
+      <div>
+        <Checkbox id="disabled" label="Disabled checkbox" disabled />
       </div>
     ),
     code: `import { Checkbox } from "@/design-system/components/ui/checkbox";
-import { Label } from "@/design-system/components/ui/label";
 
 export function Example() {
   return (
-    <div className="flex items-center space-x-2">
-      <Checkbox id="disabled" disabled />
-      <Label htmlFor="disabled" className="text-muted-foreground">
-        Disabled checkbox
-      </Label>
-    </div>
+    <Checkbox id="disabled" label="Disabled checkbox" disabled />
+  );
+}`,
+  },
+  {
+    id: 'with-error',
+    label: 'With Error',
+    preview: (
+      <div>
+        <Checkbox
+          id="terms-error"
+          label="Accept terms and conditions"
+          error="You must accept the terms"
+        />
+      </div>
+    ),
+    code: `import { Checkbox } from "@/design-system/components/ui/checkbox";
+
+export function Example() {
+  return (
+    <Checkbox 
+      id="terms-error" 
+      label="Accept terms and conditions" 
+      error="You must accept the terms" 
+    />
+  );
+}`,
+  },
+  {
+    id: 'required',
+    label: 'Required',
+    preview: (
+      <div>
+        <Checkbox id="terms-required" label="Accept terms and conditions" required />
+      </div>
+    ),
+    code: `import { Checkbox } from "@/design-system/components/ui/checkbox";
+
+export function Example() {
+  return (
+    <Checkbox id="terms-required" label="Accept terms and conditions" required />
   );
 }`,
   },
