@@ -230,43 +230,6 @@
   }
 }
 
-/* Table scrollbar with hover effects */
-.table-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
-}
-
-.table-scrollbar::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-  transition:
-    width 0.2s ease,
-    height 0.2s ease;
-}
-
-.table-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.table-scrollbar::-webkit-scrollbar-thumb {
-  background-color: var(--border);
-  border-radius: 99px;
-  transition: background-color 0.2s ease;
-}
-
-.table-scrollbar:hover::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-}
-
-.table-scrollbar:hover::-webkit-scrollbar-thumb {
-  background-color: var(--muted-foreground);
-}
-
-.table-scrollbar::-webkit-scrollbar-corner {
-  background: transparent;
-}
-
 .pinned-right-column {
   position: sticky;
   right: 0;
