@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { CodeBlock } from '@/components/ui/code-block';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ChevronsUpDown } from 'lucide-react';
+import React, { useEffect } from 'react';
 
 const guide = {
   name: 'Collapsible',
@@ -137,13 +138,15 @@ export default function CollapsibleGuidePage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
-                <code className="text-sm">{`import {
+              <CodeBlock
+                code={`import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "${guide.importPath}";`}</code>
-              </div>
+} from "${guide.importPath}"`}
+                id="import"
+                className="bg-muted/30"
+              />
             </CardContent>
           </Card>
 
@@ -202,11 +205,7 @@ export default function CollapsibleGuidePage() {
                       </div>
                     </div>
 
-                    <div className="overflow-x-auto rounded-2xl border border-border/70 bg-card p-5 text-card-foreground">
-                      <pre className="text-sm leading-6">
-                        <code>{sample.code}</code>
-                      </pre>
-                    </div>
+                    <CodeBlock code={sample.code} id={sample.id} />
                   </TabsContent>
                 ))}
               </Tabs>
@@ -236,4 +235,3 @@ export default function CollapsibleGuidePage() {
     </div>
   );
 }
-

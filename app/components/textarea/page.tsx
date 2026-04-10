@@ -1,19 +1,17 @@
-import type { Metadata } from 'next';
+'use client';
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
+import { CodeBlock } from '@/components/ui/code-block';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
+import { useEffect } from 'react';
 
 const guide = {
   name: 'Textarea',
   group: 'ui',
   importPath: '@/design-system/components/ui/textarea',
 } as const;
-
-export const metadata: Metadata = {
-  title: `${guide.name} - UI Design System`,
-  description: `${guide.name} component documentation`,
-};
 
 const props = [
   { name: 'value', type: 'string', defaultValue: '--' },
@@ -79,6 +77,9 @@ export function Example() {
 ];
 
 export default function TextareaGuidePage() {
+  useEffect(() => {
+    document.title = `${guide.name} - UI Design System`;
+  }, []);
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">
@@ -101,9 +102,11 @@ export default function TextareaGuidePage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
-                <code className="text-sm">{`import { Textarea } from "${guide.importPath}"`}</code>
-              </div>
+              <CodeBlock
+                code={`import { Textarea } from "${guide.importPath}"`}
+                id="import"
+                className="bg-muted/30"
+              />
             </CardContent>
           </Card>
 
@@ -162,11 +165,7 @@ export default function TextareaGuidePage() {
                       </div>
                     </div>
 
-                    <div className="overflow-x-auto rounded-2xl border border-border/70 bg-card p-5 text-card-foreground">
-                      <pre className="text-sm leading-6">
-                        <code>{sample.code}</code>
-                      </pre>
-                    </div>
+                    <CodeBlock code={sample.code} id={sample.id} />
                   </TabsContent>
                 ))}
               </Tabs>
@@ -196,4 +195,3 @@ export default function TextareaGuidePage() {
     </div>
   );
 }
-

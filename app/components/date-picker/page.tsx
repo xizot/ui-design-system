@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { CodeBlock } from '@/components/ui/code-block';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 
 const guide = {
   name: 'Date Picker',
@@ -147,6 +147,9 @@ function DatePickerMonthExample() {
 }
 
 export default function DatePickerGuidePage() {
+  useEffect(() => {
+    document.title = `${guide.name} - UI Design System`;
+  }, []);
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">
@@ -170,9 +173,11 @@ export default function DatePickerGuidePage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
-                <code className="text-sm">{`import { DatePicker } from "${guide.importPath}"`}</code>
-              </div>
+              <CodeBlock
+                code={`import { DatePicker } from "${guide.importPath}"`}
+                id="import"
+                className="bg-muted/30"
+              />
             </CardContent>
           </Card>
 
@@ -231,11 +236,7 @@ export default function DatePickerGuidePage() {
                       </div>
                     </div>
 
-                    <div className="overflow-x-auto rounded-2xl border border-border/70 bg-card p-5 text-card-foreground">
-                      <pre className="text-sm leading-6">
-                        <code>{sample.code}</code>
-                      </pre>
-                    </div>
+                    <CodeBlock code={sample.code} id={sample.id} />
                   </TabsContent>
                 ))}
               </Tabs>
@@ -265,4 +266,3 @@ export default function DatePickerGuidePage() {
     </div>
   );
 }
-

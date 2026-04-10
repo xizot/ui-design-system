@@ -1,5 +1,7 @@
-import type { Metadata } from 'next';
+'use client';
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { CodeBlock } from '@/components/ui/code-block';
 import {
   Combobox,
   ComboboxContent,
@@ -11,23 +13,19 @@ import {
 import { SingleCombobox } from '@/components/ui/single-combobox';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
-import { SingleComboboxBasicDemo, SingleComboboxWithCodeDemo } from './single-combobox-demo';
+import { useEffect } from 'react';
 import {
   MultipleComboboxBasicDemo,
-  MultipleComboboxWithCodeDemo,
   MultipleComboboxLimitTagsDemo,
+  MultipleComboboxWithCodeDemo,
 } from './multiple-combobox-demo';
+import { SingleComboboxBasicDemo, SingleComboboxWithCodeDemo } from './single-combobox-demo';
 
 const guide = {
   name: 'Combobox',
   group: 'ui',
   importPath: '@/design-system/components/ui/combobox',
 } as const;
-
-export const metadata: Metadata = {
-  title: `${guide.name} - UI Design System`,
-  description: `${guide.name} component documentation`,
-};
 
 const props = [
   { name: 'items', type: 'string[]', defaultValue: '--' },
@@ -294,6 +292,9 @@ export function ExampleCombobox() {
 ];
 
 export default function ComboboxGuidePage() {
+  useEffect(() => {
+    document.title = `${guide.name} - UI Design System`;
+  }, []);
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">
@@ -316,15 +317,18 @@ export default function ComboboxGuidePage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
-                <code className="text-sm">{`import {
+              <CodeBlock
+                code={`import {
   Combobox,
   ComboboxContent,
+  ComboboxEmpty,
   ComboboxInput,
-  ComboboxList,
   ComboboxItem,
-} from "${guide.importPath}";`}</code>
-              </div>
+  ComboboxList,
+} from "${guide.importPath}"`}
+                id="import"
+                className="bg-muted/30"
+              />
             </CardContent>
           </Card>
 
@@ -383,11 +387,7 @@ export default function ComboboxGuidePage() {
                       </div>
                     </div>
 
-                    <div className="overflow-x-auto rounded-2xl border border-border/70 bg-card p-5 text-card-foreground">
-                      <pre className="text-sm leading-6">
-                        <code>{sample.code}</code>
-                      </pre>
-                    </div>
+                    <CodeBlock code={sample.code} id={sample.id} />
                   </TabsContent>
                 ))}
               </Tabs>
@@ -415,10 +415,12 @@ export default function ComboboxGuidePage() {
               <CardTitle>Import</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
-                <code className="text-sm">{`import { SingleCombobox } from "@/design-system/components/ui/single-combobox";
-import type { ComboboxBaseOption } from "@/design-system/components/ui/single-combobox";`}</code>
-              </div>
+              <CodeBlock
+                code={`import { SingleCombobox } from "@/design-system/components/ui/single-combobox";
+import type { ComboboxBaseOption } from "@/design-system/components/ui/single-combobox";`}
+                id="single-import"
+                className="bg-muted/30"
+              />
             </CardContent>
           </Card>
 
@@ -430,13 +432,15 @@ import type { ComboboxBaseOption } from "@/design-system/components/ui/single-co
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
-                <code className="text-sm">{`type ComboboxBaseOption = {
+              <CodeBlock
+                code={`type ComboboxBaseOption = {
   id: string | number;
   code: string;
   name: string;
-};`}</code>
-              </div>
+};`}
+                id="single-type"
+                className="bg-muted/30"
+              />
             </CardContent>
           </Card>
 
@@ -501,11 +505,7 @@ import type { ComboboxBaseOption } from "@/design-system/components/ui/single-co
                       </div>
                     </div>
 
-                    <div className="overflow-x-auto rounded-2xl border border-border/70 bg-card p-5 text-card-foreground">
-                      <pre className="text-sm leading-6">
-                        <code>{sample.code}</code>
-                      </pre>
-                    </div>
+                    <CodeBlock code={sample.code} id={`single-${sample.id}`} />
                   </TabsContent>
                 ))}
               </Tabs>
@@ -533,9 +533,11 @@ import type { ComboboxBaseOption } from "@/design-system/components/ui/single-co
               <CardTitle>Import</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
-                <code className="text-sm">{`import { MultipleCombobox } from "@/design-system/components/ui/multiple-combobox";`}</code>
-              </div>
+              <CodeBlock
+                code={`import { MultipleCombobox } from "@/design-system/components/ui/multiple-combobox";`}
+                id="multiple-import"
+                className="bg-muted/30"
+              />
             </CardContent>
           </Card>
 
@@ -601,11 +603,7 @@ import type { ComboboxBaseOption } from "@/design-system/components/ui/single-co
                       </div>
                     </div>
 
-                    <div className="overflow-x-auto rounded-2xl border border-border/70 bg-card p-5 text-card-foreground">
-                      <pre className="text-sm leading-6">
-                        <code>{sample.code}</code>
-                      </pre>
-                    </div>
+                    <CodeBlock code={sample.code} id={`multiple-${sample.id}`} />
                   </TabsContent>
                 ))}
               </Tabs>
@@ -661,4 +659,3 @@ import type { ComboboxBaseOption } from "@/design-system/components/ui/single-co
     </div>
   );
 }
-

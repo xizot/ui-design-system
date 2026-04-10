@@ -1,9 +1,12 @@
-import type { Metadata } from 'next';
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { CodeBlock } from '@/components/ui/code-block';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ChevronRightIcon, PlusIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ChevronRightIcon, PlusIcon } from 'lucide-react';
+import { useEffect } from 'react';
 
 const guide = {
   name: 'Button',
@@ -11,12 +14,10 @@ const guide = {
   importPath: '@/design-system/components/ui/button',
 } as const;
 
-export const metadata: Metadata = {
-  title: `${guide.name} - UI Design System`,
-  description: `${guide.name} component documentation`,
-};
-
 export default function ButtonGuidePage() {
+  useEffect(() => {
+    document.title = `${guide.name} - UI Design System`;
+  }, []);
   const usageSamples = [
     {
       id: 'variants',
@@ -159,9 +160,11 @@ export function Example() {
               <CardDescription>Import trực tiếp từ source path của component.</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
-                <code className="text-sm">{`import { Button } from "${guide.importPath}"`}</code>
-              </div>
+              <CodeBlock
+                code={`import { Button } from "${guide.importPath}"`}
+                id="import"
+                className="bg-muted/30"
+              />
             </CardContent>
           </Card>
 
@@ -252,11 +255,7 @@ export function Example() {
                       </div>
                     </div>
 
-                    <div className="overflow-x-auto rounded-2xl border border-border/70 bg-card p-5 text-card-foreground">
-                      <pre className="text-sm leading-6">
-                        <code>{sample.code}</code>
-                      </pre>
-                    </div>
+                    <CodeBlock code={sample.code} id={sample.id} />
                   </TabsContent>
                 ))}
               </Tabs>
@@ -286,4 +285,3 @@ export function Example() {
     </div>
   );
 }
-

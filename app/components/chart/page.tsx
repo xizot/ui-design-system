@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ChartContainer, type ChartConfig } from '@/components/ui/chart';
-import { BarChart, Bar } from 'recharts';
+import { CodeBlock } from '@/components/ui/code-block';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import { useEffect } from 'react';
+import { Bar, BarChart } from 'recharts';
 
 const guide = {
   name: 'Chart',
@@ -116,9 +117,11 @@ export default function ChartGuidePage() {
               <CardDescription>Import the Chart component from the design system.</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
-                <code className="text-sm">{`import { Chart } from "${guide.importPath}";`}</code>
-              </div>
+              <CodeBlock
+                code={`import { ChartContainer, type ChartConfig } from "${guide.importPath}"`}
+                id="import"
+                className="bg-muted/30"
+              />
             </CardContent>
           </Card>
 
@@ -177,11 +180,7 @@ export default function ChartGuidePage() {
                       </div>
                     </div>
 
-                    <div className="overflow-x-auto rounded-2xl border border-border/70 bg-card p-5 text-card-foreground">
-                      <pre className="text-sm leading-6">
-                        <code>{sample.code}</code>
-                      </pre>
-                    </div>
+                    <CodeBlock code={sample.code} id={sample.id} />
                   </TabsContent>
                 ))}
               </Tabs>
@@ -211,4 +210,3 @@ export default function ChartGuidePage() {
     </div>
   );
 }
-

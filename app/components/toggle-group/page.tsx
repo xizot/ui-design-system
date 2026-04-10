@@ -1,20 +1,18 @@
-import type { Metadata } from 'next';
+'use client';
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { CodeBlock } from '@/components/ui/code-block';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Bold, Italic, Underline, AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { cn } from '@/lib/utils';
+import { AlignCenter, AlignLeft, AlignRight, Bold, Italic, Underline } from 'lucide-react';
+import { useEffect } from 'react';
 
 const guide = {
   name: 'Toggle Group',
   group: 'ui',
   importPath: '@/design-system/components/ui/toggle-group',
 } as const;
-
-export const metadata: Metadata = {
-  title: `${guide.name} - UI Design System`,
-  description: `${guide.name} component documentation`,
-};
 
 const props = [
   { name: 'variant', type: `"default" | "outline"`, defaultValue: `"default"` },
@@ -126,6 +124,9 @@ export function Example() {
 ];
 
 export default function ToggleGroupGuidePage() {
+  useEffect(() => {
+    document.title = `${guide.name} - UI Design System`;
+  }, []);
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">
@@ -149,9 +150,11 @@ export default function ToggleGroupGuidePage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
-                <code className="text-sm">{`import { ToggleGroup, ToggleGroupItem } from "${guide.importPath}"`}</code>
-              </div>
+              <CodeBlock
+                code={`import { ToggleGroup, ToggleGroupItem } from "${guide.importPath}"`}
+                id="import"
+                className="bg-muted/30"
+              />
             </CardContent>
           </Card>
 
@@ -210,11 +213,7 @@ export default function ToggleGroupGuidePage() {
                       </div>
                     </div>
 
-                    <div className="overflow-x-auto rounded-2xl border border-border/70 bg-card p-5 text-card-foreground">
-                      <pre className="text-sm leading-6">
-                        <code>{sample.code}</code>
-                      </pre>
-                    </div>
+                    <CodeBlock code={sample.code} id={sample.id} />
                   </TabsContent>
                 ))}
               </Tabs>
@@ -244,4 +243,3 @@ export default function ToggleGroupGuidePage() {
     </div>
   );
 }
-

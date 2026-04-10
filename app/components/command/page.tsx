@@ -1,6 +1,8 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { CodeBlock } from '@/components/ui/code-block';
 import {
   Command,
   CommandDialog,
@@ -12,10 +14,9 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from '@/components/ui/command';
-import { Button } from '@/components/ui/button';
-import { HomeIcon, InboxIcon, FileTextIcon, FolderIcon, PlusIcon } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import { FileTextIcon, FolderIcon, HomeIcon, InboxIcon, PlusIcon } from 'lucide-react';
 import * as React from 'react';
 import { useEffect } from 'react';
 
@@ -164,16 +165,18 @@ export default function CommandGuidePage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
-                <code className="text-sm">{`import {
+              <CodeBlock
+                code={`import {
   Command,
   CommandDialog,
   CommandInput,
   CommandList,
   CommandItem,
   CommandGroup,
-} from "${guide.importPath}";`}</code>
-              </div>
+} from "${guide.importPath}";`}
+                id="import"
+                className="bg-muted/30"
+              />
             </CardContent>
           </Card>
 
@@ -232,11 +235,7 @@ export default function CommandGuidePage() {
                       </div>
                     </div>
 
-                    <div className="overflow-x-auto rounded-2xl border border-border/70 bg-card p-5 text-card-foreground">
-                      <pre className="text-sm leading-6">
-                        <code>{sample.code}</code>
-                      </pre>
-                    </div>
+                    <CodeBlock code={sample.code} id={sample.id} />
                   </TabsContent>
                 ))}
               </Tabs>
@@ -266,4 +265,3 @@ export default function CommandGuidePage() {
     </div>
   );
 }
-

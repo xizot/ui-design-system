@@ -1,5 +1,8 @@
-import type { Metadata } from 'next';
+'use client';
+
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { CodeBlock } from '@/components/ui/code-block';
 import {
   Dialog,
   DialogContent,
@@ -9,22 +12,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import { useEffect } from 'react';
 
 const guide = {
   name: 'Dialog',
   group: 'ui',
   importPath: '@/design-system/components/ui/dialog',
 } as const;
-
-export const metadata: Metadata = {
-  title: `${guide.name} - UI Design System`,
-  description: `${guide.name} component documentation`,
-};
 
 const props = [
   { name: 'open', type: 'boolean', defaultValue: '--' },
@@ -101,6 +99,9 @@ export function Example() {
 ];
 
 export default function DialogGuidePage() {
+  useEffect(() => {
+    document.title = `${guide.name} - UI Design System`;
+  }, []);
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">
@@ -123,8 +124,8 @@ export default function DialogGuidePage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
-                <code className="text-sm">{`import {
+              <CodeBlock
+                code={`import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -132,8 +133,10 @@ export default function DialogGuidePage() {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "${guide.importPath}"`}</code>
-              </div>
+} from "${guide.importPath}"`}
+                id="import"
+                className="bg-muted/30"
+              />
             </CardContent>
           </Card>
 
@@ -192,11 +195,7 @@ export default function DialogGuidePage() {
                       </div>
                     </div>
 
-                    <div className="overflow-x-auto rounded-2xl border border-border/70 bg-card p-5 text-card-foreground">
-                      <pre className="text-sm leading-6">
-                        <code>{sample.code}</code>
-                      </pre>
-                    </div>
+                    <CodeBlock code={sample.code} id={sample.id} />
                   </TabsContent>
                 ))}
               </Tabs>
@@ -226,4 +225,3 @@ export default function DialogGuidePage() {
     </div>
   );
 }
-

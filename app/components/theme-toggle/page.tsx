@@ -106,7 +106,7 @@ import * as React from 'react'
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@/design-system/components/ui/button'
 
 export function ThemeToggle() {
   const { setTheme, theme } = useTheme()
@@ -203,7 +203,7 @@ export function ThemeToggle() {
                 <h3 className="text-lg font-medium">Import and use</h3>
                 <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-card p-4 text-card-foreground">
                   <pre className="text-sm text-card-foreground">
-                    <code>{`import { ThemeToggle } from '@/components/ui/theme-toggle'
+                    <code>{`import { ThemeToggle } from '@/design-system/components/ui/theme-toggle'
 
 export default function Header() {
   return (
@@ -226,8 +226,8 @@ export default function Header() {
                 </p>
                 <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-card p-4 text-card-foreground">
                   <pre className="text-sm text-card-foreground">
-                    <code>{`import { ThemeToggle } from '@/components/ui/theme-toggle'
-import { Button } from '@/components/ui/button'
+                    <code>{`import { ThemeToggle } from '@/design-system/components/ui/theme-toggle'
+import { Button } from '@/design-system/components/ui/button'
 
 export function Navigation() {
   return (
@@ -388,4 +388,3 @@ export function ThemeInfo() {
     </div>
   );
 }
-
