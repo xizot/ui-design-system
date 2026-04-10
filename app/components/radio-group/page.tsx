@@ -1,14 +1,6 @@
 import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
-import {
-  Field,
-  FieldContent,
-  FieldDescription,
-  FieldLabel,
-  FieldTitle,
-} from '@/components/ui/field';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 
@@ -24,165 +16,111 @@ export const metadata: Metadata = {
 };
 
 const props = [
+  { name: 'label', type: 'ReactNode', defaultValue: '--' },
+  { name: 'required', type: 'boolean', defaultValue: 'false' },
+  { name: 'error', type: 'string', defaultValue: '--' },
+  { name: 'wrapperClassName', type: 'string', defaultValue: '--' },
+  { name: 'labelClassName', type: 'string', defaultValue: '--' },
+  { name: 'errorClassName', type: 'string', defaultValue: '--' },
   { name: 'value', type: 'string', defaultValue: '--' },
   { name: 'defaultValue', type: 'string', defaultValue: '--' },
   { name: 'onValueChange', type: '(value: string) => void', defaultValue: '--' },
-  { name: 'disabled', type: 'boolean', defaultValue: 'false' },
+];
+
+const itemProps = [
+  { name: 'label', type: 'ReactNode', defaultValue: '--' },
+  { name: 'size', type: '"xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl"', defaultValue: '"md"' },
+  { name: 'labelClassName', type: 'string', defaultValue: '--' },
+  { name: 'containerClassName', type: 'string', defaultValue: '--' },
   { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
 const usageSamples = [
   {
-    id: 'default',
-    label: 'Default',
+    id: 'basic',
+    label: 'Basic',
     preview: (
-      <RadioGroup defaultValue="comfortable" className="w-fit">
-        <div className="flex items-center gap-3">
-          <RadioGroupItem value="default" id="r1" />
-          <Label htmlFor="r1">Default</Label>
-        </div>
-        <div className="flex items-center gap-3">
-          <RadioGroupItem value="comfortable" id="r2" />
-          <Label htmlFor="r2">Comfortable</Label>
-        </div>
-        <div className="flex items-center gap-3">
-          <RadioGroupItem value="compact" id="r3" />
-          <Label htmlFor="r3">Compact</Label>
-        </div>
+      <RadioGroup label="Mật độ hiển thị" defaultValue="comfortable" className="w-fit">
+        <RadioGroupItem id="density-default" value="default" label="Mặc định" />
+        <RadioGroupItem id="density-comfortable" value="comfortable" label="Thoải mái" />
+        <RadioGroupItem id="density-compact" value="compact" label="Thu gọn" />
       </RadioGroup>
     ),
     code: `import { RadioGroup, RadioGroupItem } from "@/design-system/components/ui/radio-group";
-import { Label } from "@/design-system/components/ui/label";
 
 export function Example() {
   return (
-    <RadioGroup defaultValue="comfortable" className="w-fit">
-      <div className="flex items-center gap-3">
-        <RadioGroupItem value="default" id="r1" />
-        <Label htmlFor="r1">Default</Label>
-      </div>
-      <div className="flex items-center gap-3">
-        <RadioGroupItem value="comfortable" id="r2" />
-        <Label htmlFor="r2">Comfortable</Label>
-      </div>
-      <div className="flex items-center gap-3">
-        <RadioGroupItem value="compact" id="r3" />
-        <Label htmlFor="r3">Compact</Label>
-      </div>
+    <RadioGroup label="Mật độ hiển thị" defaultValue="comfortable" className="w-fit">
+      <RadioGroupItem id="density-default" value="default" label="Mặc định" />
+      <RadioGroupItem id="density-comfortable" value="comfortable" label="Thoải mái" />
+      <RadioGroupItem id="density-compact" value="compact" label="Thu gọn" />
     </RadioGroup>
   );
 }`,
   },
   {
-    id: 'disabled',
-    label: 'Disabled',
+    id: 'states',
+    label: 'State',
     preview: (
-      <RadioGroup defaultValue="option-one" disabled>
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem value="option-one" id="d1" />
-          <Label htmlFor="d1">Option One</Label>
-        </div>
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem value="option-two" id="d2" />
-          <Label htmlFor="d2">Option Two</Label>
-        </div>
-      </RadioGroup>
+      <div className="grid w-full max-w-md gap-6">
+        <RadioGroup
+          label="Gói dịch vụ"
+          required
+          defaultValue="pro"
+          className="gap-4"
+        >
+          <RadioGroupItem id="plan-basic" value="basic" label="Cơ bản" />
+          <RadioGroupItem id="plan-pro" value="pro" label="Chuyên nghiệp" />
+          <RadioGroupItem id="plan-enterprise" value="enterprise" label="Doanh nghiệp" />
+        </RadioGroup>
+
+        <RadioGroup
+          label="Trạng thái tài khoản"
+          error="Vui lòng chọn một trạng thái"
+          className="gap-4"
+        >
+          <RadioGroupItem id="status-active" value="active" label="Đang hoạt động" />
+          <RadioGroupItem id="status-paused" value="paused" label="Tạm dừng" />
+        </RadioGroup>
+      </div>
     ),
     code: `import { RadioGroup, RadioGroupItem } from "@/design-system/components/ui/radio-group";
-import { Label } from "@/design-system/components/ui/label";
 
 export function Example() {
   return (
-    <RadioGroup defaultValue="option-one" disabled>
-      <div className="flex items-center space-x-2">
-        <RadioGroupItem value="option-one" id="d1" />
-        <Label htmlFor="d1">Option One</Label>
-      </div>
-      <div className="flex items-center space-x-2">
-        <RadioGroupItem value="option-two" id="d2" />
-        <Label htmlFor="d2">Option Two</Label>
-      </div>
+    <RadioGroup
+      label="Trạng thái tài khoản"
+      error="Vui lòng chọn một trạng thái"
+      className="gap-4"
+    >
+      <RadioGroupItem id="status-active" value="active" label="Đang hoạt động" />
+      <RadioGroupItem id="status-paused" value="paused" label="Tạm dừng" />
     </RadioGroup>
   );
 }`,
   },
   {
-    id: 'choice-cards',
-    label: 'Choice Cards',
+    id: 'sizes',
+    label: 'Sizes',
     preview: (
-      <RadioGroup defaultValue="plus" className="max-w-sm">
-        <FieldLabel htmlFor="plus-plan">
-          <Field orientation="horizontal">
-            <FieldContent>
-              <FieldTitle>Plus</FieldTitle>
-              <FieldDescription>For individuals and small teams.</FieldDescription>
-            </FieldContent>
-            <RadioGroupItem value="plus" id="plus-plan" />
-          </Field>
-        </FieldLabel>
-        <FieldLabel htmlFor="pro-plan">
-          <Field orientation="horizontal">
-            <FieldContent>
-              <FieldTitle>Pro</FieldTitle>
-              <FieldDescription>For growing businesses.</FieldDescription>
-            </FieldContent>
-            <RadioGroupItem value="pro" id="pro-plan" />
-          </Field>
-        </FieldLabel>
-        <FieldLabel htmlFor="enterprise-plan">
-          <Field orientation="horizontal">
-            <FieldContent>
-              <FieldTitle>Enterprise</FieldTitle>
-              <FieldDescription>For large teams and enterprises.</FieldDescription>
-            </FieldContent>
-            <RadioGroupItem value="enterprise" id="enterprise-plan" />
-          </Field>
-        </FieldLabel>
-      </RadioGroup>
+      <div className="grid w-full max-w-md gap-5">
+        <RadioGroup label="Kích thước nhỏ" defaultValue="a">
+          <RadioGroupItem id="sm-a" value="a" size="sm" label="Tùy chọn A" />
+          <RadioGroupItem id="sm-b" value="b" size="sm" label="Tùy chọn B" />
+        </RadioGroup>
+        <RadioGroup label="Kích thước lớn" defaultValue="a">
+          <RadioGroupItem id="lg-a" value="a" size="lg" label="Tùy chọn A" />
+          <RadioGroupItem id="lg-b" value="b" size="lg" label="Tùy chọn B" />
+        </RadioGroup>
+      </div>
     ),
-    code: `import {
-  Field,
-  FieldContent,
-  FieldDescription,
-  FieldLabel,
-  FieldTitle,
-} from "@/components/ui/field";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+    code: `import { RadioGroup, RadioGroupItem } from "@/design-system/components/ui/radio-group";
 
-export function RadioGroupChoiceCard() {
+export function Example() {
   return (
-    <RadioGroup defaultValue="plus" className="max-w-sm">
-      <FieldLabel htmlFor="plus-plan">
-        <Field orientation="horizontal">
-          <FieldContent>
-            <FieldTitle>Plus</FieldTitle>
-            <FieldDescription>
-              For individuals and small teams.
-            </FieldDescription>
-          </FieldContent>
-          <RadioGroupItem value="plus" id="plus-plan" />
-        </Field>
-      </FieldLabel>
-      <FieldLabel htmlFor="pro-plan">
-        <Field orientation="horizontal">
-          <FieldContent>
-            <FieldTitle>Pro</FieldTitle>
-            <FieldDescription>For growing businesses.</FieldDescription>
-          </FieldContent>
-          <RadioGroupItem value="pro" id="pro-plan" />
-        </Field>
-      </FieldLabel>
-      <FieldLabel htmlFor="enterprise-plan">
-        <Field orientation="horizontal">
-          <FieldContent>
-            <FieldTitle>Enterprise</FieldTitle>
-            <FieldDescription>
-              For large teams and enterprises.
-            </FieldDescription>
-          </FieldContent>
-          <RadioGroupItem value="enterprise" id="enterprise-plan" />
-        </Field>
-      </FieldLabel>
+    <RadioGroup label="Kích thước lớn" defaultValue="a">
+      <RadioGroupItem id="lg-a" value="a" size="lg" label="Tùy chọn A" />
+      <RadioGroupItem id="lg-b" value="b" size="lg" label="Tùy chọn B" />
     </RadioGroup>
   );
 }`,
@@ -199,7 +137,8 @@ export default function RadioGroupGuidePage() {
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            A set of checkable buttons where only one button can be checked at a time.
+            Nhóm lựa chọn một giá trị với API đồng nhất cùng `label`, `error` và kích thước theo
+            form token.
           </p>
         </section>
 
@@ -207,9 +146,7 @@ export default function RadioGroupGuidePage() {
           <Card id="import" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
-              <CardDescription>
-                Import the radio group components from the design system.
-              </CardDescription>
+              <CardDescription>Import radio group từ design system.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
@@ -218,10 +155,10 @@ export default function RadioGroupGuidePage() {
             </CardContent>
           </Card>
 
-          <Card id="props" className="rounded-[24px] border-border/70">
+          <Card id="group-props" className="rounded-[24px] border-border/70">
             <CardHeader>
-              <CardTitle>2. Props</CardTitle>
-              <CardDescription>RadioGroup component props.</CardDescription>
+              <CardTitle>2. Group Props</CardTitle>
+              <CardDescription>Props dành cho `RadioGroup`.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-hidden rounded-2xl border border-border/70">
@@ -250,10 +187,44 @@ export default function RadioGroupGuidePage() {
             </CardContent>
           </Card>
 
+          <Card id="item-props" className="rounded-[24px] border-border/70">
+            <CardHeader>
+              <CardTitle>3. Item Props</CardTitle>
+              <CardDescription>Props dành cho `RadioGroupItem`.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-hidden rounded-2xl border border-border/70">
+                <table className="w-full text-left text-sm">
+                  <thead className="bg-muted/40 text-muted-foreground">
+                    <tr>
+                      <th className="px-4 py-3 font-medium">Prop</th>
+                      <th className="px-4 py-3 font-medium">Type</th>
+                      <th className="px-4 py-3 font-medium">Default</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {itemProps.map((prop, index) => (
+                      <tr
+                        key={prop.name}
+                        className={cn(
+                          index !== itemProps.length - 1 && 'border-b border-border/70',
+                        )}
+                      >
+                        <td className="px-4 py-3 font-medium">{prop.name}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.type}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{prop.defaultValue}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
+
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
-              <CardTitle>3. Usages</CardTitle>
-              <CardDescription>Common radio group patterns and configurations.</CardDescription>
+              <CardTitle>4. Usages</CardTitle>
+              <CardDescription>Các mẫu dùng phổ biến.</CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">
@@ -295,8 +266,11 @@ export default function RadioGroupGuidePage() {
             <a href="#import" className="block transition hover:text-foreground">
               Import
             </a>
-            <a href="#props" className="block transition hover:text-foreground">
-              Props
+            <a href="#group-props" className="block transition hover:text-foreground">
+              Group Props
+            </a>
+            <a href="#item-props" className="block transition hover:text-foreground">
+              Item Props
             </a>
             <a href="#usages" className="block transition hover:text-foreground">
               Usages

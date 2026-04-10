@@ -72,6 +72,7 @@ const guides = [
   { slug: 'rhf-input', name: 'RHF Input', group: 'rhf' as const },
   { slug: 'rhf-multiple-combobox', name: 'RHF Multiple Combobox', group: 'rhf' as const },
   { slug: 'rhf-number-input', name: 'RHF Number Input', group: 'rhf' as const },
+  { slug: 'rhf-radio-group', name: 'RHF Radio Group', group: 'rhf' as const },
   { slug: 'rhf-single-combobox', name: 'RHF Single Combobox', group: 'rhf' as const },
   { slug: 'rhf-switch', name: 'RHF Switch', group: 'rhf' as const },
   { slug: 'rhf-textarea', name: 'RHF Textarea', group: 'rhf' as const },

@@ -386,6 +386,12 @@ const guides = [
     importPath: '@/design-system/components/rhf',
   },
   {
+    slug: 'rhf-radio-group',
+    name: 'RHF Radio Group',
+    group: 'rhf',
+    importPath: '@/design-system/components/rhf',
+  },
+  {
     slug: 'rhf-switch',
     name: 'RHF Switch',
     group: 'rhf',
