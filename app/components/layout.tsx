@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+import { StylePresetCombobox } from '@/components/style-preset-combobox';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { cn } from '@/lib/utils';
@@ -101,6 +102,9 @@ export default function ComponentsLayout({
             <p className="text-sm text-muted-foreground">Component usage guide template</p>
           </div>
           <div className="flex items-center gap-2">
+            <div className="hidden md:block">
+              <StylePresetCombobox />
+            </div>
             <ThemeToggle />
             <Link
               href="/components"
