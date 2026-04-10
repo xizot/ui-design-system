@@ -1,8 +1,8 @@
 'use client';
 
+import { FORM_SIZE_STYLES, type FormSize } from '@/constants/form-sizes';
 import { Checkbox as CheckboxPrimitive } from '@base-ui/react/checkbox';
 import { CheckIcon } from 'lucide-react';
-import { FORM_SIZE_STYLES, type FormSize } from '@/constants/form-sizes';
 
 import { cn } from '../../lib/utils';
 import { FormErrorMessage } from './form-error-message';
@@ -24,24 +24,16 @@ function Checkbox({
   labelClassName,
   error,
   errorClassName,
-  size = 'md',
+  size = 'sm',
   ...props
 }: CheckboxProps) {
   return (
     <div className="w-fit">
       <div className="flex items-center space-x-2">
-        {label ? (
-          <FormLabel
-            label={label}
-            htmlFor={props.id}
-            required={required}
-            className={cn('mb-0', labelClassName)}
-          />
-        ) : null}
         <CheckboxPrimitive.Root
           data-slot="checkbox"
           className={cn(
-            'peer relative flex shrink-0 items-center justify-center rounded-sm border border-input shadow-xs transition-shadow outline-none group-has-disabled/field:opacity-50 after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 aria-invalid:aria-checked:border-primary dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary',
+            'rounded-xs peer relative flex shrink-0 items-center justify-center border border-input shadow-xs transition-shadow outline-none group-has-disabled/field:opacity-50 after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 aria-invalid:aria-checked:border-primary dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary',
             FORM_SIZE_STYLES[size].icon,
             className,
           )}
@@ -54,6 +46,14 @@ function Checkbox({
             <CheckIcon className={FORM_SIZE_STYLES[size].icon} />
           </CheckboxPrimitive.Indicator>
         </CheckboxPrimitive.Root>
+        {label ? (
+          <FormLabel
+            label={label}
+            htmlFor={props.id}
+            required={required}
+            className={cn('mb-0', labelClassName)}
+          />
+        ) : null}
       </div>
       {error ? <FormErrorMessage error={error} errorClassName={errorClassName} /> : null}
     </div>

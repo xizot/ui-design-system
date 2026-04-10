@@ -141,9 +141,22 @@ export default function SwitchGuidePage() {
             </CardContent>
           </Card>
 
+          <Card id="sizes" className="rounded-[24px] border-border/70">
+            <CardHeader>
+              <CardTitle>3. Sizes</CardTitle>
+              <CardDescription>Available sizes for the Switch component.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col gap-4 max-w-sm">
+                <Switch id="small-switch" size="sm" label="Small Switch" />
+                <Switch id="default-switch" label="Default Switch" />
+              </div>
+            </CardContent>
+          </Card>
+
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
-              <CardTitle>3. Usages</CardTitle>
+              <CardTitle>4. Usages</CardTitle>
               <CardDescription>Common switch patterns and configurations.</CardDescription>
             </CardHeader>
             <CardContent>
@@ -184,6 +197,9 @@ export default function SwitchGuidePage() {
             </a>
             <a href="#props" className="block transition hover:text-foreground">
               Props
+            </a>
+            <a href="#sizes" className="block transition hover:text-foreground">
+              Sizes
             </a>
             <a href="#usages" className="block transition hover:text-foreground">
               Usages

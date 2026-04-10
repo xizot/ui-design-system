@@ -20,6 +20,7 @@ const props = [
   { name: 'disabled', type: 'boolean', defaultValue: 'false' },
   { name: 'rows', type: 'number', defaultValue: '3' },
   { name: 'cols', type: 'number', defaultValue: '--' },
+  { name: 'size', type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`, defaultValue: `'md'` },
   { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
@@ -142,9 +143,26 @@ export default function TextareaGuidePage() {
             </CardContent>
           </Card>
 
+          <Card id="sizes" className="rounded-[24px] border-border/70">
+            <CardHeader>
+              <CardTitle>3. Sizes</CardTitle>
+              <CardDescription>Available sizes for the Textarea component.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-4 max-w-md">
+                <Textarea size="xxs" placeholder="Extra Small textarea" rows={3} />
+                <Textarea size="xs" placeholder="Extra Small textarea" rows={3} />
+                <Textarea size="sm" placeholder="Small textarea" rows={3} />
+                <Textarea size="md" placeholder="Medium textarea" rows={3} />
+                <Textarea size="lg" placeholder="Large textarea" rows={3} />
+                <Textarea size="xl" placeholder="Extra Large textarea" rows={3} />
+              </div>
+            </CardContent>
+          </Card>
+
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
-              <CardTitle>3. Usages</CardTitle>
+              <CardTitle>4. Usages</CardTitle>
               <CardDescription>Common Textarea patterns and configurations.</CardDescription>
             </CardHeader>
             <CardContent>
@@ -185,6 +203,9 @@ export default function TextareaGuidePage() {
             </a>
             <a href="#props" className="block transition hover:text-foreground">
               Props
+            </a>
+            <a href="#sizes" className="block transition hover:text-foreground">
+              Sizes
             </a>
             <a href="#usages" className="block transition hover:text-foreground">
               Usages

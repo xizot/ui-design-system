@@ -219,9 +219,41 @@ export default function RadioGroupGuidePage() {
             </CardContent>
           </Card>
 
+          <Card id="sizes" className="rounded-[24px] border-border/70">
+            <CardHeader>
+              <CardTitle>4. Sizes</CardTitle>
+              <CardDescription>Available sizes for the RadioGroupItem components.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                <div>
+                  <h4 className="font-medium mb-3">RadioGroupItem Sizes</h4>
+                  <div className="space-y-4 max-w-sm">
+                    <RadioGroup label="Extra Small" defaultValue="option1" className="w-fit">
+                      <RadioGroupItem id="xs-option1" value="option1" size="xxs" label="Option 1" />
+                      <RadioGroupItem id="xs-option2" value="option2" size="xxs" label="Option 2" />
+                    </RadioGroup>
+                    <RadioGroup label="Small" defaultValue="option1" className="w-fit">
+                      <RadioGroupItem id="sm-option1" value="option1" size="sm" label="Option 1" />
+                      <RadioGroupItem id="sm-option2" value="option2" size="sm" label="Option 2" />
+                    </RadioGroup>
+                    <RadioGroup label="Medium" defaultValue="option1" className="w-fit">
+                      <RadioGroupItem id="md-option1" value="option1" size="md" label="Option 1" />
+                      <RadioGroupItem id="md-option2" value="option2" size="md" label="Option 2" />
+                    </RadioGroup>
+                    <RadioGroup label="Large" defaultValue="option1" className="w-fit">
+                      <RadioGroupItem id="lg-option1" value="option1" size="lg" label="Option 1" />
+                      <RadioGroupItem id="lg-option2" value="option2" size="lg" label="Option 2" />
+                    </RadioGroup>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
-              <CardTitle>4. Usages</CardTitle>
+              <CardTitle>5. Usages</CardTitle>
               <CardDescription>Các mẫu dùng phổ biến.</CardDescription>
             </CardHeader>
             <CardContent>
@@ -265,6 +297,9 @@ export default function RadioGroupGuidePage() {
             </a>
             <a href="#item-props" className="block transition hover:text-foreground">
               Item Props
+            </a>
+            <a href="#sizes" className="block transition hover:text-foreground">
+              Sizes
             </a>
             <a href="#usages" className="block transition hover:text-foreground">
               Usages

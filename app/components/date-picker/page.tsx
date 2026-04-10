@@ -112,10 +112,18 @@ function Example() {
   },
 ];
 
-function DatePickerExample() {
+function DatePickerExample({ size, label }: { size?: 'sm' | 'md' | 'lg'; label?: string }) {
   const [value, setValue] = useState<Date | undefined>(undefined);
 
-  return <DatePicker label="Date" placeholder="Pick a date" value={value} onChange={setValue} />;
+  return (
+    <DatePicker
+      label={label || 'Date'}
+      placeholder="Pick a date"
+      value={value}
+      onChange={setValue}
+      size={size}
+    />
+  );
 }
 
 function DatePickerWithTimeExample() {
@@ -213,9 +221,23 @@ export default function DatePickerGuidePage() {
             </CardContent>
           </Card>
 
+          <Card id="sizes" className="rounded-[24px] border-border/70">
+            <CardHeader>
+              <CardTitle>3. Sizes</CardTitle>
+              <CardDescription>Available sizes for the Date Picker component.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-4 max-w-md">
+                <DatePickerExample size="sm" label="Small" />
+                <DatePickerExample size="md" label="Medium" />
+                <DatePickerExample size="lg" label="Large" />
+              </div>
+            </CardContent>
+          </Card>
+
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
-              <CardTitle>3. Usages</CardTitle>
+              <CardTitle>4. Usages</CardTitle>
               <CardDescription>Common Date Picker patterns and configurations.</CardDescription>
             </CardHeader>
             <CardContent>
@@ -256,6 +278,9 @@ export default function DatePickerGuidePage() {
             </a>
             <a href="#props" className="block transition hover:text-foreground">
               Props
+            </a>
+            <a href="#sizes" className="block transition hover:text-foreground">
+              Sizes
             </a>
             <a href="#usages" className="block transition hover:text-foreground">
               Usages

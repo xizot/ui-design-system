@@ -25,6 +25,7 @@ const props = [
   { name: 'label', type: 'string | React.ReactNode', defaultValue: '--' },
   { name: 'required', type: 'boolean', defaultValue: 'false' },
   { name: 'error', type: 'string', defaultValue: '--' },
+  { name: 'size', type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`, defaultValue: `'sm'` },
   { name: 'labelClassName', type: 'string', defaultValue: '--' },
   { name: 'errorClassName', type: 'string', defaultValue: '--' },
   { name: 'className', type: 'string', defaultValue: '--' },
@@ -171,9 +172,26 @@ export default function CheckboxGuidePage() {
             </CardContent>
           </Card>
 
+          <Card id="sizes" className="rounded-[24px] border-border/70">
+            <CardHeader>
+              <CardTitle>3. Sizes</CardTitle>
+              <CardDescription>Available sizes for the Checkbox component.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col gap-4 max-w-sm">
+                <Checkbox id="xxs-checkbox" size="xxs" label="Extra Small" />
+                <Checkbox id="xs-checkbox" size="xs" label="Extra Small" />
+                <Checkbox id="sm-checkbox" size="sm" label="Small" />
+                <Checkbox id="md-checkbox" size="md" label="Medium" />
+                <Checkbox id="lg-checkbox" size="lg" label="Large" />
+                <Checkbox id="xl-checkbox" size="xl" label="Extra Large" />
+              </div>
+            </CardContent>
+          </Card>
+
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
-              <CardTitle>3. Usages</CardTitle>
+              <CardTitle>4. Usages</CardTitle>
               <CardDescription>Common checkbox patterns and configurations.</CardDescription>
             </CardHeader>
             <CardContent>
@@ -214,6 +232,9 @@ export default function CheckboxGuidePage() {
             </a>
             <a href="#props" className="block transition hover:text-foreground">
               Props
+            </a>
+            <a href="#sizes" className="block transition hover:text-foreground">
+              Sizes
             </a>
             <a href="#usages" className="block transition hover:text-foreground">
               Usages

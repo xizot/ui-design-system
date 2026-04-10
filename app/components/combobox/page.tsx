@@ -60,6 +60,7 @@ const singleComboboxProps = [
   { name: 'showSelectedCode', type: 'boolean', defaultValue: 'false' },
   { name: 'searchPlaceholder', type: 'string', defaultValue: "'Tìm kiếm...'" },
   { name: 'emptyMessage', type: 'string', defaultValue: "'Không tìm thấy kết quả'" },
+  { name: 'size', type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`, defaultValue: `'md'` },
   { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
@@ -80,6 +81,7 @@ const multipleComboboxProps = [
   { name: 'cancelText', type: 'string', defaultValue: "'Hủy'" },
   { name: 'applyText', type: 'string', defaultValue: "'Áp dụng'" },
   { name: 'limitTags', type: 'number', defaultValue: '--' },
+  { name: 'size', type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`, defaultValue: `'md'` },
   { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
@@ -364,9 +366,58 @@ export default function ComboboxGuidePage() {
             </CardContent>
           </Card>
 
+          <Card id="sizes" className="rounded-[24px] border-border/70">
+            <CardHeader>
+              <CardTitle>3. Sizes</CardTitle>
+              <CardDescription>Available sizes for the Combobox components.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                <div>
+                  <h4 className="font-medium mb-3">SingleCombobox Sizes</h4>
+                  <div className="grid gap-4 max-w-sm">
+                    <SingleCombobox
+                      label="Extra Small"
+                      size="xxs"
+                      options={departments}
+                      placeholder="Chosen department..."
+                    />
+                    <SingleCombobox
+                      label="Small"
+                      size="sm"
+                      options={departments}
+                      placeholder="Chosen department..."
+                    />
+                    <SingleCombobox
+                      label="Medium"
+                      size="md"
+                      options={departments}
+                      placeholder="Chosen department..."
+                    />
+                    <SingleCombobox
+                      label="Large"
+                      size="lg"
+                      options={departments}
+                      placeholder="Chosen department..."
+                    />
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-medium mb-3">MultipleCombobox Sizes</h4>
+                  <div className="grid gap-4 max-w-sm">
+                    <MultipleComboboxBasicDemo size="xxs" label="Extra Small" />
+                    <MultipleComboboxBasicDemo size="sm" label="Small" />
+                    <MultipleComboboxBasicDemo size="md" label="Medium" />
+                    <MultipleComboboxBasicDemo size="lg" label="Large" />
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
-              <CardTitle>3. Usages</CardTitle>
+              <CardTitle>4. Usages</CardTitle>
               <CardDescription>Common Combobox patterns and configurations.</CardDescription>
             </CardHeader>
             <CardContent>
@@ -624,6 +675,9 @@ import type { ComboboxBaseOption } from "@/design-system/components/ui/single-co
             </a>
             <a href="#props" className="block pl-3 transition hover:text-foreground">
               Props
+            </a>
+            <a href="#sizes" className="block pl-3 transition hover:text-foreground">
+              Sizes
             </a>
             <a href="#usages" className="block pl-3 transition hover:text-foreground">
               Usages

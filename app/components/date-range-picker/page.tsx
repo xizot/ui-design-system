@@ -92,15 +92,16 @@ function Example() {
   },
 ];
 
-function DateRangePickerExample() {
+function DateRangePickerExample({ size, label }: { size?: 'sm' | 'md' | 'lg'; label?: string }) {
   const [value, setValue] = useState<DateRange | undefined>(undefined);
 
   return (
     <DateRangePicker
-      label="Date Range"
+      label={label || 'Date Range'}
       placeholder={{ from: 'From date', to: 'To date' }}
       value={value}
       onChange={setValue}
+      size={size}
     />
   );
 }
@@ -185,9 +186,25 @@ export default function DateRangePickerGuidePage() {
             </CardContent>
           </Card>
 
+          <Card id="sizes" className="rounded-[24px] border-border/70">
+            <CardHeader>
+              <CardTitle>3. Sizes</CardTitle>
+              <CardDescription>
+                Available sizes for the Date Range Picker component.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-4 max-w-md">
+                <DateRangePickerExample size="sm" label="Small" />
+                <DateRangePickerExample size="md" label="Medium" />
+                <DateRangePickerExample size="lg" label="Large" />
+              </div>
+            </CardContent>
+          </Card>
+
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
-              <CardTitle>3. Usages</CardTitle>
+              <CardTitle>4. Usages</CardTitle>
               <CardDescription>
                 Common Date Range Picker patterns and configurations.
               </CardDescription>
@@ -230,6 +247,9 @@ export default function DateRangePickerGuidePage() {
             </a>
             <a href="#props" className="block transition hover:text-foreground">
               Props
+            </a>
+            <a href="#sizes" className="block transition hover:text-foreground">
+              Sizes
             </a>
             <a href="#usages" className="block transition hover:text-foreground">
               Usages
