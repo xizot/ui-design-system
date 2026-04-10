@@ -13,7 +13,9 @@ import {
   type RowSelectionState,
   type SortingState,
 } from '@tanstack/react-table';
+import { Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { Button } from '../../../components/ui/button';
 
 const guide = {
   name: 'Table',
@@ -148,7 +150,7 @@ const basicColumns: ColumnDef<Payment>[] = [
     accessorKey: 'status',
     meta: { className: 'min-w-[120px]' },
     header: ({ column }) => (
-      <DataColumnHeader column={column} label="Trang thai" filterOptions={statusFilterOptions} />
+      <DataColumnHeader column={column} label="Status" filterOptions={statusFilterOptions} />
     ),
     filterFn: (row, columnId, filterValues: string[]) =>
       filterValues.includes(row.getValue(columnId)),
@@ -156,39 +158,39 @@ const basicColumns: ColumnDef<Payment>[] = [
   { accessorKey: 'email', header: 'Email' },
   {
     accessorKey: 'amount',
-    header: ({ column }) => <DataColumnHeader column={column} label="So tien" align="right" />,
+    header: ({ column }) => <DataColumnHeader column={column} label="Amount" align="right" />,
     cell: ({ row }) => (
       <div className="text-right font-medium">${(row.getValue('amount') as number).toFixed(2)}</div>
     ),
   },
   {
     accessorKey: 'date',
-    header: 'Ngay',
+    header: 'Date',
     cell: ({ row }) => {
       const date = new Date();
-      date.setDate(date.getDate() - Math.floor(Math.random() * 30));
+      date.setDate(date.getDate() - (row.index % 30));
       return date.toLocaleDateString('vi-VN');
     },
   },
   {
     accessorKey: 'method',
-    header: 'Phuong thuc',
+    header: 'Method',
     cell: ({ row }) => {
       const methods = ['Credit Card', 'Bank Transfer', 'PayPal', 'Cash', 'Crypto'];
-      return methods[Math.floor(Math.random() * methods.length)];
+      return methods[row.index % methods.length];
     },
   },
   {
     accessorKey: 'category',
-    header: 'Danh muc',
+    header: 'Category',
     cell: ({ row }) => {
       const categories = ['Food', 'Transport', 'Shopping', 'Bills', 'Entertainment'];
-      return categories[Math.floor(Math.random() * categories.length)];
+      return categories[row.index % categories.length];
     },
   },
   {
     accessorKey: 'description',
-    header: 'Mo ta',
+    header: 'Description',
     cell: ({ row }) => {
       const descriptions = [
         'Payment for services',
@@ -197,29 +199,8 @@ const basicColumns: ColumnDef<Payment>[] = [
         'Utility bill payment',
         'Restaurant expense',
       ];
-      return descriptions[Math.floor(Math.random() * descriptions.length)];
+      return descriptions[row.index % descriptions.length];
     },
-  },
-];
-
-const selectionColumns: ColumnDef<Payment>[] = [
-  { accessorKey: 'id', header: 'ID' },
-  {
-    accessorKey: 'status',
-    meta: { className: 'min-w-[250px]' },
-    header: ({ column }) => (
-      <DataColumnHeader column={column} label="Trạng thái" filterOptions={statusFilterOptions} />
-    ),
-    filterFn: (row, columnId, filterValues: string[]) =>
-      filterValues.includes(row.getValue(columnId)),
-  },
-  { accessorKey: 'email', header: 'Email' },
-  {
-    accessorKey: 'amount',
-    header: ({ column }) => <DataColumnHeader column={column} label="Số tiền" align="right" />,
-    cell: ({ row }) => (
-      <div className="text-right font-medium">${(row.getValue('amount') as number).toFixed(2)}</div>
-    ),
   },
 ];
 
@@ -227,9 +208,9 @@ const actionColumns: ColumnDef<Payment>[] = [
   { accessorKey: 'id', header: 'ID' },
   {
     accessorKey: 'status',
-    meta: { className: 'min-w-[250px]' },
+    meta: { className: 'min-w-[120px]' },
     header: ({ column }) => (
-      <DataColumnHeader column={column} label="Trạng thái" filterOptions={statusFilterOptions} />
+      <DataColumnHeader column={column} label="Status" filterOptions={statusFilterOptions} />
     ),
     filterFn: (row, columnId, filterValues: string[]) =>
       filterValues.includes(row.getValue(columnId)),
@@ -237,18 +218,59 @@ const actionColumns: ColumnDef<Payment>[] = [
   { accessorKey: 'email', header: 'Email' },
   {
     accessorKey: 'amount',
-    header: ({ column }) => <DataColumnHeader column={column} label="Số tiền" align="right" />,
+    header: ({ column }) => <DataColumnHeader column={column} label="Amount" align="right" />,
     cell: ({ row }) => (
       <div className="text-right font-medium">${(row.getValue('amount') as number).toFixed(2)}</div>
     ),
   },
   {
+    accessorKey: 'date',
+    header: 'Date',
+    cell: ({ row }) => {
+      const date = new Date();
+      date.setDate(date.getDate() - (row.index % 30));
+      return date.toLocaleDateString('vi-VN');
+    },
+  },
+  {
+    accessorKey: 'method',
+    header: 'Method',
+    cell: ({ row }) => {
+      const methods = ['Credit Card', 'Bank Transfer', 'PayPal', 'Cash', 'Crypto'];
+      return methods[row.index % methods.length];
+    },
+  },
+  {
+    accessorKey: 'category',
+    header: 'Category',
+    cell: ({ row }) => {
+      const categories = ['Food', 'Transport', 'Shopping', 'Bills', 'Entertainment'];
+      return categories[row.index % categories.length];
+    },
+  },
+  {
+    accessorKey: 'description',
+    header: 'Description',
+    cell: ({ row }) => {
+      const descriptions = [
+        'Payment for services',
+        'Online purchase',
+        'Subscription renewal',
+        'Utility bill payment',
+        'Restaurant expense',
+      ];
+      return descriptions[row.index % descriptions.length];
+    },
+  },
+  {
     id: 'actions',
     header: 'Actions',
+    meta: { className: 'text-center' },
     cell: ({ row }) => (
-      <div className="flex gap-2">
-        <button className="text-sm text-blue-600 hover:text-blue-800">Edit</button>
-        <button className="text-sm text-red-600 hover:text-red-800">Delete</button>
+      <div className="flex justify-center">
+        <Button variant={'ghost'} size={'icon-md'}>
+          <Trash2 className="text-red-500" />
+        </Button>
       </div>
     ),
   },
@@ -335,7 +357,7 @@ function ActionTableDemo() {
   });
 
   return (
-    <div className="h-full">
+    <div className="h-full w-full">
       <DataTable
         data={payments}
         columns={actionColumns}

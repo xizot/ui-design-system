@@ -287,7 +287,15 @@ export function DataTable<TData>({
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <TableHead key={header.id} className={header.column.columnDef.meta?.className}>
+                <TableHead
+                  key={header.id}
+                  className={cn(
+                    'bg-muted',
+                    header.column.columnDef.meta?.className,
+                    header.column.getIsPinned() === 'right' &&
+                      'sticky right-0 bg-muted z-20 pinned-right-column',
+                  )}
+                >
                   {flexRender(header.column.columnDef.header, header.getContext())}
                 </TableHead>
               ))}
@@ -298,7 +306,13 @@ export function DataTable<TData>({
           {table.getRowModel().rows.map((row) => (
             <TableRow key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
+                <TableCell
+                  key={cell.id}
+                  className={cn(
+                    cell.column.getIsPinned() === 'right' &&
+                      'sticky right-0 bg-card pinned-right-column',
+                  )}
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}
