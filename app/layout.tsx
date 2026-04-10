@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Inter } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
+import { STYLE_PRESET_CSS } from '@/constants/style-preset-css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/components/providers/theme-provider';
@@ -42,14 +43,21 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
+        <Script
+          id="style-preset-data"
+          type="application/json"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(STYLE_PRESET_CSS) }}
+        />
         <Script id="style-preset-bootstrap" strategy="beforeInteractive">{`
           (() => {
             try {
               const presetKey = 'design-system-style-preset';
-              const cssKey = 'design-system-style-preset-css';
               const styleId = 'design-system-style-preset';
+              const presetDataElement = document.getElementById('style-preset-data');
               const preset = window.localStorage.getItem(presetKey);
-              const cssText = window.localStorage.getItem(cssKey);
+              const presetMap = presetDataElement ? JSON.parse(presetDataElement.textContent ?? '{}') : {};
+              const cssText = preset ? presetMap[preset] : '';
 
               if (!preset || !cssText) {
                 return;

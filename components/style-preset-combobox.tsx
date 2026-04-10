@@ -2,11 +2,11 @@
 
 import * as React from 'react';
 
+import { STYLE_PRESET_CSS } from '@/constants/style-preset-css';
 import { STYLE_PRESETS, type StylePresetId } from '@/constants/style-presets';
 import { SingleCombobox } from '@/components/ui/single-combobox';
 
 const STORAGE_KEY = 'design-system-style-preset';
-const STORAGE_CSS_KEY = 'design-system-style-preset-css';
 const STYLE_ELEMENT_ID = 'design-system-style-preset';
 
 function ensureStyleElement() {
@@ -33,45 +33,13 @@ function StylePresetCombobox() {
   }, []);
 
   React.useEffect(() => {
-    let isCancelled = false;
+    const cssText = STYLE_PRESET_CSS[value];
+    const styleElement = ensureStyleElement();
 
-    const applyPreset = async () => {
-      const savedPreset = window.localStorage.getItem(STORAGE_KEY);
-      const savedCssText = window.localStorage.getItem(STORAGE_CSS_KEY);
-
-      if (savedPreset === value && savedCssText) {
-        const styleElement = ensureStyleElement();
-
-        styleElement.textContent = savedCssText;
-        document.documentElement.dataset.stylePreset = value;
-        return;
-      }
-
-      const response = await fetch(`/style-presets/${value}.css`);
-
-      if (!response.ok || isCancelled) {
-        return;
-      }
-
-      const cssText = await response.text();
-
-      if (isCancelled) {
-        return;
-      }
-
-      const styleElement = ensureStyleElement();
-
-      styleElement.textContent = cssText;
-      document.documentElement.dataset.stylePreset = value;
-      window.localStorage.setItem(STORAGE_KEY, value);
-      window.localStorage.setItem(STORAGE_CSS_KEY, cssText);
-    };
-
-    void applyPreset();
-
-    return () => {
-      isCancelled = true;
-    };
+    styleElement.textContent = cssText;
+    document.documentElement.dataset.stylePreset = value;
+    window.localStorage.setItem(STORAGE_KEY, value);
+    window.localStorage.removeItem('design-system-style-preset-css');
   }, [value]);
 
   return (
