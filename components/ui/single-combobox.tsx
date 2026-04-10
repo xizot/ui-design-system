@@ -65,6 +65,7 @@ function SingleCombobox<T extends ComboboxBaseOption>({
   const generatedId = React.useId();
   const inputId = id ?? generatedId;
   const anchorRef = React.useRef<HTMLDivElement>(null);
+  const [open, setOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState('');
 
   const optionsMap = React.useMemo(() => new Map(options.map((o) => [o.id, o])), [options]);
@@ -102,10 +103,16 @@ function SingleCombobox<T extends ComboboxBaseOption>({
 
   const hasValue = value !== undefined && value !== null;
 
+  React.useEffect(() => {
+    setOpen(false);
+    setSearchQuery('');
+  }, [value]);
+
   return (
     <div className={cn('w-full', className)}>
       {label && <FormLabel label={label} htmlFor={inputId} required={required} />}
       <Combobox<string | number>
+        open={open}
         value={value ?? null}
         onValueChange={handleValueChange}
         disabled={disabled}
@@ -113,6 +120,7 @@ function SingleCombobox<T extends ComboboxBaseOption>({
         filteredItems={filteredItemIds}
         onInputValueChange={(v) => setSearchQuery(v)}
         onOpenChange={(open) => {
+          setOpen(open);
           if (!open) setSearchQuery('');
         }}
       >
