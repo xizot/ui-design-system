@@ -1,14 +1,15 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { RHFInput } from '@/components/rhf';
+import { RHFDatePicker } from '@/components/rhf';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 
 const guide = {
-  name: 'RHF Input',
+  name: 'RHF Date Picker',
   group: 'rhf',
   importPath: '@/design-system/components/rhf',
 } as const;
@@ -16,15 +17,11 @@ const guide = {
 const props = [
   { name: 'control', type: 'Control<T>', defaultValue: '--' },
   { name: 'name', type: 'Path<T>', defaultValue: '--' },
-  { name: 'register', type: 'UseFormRegister<T>', defaultValue: '--' },
-  { name: 'callback', type: '(newValue: string) => void', defaultValue: '--' },
-  { name: 'label', type: 'string', defaultValue: '--' },
-  { name: 'description', type: 'string', defaultValue: '--' },
+  { name: 'callback', type: '(value: Date | undefined) => void', defaultValue: '--' },
+  { name: 'label', type: 'string | React.ReactNode', defaultValue: '--' },
   { name: 'required', type: 'boolean', defaultValue: 'false' },
-  { name: 'wrapperClassName', type: 'string', defaultValue: '--' },
-  { name: 'labelClassName', type: 'string', defaultValue: '--' },
-  { name: 'descriptionClassName', type: 'string', defaultValue: '--' },
-  { name: 'errorClassName', type: 'string', defaultValue: '--' },
+  { name: 'error', type: 'string', defaultValue: '--' },
+  { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
 const usageSamples = [
@@ -33,153 +30,93 @@ const usageSamples = [
     label: 'Basic',
     preview: (
       <div className="w-full max-w-md space-y-4 p-4">
-        <RHFInputExample />
+        <RHFDatePickerExample />
       </div>
     ),
-    code: `import { RHFInput } from "@/design-system/components/rhf";
+    code: `import { RHFDatePicker } from "@/design-system/components/rhf";
 import { useForm } from "react-hook-form";
 
 function Example() {
   const { control } = useForm({
     defaultValues: {
-      email: "",
+      date: undefined,
     },
   });
 
   return (
-    <RHFInput
+    <RHFDatePicker
       control={control}
-      register={register}
-      name="email"
-      type="email"
-      placeholder="Enter your email"
+      name="date"
+      label="Date"
+      placeholder="Pick a date"
     />
   );
 }`,
   },
   {
-    id: 'with-label',
-    label: 'With Label',
+    id: 'with-time',
+    label: 'With Time',
     preview: (
       <div className="w-full max-w-md space-y-4 p-4">
-        <RHFInputWithLabelExample />
+        <RHFDatePickerWithTimeExample />
       </div>
     ),
-    code: `import { RHFInput } from "@/design-system/components/rhf";
+    code: `import { RHFDatePicker } from "@/design-system/components/rhf";
 import { useForm } from "react-hook-form";
 
 function Example() {
   const { control } = useForm({
     defaultValues: {
-      email: "",
+      date: undefined,
     },
   });
 
   return (
-    <RHFInput
+    <RHFDatePicker
       control={control}
-      register={register}
-      name="email"
-      label="Email"
-      type="email"
-      placeholder="Enter your email"
-    />
-  );
-}`,
-  },
-  {
-    id: 'with-error',
-    label: 'With Error',
-    preview: (
-      <div className="w-full max-w-md space-y-4 p-4">
-        <RHFInputWithErrorExample />
-      </div>
-    ),
-    code: `import { RHFInput } from "@/design-system/components/rhf";
-import { useForm } from "react-hook-form";
-
-function Example() {
-  const { control } = useForm({
-    defaultValues: {
-      email: "",
-    },
-    mode: "onBlur",
-  });
-
-  return (
-    <RHFInput
-      control={control}
-      register={register}
-      name="email"
-      label="Email"
-      type="email"
-      placeholder="Enter your email"
-      required
+      name="date"
+      label="Date and Time"
+      placeholder="Pick a date and time"
+      showTime
     />
   );
 }`,
   },
 ];
 
-function RHFInputExample() {
-  const { control, register } = useForm({
+function RHFDatePickerExample() {
+  const { control } = useForm({
     defaultValues: {
-      email: '',
+      date: undefined,
+    },
+  });
+
+  return <RHFDatePicker control={control} name="date" label="Date" placeholder="Pick a date" />;
+}
+
+function RHFDatePickerWithTimeExample() {
+  const { control } = useForm({
+    defaultValues: {
+      date: undefined,
     },
   });
 
   return (
-    <RHFInput
+    <RHFDatePicker
       control={control}
-      register={register}
-      name="email"
-      type="email"
-      placeholder="Enter your email"
+      name="date"
+      label="Date and Time"
+      placeholder="Pick a date and time"
+      showTime
     />
   );
 }
 
-function RHFInputWithLabelExample() {
-  const { control, register } = useForm({
-    defaultValues: {
-      email: '',
-    },
-  });
+export default function RHFDatePickerGuidePage() {
+  useEffect(() => {
+    document.title = `${guide.name} - UI Design System`;
+  }, []);
 
-  return (
-    <RHFInput
-      control={control}
-      register={register}
-      name="email"
-      label="Email"
-      type="email"
-      placeholder="Enter your email"
-    />
-  );
-}
-
-function RHFInputWithErrorExample() {
-  const { control, register } = useForm({
-    defaultValues: {
-      email: '',
-    },
-    mode: 'onBlur',
-  });
-
-  return (
-    <RHFInput
-      control={control}
-      register={register}
-      name="email"
-      label="Email"
-      type="email"
-      placeholder="Enter your email"
-      required
-    />
-  );
-}
-
-export default function RHFInputGuidePage() {
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">
@@ -189,7 +126,7 @@ export default function RHFInputGuidePage() {
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            A React Hook Form input component with built-in error handling and validation support.
+            React Hook Form wrapper cho DatePicker với hỗ trợ validation và error handling tích hợp.
           </p>
         </section>
 
@@ -198,12 +135,12 @@ export default function RHFInputGuidePage() {
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
               <CardDescription>
-                Import the RHF Input component from the design system.
+                Import the RHF Date Picker component from the design system.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
-                <code className="text-sm">{`import { RHFInput } from "${guide.importPath}";`}</code>
+                <code className="text-sm">{`import { RHFDatePicker } from "${guide.importPath}";`}</code>
               </div>
             </CardContent>
           </Card>
@@ -211,7 +148,7 @@ export default function RHFInputGuidePage() {
           <Card id="props" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
-              <CardDescription>RHF Input component props.</CardDescription>
+              <CardDescription>RHF Date Picker component props.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-hidden rounded-2xl border border-border/70">
@@ -243,7 +180,7 @@ export default function RHFInputGuidePage() {
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
-              <CardDescription>Common RHF Input patterns and configurations.</CardDescription>
+              <CardDescription>Các pattern và cấu hình RHFDatePicker phổ biến.</CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">

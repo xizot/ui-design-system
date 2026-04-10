@@ -1,14 +1,15 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { RHFInput } from '@/components/rhf';
+import { RHFDateRangePicker } from '@/components/rhf';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 
 const guide = {
-  name: 'RHF Input',
+  name: 'RHF Date Range Picker',
   group: 'rhf',
   importPath: '@/design-system/components/rhf',
 } as const;
@@ -16,15 +17,15 @@ const guide = {
 const props = [
   { name: 'control', type: 'Control<T>', defaultValue: '--' },
   { name: 'name', type: 'Path<T>', defaultValue: '--' },
-  { name: 'register', type: 'UseFormRegister<T>', defaultValue: '--' },
-  { name: 'callback', type: '(newValue: string) => void', defaultValue: '--' },
-  { name: 'label', type: 'string', defaultValue: '--' },
-  { name: 'description', type: 'string', defaultValue: '--' },
+  {
+    name: 'callback',
+    type: '(value: { from?: Date; to?: Date } | undefined) => void',
+    defaultValue: '--',
+  },
+  { name: 'label', type: 'string | React.ReactNode', defaultValue: '--' },
   { name: 'required', type: 'boolean', defaultValue: 'false' },
-  { name: 'wrapperClassName', type: 'string', defaultValue: '--' },
-  { name: 'labelClassName', type: 'string', defaultValue: '--' },
-  { name: 'descriptionClassName', type: 'string', defaultValue: '--' },
-  { name: 'errorClassName', type: 'string', defaultValue: '--' },
+  { name: 'error', type: 'string', defaultValue: '--' },
+  { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
 const usageSamples = [
@@ -33,153 +34,120 @@ const usageSamples = [
     label: 'Basic',
     preview: (
       <div className="w-full max-w-md space-y-4 p-4">
-        <RHFInputExample />
+        <RHFDateRangePickerExample />
       </div>
     ),
-    code: `import { RHFInput } from "@/design-system/components/rhf";
+    code: `import { RHFDateRangePicker } from "@/design-system/components/rhf";
 import { useForm } from "react-hook-form";
 
 function Example() {
   const { control } = useForm({
     defaultValues: {
-      email: "",
+      dateRange: undefined,
     },
   });
 
   return (
-    <RHFInput
+    <RHFDateRangePicker
       control={control}
-      register={register}
-      name="email"
-      type="email"
-      placeholder="Enter your email"
+      name="dateRange"
+      label="Date Range"
+      placeholder={{ from: 'From date', to: 'To date' }}
     />
   );
 }`,
   },
   {
-    id: 'with-label',
-    label: 'With Label',
+    id: 'with-presets',
+    label: 'With Presets',
     preview: (
       <div className="w-full max-w-md space-y-4 p-4">
-        <RHFInputWithLabelExample />
+        <RHFDateRangePickerWithPresetsExample />
       </div>
     ),
-    code: `import { RHFInput } from "@/design-system/components/rhf";
+    code: `import { RHFDateRangePicker } from "@/design-system/components/rhf";
 import { useForm } from "react-hook-form";
 
 function Example() {
   const { control } = useForm({
     defaultValues: {
-      email: "",
+      dateRange: undefined,
     },
   });
 
-  return (
-    <RHFInput
-      control={control}
-      register={register}
-      name="email"
-      label="Email"
-      type="email"
-      placeholder="Enter your email"
-    />
-  );
-}`,
-  },
-  {
-    id: 'with-error',
-    label: 'With Error',
-    preview: (
-      <div className="w-full max-w-md space-y-4 p-4">
-        <RHFInputWithErrorExample />
-      </div>
-    ),
-    code: `import { RHFInput } from "@/design-system/components/rhf";
-import { useForm } from "react-hook-form";
-
-function Example() {
-  const { control } = useForm({
-    defaultValues: {
-      email: "",
-    },
-    mode: "onBlur",
-  });
+  const presets = [
+    { label: 'Today', range: { from: new Date(), to: new Date() } },
+    { label: 'Last 7 days', range: { from: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), to: new Date() } },
+    { label: 'Last 30 days', range: { from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), to: new Date() } },
+  ];
 
   return (
-    <RHFInput
+    <RHFDateRangePicker
       control={control}
-      register={register}
-      name="email"
-      label="Email"
-      type="email"
-      placeholder="Enter your email"
-      required
+      name="dateRange"
+      label="Date Range"
+      placeholder={{ from: 'From date', to: 'To date' }}
+      presets={presets}
+      showPresets
     />
   );
 }`,
   },
 ];
 
-function RHFInputExample() {
-  const { control, register } = useForm({
+function RHFDateRangePickerExample() {
+  const { control } = useForm({
     defaultValues: {
-      email: '',
+      dateRange: undefined,
     },
   });
 
   return (
-    <RHFInput
+    <RHFDateRangePicker
       control={control}
-      register={register}
-      name="email"
-      type="email"
-      placeholder="Enter your email"
+      name="dateRange"
+      label="Date Range"
+      placeholder={{ from: 'From date', to: 'To date' }}
     />
   );
 }
 
-function RHFInputWithLabelExample() {
-  const { control, register } = useForm({
+function RHFDateRangePickerWithPresetsExample() {
+  const { control } = useForm({
     defaultValues: {
-      email: '',
+      dateRange: undefined,
     },
   });
 
-  return (
-    <RHFInput
-      control={control}
-      register={register}
-      name="email"
-      label="Email"
-      type="email"
-      placeholder="Enter your email"
-    />
-  );
-}
-
-function RHFInputWithErrorExample() {
-  const { control, register } = useForm({
-    defaultValues: {
-      email: '',
+  const presets = [
+    { label: 'Today', range: { from: new Date(), to: new Date() } },
+    {
+      label: 'Last 7 days',
+      range: { from: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), to: new Date() },
     },
-    mode: 'onBlur',
-  });
+    {
+      label: 'Last 30 days',
+      range: { from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), to: new Date() },
+    },
+  ];
 
   return (
-    <RHFInput
+    <RHFDateRangePicker
       control={control}
-      register={register}
-      name="email"
-      label="Email"
-      type="email"
-      placeholder="Enter your email"
-      required
+      name="dateRange"
+      label="Date Range"
+      placeholder={{ from: 'From date', to: 'To date' }}
+      presets={presets}
+      showPresets
     />
   );
 }
 
-export default function RHFInputGuidePage() {
+export default function RHFDateRangePickerGuidePage() {
+  useEffect(() => {
+    document.title = `${guide.name} - UI Design System`;
+  }, []);
+
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">
@@ -189,7 +157,8 @@ export default function RHFInputGuidePage() {
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            A React Hook Form input component with built-in error handling and validation support.
+            React Hook Form wrapper cho DateRangePicker với hỗ trợ validation và error handling tích
+            hợp.
           </p>
         </section>
 
@@ -198,12 +167,12 @@ export default function RHFInputGuidePage() {
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
               <CardDescription>
-                Import the RHF Input component from the design system.
+                Import the RHF Date Range Picker component from the design system.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
-                <code className="text-sm">{`import { RHFInput } from "${guide.importPath}";`}</code>
+                <code className="text-sm">{`import { RHFDateRangePicker } from "${guide.importPath}";`}</code>
               </div>
             </CardContent>
           </Card>
@@ -211,7 +180,7 @@ export default function RHFInputGuidePage() {
           <Card id="props" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
-              <CardDescription>RHF Input component props.</CardDescription>
+              <CardDescription>RHF Date Range Picker component props.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-hidden rounded-2xl border border-border/70">
@@ -243,7 +212,9 @@ export default function RHFInputGuidePage() {
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
-              <CardDescription>Common RHF Input patterns and configurations.</CardDescription>
+              <CardDescription>
+                Các pattern và cấu hình RHFDateRangePicker phổ biến.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">

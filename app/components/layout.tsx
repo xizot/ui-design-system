@@ -66,6 +66,8 @@ const guides = [
   { slug: 'toggle-group', name: 'Toggle Group', group: 'ui' as const },
   { slug: 'tooltip', name: 'Tooltip', group: 'ui' as const },
   { slug: 'rhf-checkbox', name: 'RHF Checkbox', group: 'rhf' as const },
+  { slug: 'rhf-date-picker', name: 'RHF Date Picker', group: 'rhf' as const },
+  { slug: 'rhf-date-range-picker', name: 'RHF Date Range Picker', group: 'rhf' as const },
   { slug: 'rhf-error-message', name: 'RHF Error Message', group: 'rhf' as const },
   { slug: 'rhf-input', name: 'RHF Input', group: 'rhf' as const },
   { slug: 'rhf-multiple-combobox', name: 'RHF Multiple Combobox', group: 'rhf' as const },
@@ -73,6 +75,7 @@ const guides = [
   { slug: 'rhf-single-combobox', name: 'RHF Single Combobox', group: 'rhf' as const },
   { slug: 'rhf-switch', name: 'RHF Switch', group: 'rhf' as const },
   { slug: 'rhf-textarea', name: 'RHF Textarea', group: 'rhf' as const },
+  { slug: 'rhf-time-picker', name: 'RHF Time Picker', group: 'rhf' as const },
 ];
 
 export default function ComponentsLayout({

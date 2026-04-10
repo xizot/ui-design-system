@@ -1,4 +1,9 @@
-import type { Metadata } from 'next';
+'use client';
+
+import { RHFTextarea } from '@/components/rhf';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
@@ -9,25 +14,17 @@ const guide = {
   importPath: '@/design-system/components/rhf',
 } as const;
 
-export const metadata: Metadata = {
-  title: `${guide.name} - UI Design System`,
-  description: `${guide.name} component documentation`,
-};
-
 const props = [
   { name: 'control', type: 'Control<T>', defaultValue: '--' },
-  { name: 'register', type: 'UseFormRegister<T>', defaultValue: '--' },
   { name: 'name', type: 'Path<T>', defaultValue: '--' },
-  { name: 'label', type: 'string', defaultValue: '--' },
-  { name: 'description', type: 'string', defaultValue: '--' },
-  { name: 'required', type: 'boolean', defaultValue: 'false' },
+  { name: 'register', type: 'UseFormRegister<T>', defaultValue: '--' },
   { name: 'callback', type: '(newValue: string) => void', defaultValue: '--' },
   { name: 'showMaxLength', type: 'boolean', defaultValue: 'true' },
   { name: 'maxLength', type: 'number', defaultValue: '512' },
   { name: 'rows', type: 'number', defaultValue: '5' },
-  { name: 'wrapperClassName', type: 'string', defaultValue: '--' },
+  { name: 'label', type: 'string', defaultValue: '--' },
+  { name: 'required', type: 'boolean', defaultValue: 'false' },
   { name: 'labelClassName', type: 'string', defaultValue: '--' },
-  { name: 'descriptionClassName', type: 'string', defaultValue: '--' },
   { name: 'errorClassName', type: 'string', defaultValue: '--' },
 ];
 
@@ -37,14 +34,7 @@ const usageSamples = [
     label: 'Basic',
     preview: (
       <div className="w-full max-w-md space-y-4 p-4">
-        <div className="space-y-1.5">
-          <label className="block text-sm font-medium leading-5">Description</label>
-          <textarea
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            rows={5}
-            placeholder="Enter a description"
-          />
-        </div>
+        <RHFTextareaExample />
       </div>
     ),
     code: `import { RHFTextarea } from "@/design-system/components/rhf";
@@ -73,22 +63,7 @@ function Example() {
     label: 'With Max Length',
     preview: (
       <div className="w-full max-w-md space-y-4 p-4">
-        <div className="space-y-1.5">
-          <label className="block text-sm font-medium leading-5">
-            Bio <span className="ml-1 text-destructive">*</span>
-          </label>
-          <p className="text-sm text-muted-foreground">Tell us about yourself</p>
-          <div className="relative">
-            <textarea
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              rows={5}
-              placeholder="Enter your bio"
-            />
-            <span className="absolute right-3 bottom-2 rounded-sm bg-secondary px-2 py-0.5 text-[10px]">
-              0/512
-            </span>
-          </div>
-        </div>
+        <RHFTextareaWithMaxLengthExample />
       </div>
     ),
     code: `import { RHFTextarea } from "@/design-system/components/rhf";
@@ -107,7 +82,6 @@ function Example() {
       register={register}
       name="bio"
       label="Bio"
-      description="Tell us about yourself"
       required
       placeholder="Enter your bio"
       maxLength={512}
@@ -118,7 +92,50 @@ function Example() {
   },
 ];
 
+function RHFTextareaExample() {
+  const { control, register } = useForm({
+    defaultValues: {
+      description: '',
+    },
+  });
+
+  return (
+    <RHFTextarea
+      control={control}
+      register={register}
+      name="description"
+      label="Description"
+      placeholder="Enter a description"
+    />
+  );
+}
+
+function RHFTextareaWithMaxLengthExample() {
+  const { control, register } = useForm({
+    defaultValues: {
+      bio: '',
+    },
+  });
+
+  return (
+    <RHFTextarea
+      control={control}
+      register={register}
+      name="bio"
+      label="Bio"
+      required
+      placeholder="Enter your bio"
+      maxLength={512}
+      showMaxLength
+    />
+  );
+}
+
 export default function RHFTextareaGuidePage() {
+  useEffect(() => {
+    document.title = `${guide.name} - UI Design System`;
+  }, []);
+
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">

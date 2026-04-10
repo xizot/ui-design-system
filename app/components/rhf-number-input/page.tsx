@@ -2,10 +2,10 @@
 
 import { useForm } from 'react-hook-form';
 
+import { RHFNumberInput } from '@/components/rhf';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
-import RHFNumberInput from '@/components/rhf/rhf-number-input';
 
 const guide = {
   name: 'RHF Number Input',

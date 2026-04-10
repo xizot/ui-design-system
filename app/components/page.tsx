@@ -356,6 +356,18 @@ const guides = [
     importPath: '@/design-system/components/rhf',
   },
   {
+    slug: 'rhf-date-picker',
+    name: 'RHF Date Picker',
+    group: 'rhf',
+    importPath: '@/design-system/components/rhf',
+  },
+  {
+    slug: 'rhf-date-range-picker',
+    name: 'RHF Date Range Picker',
+    group: 'rhf',
+    importPath: '@/design-system/components/rhf',
+  },
+  {
     slug: 'rhf-error-message',
     name: 'RHF Error Message',
     group: 'rhf',
@@ -382,6 +394,12 @@ const guides = [
   {
     slug: 'rhf-textarea',
     name: 'RHF Textarea',
+    group: 'rhf',
+    importPath: '@/design-system/components/rhf',
+  },
+  {
+    slug: 'rhf-time-picker',
+    name: 'RHF Time Picker',
     group: 'rhf',
     importPath: '@/design-system/components/rhf',
   },

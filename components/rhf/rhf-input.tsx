@@ -1,6 +1,12 @@
 'use client';
 
-import { useController, type Control, type FieldValues, type Path } from 'react-hook-form';
+import {
+  useController,
+  UseFormRegister,
+  type Control,
+  type FieldValues,
+  type Path,
+} from 'react-hook-form';
 
 import { Input } from '../ui/input';
 
@@ -10,6 +16,7 @@ type RHFInputProps<T extends FieldValues = FieldValues> = Omit<
 > & {
   control: Control<T>;
   name: Path<T>;
+  register: UseFormRegister<T>;
   callback?: (newValue: string) => void;
 };
 

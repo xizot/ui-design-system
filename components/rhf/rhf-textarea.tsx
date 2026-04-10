@@ -1,6 +1,12 @@
 'use client';
 
-import { useController, type Control, type FieldValues, type Path } from 'react-hook-form';
+import {
+  useController,
+  UseFormRegister,
+  type Control,
+  type FieldValues,
+  type Path,
+} from 'react-hook-form';
 
 import { cn } from '../../lib/utils';
 import { Badge } from '../ui/badge';
@@ -21,6 +27,7 @@ type RHFTextareaProps<T extends FieldValues = FieldValues> = Omit<
   control: Control<T>;
   name: Path<T>;
   callback?: (newValue: string) => void;
+  register: UseFormRegister<T>;
   showMaxLength?: boolean;
 };
 

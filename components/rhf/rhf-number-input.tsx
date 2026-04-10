@@ -11,7 +11,7 @@ type RHFFormattedInputProps<T extends FieldValues = FieldValues> = Omit<
   callback?: (value: string) => void;
 };
 
-export default function RHFNumberInput<T extends FieldValues = FieldValues>({
+function RHFNumberInput<T extends FieldValues = FieldValues>({
   control,
   name,
   callback,
@@ -32,3 +32,5 @@ export default function RHFNumberInput<T extends FieldValues = FieldValues>({
 
   return <NumberInput {...props} {...field} onChange={handleChange} error={error?.message} />;
 }
+
+export { RHFNumberInput };

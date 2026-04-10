@@ -17,7 +17,7 @@ export type RHFTimePickerProps<T extends FieldValues = FieldValues> = Omit<
   required?: boolean;
 };
 
-export function RHFTimePicker<T extends FieldValues = FieldValues>({
+function RHFTimePicker<T extends FieldValues = FieldValues>({
   control,
   name,
   label,
@@ -50,3 +50,5 @@ export function RHFTimePicker<T extends FieldValues = FieldValues>({
     </div>
   );
 }
+
+export { RHFTimePicker };
