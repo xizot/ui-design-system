@@ -638,6 +638,26 @@ export function UrlFilterTableDemo() {
   );
 }`}
                 />
+                <CodeBlock
+                  id="tanstack-pagination-note"
+                  code={`const table = useReactTable({
+  data,
+  columns,
+  autoResetPageIndex: false,
+  state: {
+    sorting,
+    columnFilters,
+    pagination,
+  },
+  onSortingChange,
+  onColumnFiltersChange,
+  onPaginationChange,
+  getCoreRowModel: getCoreRowModel(),
+  getSortedRowModel: getSortedRowModel(),
+  getFilteredRowModel: getFilteredRowModel(),
+  getPaginationRowModel: getPaginationRowModel(),
+});`}
+                />
               </div>
             </CardContent>
           </Card>
