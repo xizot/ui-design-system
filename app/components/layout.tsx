@@ -10,6 +10,7 @@ import { TypographyH4, TypographyMuted, TypographySmall } from '@/components/ui/
 import { cn } from '@/lib/utils';
 
 const guides = [
+  { slug: 'installation', name: 'Installation', group: 'guide' as const },
   { slug: 'accordion', name: 'Accordion', group: 'ui' as const },
   { slug: 'alert', name: 'Alert', group: 'ui' as const },
   { slug: 'alert-dialog', name: 'Alert Dialog', group: 'ui' as const },

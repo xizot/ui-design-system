@@ -15,6 +15,12 @@ export const metadata: Metadata = {
 
 const guides = [
   {
+    slug: 'installation',
+    name: 'Installation',
+    group: 'guide',
+    importPath: 'npx github:xizot/ui-design-system init',
+  },
+  {
     slug: 'accordion',
     name: 'Accordion',
     group: 'ui',
