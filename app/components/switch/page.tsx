@@ -14,7 +14,7 @@ const guide = {
 } as const;
 
 const props = [
-  { name: 'size', type: `"sm" | "default"`, defaultValue: `"default"` },
+  { name: 'size', type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'`, defaultValue: `'md'` },
   { name: 'checked', type: 'boolean', defaultValue: 'false' },
   { name: 'defaultChecked', type: 'boolean', defaultValue: 'false' },
   { name: 'onCheckedChange', type: '(checked: boolean) => void', defaultValue: '--' },

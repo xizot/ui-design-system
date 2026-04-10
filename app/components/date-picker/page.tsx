@@ -28,7 +28,7 @@ const props = [
   { name: 'disabledPast', type: 'boolean', defaultValue: 'false' },
   { name: 'disabledFuture', type: 'boolean', defaultValue: 'false' },
   { name: 'onDisabled', type: '(date: Date) => boolean', defaultValue: '--' },
-  { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'md'" },
+  { name: 'size', type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'`, defaultValue: `'md'` },
   { name: 'locale', type: 'string | Locale', defaultValue: '--' },
   { name: 'cancelText', type: 'string', defaultValue: '--' },
   { name: 'applyText', type: 'string', defaultValue: '--' },

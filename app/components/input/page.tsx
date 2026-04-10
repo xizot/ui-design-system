@@ -51,7 +51,7 @@ const props = [
   },
   {
     name: 'size',
-    type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`,
+    type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'`,
     defaultValue: `'md'`,
   },
 ];

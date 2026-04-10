@@ -20,7 +20,7 @@ const props = [
   { name: 'disabled', type: 'boolean', defaultValue: 'false' },
   { name: 'rows', type: 'number', defaultValue: '3' },
   { name: 'cols', type: 'number', defaultValue: '--' },
-  { name: 'size', type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`, defaultValue: `'md'` },
+  { name: 'size', type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'`, defaultValue: `'md'` },
   { name: 'className', type: 'string', defaultValue: '--' },
 ];
 

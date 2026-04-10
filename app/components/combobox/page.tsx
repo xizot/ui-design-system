@@ -60,7 +60,7 @@ const singleComboboxProps = [
   { name: 'showSelectedCode', type: 'boolean', defaultValue: 'false' },
   { name: 'searchPlaceholder', type: 'string', defaultValue: "'Tìm kiếm...'" },
   { name: 'emptyMessage', type: 'string', defaultValue: "'Không tìm thấy kết quả'" },
-  { name: 'size', type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`, defaultValue: `'md'` },
+  { name: 'size', type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'`, defaultValue: `'md'` },
   { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
@@ -81,7 +81,7 @@ const multipleComboboxProps = [
   { name: 'cancelText', type: 'string', defaultValue: "'Hủy'" },
   { name: 'applyText', type: 'string', defaultValue: "'Áp dụng'" },
   { name: 'limitTags', type: 'number', defaultValue: '--' },
-  { name: 'size', type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`, defaultValue: `'md'` },
+  { name: 'size', type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'`, defaultValue: `'md'` },
   { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
