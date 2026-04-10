@@ -5,6 +5,7 @@ import { CodeBlock } from '@/components/ui/code-block';
 import { DataColumnHeader, DataTable } from '@/components/ui/data-table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DEFAULT_PAGE_SIZE_OPTIONS } from '@/constants/common';
+import { useUrlFilters } from '@/hooks/use-url-filter';
 import { cn } from '@/lib/utils';
 import {
   type ColumnDef,
@@ -14,7 +15,8 @@ import {
   type SortingState,
 } from '@tanstack/react-table';
 import { Trash2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { parseAsArrayOf, parseAsInteger, parseAsString } from 'nuqs';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from '../../../components/ui/button';
 
 const guide = {
@@ -138,10 +140,10 @@ const payments: Payment[] = [
 ];
 
 const statusFilterOptions = [
-  { label: 'Pending', value: 'pending' },
-  { label: 'Processing', value: 'processing' },
-  { label: 'Success', value: 'success' },
-  { label: 'Failed', value: 'failed' },
+  { id: 1, code: 'pending', name: 'Pending' },
+  { id: 2, code: 'processing', name: 'Processing' },
+  { id: 3, code: 'success', name: 'Success' },
+  { id: 4, code: 'failed', name: 'Failed' },
 ];
 
 const basicColumns: ColumnDef<Payment>[] = [
@@ -174,7 +176,21 @@ const basicColumns: ColumnDef<Payment>[] = [
   },
   {
     accessorKey: 'method',
-    header: 'Method',
+    header: ({ column }) => (
+      <DataColumnHeader
+        column={column}
+        label="Method"
+        filterOptions={[
+          { id: 1, code: 'credit_card', name: 'Credit Card' },
+          { id: 2, code: 'bank_transfer', name: 'Bank Transfer' },
+          { id: 3, code: 'paypal', name: 'PayPal' },
+          { id: 4, code: 'cash', name: 'Cash' },
+          { id: 5, code: 'crypto', name: 'Crypto' },
+        ]}
+      />
+    ),
+    filterFn: (row, columnId, filterValues: string[]) =>
+      filterValues.includes(row.getValue(columnId)),
     cell: ({ row }) => {
       const methods = ['Credit Card', 'Bank Transfer', 'PayPal', 'Cash', 'Crypto'];
       return methods[row.index % methods.length];
@@ -205,63 +221,7 @@ const basicColumns: ColumnDef<Payment>[] = [
 ];
 
 const actionColumns: ColumnDef<Payment>[] = [
-  { accessorKey: 'id', header: 'ID' },
-  {
-    accessorKey: 'status',
-    meta: { className: 'min-w-[120px]' },
-    header: ({ column }) => (
-      <DataColumnHeader column={column} label="Status" filterOptions={statusFilterOptions} />
-    ),
-    filterFn: (row, columnId, filterValues: string[]) =>
-      filterValues.includes(row.getValue(columnId)),
-  },
-  { accessorKey: 'email', header: 'Email' },
-  {
-    accessorKey: 'amount',
-    header: ({ column }) => <DataColumnHeader column={column} label="Amount" align="right" />,
-    cell: ({ row }) => (
-      <div className="text-right font-medium">${(row.getValue('amount') as number).toFixed(2)}</div>
-    ),
-  },
-  {
-    accessorKey: 'date',
-    header: 'Date',
-    cell: ({ row }) => {
-      const date = new Date();
-      date.setDate(date.getDate() - (row.index % 30));
-      return date.toLocaleDateString('vi-VN');
-    },
-  },
-  {
-    accessorKey: 'method',
-    header: 'Method',
-    cell: ({ row }) => {
-      const methods = ['Credit Card', 'Bank Transfer', 'PayPal', 'Cash', 'Crypto'];
-      return methods[row.index % methods.length];
-    },
-  },
-  {
-    accessorKey: 'category',
-    header: 'Category',
-    cell: ({ row }) => {
-      const categories = ['Food', 'Transport', 'Shopping', 'Bills', 'Entertainment'];
-      return categories[row.index % categories.length];
-    },
-  },
-  {
-    accessorKey: 'description',
-    header: 'Description',
-    cell: ({ row }) => {
-      const descriptions = [
-        'Payment for services',
-        'Online purchase',
-        'Subscription renewal',
-        'Utility bill payment',
-        'Restaurant expense',
-      ];
-      return descriptions[row.index % descriptions.length];
-    },
-  },
+  ...basicColumns,
   {
     id: 'actions',
     header: 'Actions',
@@ -372,6 +332,77 @@ function ActionTableDemo() {
   );
 }
 
+const SORT_ORDER_ENUM = {
+  amount_asc: 1,
+  amount_desc: 2,
+  date_asc: 3,
+  date_desc: 4,
+} as const;
+
+const PARSERS = {
+  sortOrder: parseAsInteger,
+  status: parseAsArrayOf(parseAsString),
+  method: parseAsArrayOf(parseAsString),
+  category: parseAsArrayOf(parseAsString),
+};
+
+function UrlFilterTableDemo() {
+  const {
+    filters: urlFilters,
+    paginationState,
+    setFilter,
+    onPaginationChange,
+    createSortingHandlers,
+  } = useUrlFilters(PARSERS);
+
+  // ✅ Dùng constant reference thay vì inline object
+  const { sortingState, handleSortingChange } = createSortingHandlers(SORT_ORDER_ENUM);
+
+  const columnFilters = useMemo(() => {
+    const filters: ColumnFiltersState = [];
+    if (urlFilters.status && urlFilters.status.length > 0) {
+      filters.push({ id: 'status', value: urlFilters.status });
+    }
+    if (urlFilters.method && urlFilters.method.length > 0) {
+      filters.push({ id: 'method', value: urlFilters.method });
+    }
+    if (urlFilters.category && urlFilters.category.length > 0) {
+      filters.push({ id: 'category', value: urlFilters.category });
+    }
+    return filters;
+  }, [urlFilters]);
+
+  const handleColumnFiltersChange = useCallback(
+    (updater: ColumnFiltersState | ((old: ColumnFiltersState) => ColumnFiltersState)) => {
+      const newFilters = typeof updater === 'function' ? updater(columnFilters) : updater;
+      const toValue = (id: string) =>
+        (newFilters.find((f) => f.id === id)?.value as string[]) ?? null;
+
+      setFilter({
+        status: toValue('status'),
+        method: toValue('method'),
+        category: toValue('category'),
+      });
+    },
+    [columnFilters, setFilter],
+  );
+
+  return (
+    <div className="h-full w-full">
+      <DataTable
+        data={payments}
+        columns={basicColumns}
+        sorting={sortingState}
+        columnFilters={columnFilters}
+        pagination={paginationState}
+        onSortingChange={handleSortingChange}
+        onColumnFiltersChange={handleColumnFiltersChange}
+        onPaginationChange={onPaginationChange}
+      />
+    </div>
+  );
+}
+
 const props = [
   { name: 'className', type: 'string', defaultValue: '--' },
   { name: 'rowSelection', type: 'RowSelectionState', defaultValue: '{}' },
@@ -460,10 +491,11 @@ export default function TableGuidePage() {
             <CardContent>
               <div className="space-y-5">
                 <Tabs defaultValue="basic" className="w-full">
-                  <TabsList className="grid w-full grid-cols-3">
+                  <TabsList className="grid w-full grid-cols-4">
                     <TabsTrigger value="basic">Basic</TabsTrigger>
                     <TabsTrigger value="selection">With Selection</TabsTrigger>
                     <TabsTrigger value="actions">With Actions</TabsTrigger>
+                    <TabsTrigger value="url-filter">URL Filter</TabsTrigger>
                   </TabsList>
                   <TabsContent value="basic">
                     <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-8">
@@ -483,6 +515,13 @@ export default function TableGuidePage() {
                     <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-8">
                       <div className="flex h-100 items-center justify-center rounded-[18px] bg-card p-6 shadow-sm">
                         <ActionTableDemo />
+                      </div>
+                    </div>
+                  </TabsContent>
+                  <TabsContent value="url-filter">
+                    <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-8">
+                      <div className="flex h-100 items-center justify-center rounded-[18px] bg-card p-6 shadow-sm">
+                        <UrlFilterTableDemo />
                       </div>
                     </div>
                   </TabsContent>

@@ -42,14 +42,13 @@ import {
 } from '@tanstack/react-table';
 import { ArrowDown, ArrowUp, ArrowUpDown, Check, Funnel, Search } from 'lucide-react';
 import { InputGroup, InputGroupAddon, InputGroupInput } from './input-group';
+import { ComboboxBaseOption } from './single-combobox';
 
 declare module '@tanstack/react-table' {
   interface ColumnMeta<TData, TValue> {
     className?: string;
   }
 }
-
-export type DataColumnOption = { label: string; value: string };
 
 export function DataColumnHeader<TData>({
   column,
@@ -62,7 +61,7 @@ export function DataColumnHeader<TData>({
 }: {
   column?: Column<TData, unknown>;
   label: string;
-  filterOptions?: DataColumnOption[];
+  filterOptions?: ComboboxBaseOption[];
   align?: 'left' | 'right';
   filterClearText?: string;
   filterApplyText?: string;
@@ -86,7 +85,7 @@ export function DataColumnHeader<TData>({
   };
 
   const filteredOptions =
-    filterOptions?.filter((o) => o.label.toLowerCase().includes(search.toLowerCase())) ?? [];
+    filterOptions?.filter((o) => o.name.toLowerCase().includes(search.toLowerCase())) ?? [];
 
   const handleOpenChange = (nextOpen: boolean) => {
     if (nextOpen) setPending([...filterValues]);
@@ -152,24 +151,24 @@ export function DataColumnHeader<TData>({
               ) : (
                 filteredOptions.map((option) => (
                   <button
-                    key={option.value}
+                    key={option.code}
                     type="button"
                     className={cn(
                       'flex w-full items-center rounded-sm px-2 py-1.5 text-sm hover:bg-accent',
-                      pending.includes(option.value) && 'bg-accent',
+                      pending.includes(option.code) && 'bg-accent',
                     )}
-                    onClick={() => handleToggle(option.value)}
+                    onClick={() => handleToggle(option.code)}
                   >
                     <Checkbox
-                      checked={pending.includes(option.value)}
-                      onCheckedChange={() => handleToggle(option.value)}
+                      checked={pending.includes(option.code)}
+                      onCheckedChange={() => handleToggle(option.code)}
                       className="pointer-events-none"
                       wrapperClassName="w-full"
                       labelClassName="font-normal flex w-full"
                       label={
                         <>
-                          {option.label}
-                          {pending.includes(option.value) && (
+                          {option.name}
+                          {pending.includes(option.code) && (
                             <Check className="size-4 ml-auto text-primary" />
                           )}
                         </>
