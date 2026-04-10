@@ -49,6 +49,11 @@ const props = [
     type: 'string',
     defaultValue: '--',
   },
+  {
+    name: 'size',
+    type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`,
+    defaultValue: `'md'`,
+  },
 ];
 
 const usageSamples = [
@@ -68,6 +73,34 @@ export function Example() {
     <div className="grid w-full max-w-md gap-4">
       <Input placeholder="Enter your email" />
       <Input type="password" placeholder="Enter your password" />
+    </div>
+  );
+}`,
+  },
+  {
+    id: 'sizes',
+    label: 'Sizes',
+    preview: (
+      <div className="grid w-full max-w-md gap-4">
+        <Input size="xxs" placeholder="Extra Small" />
+        <Input size="xs" placeholder="Extra Small" />
+        <Input size="sm" placeholder="Small" />
+        <Input size="md" placeholder="Medium" />
+        <Input size="lg" placeholder="Large" />
+        <Input size="xl" placeholder="Extra Large" />
+      </div>
+    ),
+    code: `import { Input } from "@/design-system/components/ui/input";
+
+export function Example() {
+  return (
+    <div className="grid w-full max-w-md gap-4">
+      <Input size="xxs" placeholder="Extra Small" />
+      <Input size="xs" placeholder="Extra Small" />
+      <Input size="sm" placeholder="Small" />
+      <Input size="md" placeholder="Medium" />
+      <Input size="lg" placeholder="Large" />
+      <Input size="xl" placeholder="Extra Large" />
     </div>
   );
 }`,
@@ -179,9 +212,26 @@ export default function InputGuidePage() {
             </CardContent>
           </Card>
 
+          <Card id="sizes" className="rounded-[24px] border-border/70">
+            <CardHeader>
+              <CardTitle>3. Sizes</CardTitle>
+              <CardDescription>Available sizes for the Input component.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid w-full max-w-md gap-4">
+                <Input size="xxs" placeholder="Extra Small" />
+                <Input size="xs" placeholder="Extra Small" />
+                <Input size="sm" placeholder="Small" />
+                <Input size="md" placeholder="Medium" />
+                <Input size="lg" placeholder="Large" />
+                <Input size="xl" placeholder="Extra Large" />
+              </div>
+            </CardContent>
+          </Card>
+
           <Card id="usages" className="rounded-[24px] border-border/70">
             <CardHeader>
-              <CardTitle>3. Usages</CardTitle>
+              <CardTitle>4. Usages</CardTitle>
               <CardDescription>
                 The guide separates the most common input states into focused usage tabs instead of
                 showing a single generic example.
@@ -225,6 +275,9 @@ export default function InputGuidePage() {
             </a>
             <a href="#props" className="block transition hover:text-foreground">
               Props
+            </a>
+            <a href="#sizes" className="block transition hover:text-foreground">
+              Sizes
             </a>
             <a href="#usages" className="block transition hover:text-foreground">
               Usages
