@@ -1,11 +1,10 @@
 'use client';
 
-import { useController, type FieldValues } from 'react-hook-form';
+import { useController, type Control, type FieldValues, type Path } from 'react-hook-form';
 
 import { cn } from '../../lib/utils';
 import { Badge } from '../ui/badge';
 import { Textarea } from '../ui/textarea';
-import type { RHFRegisterProps } from './types';
 
 const ERROR_CLASSES = [
   'has-[.input-error]:[&_textarea]:pr-8',
@@ -15,26 +14,45 @@ const ERROR_CLASSES = [
   'has-[.input-error]:[&_textarea]:focus-visible:ring-destructive',
 ].join(' ');
 
-type RHFTextareaProps<T extends FieldValues = FieldValues> = RHFRegisterProps<T> &
-  Omit<React.ComponentProps<typeof Textarea>, 'name'> & {
-    callback?: (newValue: string) => void;
-    showMaxLength?: boolean;
-  };
+type RHFTextareaProps<T extends FieldValues = FieldValues> = Omit<
+  React.ComponentProps<typeof Textarea>,
+  'name' | 'value' | 'onChange'
+> & {
+  control: Control<T>;
+  name: Path<T>;
+  callback?: (newValue: string) => void;
+  showMaxLength?: boolean;
+};
 
 function RHFTextarea<T extends FieldValues = FieldValues>({
   control,
-  register,
   name,
   showMaxLength = true,
   maxLength = 512,
   rows = 5,
+  callback,
   ...props
 }: RHFTextareaProps<T>) {
+  const {
+    field,
+    fieldState: { error },
+  } = useController({
+    control,
+    name,
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    field.onChange(e.target.value);
+    callback?.(e.target.value);
+  };
+
   return (
     <div className="relative">
       <Textarea
         {...props}
-        {...register(name)}
+        {...field}
+        onChange={handleChange}
+        error={error?.message}
         id={props.id || String(name)}
         className={cn('w-full', props.className)}
         maxLength={maxLength}
@@ -46,8 +64,8 @@ function RHFTextarea<T extends FieldValues = FieldValues>({
 }
 
 type TextAreaBadgeProps<T extends FieldValues> = {
-  control: RHFRegisterProps<T>['control'];
-  name: RHFRegisterProps<T>['name'];
+  control: Control<T>;
+  name: Path<T>;
   maxLength: number;
 };
 

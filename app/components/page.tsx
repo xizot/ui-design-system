@@ -80,6 +80,18 @@ const guides = [
     importPath: '@/design-system/components/ui/chart',
   },
   {
+    slug: 'date-picker',
+    name: 'Date Picker',
+    group: 'ui',
+    importPath: '@/design-system/components/ui/date-picker',
+  },
+  {
+    slug: 'date-range-picker',
+    name: 'Date Range Picker',
+    group: 'ui',
+    importPath: '@/design-system/components/ui/date-range-picker',
+  },
+  {
     slug: 'checkbox',
     name: 'Checkbox',
     group: 'ui',
@@ -198,6 +210,12 @@ const guides = [
     name: 'Navigation Menu',
     group: 'ui',
     importPath: '@/design-system/components/ui/navigation-menu',
+  },
+  {
+    slug: 'number-input',
+    name: 'Number Input',
+    group: 'ui',
+    importPath: '@/design-system/components/ui/number-input',
   },
   {
     slug: 'pagination',
@@ -346,6 +364,12 @@ const guides = [
   {
     slug: 'rhf-input',
     name: 'RHF Input',
+    group: 'rhf',
+    importPath: '@/design-system/components/rhf',
+  },
+  {
+    slug: 'rhf-number-input',
+    name: 'RHF Number Input',
     group: 'rhf',
     importPath: '@/design-system/components/rhf',
   },

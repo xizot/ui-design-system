@@ -1,30 +1,46 @@
 'use client';
 
-import type { FieldValues } from 'react-hook-form';
+import { useController, type Control, type FieldValues, type Path } from 'react-hook-form';
 
 import { Input } from '../ui/input';
-import type { RHFRegisterProps } from './types';
 
-type RHFInputProps<T extends FieldValues = FieldValues> = RHFRegisterProps<T> &
-  Omit<React.ComponentProps<typeof Input>, 'name'> & {
-    callback?: (newValue: string) => void;
-  };
+type RHFInputProps<T extends FieldValues = FieldValues> = Omit<
+  React.ComponentProps<typeof Input>,
+  'name' | 'value' | 'onChange'
+> & {
+  control: Control<T>;
+  name: Path<T>;
+  callback?: (newValue: string) => void;
+};
 
 function RHFInput<T extends FieldValues = FieldValues>({
   control,
-  register,
   name,
-  label,
-  description,
-  required,
-  wrapperClassName,
-  labelClassName,
-  descriptionClassName,
-  errorClassName,
   callback,
   ...props
 }: RHFInputProps<T>) {
-  return <Input {...props} {...register(name)} id={props.id || String(name)} />;
+  const {
+    field,
+    fieldState: { error },
+  } = useController({
+    control,
+    name,
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    field.onChange(e.target.value);
+    callback?.(e.target.value);
+  };
+
+  return (
+    <Input
+      {...props}
+      {...field}
+      onChange={handleChange}
+      error={error?.message}
+      id={props.id || String(name)}
+    />
+  );
 }
 
 export { RHFInput };

@@ -164,11 +164,14 @@ export default function ComponentGuidePage() {
 - Button
 - Calendar
 - Card
+- Chart
 - Checkbox
 - Collapsible
 - Combobox
 - Command
 - Context Menu
+- Date Picker
+- Date Range Picker
 - Dialog
 - Direction
 - Dropdown Menu
@@ -184,6 +187,7 @@ export default function ComponentGuidePage() {
 - Menubar
 - Native Select
 - Navigation Menu
+- Number Input
 - Pagination
 - Popover
 - Progress
@@ -193,6 +197,7 @@ export default function ComponentGuidePage() {
 - RHF Error Message
 - RHF Input
 - RHF Multiple Combobox
+- RHF Number Input
 - RHF Single Combobox
 - RHF Switch
 - RHF Textarea

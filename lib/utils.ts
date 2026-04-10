@@ -41,3 +41,51 @@ export function get<T = unknown>(obj: unknown, path: string): T | undefined {
 
   return result as T;
 }
+
+export interface FormatOptions {
+  decimalPlaces?: number;
+  currency?: string;
+  showTrailingZeros?: boolean;
+  hideDecimalsIfWhole?: boolean;
+}
+
+export function formatNumber(value: number, options: FormatOptions = {}): string {
+  const {
+    decimalPlaces = 3,
+    currency,
+    showTrailingZeros = false,
+    hideDecimalsIfWhole = true,
+  } = options;
+
+  if (!Number.isFinite(value)) {
+    return String(value);
+  }
+
+  const isNegative = value < 0;
+  const abs = Math.abs(value);
+
+  const epsilon = Number.EPSILON * abs * 10;
+  const fixed = (abs + epsilon).toFixed(decimalPlaces);
+  const [integerPart, decimalPart] = fixed.split('.');
+
+  const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+  const callerExplicitlySetDecimals = options.decimalPlaces !== undefined;
+  const valueHasFraction = abs % 1 !== 0;
+  const shouldShowDecimal =
+    decimalPlaces > 0 && (callerExplicitlySetDecimals || valueHasFraction || !hideDecimalsIfWhole);
+  const shouldHideDecimal = hideDecimalsIfWhole && !valueHasFraction;
+
+  let result: string;
+  if (!shouldShowDecimal || !decimalPart || shouldHideDecimal) {
+    result = formattedInteger;
+  } else {
+    const displayDecimal = showTrailingZeros ? decimalPart : decimalPart.replace(/0+$/, '');
+    result = displayDecimal.length > 0 ? `${formattedInteger},${displayDecimal}` : formattedInteger;
+  }
+
+  if (isNegative) result = `-${result}`;
+  if (currency) result = `${result} ${currency}`;
+
+  return result;
+}
