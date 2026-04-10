@@ -12,7 +12,7 @@ import {
   subWeeks,
   type Locale,
 } from 'date-fns';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, XCircleIcon } from 'lucide-react';
 import * as React from 'react';
 import type { DateRange, DayPickerRangeProps } from 'react-day-picker';
 
@@ -58,6 +58,7 @@ export type DateRangePickerProps = Omit<
   locale?: string | Locale;
   cancelText?: string;
   applyText?: string;
+  showClearIcon?: boolean;
 };
 
 const getDefaultPresets = (): DateRangePreset[] => {
@@ -118,6 +119,7 @@ function DateRangePicker({
   locale,
   cancelText,
   applyText,
+  showClearIcon = true,
   ...calendarProps
 }: DateRangePickerProps) {
   const [open, setOpen] = React.useState(false);
@@ -247,10 +249,10 @@ function DateRangePicker({
       <div>
         {' '}
         <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger>
+          <PopoverTrigger className={'w-full'}>
             <div
               className={cn(
-                'group w-full inline-flex items-center justify-between rounded-md border border-border bg-background shadow-sm ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+                'group w-full gap-x-3 inline-flex items-center justify-between rounded-md border border-border bg-background shadow-sm ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
                 FORM_SIZE_STYLES[size].height,
                 FORM_SIZE_STYLES[size].padding,
                 FORM_SIZE_STYLES[size].text,
@@ -260,7 +262,41 @@ function DateRangePicker({
               )}
             >
               <span>{displayValue}</span>
-              <CalendarIcon className={cn('opacity-50', FORM_SIZE_STYLES[size].icon)} />
+
+              {/* Clear icon replaces Calendar icon on hover */}
+              <div
+                className={cn(
+                  'relative z-10 ml-auto flex shrink-0 items-center gap-0.5 self-center',
+                  FORM_SIZE_STYLES[size].svgIcon,
+                )}
+              >
+                {value?.from && !disabled ? (
+                  showClearIcon ? (
+                    <div className={cn('relative shrink-0', FORM_SIZE_STYLES[size].icon)}>
+                      <span
+                        className="absolute inset-0 z-10 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100"
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                        }}
+                        onClick={() => {
+                          onChange?.(undefined);
+                        }}
+                      >
+                        <XCircleIcon className="text-muted-foreground" />
+                        <span className="sr-only">Clear</span>
+                      </span>
+                      <span className="absolute inset-0 flex items-center justify-center transition-opacity group-hover:opacity-0">
+                        <CalendarIcon className={cn('opacity-50', FORM_SIZE_STYLES[size].icon)} />
+                      </span>
+                    </div>
+                  ) : (
+                    <CalendarIcon className={cn('opacity-50', FORM_SIZE_STYLES[size].icon)} />
+                  )
+                ) : (
+                  <CalendarIcon className={cn('opacity-50', FORM_SIZE_STYLES[size].icon)} />
+                )}
+              </div>
             </div>
           </PopoverTrigger>
           <PopoverContent

@@ -162,7 +162,7 @@ function SingleCombobox<T extends ComboboxBaseOption>({
           >
             {hasValue && !disabled ? (
               showClearIcon && showArrowIcon ? (
-                <div className="relative size-4 shrink-0">
+                <div className={cn('relative shrink-0', FORM_SIZE_STYLES[size].icon)}>
                   <span
                     className="absolute inset-0 z-10 flex items-center justify-center opacity-0 transition-opacity group-hover/trigger:opacity-100"
                     onMouseDown={(e) => {

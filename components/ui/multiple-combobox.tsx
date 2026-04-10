@@ -239,7 +239,7 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
           >
             {externalValues.length > 0 && !disabled ? (
               showClearIcon && showArrowIcon ? (
-                <div className="relative size-4 shrink-0">
+                <div className={cn('relative shrink-0', FORM_SIZE_STYLES[size].icon)}>
                   <span
                     className="absolute inset-0 z-10 flex items-center justify-center opacity-0 transition-opacity group-hover/trigger:opacity-100"
                     onMouseDown={(e) => {
@@ -258,7 +258,10 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
               ) : showClearIcon ? (
                 <button
                   type="button"
-                  className="flex size-4 cursor-pointer items-center justify-center rounded text-muted-foreground hover:text-foreground"
+                  className={cn(
+                    'flex cursor-pointer items-center justify-center rounded text-muted-foreground hover:text-foreground',
+                    FORM_SIZE_STYLES[size].icon,
+                  )}
                   onClick={handleClearAll}
                 >
                   <XCircleIcon />

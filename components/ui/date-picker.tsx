@@ -11,7 +11,7 @@ import { TimePicker, type TimeValue } from '@/components/ui/time-picker';
 import { FORM_SIZE_STYLES, type FormSize } from '@/constants/form-sizes';
 import { cn } from '@/lib/utils';
 import { format, setHours, setMinutes, setSeconds, startOfMonth, type Locale } from 'date-fns';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, XCircleIcon } from 'lucide-react';
 import type { ComponentProps } from 'react';
 import * as React from 'react';
 import type { DayPickerSingleProps } from 'react-day-picker';
@@ -45,6 +45,7 @@ export type DatePickerProps = Omit<
   cancelText?: string;
   applyText?: string;
   monthNames?: string[];
+  showClearIcon?: boolean;
 };
 
 function DatePicker({
@@ -70,9 +71,10 @@ function DatePicker({
   triggerClassName,
   popoverClassName,
   locale,
-  cancelText,
-  applyText,
+  cancelText = 'Hủy',
+  applyText = 'Áp dụng',
   monthNames,
+  showClearIcon = true,
   ...calendarProps
 }: DatePickerProps) {
   const [open, setOpen] = React.useState(false);
@@ -308,10 +310,10 @@ function DatePicker({
       ) : null}
       <div>
         <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger>
+          <PopoverTrigger className={'w-full'}>
             <div
               className={cn(
-                'group w-full inline-flex items-center justify-between rounded-md border border-border bg-background shadow-sm ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+                'group w-full gap-x-3 inline-flex items-center justify-between rounded-md border border-border bg-background shadow-sm ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
                 FORM_SIZE_STYLES[size].height,
                 FORM_SIZE_STYLES[size].padding,
                 FORM_SIZE_STYLES[size].text,
@@ -321,7 +323,41 @@ function DatePicker({
               )}
             >
               <span>{displayValue}</span>
-              <CalendarIcon className={cn('opacity-50', FORM_SIZE_STYLES[size].icon)} />
+
+              {/* Clear icon replaces Calendar icon on hover */}
+              <div
+                className={cn(
+                  'relative z-10 ml-auto flex shrink-0 items-center gap-0.5 self-center',
+                  FORM_SIZE_STYLES[size].svgIcon,
+                )}
+              >
+                {value && !disabled ? (
+                  showClearIcon ? (
+                    <div className={cn('relative shrink-0', FORM_SIZE_STYLES[size].icon)}>
+                      <span
+                        className="absolute inset-0 z-10 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100"
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                        }}
+                        onClick={() => {
+                          onChange?.(undefined);
+                        }}
+                      >
+                        <XCircleIcon className="text-muted-foreground" />
+                        <span className="sr-only">Clear</span>
+                      </span>
+                      <span className="absolute inset-0 flex items-center justify-center transition-opacity group-hover:opacity-0">
+                        <CalendarIcon className={cn('opacity-50', FORM_SIZE_STYLES[size].icon)} />
+                      </span>
+                    </div>
+                  ) : (
+                    <CalendarIcon className={cn('opacity-50', FORM_SIZE_STYLES[size].icon)} />
+                  )
+                ) : (
+                  <CalendarIcon className={cn('opacity-50', FORM_SIZE_STYLES[size].icon)} />
+                )}
+              </div>
             </div>
           </PopoverTrigger>
           <PopoverContent
@@ -361,12 +397,12 @@ function DatePicker({
                 </div>
               )}
               <Separator className="shrink-0" />
-              <div className="flex justify-end gap-2 px-2 shrink-0">
-                <Button variant="secondary" size="sm" onClick={handleCancel}>
-                  {cancelText || 'Cancel'}
+              <div className="flex items-center gap-2 px-2 shrink-0">
+                <Button className={'flex-1'} variant="secondary" size="sm" onClick={handleCancel}>
+                  {cancelText}
                 </Button>
-                <Button size="sm" onClick={handleApply}>
-                  {applyText || 'Apply'}
+                <Button className={'flex-1'} size="sm" onClick={handleApply}>
+                  {applyText}
                 </Button>
               </div>
             </div>
