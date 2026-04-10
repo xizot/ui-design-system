@@ -37,10 +37,17 @@ import {
   type ColumnFiltersState,
   type OnChangeFn,
   type PaginationState,
+  type RowSelectionState,
   type SortingState,
 } from '@tanstack/react-table';
 import { ArrowDown, ArrowUp, ArrowUpDown, Check, Funnel, Search } from 'lucide-react';
 import { InputGroup, InputGroupAddon, InputGroupInput } from './input-group';
+
+declare module '@tanstack/react-table' {
+  interface ColumnMeta<TData, TValue> {
+    className?: string;
+  }
+}
 
 export type DataColumnOption = { label: string; value: string };
 
@@ -213,6 +220,8 @@ interface DataTableProps<TData> {
   onSortingChange: OnChangeFn<SortingState>;
   onColumnFiltersChange: OnChangeFn<ColumnFiltersState>;
   onPaginationChange: OnChangeFn<PaginationState>;
+  rowSelection?: RowSelectionState;
+  onRowSelectionChange?: OnChangeFn<RowSelectionState>;
 }
 
 export function DataTable<TData>({
@@ -225,11 +234,41 @@ export function DataTable<TData>({
   onColumnFiltersChange,
   onSortingChange,
   onPaginationChange,
+  rowSelection,
+  onRowSelectionChange,
 }: DataTableProps<TData>) {
+  const selectionColumn: ColumnDef<TData> = {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected()}
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  };
+
   const table = useReactTable({
     data,
-    columns,
-    state: { sorting, columnFilters, pagination },
+    columns: [selectionColumn, ...columns],
+    state: {
+      sorting,
+      columnFilters,
+      pagination,
+      columnPinning: {
+        right: ['actions'],
+      },
+      ...(rowSelection !== undefined && { rowSelection }),
+    },
     onSortingChange,
     onColumnFiltersChange,
     onPaginationChange,
@@ -237,6 +276,8 @@ export function DataTable<TData>({
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    ...(rowSelection !== undefined && { enableRowSelection: true }),
+    ...(onRowSelectionChange && { onRowSelectionChange }),
   });
 
   return (
@@ -246,7 +287,7 @@ export function DataTable<TData>({
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
+                <TableHead key={header.id} className={header.column.columnDef.meta?.className}>
                   {flexRender(header.column.columnDef.header, header.getContext())}
                 </TableHead>
               ))}

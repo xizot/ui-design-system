@@ -3,20 +3,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CodeBlock } from '@/components/ui/code-block';
 import { DataColumnHeader, DataTable } from '@/components/ui/data-table';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DEFAULT_PAGE_SIZE_OPTIONS } from '@/constants/common';
 import { cn } from '@/lib/utils';
 import {
   type ColumnDef,
   type ColumnFiltersState,
   type PaginationState,
+  type RowSelectionState,
   type SortingState,
 } from '@tanstack/react-table';
 import { useEffect, useState } from 'react';
@@ -32,6 +26,10 @@ type Payment = {
   amount: number;
   status: 'pending' | 'processing' | 'success' | 'failed';
   email: string;
+  date?: string;
+  method?: string;
+  category?: string;
+  description?: string;
 };
 
 const payments: Payment[] = [
@@ -144,10 +142,71 @@ const statusFilterOptions = [
   { label: 'Failed', value: 'failed' },
 ];
 
-const tanstackSortingColumns: ColumnDef<Payment>[] = [
+const basicColumns: ColumnDef<Payment>[] = [
   { accessorKey: 'id', header: 'ID' },
   {
     accessorKey: 'status',
+    meta: { className: 'min-w-[120px]' },
+    header: ({ column }) => (
+      <DataColumnHeader column={column} label="Trang thai" filterOptions={statusFilterOptions} />
+    ),
+    filterFn: (row, columnId, filterValues: string[]) =>
+      filterValues.includes(row.getValue(columnId)),
+  },
+  { accessorKey: 'email', header: 'Email' },
+  {
+    accessorKey: 'amount',
+    header: ({ column }) => <DataColumnHeader column={column} label="So tien" align="right" />,
+    cell: ({ row }) => (
+      <div className="text-right font-medium">${(row.getValue('amount') as number).toFixed(2)}</div>
+    ),
+  },
+  {
+    accessorKey: 'date',
+    header: 'Ngay',
+    cell: ({ row }) => {
+      const date = new Date();
+      date.setDate(date.getDate() - Math.floor(Math.random() * 30));
+      return date.toLocaleDateString('vi-VN');
+    },
+  },
+  {
+    accessorKey: 'method',
+    header: 'Phuong thuc',
+    cell: ({ row }) => {
+      const methods = ['Credit Card', 'Bank Transfer', 'PayPal', 'Cash', 'Crypto'];
+      return methods[Math.floor(Math.random() * methods.length)];
+    },
+  },
+  {
+    accessorKey: 'category',
+    header: 'Danh muc',
+    cell: ({ row }) => {
+      const categories = ['Food', 'Transport', 'Shopping', 'Bills', 'Entertainment'];
+      return categories[Math.floor(Math.random() * categories.length)];
+    },
+  },
+  {
+    accessorKey: 'description',
+    header: 'Mo ta',
+    cell: ({ row }) => {
+      const descriptions = [
+        'Payment for services',
+        'Online purchase',
+        'Subscription renewal',
+        'Utility bill payment',
+        'Restaurant expense',
+      ];
+      return descriptions[Math.floor(Math.random() * descriptions.length)];
+    },
+  },
+];
+
+const selectionColumns: ColumnDef<Payment>[] = [
+  { accessorKey: 'id', header: 'ID' },
+  {
+    accessorKey: 'status',
+    meta: { className: 'min-w-[250px]' },
     header: ({ column }) => (
       <DataColumnHeader column={column} label="Trạng thái" filterOptions={statusFilterOptions} />
     ),
@@ -164,7 +223,38 @@ const tanstackSortingColumns: ColumnDef<Payment>[] = [
   },
 ];
 
-function TanstackSortingExample() {
+const actionColumns: ColumnDef<Payment>[] = [
+  { accessorKey: 'id', header: 'ID' },
+  {
+    accessorKey: 'status',
+    meta: { className: 'min-w-[250px]' },
+    header: ({ column }) => (
+      <DataColumnHeader column={column} label="Trạng thái" filterOptions={statusFilterOptions} />
+    ),
+    filterFn: (row, columnId, filterValues: string[]) =>
+      filterValues.includes(row.getValue(columnId)),
+  },
+  { accessorKey: 'email', header: 'Email' },
+  {
+    accessorKey: 'amount',
+    header: ({ column }) => <DataColumnHeader column={column} label="Số tiền" align="right" />,
+    cell: ({ row }) => (
+      <div className="text-right font-medium">${(row.getValue('amount') as number).toFixed(2)}</div>
+    ),
+  },
+  {
+    id: 'actions',
+    header: 'Actions',
+    cell: ({ row }) => (
+      <div className="flex gap-2">
+        <button className="text-sm text-blue-600 hover:text-blue-800">Edit</button>
+        <button className="text-sm text-red-600 hover:text-red-800">Delete</button>
+      </div>
+    ),
+  },
+];
+
+function BasicTableDemo() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -173,20 +263,98 @@ function TanstackSortingExample() {
   });
 
   return (
-    <DataTable
-      data={payments}
-      columns={tanstackSortingColumns}
-      sorting={sorting}
-      onSortingChange={setSorting}
-      columnFilters={columnFilters}
-      onColumnFiltersChange={setColumnFilters}
-      pagination={pagination}
-      onPaginationChange={setPagination}
-    />
+    <div className="h-full">
+      <DataTable
+        data={payments}
+        columns={basicColumns}
+        sorting={sorting}
+        onSortingChange={setSorting}
+        columnFilters={columnFilters}
+        onColumnFiltersChange={setColumnFilters}
+        pagination={pagination}
+        onPaginationChange={setPagination}
+      />
+    </div>
   );
 }
 
-const props = [{ name: 'className', type: 'string', defaultValue: '--' }];
+function SelectionTableDemo() {
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: DEFAULT_PAGE_SIZE_OPTIONS[0],
+  });
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+
+  const selectedCount = Object.keys(rowSelection).length;
+
+  return (
+    <div className="space-y-4 h-full">
+      <div className="flex items-center justify-between">
+        <div className="text-sm text-muted-foreground">
+          {selectedCount > 0 ? (
+            <span>
+              Selected {selectedCount} item{selectedCount > 1 ? 's' : ''}
+            </span>
+          ) : (
+            <span>No items selected</span>
+          )}
+        </div>
+        {selectedCount > 0 && (
+          <button
+            onClick={() => setRowSelection({})}
+            className="text-sm text-destructive hover:text-destructive/80"
+          >
+            Clear selection
+          </button>
+        )}
+      </div>
+      <DataTable
+        data={payments}
+        columns={selectionColumns}
+        sorting={sorting}
+        onSortingChange={setSorting}
+        columnFilters={columnFilters}
+        onColumnFiltersChange={setColumnFilters}
+        pagination={pagination}
+        onPaginationChange={setPagination}
+        rowSelection={rowSelection}
+        onRowSelectionChange={setRowSelection}
+      />
+    </div>
+  );
+}
+
+function ActionTableDemo() {
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: DEFAULT_PAGE_SIZE_OPTIONS[0],
+  });
+
+  return (
+    <div className="h-full">
+      <DataTable
+        data={payments}
+        columns={actionColumns}
+        sorting={sorting}
+        onSortingChange={setSorting}
+        columnFilters={columnFilters}
+        onColumnFiltersChange={setColumnFilters}
+        pagination={pagination}
+        onPaginationChange={setPagination}
+      />
+    </div>
+  );
+}
+
+const props = [
+  { name: 'className', type: 'string', defaultValue: '--' },
+  { name: 'rowSelection', type: 'RowSelectionState', defaultValue: '{}' },
+  { name: 'onRowSelectionChange', type: 'OnChangeFn<RowSelectionState>', defaultValue: '--' },
+];
 
 export default function TableGuidePage() {
   useEffect(() => {
@@ -263,17 +431,40 @@ export default function TableGuidePage() {
             <CardHeader>
               <CardTitle>3. TanStack Table</CardTitle>
               <CardDescription>
-                Headless table logic với <code>@tanstack/react-table</code> — sorting, filtering,
-                pagination.
+                Headless table logic dengan <code>@tanstack/react-table</code> &mdash; sorting,
+                filtering, pagination, selection, and actions.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-5">
-                <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-8">
-                  <div className="flex h-100 items-center justify-center rounded-[18px] bg-card p-6 shadow-sm">
-                    <TanstackSortingExample />
-                  </div>
-                </div>
+                <Tabs defaultValue="basic" className="w-full">
+                  <TabsList className="grid w-full grid-cols-3">
+                    <TabsTrigger value="basic">Basic</TabsTrigger>
+                    <TabsTrigger value="selection">With Selection</TabsTrigger>
+                    <TabsTrigger value="actions">With Actions</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="basic">
+                    <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-8">
+                      <div className="flex h-100 items-center justify-center rounded-[18px] bg-card p-6 shadow-sm">
+                        <BasicTableDemo />
+                      </div>
+                    </div>
+                  </TabsContent>
+                  <TabsContent value="selection">
+                    <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-8">
+                      <div className="flex h-100 items-center justify-center rounded-[18px] bg-card p-6 shadow-sm">
+                        <SelectionTableDemo />
+                      </div>
+                    </div>
+                  </TabsContent>
+                  <TabsContent value="actions">
+                    <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-8">
+                      <div className="flex h-100 items-center justify-center rounded-[18px] bg-card p-6 shadow-sm">
+                        <ActionTableDemo />
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
                 <CodeBlock
                   id="tanstack-sorting"
                   code={`import { useState } from "react";
@@ -283,10 +474,11 @@ import {
   getSortedRowModel,
   useReactTable,
   type ColumnDef,
+  type RowSelectionState,
   type SortingState,
 } from "@tanstack/react-table";
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/design-system/components/ui/table";
+import { DataTable } from "@/design-system/components/ui/data-table";
 
 function SortableHeader({ label, sorted, onToggle }) {
   const isActive = sorted !== false;
@@ -347,41 +539,17 @@ const columns: ColumnDef<Payment>[] = [
 
 export function SortableTable({ data }: { data: Payment[] }) {
   const [sorting, setSorting] = useState<SortingState>([]);
-
-  const table = useReactTable({
-    data,
-    columns,
-    state: { sorting },
-    onSortingChange: setSorting,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-  });
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
   return (
-    <Table>
-      <TableHeader>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <TableHead key={header.id}>
-                {flexRender(header.column.columnDef.header, header.getContext())}
-              </TableHead>
-            ))}
-          </TableRow>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {table.getRowModel().rows.map((row) => (
-          <TableRow key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <TableCell key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </TableCell>
-            ))}
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <DataTable
+      data={data}
+      columns={columns}
+      sorting={sorting}
+      onSortingChange={setSorting}
+      rowSelection={rowSelection}
+      onRowSelectionChange={setRowSelection}
+    />
   );
 }`}
                 />
