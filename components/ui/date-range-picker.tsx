@@ -117,8 +117,8 @@ function DateRangePicker({
   triggerClassName,
   popoverClassName,
   locale,
-  cancelText,
-  applyText,
+  cancelText = 'Hủy',
+  applyText = 'Áp dụng',
   showClearIcon = true,
   ...calendarProps
 }: DateRangePickerProps) {
@@ -303,7 +303,7 @@ function DateRangePicker({
             className={cn('flex w-auto flex-col gap-2 p-0 pb-2', popoverClassName)}
             align="start"
           >
-            <div className="flex flex-col gap-2 pb-2">
+            <div className="flex flex-col gap-2">
               <div className="flex">
                 {shouldShowPresets && (
                   <div className="border-r p-2 w-fit">
@@ -328,10 +328,17 @@ function DateRangePicker({
               </div>
               <Separator />
               <div className="flex justify-end gap-2 px-2">
-                <Button variant="secondary" onClick={handleCancel}>
-                  {cancelText || 'Cancel'}
+                <Button
+                  size={'sm'}
+                  className={'min-w-20'}
+                  variant="secondary"
+                  onClick={handleCancel}
+                >
+                  {cancelText}
                 </Button>
-                <Button onClick={handleApply}>{applyText || 'Apply'}</Button>
+                <Button size={'sm'} className={'min-w-20'} onClick={handleApply}>
+                  {applyText}
+                </Button>
               </div>
             </div>
           </PopoverContent>
