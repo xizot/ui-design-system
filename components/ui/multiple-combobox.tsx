@@ -170,16 +170,9 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
             error && 'border-destructive focus-within:ring-destructive/20',
           )}
         >
-          {/* Full-area trigger button (invisible, z-0) */}
-          <ComboboxPrimitive.Trigger
-            className="absolute inset-0 z-0 cursor-pointer focus-visible:outline-none"
-            disabled={disabled}
-          />
-
-          {/* Badges / placeholder */}
           <div
             className={cn(
-              'pointer-events-none flex min-w-0 flex-1 items-center gap-1 px-2 py-1.5',
+              'flex min-w-0 flex-1 items-center gap-1 px-2 py-1.5',
               autoResize && 'flex-wrap',
             )}
           >
@@ -204,10 +197,10 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
                           {showSelectedCode ? `${opt.code} - ${opt.name}` : opt.name}
                         </p>
                       )}
-                      {!required && !disabled && (
+                      {!requireApply && !disabled && (
                         <button
                           type="button"
-                          className="pointer-events-auto me-1 inline-flex size-3.5 shrink-0 cursor-pointer items-center justify-center rounded text-muted-foreground hover:text-foreground"
+                          className="pointer-events-auto z-10 me-1 inline-flex size-3.5 shrink-0 cursor-pointer items-center justify-center rounded text-muted-foreground hover:text-foreground"
                           onPointerDown={(e) => e.stopPropagation()}
                           onClick={(e) => handleRemoveSingle(e, id)}
                         >
@@ -232,7 +225,7 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
           </div>
 
           {/* Clear-all + Chevron (z-10, above trigger) */}
-          <div className="relative z-10 ml-auto flex shrink-0 items-center gap-0.5 self-center py-[9px] pr-2 [&_svg]:size-4">
+          <div className="relative ml-auto flex shrink-0 items-center gap-0.5 self-center py-[9px] pr-2 [&_svg]:size-4">
             {externalValues.length > 0 && !disabled ? (
               showClearIcon && showArrowIcon ? (
                 <div className="relative size-4 shrink-0">
@@ -266,6 +259,11 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
               <ChevronDownIcon className="text-muted-foreground" />
             ) : null}
           </div>
+
+          <ComboboxPrimitive.Trigger
+            className="absolute inset-0 z-0 cursor-pointer focus-visible:outline-none"
+            disabled={disabled}
+          />
         </div>
 
         {/* Popup: search input + items with checkboxes + footer */}
