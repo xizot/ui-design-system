@@ -2,14 +2,6 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CodeBlock } from '@/components/ui/code-block';
-import {
-  Combobox,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxList,
-} from '@/components/ui/combobox';
 import { SingleCombobox } from '@/components/ui/single-combobox';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
@@ -19,7 +11,7 @@ import {
   MultipleComboboxLimitTagsDemo,
   MultipleComboboxWithCodeDemo,
 } from './multiple-combobox-demo';
-import { SingleComboboxBasicDemo, SingleComboboxWithCodeDemo } from './single-combobox-demo';
+import { SingleComboboxWithCodeDemo } from './single-combobox-demo';
 
 const guide = {
   name: 'Combobox',
@@ -36,8 +28,6 @@ const props = [
   { name: 'disabled', type: 'boolean', defaultValue: 'false' },
   { name: 'className', type: 'string', defaultValue: '--' },
 ];
-
-const frameworks = ['Next.js', 'SvelteKit', 'Nuxt.js', 'Remix', 'Astro'];
 
 const departments = [
   { id: 1, code: 'IT', name: 'Công nghệ thông tin' },
@@ -87,35 +77,6 @@ const multipleComboboxProps = [
 
 const singleUsageSamples = [
   {
-    id: 'basic',
-    label: 'Basic',
-    preview: <SingleComboboxBasicDemo />,
-    code: `'use client';
-import { useState } from 'react';
-import { SingleCombobox } from '@/design-system/components/ui/single-combobox';
-
-const departments = [
-  { id: 1, code: 'IT', name: 'Công nghệ thông tin' },
-  { id: 2, code: 'HR', name: 'Nhân sự' },
-  { id: 3, code: 'FIN', name: 'Tài chính' },
-];
-
-export function Example() {
-  const [value, setValue] = useState<string | number | undefined>();
-
-  return (
-    <SingleCombobox
-      label="Phòng ban"
-      required
-      options={departments}
-      value={value}
-      onChange={(v) => setValue(v)}
-      placeholder="Chọn phòng ban..."
-    />
-  );
-}`,
-  },
-  {
     id: 'with-code',
     label: 'Hiện mã',
     preview: <SingleComboboxWithCodeDemo />,
@@ -156,35 +117,6 @@ export function Example() {
 ];
 
 const multipleUsageSamples = [
-  {
-    id: 'basic',
-    label: 'Basic',
-    preview: <MultipleComboboxBasicDemo />,
-    code: `'use client';
-import { useState } from 'react';
-import { MultipleCombobox } from '@/design-system/components/ui/multiple-combobox';
-
-const departments = [
-  { id: 1, code: 'IT', name: 'Công nghệ thông tin' },
-  { id: 2, code: 'HR', name: 'Nhân sự' },
-  { id: 3, code: 'FIN', name: 'Tài chính' },
-];
-
-export function Example() {
-  const [values, setValues] = useState<(string | number)[]>([]);
-
-  return (
-    <MultipleCombobox
-      label="Phòng ban"
-      required
-      options={departments}
-      value={values}
-      onChange={(v) => setValues(v)}
-      placeholder="Chọn phòng ban..."
-    />
-  );
-}`,
-  },
   {
     id: 'with-code',
     label: 'Hiện mã',
@@ -235,61 +167,6 @@ export function Example() {
   placeholder="Chọn phòng ban..."
   error="Vui lòng chọn ít nhất một phòng ban"
 />`,
-  },
-];
-
-const usageSamples = [
-  {
-    id: 'basic',
-    label: 'Basic',
-    preview: (
-      <div className="w-full max-w-sm p-4">
-        <div className="space-y-1.5">
-          <label className="block text-sm font-medium leading-5">Framework</label>
-          <Combobox>
-            <ComboboxInput placeholder="Select a framework" />
-            <ComboboxContent>
-              <ComboboxEmpty>No items found.</ComboboxEmpty>
-              <ComboboxList>
-                {frameworks.map((item) => (
-                  <ComboboxItem key={item} value={item}>
-                    {item}
-                  </ComboboxItem>
-                ))}
-              </ComboboxList>
-            </ComboboxContent>
-          </Combobox>
-        </div>
-      </div>
-    ),
-    code: `import {
-  Combobox,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxList,
-} from "@/design-system/components/ui/combobox";
-
-const frameworks = ["Next.js", "SvelteKit", "Nuxt.js", "Remix", "Astro"];
-
-export function ExampleCombobox() {
-  return (
-    <Combobox items={frameworks}>
-      <ComboboxInput placeholder="Select a framework" />
-      <ComboboxContent>
-        <ComboboxEmpty>No items found.</ComboboxEmpty>
-        <ComboboxList>
-          {(item) => (
-            <ComboboxItem key={item} value={item}>
-              {item}
-            </ComboboxItem>
-          )}
-        </ComboboxList>
-      </ComboboxContent>
-    </Combobox>
-  );
-}`,
   },
 ];
 
@@ -412,36 +289,6 @@ export default function ComboboxGuidePage() {
                   </div>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-
-          <Card id="usages" className="rounded-[24px] border-border/70">
-            <CardHeader>
-              <CardTitle>4. Usages</CardTitle>
-              <CardDescription>Common Combobox patterns and configurations.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">
-                <TabsList variant="line">
-                  {usageSamples.map((sample) => (
-                    <TabsTrigger key={sample.id} value={sample.id}>
-                      {sample.label}
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
-
-                {usageSamples.map((sample) => (
-                  <TabsContent key={sample.id} value={sample.id} className="space-y-5">
-                    <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-8">
-                      <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
-                        {sample.preview}
-                      </div>
-                    </div>
-
-                    <CodeBlock code={sample.code} id={sample.id} />
-                  </TabsContent>
-                ))}
-              </Tabs>
             </CardContent>
           </Card>
         </div>

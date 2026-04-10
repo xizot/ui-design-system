@@ -104,13 +104,11 @@
   --form-size-xxl-icon: 1.75rem;
   --form-size-xxl-icon-button: 3.5rem;
 
-
   --font-lh-xs: 16px;
   --font-lh-sm: 20px;
   --font-lh-md: 24px;
   --font-lh-lg: 28px;
   --font-lh-xl: 30px;
-
 
   /* Typography Scale */
   --text-xs: var(--form-size-xs-text);
@@ -126,7 +124,6 @@
 }
 
 :root {
-
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);

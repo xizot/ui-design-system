@@ -6,19 +6,14 @@ import { DataColumnHeader, DataTable } from '@/components/ui/data-table';
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DEFAULT_PAGE_SIZE_OPTIONS } from '@/constants/common';
 import { cn } from '@/lib/utils';
 import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
   type ColumnDef,
   type ColumnFiltersState,
   type PaginationState,
@@ -142,54 +137,6 @@ const payments: Payment[] = [
   { id: 'PAY100', amount: 705, status: 'success', email: 'una.v@gmail.com' },
 ];
 
-const tanstackBasicColumns: ColumnDef<Payment>[] = [
-  { accessorKey: 'id', header: 'ID' },
-  { accessorKey: 'status', header: 'Trạng thái' },
-  { accessorKey: 'email', header: 'Email' },
-  {
-    accessorKey: 'amount',
-    header: () => <div className="text-right">Số tiền</div>,
-    cell: ({ row }) => (
-      <div className="text-right font-medium">${(row.getValue('amount') as number).toFixed(2)}</div>
-    ),
-  },
-];
-
-function TanstackBasicExample() {
-  const table = useReactTable({
-    data: payments,
-    columns: tanstackBasicColumns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
-  return (
-    <Table>
-      <TableHeader>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <TableHead key={header.id}>
-                {flexRender(header.column.columnDef.header, header.getContext())}
-              </TableHead>
-            ))}
-          </TableRow>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {table.getRowModel().rows.map((row) => (
-          <TableRow key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <TableCell key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </TableCell>
-            ))}
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
-}
-
 const statusFilterOptions = [
   { label: 'Pending', value: 'pending' },
   { label: 'Processing', value: 'processing' },
@@ -240,213 +187,6 @@ function TanstackSortingExample() {
 }
 
 const props = [{ name: 'className', type: 'string', defaultValue: '--' }];
-
-const invoices = [
-  {
-    invoice: 'INV001',
-    paymentStatus: 'Paid',
-    totalAmount: '$250.00',
-    paymentMethod: 'Credit Card',
-  },
-  { invoice: 'INV002', paymentStatus: 'Pending', totalAmount: '$150.00', paymentMethod: 'PayPal' },
-  {
-    invoice: 'INV003',
-    paymentStatus: 'Unpaid',
-    totalAmount: '$350.00',
-    paymentMethod: 'Bank Transfer',
-  },
-  {
-    invoice: 'INV004',
-    paymentStatus: 'Paid',
-    totalAmount: '$450.00',
-    paymentMethod: 'Credit Card',
-  },
-  { invoice: 'INV005', paymentStatus: 'Paid', totalAmount: '$550.00', paymentMethod: 'PayPal' },
-];
-
-const usageSamples = [
-  {
-    id: 'default',
-    label: 'Default',
-    preview: (
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Invoice</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Method</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {invoices.map((invoice) => (
-            <TableRow key={invoice.invoice}>
-              <TableCell className="font-medium">{invoice.invoice}</TableCell>
-              <TableCell>{invoice.paymentStatus}</TableCell>
-              <TableCell>{invoice.paymentMethod}</TableCell>
-              <TableCell className="text-right">{invoice.totalAmount}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    ),
-    code: `import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/design-system/components/ui/table";
-
-const invoices = [
-  { invoice: "INV001", paymentStatus: "Paid", totalAmount: "$250.00", paymentMethod: "Credit Card" },
-  { invoice: "INV002", paymentStatus: "Pending", totalAmount: "$150.00", paymentMethod: "PayPal" },
-  // ...
-];
-
-export function Example() {
-  return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">Invoice</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Method</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {invoices.map((invoice) => (
-          <TableRow key={invoice.invoice}>
-            <TableCell className="font-medium">{invoice.invoice}</TableCell>
-            <TableCell>{invoice.paymentStatus}</TableCell>
-            <TableCell>{invoice.paymentMethod}</TableCell>
-            <TableCell className="text-right">{invoice.totalAmount}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
-}`,
-  },
-  {
-    id: 'with-caption',
-    label: 'With Caption',
-    preview: (
-      <Table>
-        <TableCaption>A list of your recent invoices.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Invoice</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Method</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {invoices.slice(0, 3).map((invoice) => (
-            <TableRow key={invoice.invoice}>
-              <TableCell className="font-medium">{invoice.invoice}</TableCell>
-              <TableCell>{invoice.paymentStatus}</TableCell>
-              <TableCell>{invoice.paymentMethod}</TableCell>
-              <TableCell className="text-right">{invoice.totalAmount}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    ),
-    code: `import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/design-system/components/ui/table";
-
-export function Example() {
-  return (
-    <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">Invoice</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Method</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {/* Table rows */}
-      </TableBody>
-    </Table>
-  );
-}`,
-  },
-  {
-    id: 'simple',
-    label: 'Simple',
-    preview: (
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>Email</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableCell className="font-medium">John Doe</TableCell>
-            <TableCell>Admin</TableCell>
-            <TableCell>john@example.com</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="font-medium">Jane Smith</TableCell>
-            <TableCell>User</TableCell>
-            <TableCell>jane@example.com</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    ),
-    code: `import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/design-system/components/ui/table";
-
-export function Example() {
-  return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Name</TableHead>
-          <TableHead>Role</TableHead>
-          <TableHead>Email</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <TableRow>
-          <TableCell className="font-medium">John Doe</TableCell>
-          <TableCell>Admin</TableCell>
-          <TableCell>john@example.com</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="font-medium">Jane Smith</TableCell>
-          <TableCell>User</TableCell>
-          <TableCell>jane@example.com</TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
-  );
-}`,
-  },
-];
 
 export default function TableGuidePage() {
   useEffect(() => {
@@ -519,135 +259,24 @@ export default function TableGuidePage() {
             </CardContent>
           </Card>
 
-          <Card id="usages" className="rounded-[24px] border-border/70">
-            <CardHeader>
-              <CardTitle>3. Usages</CardTitle>
-              <CardDescription>Common table patterns and configurations.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">
-                <TabsList variant="line">
-                  {usageSamples.map((sample) => (
-                    <TabsTrigger key={sample.id} value={sample.id}>
-                      {sample.label}
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
-
-                {usageSamples.map((sample) => (
-                  <TabsContent key={sample.id} value={sample.id} className="space-y-5">
-                    <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-8">
-                      <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
-                        {sample.preview}
-                      </div>
-                    </div>
-
-                    <CodeBlock code={sample.code} id={sample.id} />
-                  </TabsContent>
-                ))}
-              </Tabs>
-            </CardContent>
-          </Card>
-
           <Card id="tanstack" className="rounded-[24px] border-border/70">
             <CardHeader>
-              <CardTitle>4. TanStack Table</CardTitle>
+              <CardTitle>3. TanStack Table</CardTitle>
               <CardDescription>
                 Headless table logic với <code>@tanstack/react-table</code> — sorting, filtering,
                 pagination.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Tabs defaultValue="basic" className="gap-6">
-                <TabsList variant="line">
-                  <TabsTrigger value="basic">Basic</TabsTrigger>
-                  <TabsTrigger value="sorting">Sorting</TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="basic" className="space-y-5">
-                  <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-8">
-                    <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card p-6 shadow-sm">
-                      <TanstackBasicExample />
-                    </div>
+              <div className="space-y-5">
+                <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-8">
+                  <div className="flex h-100 items-center justify-center rounded-[18px] bg-card p-6 shadow-sm">
+                    <TanstackSortingExample />
                   </div>
-                  <CodeBlock
-                    id="tanstack-basic"
-                    code={`import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-  type ColumnDef,
-} from "@tanstack/react-table";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/design-system/components/ui/table";
-
-type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
-
-const columns: ColumnDef<Payment>[] = [
-  { accessorKey: "id", header: "ID" },
-  { accessorKey: "status", header: "Status" },
-  { accessorKey: "email", header: "Email" },
-  {
-    accessorKey: "amount",
-    header: "Amount",
-    cell: ({ row }) => (
-      <div className="text-right font-medium">
-        \${(row.getValue("amount") as number).toFixed(2)}
-      </div>
-    ),
-  },
-];
-
-export function BasicTable({ data }: { data: Payment[] }) {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
-  return (
-    <Table>
-      <TableHeader>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <TableHead key={header.id}>
-                {flexRender(header.column.columnDef.header, header.getContext())}
-              </TableHead>
-            ))}
-          </TableRow>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {table.getRowModel().rows.map((row) => (
-          <TableRow key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <TableCell key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </TableCell>
-            ))}
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
-}`}
-                  />
-                </TabsContent>
-
-                <TabsContent value="sorting" className="space-y-5">
-                  <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-8">
-                    <div className="flex h-100 items-center justify-center rounded-[18px] bg-card p-6 shadow-sm">
-                      <TanstackSortingExample />
-                    </div>
-                  </div>
-                  <CodeBlock
-                    id="tanstack-sorting"
-                    code={`import { useState } from "react";
+                </div>
+                <CodeBlock
+                  id="tanstack-sorting"
+                  code={`import { useState } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -755,9 +384,8 @@ export function SortableTable({ data }: { data: Payment[] }) {
     </Table>
   );
 }`}
-                  />
-                </TabsContent>
-              </Tabs>
+                />
+              </div>
             </CardContent>
           </Card>
         </div>

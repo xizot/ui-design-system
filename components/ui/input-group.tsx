@@ -174,11 +174,7 @@ function InputGroupInput({ className, size, ...props }: React.ComponentProps<typ
   );
 }
 
-function InputGroupTextarea({
-  className,
-  size,
-  ...props
-}: React.ComponentProps<typeof Textarea>) {
+function InputGroupTextarea({ className, size, ...props }: React.ComponentProps<typeof Textarea>) {
   const contextSize = React.use(InputGroupContext);
   return (
     <Textarea

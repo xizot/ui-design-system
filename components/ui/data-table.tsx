@@ -49,11 +49,17 @@ export function DataColumnHeader<TData>({
   label,
   filterOptions,
   align = 'left',
+  filterClearText = 'Xóa',
+  filterApplyText = 'Áp dụng',
+  filterSearchPlaceholder = 'Tìm kiếm...',
 }: {
   column?: Column<TData, unknown>;
   label: string;
   filterOptions?: DataColumnOption[];
   align?: 'left' | 'right';
+  filterClearText?: string;
+  filterApplyText?: string;
+  filterSearchPlaceholder?: string;
 }) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
@@ -127,7 +133,7 @@ export function DataColumnHeader<TData>({
                 </InputGroupAddon>
                 <InputGroupInput
                   className="px-2 text-sm"
-                  placeholder="Tìm kiếm..."
+                  placeholder={filterSearchPlaceholder}
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
@@ -168,10 +174,10 @@ export function DataColumnHeader<TData>({
             </div>
             <div className="flex gap-2 border-t border-border/70 p-2">
               <Button variant="outline" size="sm" className="flex-1" onClick={handleClear}>
-                Xóa
+                {filterClearText}
               </Button>
               <Button size="sm" className="flex-1" onClick={handleApply}>
-                Áp dụng
+                {filterApplyText}
               </Button>
             </div>
           </PopoverContent>
@@ -201,24 +207,24 @@ interface DataTableProps<TData> {
   data: TData[];
   columns: ColumnDef<TData>[];
   sorting: SortingState;
-  onSortingChange: OnChangeFn<SortingState>;
   columnFilters: ColumnFiltersState;
-  onColumnFiltersChange: OnChangeFn<ColumnFiltersState>;
   pagination: PaginationState;
-  onPaginationChange: OnChangeFn<PaginationState>;
   containerClassName?: string;
+  onSortingChange: OnChangeFn<SortingState>;
+  onColumnFiltersChange: OnChangeFn<ColumnFiltersState>;
+  onPaginationChange: OnChangeFn<PaginationState>;
 }
 
 export function DataTable<TData>({
   data,
   columns,
   sorting,
-  onSortingChange,
   columnFilters,
-  onColumnFiltersChange,
   pagination,
-  onPaginationChange,
   containerClassName,
+  onColumnFiltersChange,
+  onSortingChange,
+  onPaginationChange,
 }: DataTableProps<TData>) {
   const table = useReactTable({
     data,
