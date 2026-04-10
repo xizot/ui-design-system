@@ -12,6 +12,14 @@ const targetRoot = path.join(projectRoot, installRootName);
 const command = process.argv[2] ?? 'init';
 const directoriesToCopy = ['components', 'constants', 'hooks', 'lib'];
 const rootFilesToCopy = ['AGENTS.md'];
+const projectFilesToCopy = [
+  {
+    source: 'app/globals.css',
+    defaultTarget: 'app/globals.css',
+    prompt: 'Target path for globals.css (default: app/globals.css, type "skip" to skip): ',
+    label: 'globals.css',
+  },
+];
 const runtimeDependencies = [
   '@base-ui/react',
   '@tanstack/react-table',
@@ -94,6 +102,10 @@ function printList(items, limit = 10) {
   }
 }
 
+function relativePath(from, to) {
+  return path.relative(from, to) || to;
+}
+
 function collectExistingFiles(sourceDir, targetDir, existingFiles = []) {
   if (!fs.existsSync(sourceDir)) {
     return existingFiles;
@@ -109,7 +121,7 @@ function collectExistingFiles(sourceDir, targetDir, existingFiles = []) {
     }
 
     if (fs.existsSync(targetPath)) {
-      existingFiles.push(path.relative(targetRoot, targetPath));
+      existingFiles.push(relativePath(targetRoot, targetPath));
     }
   }
 
@@ -157,7 +169,7 @@ async function askConflictAction(targetPath) {
     return conflictState.defaultAction;
   }
 
-  const relativeTargetPath = path.relative(targetRoot, targetPath) || targetPath;
+  const relativeTargetPath = relativePath(targetRoot, targetPath);
   console.log('');
   console.log(color.yellow(`Existing file: ${relativeTargetPath}`));
   const answer = await askQuestion('Choose 1 to overwrite or 2 to skip (default: 2): ');
@@ -189,7 +201,7 @@ async function copyDirectory(sourceDir, targetDir) {
       if (fs.existsSync(targetPath)) {
         const action = await askConflictAction(targetPath);
         if (action === 'skip') {
-          conflictState.skipped.push(path.relative(targetRoot, targetPath));
+          conflictState.skipped.push(relativePath(targetRoot, targetPath));
           continue;
         }
       }
@@ -203,21 +215,21 @@ async function copyDirectory(sourceDir, targetDir) {
         }
       }
       fs.symlinkSync(linkTarget, targetPath);
-      conflictState.overwritten.push(path.relative(targetRoot, targetPath));
+      conflictState.overwritten.push(relativePath(targetRoot, targetPath));
       continue;
     }
 
     if (fs.existsSync(targetPath)) {
       const action = await askConflictAction(targetPath);
       if (action === 'skip') {
-        conflictState.skipped.push(path.relative(targetRoot, targetPath));
+        conflictState.skipped.push(relativePath(targetRoot, targetPath));
         continue;
       }
-      conflictState.overwritten.push(path.relative(targetRoot, targetPath));
+      conflictState.overwritten.push(relativePath(targetRoot, targetPath));
     }
 
     fs.copyFileSync(sourcePath, targetPath);
-    conflictState.copied.push(path.relative(targetRoot, targetPath));
+    conflictState.copied.push(relativePath(targetRoot, targetPath));
   }
 }
 
@@ -285,7 +297,8 @@ function getInstallCommand(packageManager, dependencies) {
   }
 }
 
-function askQuestion(question) {
+function askQuestion(question, options = {}) {
+  const { preserveCase = false } = options;
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -294,9 +307,41 @@ function askQuestion(question) {
   return new Promise((resolve) => {
     rl.question(question, (answer) => {
       rl.close();
-      resolve(answer.trim().toLowerCase());
+      const trimmedAnswer = answer.trim();
+      resolve(preserveCase ? trimmedAnswer : trimmedAnswer.toLowerCase());
     });
   });
+}
+
+async function askTargetPath(fileConfig) {
+  const answer = await askQuestion(fileConfig.prompt, { preserveCase: true });
+
+  if (!answer) {
+    return fileConfig.defaultTarget;
+  }
+
+  if (answer.toLowerCase() === 'skip') {
+    return null;
+  }
+
+  return answer.replace(/\\/g, path.sep);
+}
+
+async function askProjectFileConflictAction(targetPath) {
+  const relativeTargetPath = relativePath(projectRoot, targetPath);
+  console.log('');
+  console.log(color.yellow(`Existing file: ${relativeTargetPath}`));
+  const answer = await askQuestion('Choose 1 to overwrite or 2 to skip (default: 2): ');
+
+  switch (answer) {
+    case '1':
+    case 'overwrite':
+      return 'overwrite';
+    case '2':
+    case 'skip':
+    default:
+      return 'skip';
+  }
 }
 
 function installDependencies(dependencies) {
@@ -382,12 +427,52 @@ function copyRootFiles() {
   }
 }
 
+async function copyProjectFiles() {
+  printSection('Step 4: Project Files');
+
+  for (const fileConfig of projectFilesToCopy) {
+    const sourcePath = path.join(packageRoot, fileConfig.source);
+
+    if (!fs.existsSync(sourcePath)) {
+      console.log(color.gray(`Skipping missing file: ${fileConfig.source}`));
+      continue;
+    }
+
+    const targetPathInput = await askTargetPath(fileConfig);
+
+    if (!targetPathInput) {
+      console.log(color.yellow(`Skipped: ${fileConfig.label}`));
+      continue;
+    }
+
+    const targetPath = path.resolve(projectRoot, targetPathInput);
+    ensureDirectoryExists(path.dirname(targetPath));
+
+    if (fs.existsSync(targetPath)) {
+      const action = await askProjectFileConflictAction(targetPath);
+
+      if (action === 'skip') {
+        conflictState.skipped.push(relativePath(projectRoot, targetPath));
+        console.log(color.yellow(`Skipped: ${relativePath(projectRoot, targetPath)}`));
+        continue;
+      }
+
+      conflictState.overwritten.push(relativePath(projectRoot, targetPath));
+    }
+
+    fs.copyFileSync(sourcePath, targetPath);
+    conflictState.copied.push(relativePath(projectRoot, targetPath));
+    console.log(color.green(`Copied: ${relativePath(projectRoot, targetPath)}`));
+  }
+}
+
 function printSummary() {
   printSection('Summary');
   console.log(`Target: ${targetRoot}`);
   console.log(`Project root: ${projectRoot}`);
   console.log(`Install folder: ${installRootName}`);
   console.log(`Directories installed: ${directoriesToCopy.join(', ')}`);
+  console.log(`Project files available: ${projectFilesToCopy.map((file) => file.label).join(', ')}`);
   console.log(`Files copied: ${conflictState.copied.length}`);
   console.log(`Files overwritten: ${conflictState.overwritten.length}`);
   console.log(`Files skipped: ${conflictState.skipped.length}`);
@@ -461,6 +546,7 @@ async function main() {
 
   await maybeInstallDependencies();
   copyRootFiles();
+  await copyProjectFiles();
   printSummary();
 }
 
