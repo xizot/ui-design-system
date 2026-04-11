@@ -15,14 +15,7 @@ import {
   PaginationPrevious,
 } from './pagination';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from './table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './table';
 import { DEFAULT_PAGE_SIZE_OPTIONS } from '../../constants/common';
 import { cn } from '../../lib/utils';
 import {

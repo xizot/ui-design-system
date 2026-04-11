@@ -1,10 +1,10 @@
 'use client';
 
-import { TimePicker, type TimeValue } from '@/components/ui/time-picker';
-import { cn } from '@/lib/utils';
 import type { ComponentProps } from 'react';
 import type { Control, FieldValues, Path } from 'react-hook-form';
 import { useController } from 'react-hook-form';
+import { cn } from '../../lib/utils';
+import { TimePicker, type TimeValue } from '../ui/time-picker';
 
 export type RHFTimePickerProps<T extends FieldValues = FieldValues> = Omit<
   ComponentProps<'div'>,

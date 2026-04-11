@@ -1,9 +1,9 @@
 'use client';
 
-import { DatePicker, type DatePickerProps } from '@/components/ui/date-picker';
 import type { ComponentProps } from 'react';
 import type { Control, FieldValues, Path } from 'react-hook-form';
 import { useController } from 'react-hook-form';
+import { DatePicker, type DatePickerProps } from '../ui/date-picker';
 
 export type RHFDatePickerProps<T extends FieldValues = FieldValues> = Omit<
   DatePickerProps,
