@@ -3,7 +3,7 @@
 import { Combobox as ComboboxPrimitive } from '@base-ui/react';
 import * as React from 'react';
 
-import { FORM_SIZE_STYLES, type FormSize } from '@/constants/form-sizes';
+import { FORM_SIZE_STYLES, type FormSize } from '../../constants/form-sizes';
 import { CheckIcon, ChevronDownIcon, Search, XIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Button } from './button';

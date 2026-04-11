@@ -1,4 +1,4 @@
-import { cn, formatNumber, hasValue } from '@/lib/utils';
+import { cn, formatNumber, hasValue } from '../../lib/utils';
 import React, { ComponentProps, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Input } from './input';
 

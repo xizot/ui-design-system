@@ -3,7 +3,7 @@
 import { OTPInput, OTPInputContext } from 'input-otp';
 import * as React from 'react';
 
-import { FORM_SIZE_STYLES } from '@/constants/form-sizes';
+import { FORM_SIZE_STYLES } from '../../constants/form-sizes';
 import { MinusIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
 

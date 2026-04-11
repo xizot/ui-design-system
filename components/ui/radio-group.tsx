@@ -3,7 +3,7 @@
 import { Radio as RadioPrimitive } from '@base-ui/react/radio';
 import { RadioGroup as RadioGroupPrimitive } from '@base-ui/react/radio-group';
 
-import { FORM_SIZE_STYLES, type FormSize } from '@/constants/form-sizes';
+import { FORM_SIZE_STYLES, type FormSize } from '../../constants/form-sizes';
 import { cn } from '../../lib/utils';
 import { FormErrorMessage } from './form-error-message';
 import { FormLabel } from './form-label';

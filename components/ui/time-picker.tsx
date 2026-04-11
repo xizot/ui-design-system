@@ -1,7 +1,7 @@
 'use client';
 
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { cn } from '@/lib/utils';
+import { ScrollArea } from './scroll-area';
+import { cn } from '../../lib/utils';
 import * as React from 'react';
 
 export type TimeValue = {

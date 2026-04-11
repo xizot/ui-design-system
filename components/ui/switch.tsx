@@ -2,7 +2,7 @@
 
 import { Switch as SwitchPrimitive } from '@base-ui/react/switch';
 
-import { FORM_SIZE_STYLES, type FormSize } from '@/constants/form-sizes';
+import { FORM_SIZE_STYLES, type FormSize } from '../../constants/form-sizes';
 import { cn } from '../../lib/utils';
 import { FormErrorMessage } from './form-error-message';
 import { FormLabel } from './form-label';

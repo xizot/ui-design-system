@@ -4,8 +4,8 @@ import { Combobox as ComboboxPrimitive } from '@base-ui/react';
 import { ChevronDownIcon, XCircleIcon } from 'lucide-react';
 import * as React from 'react';
 
-import { FORM_SIZE_STYLES, type FormSize } from '@/constants/form-sizes';
-import { cn } from '@/lib/utils';
+import { FORM_SIZE_STYLES, type FormSize } from '../../constants/form-sizes';
+import { cn } from '../../lib/utils';
 import {
   Combobox,
   ComboboxContent,

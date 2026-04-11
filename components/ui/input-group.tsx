@@ -3,7 +3,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
-import { DEFAULT_INPUT_SIZE, FORM_SIZE_STYLES, type FormSize } from '@/constants/form-sizes';
+import { DEFAULT_INPUT_SIZE, FORM_SIZE_STYLES, type FormSize } from '../../constants/form-sizes';
 import { cn } from '../../lib/utils';
 import { Button } from './button';
 import { FormErrorMessage } from './form-error-message';

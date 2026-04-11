@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select';
+import { Button } from './button';
+import { Checkbox } from './checkbox';
+import { NativeSelect, NativeSelectOption } from './native-select';
 import {
   Pagination,
   PaginationContent,
@@ -13,8 +13,8 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from '@/components/ui/pagination';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+} from './pagination';
+import { Popover, PopoverContent, PopoverTrigger } from './popover';
 import {
   Table,
   TableBody,
@@ -22,9 +22,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { DEFAULT_PAGE_SIZE_OPTIONS } from '@/constants/common';
-import { cn } from '@/lib/utils';
+} from './table';
+import { DEFAULT_PAGE_SIZE_OPTIONS } from '../../constants/common';
+import { cn } from '../../lib/utils';
 import {
   flexRender,
   getCoreRowModel,
