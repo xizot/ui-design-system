@@ -34,15 +34,15 @@ const sheetSizeClassName: Record<NonNullable<SheetPanelProps['size']>, string> =
   auto: '',
 };
 
-const sheetPanelSpacingClassName: Record<
+const sheetPanelSpacing: Record<
   NonNullable<SheetPanelProps['size']>,
-  { px: string; py: string }
+  { inline: number; block: number }
 > = {
-  sm: { px: 'px-4', py: 'py-4' },
-  md: { px: 'px-5', py: 'py-4' },
-  lg: { px: 'px-6', py: 'py-5' },
-  xl: { px: 'px-6', py: 'py-5' },
-  auto: { px: 'px-4', py: 'py-4' },
+  sm: { inline: 16, block: 16 },
+  md: { inline: 20, block: 16 },
+  lg: { inline: 24, block: 20 },
+  xl: { inline: 24, block: 20 },
+  auto: { inline: 16, block: 16 },
 };
 
 function SheetPanel({
@@ -58,7 +58,7 @@ function SheetPanel({
   ...props
 }: SheetPanelProps) {
   const hasHeader = title !== undefined || description !== undefined;
-  const spacing = sheetPanelSpacingClassName[size];
+  const spacing = sheetPanelSpacing[size];
 
   return (
     <SheetContent className={cn(sheetSizeClassName[size], className)} {...props}>
@@ -66,28 +66,32 @@ function SheetPanel({
         {hasHeader && (
           <div
             data-slot="sheet-panel-header"
-            className={cn('flex flex-col gap-1.5', spacing.px, spacing.py, headerClassName)}
+            className={cn('flex flex-col gap-1.5', headerClassName)}
+            style={{ paddingInline: spacing.inline, paddingBlock: spacing.block }}
           >
             {title !== undefined && <SheetTitle>{title}</SheetTitle>}
             {description !== undefined && <SheetDescription>{description}</SheetDescription>}
           </div>
         )}
         <div
-          data-slot="sheet-panel-body"
-          className={cn(
-            'min-h-0 flex-1 overflow-y-auto',
-            spacing.px,
-            !hasHeader && spacing.py,
-            !footer && spacing.py,
-            bodyClassName,
-          )}
+          className={cn('min-h-0 flex-1')}
+          style={{
+            paddingInline: `calc(${spacing.inline}px - 4px)`,
+            paddingBlock: !hasHeader ? `calc(${spacing.block}px - 4px)` : 0,
+          }}
         >
-          {children}
+          <div
+            data-slot="sheet-panel-body"
+            className={cn('h-full overflow-y-auto p-1', bodyClassName)}
+          >
+            {children}
+          </div>
         </div>
         {footer !== undefined && (
           <div
             data-slot="sheet-panel-footer"
-            className={cn('mt-auto flex flex-col gap-2', spacing.px, spacing.py, footerClassName)}
+            className={cn('mt-auto flex flex-col gap-2', footerClassName)}
+            style={{ paddingInline: spacing.inline, paddingBlock: spacing.block }}
           >
             {footer}
           </div>

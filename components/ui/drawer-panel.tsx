@@ -34,15 +34,15 @@ const drawerSizeClassName: Record<NonNullable<DrawerPanelProps['size']>, string>
   auto: '',
 };
 
-const drawerPanelSpacingClassName: Record<
+const drawerPanelSpacing: Record<
   NonNullable<DrawerPanelProps['size']>,
-  { px: string; py: string }
+  { inline: number; block: number }
 > = {
-  sm: { px: 'px-4', py: 'py-4' },
-  md: { px: 'px-5', py: 'py-4' },
-  lg: { px: 'px-6', py: 'py-5' },
-  xl: { px: 'px-6', py: 'py-5' },
-  auto: { px: 'px-4', py: 'py-4' },
+  sm: { inline: 16, block: 16 },
+  md: { inline: 20, block: 16 },
+  lg: { inline: 24, block: 20 },
+  xl: { inline: 24, block: 20 },
+  auto: { inline: 16, block: 16 },
 };
 
 function DrawerPanel({
@@ -58,29 +58,34 @@ function DrawerPanel({
   ...props
 }: DrawerPanelProps) {
   const hasHeader = title !== undefined || description !== undefined;
-  const spacing = drawerPanelSpacingClassName[size];
+  const spacing = drawerPanelSpacing[size];
 
   return (
     <DrawerContent className={cn(drawerSizeClassName[size], className)} {...props}>
-      <div data-slot="drawer-panel" className="flex min-w-0 h-full flex-col gap-0">
+      <div data-slot="drawer-panel" className="flex h-full min-w-0 flex-col gap-0">
         {hasHeader && (
           <div
             data-slot="drawer-panel-header"
             className={cn(
               'flex flex-col gap-1.5 text-left group-data-[vaul-drawer-direction=bottom]/drawer-content:text-center group-data-[vaul-drawer-direction=top]/drawer-content:text-center',
-              spacing.px,
-              spacing.py,
               headerClassName,
             )}
+            style={{ paddingInline: spacing.inline, paddingBlock: spacing.block }}
           >
             {title !== undefined && <DrawerTitle>{title}</DrawerTitle>}
             {description !== undefined && <DrawerDescription>{description}</DrawerDescription>}
           </div>
         )}
-        <div className={cn('flex-1 min-h-0')}>
+        <div
+          className={cn('min-h-0 flex-1')}
+          style={{
+            paddingInline: `calc(${spacing.inline}px - 4px)`,
+            paddingBlock: !hasHeader ? `calc(${spacing.block}px - 4px)` : 0,
+          }}
+        >
           <div
             data-slot="drawer-panel-body"
-            className={cn('min-w-0 h-full overflow-auto', spacing.px, bodyClassName)}
+            className={cn('h-full min-w-0 overflow-y-auto p-1', bodyClassName)}
           >
             {children}
           </div>
@@ -88,7 +93,8 @@ function DrawerPanel({
         {footer !== undefined && (
           <div
             data-slot="drawer-panel-footer"
-            className={cn('mt-auto flex flex-col gap-2', spacing.px, spacing.py, footerClassName)}
+            className={cn('mt-auto flex flex-col gap-2', footerClassName)}
+            style={{ paddingInline: spacing.inline, paddingBlock: spacing.block }}
           >
             {footer}
           </div>
