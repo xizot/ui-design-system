@@ -1,3 +1,13 @@
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
+
+<!-- END:nextjs-agent-rules -->
+
+<!-- BEGIN:project-architecture-guide -->
+
 # Project Architecture Guide
 
 This project is an internal tools codebase and must follow an atomic + feature-based structure.
@@ -98,9 +108,9 @@ Rules:
 
 Use these root-level folders for common, cross-feature concerns:
 
-- `config/axios/`: axios instance setup, request/response interceptors, auth header injection, refresh handling if needed.
-- `services/`: API call functions only. Services must consume endpoint constants and the configured axios instance.
-- `constants/endpoints.ts`: central API endpoint definitions. Do not hardcode API paths inside components.
+- `lib/http-client.ts`: axios instance setup, request/response interceptors, auth header injection, refresh handling.
+- `services/`: API call functions only. Services must consume endpoint constants from `constants/endpoints/` and the configured axios instance.
+- `constants/endpoints/`: central API endpoint definitions, organized by domain (e.g., `driver-endpoints.ts`, `fleet-endpoints.ts`). Do not hardcode API paths inside components.
 - `components/`: common reusable components only.
 - `hooks/`: common reusable hooks only.
 - `schemas/`: common Zod schemas only.
@@ -142,21 +152,32 @@ Rules:
 - `index.ts` must act as the public entry for the feature.
 - Only create optional folders like `hooks/`, `data-table/`, `store/`, `components/`, `schemas/` when the feature actually needs them.
 
+## UI Code Guidelines
+
+- Keep UI implementations simple and avoid over-engineering.
+- All toast notifications must use `ToastUtils` from `@/utils/toast-utils`. Do not use `toast()` from sonner directly.
+- Minimize CSS classes - use only what's necessary from Tailwind.
+- Do NOT create new UI components; reuse existing ones from `design-system/components/ui/`.
+- For dropdown selections, use:
+  - `SingleCombobox` for single-select dropdowns
+  - `MultipleCombobox` for multi-select dropdowns
+- For forms, use the existing RHF wrappers from `design-system/components/rhf/`.
+
 ## Forms
 
-- Forms must use the existing components in `shared/components/rhf/`.
+- Forms must use the existing components in `design-system/components/rhf/`.
 - Use `zod` for form schema validation.
 - Prefer inferring form value types from Zod schemas instead of duplicating manual types.
 - Do not create new form field wrappers or duplicate RHF form components unless the user explicitly requests extending the shared RHF set.
-- If a needed form primitive does not exist, extend the shared RHF folder first, then reuse that shared component.
+- If a needed form primitive does not exist, extend the design-system RHF folder first, then reuse that shared component.
 
 ## API Layer
 
 - Use `axios` for all HTTP communication.
-- All axios configuration must live under `config/axios/`.
+- All axios configuration must live under `lib/http-client.ts`.
 - Interceptors must be configured centrally, not inside pages or feature components.
 - Service functions in `services/` must be thin and predictable:
-  - use endpoint constants from `constants/endpoints.ts`
+  - use endpoint constants from `constants/endpoints/`
   - call the shared axios instance
   - return typed response data
 
@@ -171,8 +192,9 @@ Rules:
 
 ## URL State
 
-- Use `nuqs` for search params, filters, pagination state, and other URL-synced client state.
-- Do not hand-roll query-string parsing for common table/filter flows when `nuqs` is appropriate.
+- Use `useUrlFilters` hook from `design-system/hooks/use-url-filter` for search params, filters, pagination state, and other URL-synced client state.
+- This hook wraps `nuqs` with additional features for table filtering, pagination, and sorting.
+- Do not hand-roll query-string parsing for common table/filter flows when `useUrlFilters` is appropriate.
 
 ## Boundaries
 
@@ -215,3 +237,5 @@ Types other than feat and fix MAY be used in your commit messages, e.g., docs: u
 The units of information that make up Conventional Commits MUST NOT be treated as case-sensitive by implementors, with the exception of BREAKING CHANGE which MUST be uppercase.
 
 BREAKING-CHANGE MUST be synonymous with BREAKING CHANGE, when used as a token in a footer.
+
+<!-- END:project-architecture-guide -->
