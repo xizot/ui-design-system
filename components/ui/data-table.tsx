@@ -2,22 +2,6 @@
 
 import { useState } from 'react';
 
-import { Button } from './button';
-import { Checkbox } from './checkbox';
-import { NativeSelect, NativeSelectOption } from './native-select';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from './pagination';
-import { Popover, PopoverContent, PopoverTrigger } from './popover';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './table';
-import { DEFAULT_PAGE_SIZE_OPTIONS } from '../../constants/common';
-import { cn } from '../../lib/utils';
 import {
   flexRender,
   getCoreRowModel,
@@ -34,8 +18,24 @@ import {
   type SortingState,
 } from '@tanstack/react-table';
 import { ArrowDown, ArrowUp, ArrowUpDown, Check, Funnel, Search } from 'lucide-react';
+import { DEFAULT_PAGE_SIZE_OPTIONS } from '../../constants/common';
+import { cn } from '../../lib/utils';
+import { Button } from './button';
+import { Checkbox } from './checkbox';
 import { InputGroup, InputGroupAddon, InputGroupInput } from './input-group';
+import { NativeSelect, NativeSelectOption } from './native-select';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from './pagination';
+import { Popover, PopoverContent, PopoverTrigger } from './popover';
 import { ComboboxBaseOption } from './single-combobox';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './table';
 
 declare module '@tanstack/react-table' {
   interface ColumnMeta<TData, TValue> {
@@ -274,7 +274,7 @@ export function DataTable<TData>({
   });
 
   return (
-    <div className="flex h-full w-full flex-col gap-3">
+    <div className="flex h-full min-h-100 w-full flex-col gap-3">
       <Table containerClassName={cn('flex-1 min-h-0', containerClassName)}>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -314,58 +314,60 @@ export function DataTable<TData>({
         </TableBody>
       </Table>
 
-      <div className="flex items-center justify-end gap-4">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                text=""
-                size="sm"
-                onClick={() => table.previousPage()}
-                className={!table.getCanPreviousPage() ? 'pointer-events-none opacity-50' : ''}
-              />
-            </PaginationItem>
-            {getPageRange(table.getState().pagination.pageIndex, table.getPageCount()).map(
-              (page, i) =>
-                page === 'ellipsis' ? (
-                  <PaginationItem key={`ellipsis-${i}`}>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                ) : (
-                  <PaginationItem key={page}>
-                    <PaginationLink
-                      size="sm"
-                      isActive={table.getState().pagination.pageIndex === page}
-                      onClick={() => table.setPageIndex(page)}
-                    >
-                      {page + 1}
-                    </PaginationLink>
-                  </PaginationItem>
-                ),
-            )}
-            <PaginationItem>
-              <PaginationNext
-                text=""
-                size="sm"
-                onClick={() => table.nextPage()}
-                className={!table.getCanNextPage() ? 'pointer-events-none opacity-50' : ''}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-        <NativeSelect
-          size="sm"
-          className="w-fit shrink-0"
-          value={table.getState().pagination.pageSize}
-          onChange={(e) => table.setPageSize(Number(e.target.value))}
-        >
-          {DEFAULT_PAGE_SIZE_OPTIONS.map((size) => (
-            <NativeSelectOption key={size} value={size}>
-              {size} / trang
-            </NativeSelectOption>
-          ))}
-        </NativeSelect>
-      </div>
+      {data.length > DEFAULT_PAGE_SIZE_OPTIONS[0] && (
+        <div className="flex items-center justify-end gap-4">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  text=""
+                  size="sm"
+                  onClick={() => table.previousPage()}
+                  className={!table.getCanPreviousPage() ? 'pointer-events-none opacity-50' : ''}
+                />
+              </PaginationItem>
+              {getPageRange(table.getState().pagination.pageIndex, table.getPageCount()).map(
+                (page, i) =>
+                  page === 'ellipsis' ? (
+                    <PaginationItem key={`ellipsis-${i}`}>
+                      <PaginationEllipsis />
+                    </PaginationItem>
+                  ) : (
+                    <PaginationItem key={page}>
+                      <PaginationLink
+                        size="sm"
+                        isActive={table.getState().pagination.pageIndex === page}
+                        onClick={() => table.setPageIndex(page)}
+                      >
+                        {page + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ),
+              )}
+              <PaginationItem>
+                <PaginationNext
+                  text=""
+                  size="sm"
+                  onClick={() => table.nextPage()}
+                  className={!table.getCanNextPage() ? 'pointer-events-none opacity-50' : ''}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+          <NativeSelect
+            size="sm"
+            className="w-fit shrink-0"
+            value={table.getState().pagination.pageSize}
+            onChange={(e) => table.setPageSize(Number(e.target.value))}
+          >
+            {DEFAULT_PAGE_SIZE_OPTIONS.map((size) => (
+              <NativeSelectOption key={size} value={size}>
+                {size} / trang
+              </NativeSelectOption>
+            ))}
+          </NativeSelect>
+        </div>
+      )}
     </div>
   );
 }
