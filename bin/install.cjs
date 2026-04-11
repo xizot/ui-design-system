@@ -21,6 +21,7 @@ const projectFilesToCopy = [
   },
 ];
 const runtimeDependencies = [
+  '@hookform/resolvers',
   'shadcn',
   'tw-animate-css',
   '@base-ui/react',
