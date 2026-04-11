@@ -141,6 +141,12 @@ const guides = [
     importPath: '@/design-system/components/ui/dialog',
   },
   {
+    slug: 'dialog-panel',
+    name: 'Dialog Panel',
+    group: 'ui',
+    importPath: '@/design-system/components/ui/dialog-panel',
+  },
+  {
     slug: 'direction',
     name: 'Direction',
     group: 'ui',
@@ -243,6 +249,12 @@ const guides = [
     importPath: '@/design-system/components/ui/popover',
   },
   {
+    slug: 'popover-panel',
+    name: 'Popover Panel',
+    group: 'ui',
+    importPath: '@/design-system/components/ui/popover-panel',
+  },
+  {
     slug: 'progress',
     name: 'Progress',
     group: 'ui',
@@ -279,10 +291,22 @@ const guides = [
     importPath: '@/design-system/components/ui/separator',
   },
   {
+    slug: 'drawer-panel',
+    name: 'Drawer Panel',
+    group: 'ui',
+    importPath: '@/design-system/components/ui/drawer-panel',
+  },
+  {
     slug: 'sheet',
     name: 'Sheet',
     group: 'ui',
     importPath: '@/design-system/components/ui/sheet',
+  },
+  {
+    slug: 'sheet-panel',
+    name: 'Sheet Panel',
+    group: 'ui',
+    importPath: '@/design-system/components/ui/sheet-panel',
   },
   {
     slug: 'sidebar',

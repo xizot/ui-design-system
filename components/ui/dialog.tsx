@@ -1,11 +1,11 @@
 'use client';
 
-import * as React from 'react';
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
+import * as React from 'react';
 
+import { XIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Button } from './button';
-import { XIcon } from 'lucide-react';
 
 function Dialog({ ...props }: DialogPrimitive.Root.Props) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />;
@@ -59,7 +59,7 @@ function DialogContent({
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
-            render={<Button variant="ghost" className="absolute top-4 right-4" size="icon-sm" />}
+            render={<Button variant="ghost" className="absolute top-3 right-3" size="icon-sm" />}
           >
             <XIcon />
             <span className="sr-only">Close</span>
