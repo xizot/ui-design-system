@@ -187,7 +187,10 @@ Without both updates, the CLI will not install that dependency for downstream co
 
 ### 📂 Adding a new folder to be copied by the CLI
 
-Update `directoriesToCopy` inside [`bin/install.cjs`](./bin/install.cjs).
+Update both:
+
+1. `directoriesToCopy` inside [`bin/install.cjs`](./bin/install.cjs)
+2. `files` inside [`package.json`](./package.json)
 
 ## 📝 Notes
 

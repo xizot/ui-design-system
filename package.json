@@ -9,6 +9,7 @@
     "bin",
     "app/globals.css",
     "components",
+    "constants",
     "hooks",
     "lib",
     "public",

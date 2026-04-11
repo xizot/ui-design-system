@@ -60,7 +60,10 @@ CLI copy toàn bộ nội dung của các folder sau:
 - `hooks`
 - `lib`
 
-Nếu sau này thêm folder mới muốn copy, cập nhật mảng `directoriesToCopy` trong [`bin/install.cjs`](./bin/install.cjs).
+Nếu sau này thêm folder mới muốn copy, cập nhật đồng thời:
+
+1. mảng `directoriesToCopy` trong [`bin/install.cjs`](./bin/install.cjs)
+2. trường `files` trong [`package.json`](./package.json)
 
 ## Dependency runtime hiện tại
 
