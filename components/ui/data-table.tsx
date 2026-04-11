@@ -1,12 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-
 import {
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
   type Column,
@@ -17,11 +13,13 @@ import {
   type RowSelectionState,
   type SortingState,
 } from '@tanstack/react-table';
-import { ArrowDown, ArrowUp, ArrowUpDown, Check, Funnel, Search } from 'lucide-react';
+import { ArrowDown, ArrowUp, ArrowUpDown, Check, Funnel, InboxIcon, Search } from 'lucide-react';
+import { useState } from 'react';
 import { DEFAULT_PAGE_SIZE_OPTIONS } from '../../constants/common';
-import { cn } from '../../lib/utils';
+import { cn, hasValue } from '../../lib/utils';
 import { Button } from './button';
 import { Checkbox } from './checkbox';
+import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from './empty';
 import { InputGroup, InputGroupAddon, InputGroupInput } from './input-group';
 import { NativeSelect, NativeSelectOption } from './native-select';
 import {
@@ -67,6 +65,7 @@ export function DataColumnHeader<TData>({
 
   const sorted = column?.getIsSorted() ?? false;
   const isActiveSorted = sorted !== false;
+
   const filterValues = (column?.getFilterValue() as string[]) ?? [];
   const isActiveFiltered = filterValues.length > 0;
   const hasFilterOptions = filterOptions && filterOptions.length > 0;
@@ -79,7 +78,12 @@ export function DataColumnHeader<TData>({
   };
 
   const filteredOptions =
-    filterOptions?.filter((o) => o.name.toLowerCase().includes(search.toLowerCase())) ?? [];
+    filterOptions?.filter(
+      (o) =>
+        o.name.toLowerCase().includes(search.toLowerCase()) ||
+        o.code.toLowerCase().includes(search.toLowerCase()) ||
+        o.id.toString().includes(search),
+    ) ?? [];
 
   const handleOpenChange = (nextOpen: boolean) => {
     if (nextOpen) setPending([...filterValues]);
@@ -105,7 +109,7 @@ export function DataColumnHeader<TData>({
 
   return (
     <div className={cn('flex items-center gap-1', align === 'right' && 'justify-end')}>
-      {column ? (
+      {column?.getCanSort() ? (
         <button className="flex items-center gap-1" onClick={handleSortToggle}>
           {label}
           {sorted === 'asc' ? (
@@ -125,7 +129,7 @@ export function DataColumnHeader<TData>({
           <PopoverTrigger className="flex items-center">
             <Funnel className={cn('size-4', isActiveFiltered ? 'text-primary' : 'opacity-50')} />
           </PopoverTrigger>
-          <PopoverContent className="w-52 p-0 gap-0" align="center" sideOffset={8}>
+          <PopoverContent className="w-60 p-0 gap-0" align="center" sideOffset={8}>
             <div className="px-2 pt-2">
               <InputGroup>
                 <InputGroupAddon>
@@ -148,7 +152,7 @@ export function DataColumnHeader<TData>({
                     key={option.code}
                     type="button"
                     className={cn(
-                      'flex w-full items-center rounded-sm px-2 py-1.5 text-sm hover:bg-accent',
+                      'w-full items-center rounded-sm px-2 py-1.5 text-sm hover:bg-accent',
                       pending.includes(option.code) && 'bg-accent',
                     )}
                     onClick={() => handleToggle(option.code)}
@@ -162,9 +166,12 @@ export function DataColumnHeader<TData>({
                       label={
                         <>
                           {option.name}
-                          {pending.includes(option.code) && (
-                            <Check className="size-4 ml-auto text-primary" />
-                          )}
+                          <Check
+                            className={cn(
+                              'size-4 ml-auto text-primary shrink-0 opacity-0',
+                              pending.includes(option.code) && 'opacity-100',
+                            )}
+                          />
                         </>
                       }
                     />
@@ -204,6 +211,7 @@ function getPageRange(currentPage: number, pageCount: number): (number | 'ellips
 }
 
 interface DataTableProps<TData> {
+  loading?: boolean;
   data: TData[];
   columns: ColumnDef<TData>[];
   sorting: SortingState;
@@ -215,9 +223,11 @@ interface DataTableProps<TData> {
   onPaginationChange: OnChangeFn<PaginationState>;
   rowSelection?: RowSelectionState;
   onRowSelectionChange?: OnChangeFn<RowSelectionState>;
+  totalCount?: number | null;
 }
 
 export function DataTable<TData>({
+  loading,
   data,
   columns,
   sorting,
@@ -229,6 +239,7 @@ export function DataTable<TData>({
   onPaginationChange,
   rowSelection,
   onRowSelectionChange,
+  totalCount,
 }: DataTableProps<TData>) {
   const selectionColumn: ColumnDef<TData> = {
     id: 'select',
@@ -263,19 +274,20 @@ export function DataTable<TData>({
       },
       ...(rowSelection !== undefined && { rowSelection }),
     },
+    manualPagination: true,
+    manualSorting: true,
     onSortingChange,
     onColumnFiltersChange,
     onPaginationChange,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     ...(rowSelection !== undefined && { enableRowSelection: true }),
     ...(onRowSelectionChange && { onRowSelectionChange }),
+    ...(hasValue(totalCount) && { rowCount: totalCount }),
   });
 
   return (
-    <div className="flex h-full min-h-100 w-full flex-col gap-3">
+    <div className="flex min-h-0 w-full flex-col gap-3">
       <Table containerClassName={cn('flex-1 min-h-0', containerClassName)}>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -315,7 +327,9 @@ export function DataTable<TData>({
         </TableBody>
       </Table>
 
-      {data.length > DEFAULT_PAGE_SIZE_OPTIONS[0] && (
+      {data.length === 0 && !loading && <EmptyState hasFilters={columnFilters.length > 0} />}
+
+      {hasValue(totalCount) && totalCount > DEFAULT_PAGE_SIZE_OPTIONS[0] && (
         <div className="flex items-center justify-end gap-4">
           <Pagination>
             <PaginationContent>
@@ -363,7 +377,7 @@ export function DataTable<TData>({
           >
             {DEFAULT_PAGE_SIZE_OPTIONS.map((size) => (
               <NativeSelectOption key={size} value={size}>
-                {size} / trang
+                {size}/trang
               </NativeSelectOption>
             ))}
           </NativeSelect>
@@ -372,3 +386,29 @@ export function DataTable<TData>({
     </div>
   );
 }
+
+type EmptyStateProps = {
+  hasFilters: boolean;
+  emptyMessage?: string;
+  emptyFilterMessage?: string;
+};
+const EmptyState = ({
+  hasFilters,
+  emptyMessage = 'Không có dữ liệu',
+  emptyFilterMessage = 'Không tìm thấy dữ liệu',
+}: EmptyStateProps) => {
+  const title = hasFilters ? emptyFilterMessage : emptyMessage;
+
+  return (
+    <div className="flex items-center justify-center">
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <InboxIcon />
+          </EmptyMedia>
+          <EmptyTitle>{title}</EmptyTitle>
+        </EmptyHeader>
+      </Empty>
+    </div>
+  );
+};
