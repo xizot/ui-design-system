@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 import {
   flexRender,
   getCoreRowModel,
@@ -13,15 +15,28 @@ import {
   type RowSelectionState,
   type SortingState,
 } from '@tanstack/react-table';
-import { ArrowDown, ArrowUp, ArrowUpDown, Check, Funnel, InboxIcon, Search } from 'lucide-react';
-import { useState } from 'react';
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  Check,
+  ChevronDown,
+  Funnel,
+  InboxIcon,
+  Search,
+} from 'lucide-react';
 import { DEFAULT_PAGE_SIZE_OPTIONS } from '../../constants/common';
 import { cn, hasValue } from '../../lib/utils';
 import { Button } from './button';
 import { Checkbox } from './checkbox';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from './dropdown-menu';
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from './empty';
 import { InputGroup, InputGroupAddon, InputGroupInput } from './input-group';
-import { NativeSelect, NativeSelectOption } from './native-select';
 import {
   Pagination,
   PaginationContent,
@@ -288,7 +303,7 @@ export function DataTable<TData>({
 
   return (
     <div className="flex min-h-0 w-full flex-col gap-3">
-      <Table containerClassName={cn('flex-1 min-h-0', containerClassName)}>
+      <Table containerClassName={cn('flex-1', containerClassName)}>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -369,18 +384,34 @@ export function DataTable<TData>({
               </PaginationItem>
             </PaginationContent>
           </Pagination>
-          <NativeSelect
-            size="sm"
-            className="w-fit shrink-0"
-            value={table.getState().pagination.pageSize}
-            onChange={(e) => table.setPageSize(Number(e.target.value))}
-          >
-            {DEFAULT_PAGE_SIZE_OPTIONS.map((size) => (
-              <NativeSelectOption key={size} value={size}>
-                {size}/trang
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Button size="sm" variant="outline" className="w-fit shrink-0 gap-1">
+                {table.getState().pagination.pageSize}/trang
+                <ChevronDown className="size-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-fit p-1 space-y-px">
+              {DEFAULT_PAGE_SIZE_OPTIONS.map((size) => (
+                <DropdownMenuItem
+                  key={size}
+                  onClick={() => table.setPageSize(size)}
+                  className={cn(
+                    'justify-start text-sm',
+                    table.getState().pagination.pageSize === size && 'bg-accent',
+                  )}
+                >
+                  {size}/trang
+                  <Check
+                    className={cn(
+                      'size-4 opacity-0 ml-auto text-primary',
+                      table.getState().pagination.pageSize === size && 'opacity-100',
+                    )}
+                  />
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       )}
     </div>
