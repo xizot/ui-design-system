@@ -2,9 +2,9 @@
 
 import * as React from 'react';
 
-import { STYLE_PRESET_CSS } from '@/constants/style-preset-css';
-import { STYLE_PRESETS, type StylePresetId } from '@/constants/style-presets';
 import { SingleCombobox } from '@/components/ui/single-combobox';
+import { STYLE_PRESET_CSS } from '@/internal-components/style-preset-css';
+import { STYLE_PRESETS, type StylePresetId } from '@/internal-components/style-presets';
 
 const STORAGE_KEY = 'design-system-style-preset';
 const STYLE_ELEMENT_ID = 'design-system-style-preset';

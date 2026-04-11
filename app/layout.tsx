@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
-import { STYLE_PRESET_CSS } from '@/constants/style-preset-css';
+import { STYLE_PRESET_CSS } from '@/internal-components/style-preset-css';
 import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Inter } from 'next/font/google';

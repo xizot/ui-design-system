@@ -1,13 +1,12 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-
-import { StylePresetCombobox } from '@/components/style-preset-combobox';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { TypographyH4, TypographyMuted, TypographySmall } from '@/components/ui/typography';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { StylePresetCombobox } from '../../internal-components/style-preset-combobox';
 
 const guides = [
   { slug: 'installation', name: 'Installation', group: 'guide' as const },
