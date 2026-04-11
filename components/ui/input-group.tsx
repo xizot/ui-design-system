@@ -45,7 +45,6 @@ function InputGroup({
           />
         ) : null}
         <div
-          aria-invalid={!!error}
           data-slot="input-group"
           role="group"
           className={cn(

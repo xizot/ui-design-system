@@ -286,7 +286,6 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
             <ComboboxInput
               id={inputId}
               placeholder={searchPlaceholder}
-              showTrigger={false}
               showClear={false}
               formSize="sm"
             />

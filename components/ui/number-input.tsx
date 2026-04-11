@@ -1,5 +1,6 @@
-import { cn, formatNumber, hasValue } from '../../lib/utils';
 import React, { ComponentProps, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { cn, formatNumber, hasValue } from '../../lib/utils';
+import { FormLabel } from './form-label';
 import { Input } from './input';
 
 export const inputRightClasses =
@@ -16,7 +17,9 @@ export type NumberInputProps = Omit<ComponentProps<typeof Input>, 'className'> &
   wrapperClassName?: ComponentProps<'div'>['className'];
   inputClassName?: ComponentProps<'input'>['className'];
   rightOutside?: React.ReactNode;
+  labelClassName?: ComponentProps<typeof FormLabel>['className'];
   error?: string;
+  id?: string;
 };
 
 const NumberInput = ({
@@ -33,6 +36,8 @@ const NumberInput = ({
   inputClassName,
   rightOutside,
   error,
+  labelClassName,
+  id,
   onChange = () => {},
   onKeyDown = () => {},
   ...inputProps
@@ -194,6 +199,9 @@ const NumberInput = ({
 
   return (
     <div className={cn('space-y-1.5', wrapperClassName)}>
+      {label ? (
+        <FormLabel label={label} htmlFor={id} required={required} className={labelClassName} />
+      ) : null}
       <div className="flex w-full">
         <div className="relative w-full">
           <Input

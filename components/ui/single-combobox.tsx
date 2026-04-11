@@ -205,7 +205,6 @@ function SingleCombobox<T extends ComboboxBaseOption>({
             <ComboboxInput
               id={inputId}
               placeholder={searchPlaceholder}
-              showTrigger={false}
               showClear={true}
               formSize={'sm'}
             />

@@ -23,6 +23,8 @@ type RHFInputProps<T extends FieldValues = FieldValues> = Omit<
 function RHFInput<T extends FieldValues = FieldValues>({
   control,
   name,
+  // TODO: next update will remove controlled
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   register,
   callback,
   ...props

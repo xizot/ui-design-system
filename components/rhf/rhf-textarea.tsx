@@ -12,14 +12,6 @@ import { cn } from '../../lib/utils';
 import { Badge } from '../ui/badge';
 import { Textarea } from '../ui/textarea';
 
-const ERROR_CLASSES = [
-  'has-[.input-error]:[&_textarea]:pr-8',
-  'has-[.input-error]:[&_textarea]:border-destructive',
-  'has-[.input-error]:[&_textarea]:focus-visible:border-transparent',
-  'has-[.input-error]:[&_textarea]:focus-visible:ring-2',
-  'has-[.input-error]:[&_textarea]:focus-visible:ring-destructive',
-].join(' ');
-
 type RHFTextareaProps<T extends FieldValues = FieldValues> = Omit<
   React.ComponentProps<typeof Textarea>,
   'name' | 'value' | 'onChange'
@@ -37,6 +29,8 @@ function RHFTextarea<T extends FieldValues = FieldValues>({
   showMaxLength = true,
   maxLength = 512,
   rows = 5,
+  // TODO: next update will remove controlled
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   register,
   callback,
   ...props
