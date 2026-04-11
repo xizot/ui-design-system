@@ -385,12 +385,14 @@ export function DataTable<TData>({
             </PaginationContent>
           </Pagination>
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Button size="sm" variant="outline" className="w-fit shrink-0 gap-1">
-                {table.getState().pagination.pageSize}/trang
-                <ChevronDown className="size-4" />
-              </Button>
-            </DropdownMenuTrigger>
+            <DropdownMenuTrigger
+              render={
+                <Button size="sm" variant="outline" className="w-fit shrink-0 gap-1">
+                  {table.getState().pagination.pageSize}/trang
+                  <ChevronDown className="size-4" />
+                </Button>
+              }
+            ></DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-fit p-1 space-y-px">
               {DEFAULT_PAGE_SIZE_OPTIONS.map((size) => (
                 <DropdownMenuItem
