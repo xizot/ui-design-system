@@ -21,6 +21,7 @@ const projectFilesToCopy = [
   },
 ];
 const runtimeDependencies = [
+  'shadcn',
   'tw-animate-css',
   '@base-ui/react',
   '@tanstack/react-table',
