@@ -18,13 +18,6 @@ type RHFCheckboxProps<T extends FieldValues = FieldValues> = RHFControlProps<T> 
 function RHFCheckbox<T extends FieldValues = FieldValues>({
   control,
   name,
-  label,
-  description,
-  required,
-  wrapperClassName,
-  labelClassName,
-  descriptionClassName,
-  errorClassName,
   callback,
   onBeforeChange,
   ...props
