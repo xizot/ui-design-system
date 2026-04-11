@@ -137,6 +137,36 @@ export function Example() {
   );
 }`,
     },
+    {
+      id: 'loading',
+      label: 'Loading',
+      preview: (
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <Button loading>Đang lưu</Button>
+          <Button loading variant="outline">
+            Đang tải dữ liệu
+          </Button>
+          <Button loading variant="secondary" size="sm">
+            Đang xử lý
+          </Button>
+        </div>
+      ),
+      code: `import { Button } from "@/design-system/components/ui/button";
+
+export function Example() {
+  return (
+    <div className="flex items-center gap-4">
+      <Button loading>Đang lưu</Button>
+      <Button loading variant="outline">
+        Đang tải dữ liệu
+      </Button>
+      <Button loading variant="secondary" size="sm">
+        Đang xử lý
+      </Button>
+    </div>
+  );
+}`,
+    },
   ];
 
   return (
@@ -200,6 +230,11 @@ export function Example() {
                       { name: 'className', type: 'string', defaultValue: '--' },
                       {
                         name: 'disabled',
+                        type: 'boolean',
+                        defaultValue: 'false',
+                      },
+                      {
+                        name: 'loading',
                         type: 'boolean',
                         defaultValue: 'false',
                       },
