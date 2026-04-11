@@ -34,15 +34,15 @@ const dialogPanelSizeClassName: Record<NonNullable<DialogPanelProps['size']>, st
   auto: '',
 };
 
-const dialogPanelSpacingClassName: Record<
+const dialogPanelSpacing: Record<
   NonNullable<DialogPanelProps['size']>,
-  { px: string; py: string }
+  { inline: number; block: number }
 > = {
-  sm: { px: 'px-4', py: 'py-4' },
-  md: { px: 'px-5', py: 'py-4' },
-  lg: { px: 'px-6', py: 'py-5' },
-  xl: { px: 'px-6', py: 'py-5' },
-  auto: { px: 'px-4', py: 'py-4' },
+  sm: { inline: 16, block: 16 },
+  md: { inline: 20, block: 16 },
+  lg: { inline: 24, block: 20 },
+  xl: { inline: 24, block: 20 },
+  auto: { inline: 16, block: 16 },
 };
 
 function DialogPanel({
@@ -58,7 +58,7 @@ function DialogPanel({
   ...props
 }: DialogPanelProps) {
   const hasHeader = title !== undefined || description !== undefined;
-  const spacing = dialogPanelSpacingClassName[size];
+  const spacing = dialogPanelSpacing[size];
 
   return (
     <DialogContent
@@ -76,16 +76,23 @@ function DialogPanel({
         {hasHeader && (
           <div
             data-slot="dialog-panel-header"
-            className={cn('flex flex-col gap-2', spacing.px, spacing.py, headerClassName)}
+            className={cn('flex flex-col gap-2', headerClassName)}
+            style={{ paddingInline: spacing.inline, paddingBlock: spacing.block }}
           >
             {title !== undefined && <DialogTitle>{title}</DialogTitle>}
             {description !== undefined && <DialogDescription>{description}</DialogDescription>}
           </div>
         )}
-        <div className={cn('min-h-0 flex-1', spacing.px, !hasHeader && spacing.py)}>
+        <div
+          className={cn('min-h-0 flex-1')}
+          style={{
+            paddingInline: `calc(${spacing.inline}px - 4px)`,
+            paddingBlock: !hasHeader ? `calc(${spacing.block}px - 4px)` : 0,
+          }}
+        >
           <div
             data-slot="dialog-panel-body"
-            className={cn('h-full overflow-y-auto', bodyClassName)}
+            className={cn('h-full overflow-y-auto p-1', bodyClassName)}
           >
             {children}
           </div>
@@ -95,10 +102,9 @@ function DialogPanel({
             data-slot="dialog-panel-footer"
             className={cn(
               'mt-auto flex flex-col gap-2 sm:flex-row sm:justify-end',
-              spacing.px,
-              spacing.py,
               footerClassName,
             )}
+            style={{ paddingInline: spacing.inline, paddingBlock: spacing.block }}
           >
             {footer}
           </div>
