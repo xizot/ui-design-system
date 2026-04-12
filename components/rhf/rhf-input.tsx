@@ -1,24 +1,15 @@
 'use client';
 
-import {
-  useController,
-  UseFormRegister,
-  type Control,
-  type FieldValues,
-  type Path,
-} from 'react-hook-form';
+import { useController, UseFormRegister, type FieldValues } from 'react-hook-form';
 
 import { Input } from '../ui/input';
+import { RHFControlProps } from './types';
 
-type RHFInputProps<T extends FieldValues = FieldValues> = Omit<
-  React.ComponentProps<typeof Input>,
-  'name' | 'value' | 'onChange'
-> & {
-  control: Control<T>;
-  name: Path<T>;
-  register: UseFormRegister<T>;
-  callback?: (newValue: string) => void;
-};
+type RHFInputProps<T extends FieldValues = FieldValues> = RHFControlProps<T> &
+  Omit<React.ComponentProps<typeof Input>, 'name' | 'value' | 'onChange'> & {
+    register: UseFormRegister<T>;
+    callback?: (newValue: string) => void;
+  };
 
 function RHFInput<T extends FieldValues = FieldValues>({
   control,
