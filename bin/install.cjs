@@ -21,6 +21,7 @@ const projectFilesToCopy = [
   },
 ];
 const runtimeDependencies = [
+  '@tanstack/react-virtual',
   '@hookform/resolvers',
   'shadcn',
   'tw-animate-css',

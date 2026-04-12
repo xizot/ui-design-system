@@ -14,13 +14,7 @@ import { FormErrorMessage } from './form-error-message';
 import { FormLabel } from './form-label';
 import type { ComboboxBaseOption } from './single-combobox';
 
-type AnyFetchFunction = (ids: (string | number)[]) => Promise<unknown>;
-
-type InferApiResponse<TFetch> = TFetch extends (ids: (string | number)[]) => Promise<infer R>
-  ? R
-  : never;
-
-type BaseProps<T extends ComboboxBaseOption> = {
+type MultipleComboboxProps<T extends ComboboxBaseOption> = {
   options: T[];
   value?: (string | number)[];
   onChange?: (values: (string | number)[], options: T[]) => void;
@@ -34,7 +28,7 @@ type BaseProps<T extends ComboboxBaseOption> = {
   searchPlaceholder?: string;
   emptyMessage?: string;
   requireApply?: boolean;
-  cancelText?: string;
+  clearText?: string;
   applyText?: string;
   limitTags?: number;
   autoResize?: boolean;
@@ -44,26 +38,9 @@ type BaseProps<T extends ComboboxBaseOption> = {
   className?: string;
   id?: string;
   size?: FormSize;
-  searchByBackend?: boolean;
-  onSearchQueryChange?: (query: string) => void;
-  selectedOptions?: T[];
 };
 
-type MultipleComboboxProps<
-  T extends ComboboxBaseOption,
-  TFetch extends AnyFetchFunction | undefined = undefined,
-> = BaseProps<T> &
-  (TFetch extends undefined
-    ? { fetchOptionsByIds?: never; mapFetchOptionsByIdsResponse?: never }
-    : {
-        fetchOptionsByIds: TFetch;
-        mapFetchOptionsByIdsResponse?: (response: InferApiResponse<TFetch>) => T[];
-      });
-
-function MultipleCombobox<
-  T extends ComboboxBaseOption,
-  TFetch extends AnyFetchFunction | undefined = undefined,
->({
+function MultipleCombobox<T extends ComboboxBaseOption>({
   options,
   value,
   onChange,
@@ -77,7 +54,7 @@ function MultipleCombobox<
   searchPlaceholder = 'Tìm kiếm...',
   emptyMessage = 'Không tìm thấy kết quả',
   requireApply = true,
-  cancelText = 'Hủy',
+  clearText = 'Xóa',
   applyText = 'Áp dụng',
   limitTags,
   autoResize = false,
@@ -87,44 +64,25 @@ function MultipleCombobox<
   className,
   id,
   size = 'md',
-  searchByBackend = false,
-  onSearchQueryChange,
-  selectedOptions,
-  fetchOptionsByIds,
-  mapFetchOptionsByIdsResponse,
-}: MultipleComboboxProps<T, TFetch>) {
+}: MultipleComboboxProps<T>) {
   const generatedId = React.useId();
   const inputId = id ?? generatedId;
   const anchorRef = React.useRef<HTMLDivElement>(null);
   const isApplyingRef = React.useRef(false);
   const [searchQuery, setSearchQuery] = React.useState('');
+
   const [open, setOpen] = React.useState(false);
   const [internalSelectedIds, setInternalSelectedIds] = React.useState<Set<string | number>>(
     () => new Set(value ?? []),
   );
-  const [fetchedOptions, setFetchedOptions] = React.useState<T[]>([]);
 
-  const allOptions = React.useMemo(() => {
-    const optionIds = new Set(options.map((o) => o.id));
-    let result = options;
-    if (selectedOptions) {
-      const missing = selectedOptions.filter((o) => !optionIds.has(o.id));
-      if (missing.length > 0) result = [...result, ...missing];
-    }
-    const mergedIds = new Set(result.map((o) => o.id));
-    const missingFetched = fetchedOptions.filter((o) => !mergedIds.has(o.id));
-    if (missingFetched.length > 0) result = [...result, ...missingFetched];
-    return result;
-  }, [options, selectedOptions, fetchedOptions]);
-
-  const optionsMap = React.useMemo(() => new Map(allOptions.map((o) => [o.id, o])), [allOptions]);
+  const optionsMap = React.useMemo(() => new Map(options.map((o) => [o.id, o])), [options]);
 
   const filteredOptions = React.useMemo(() => {
-    if (searchByBackend) return allOptions;
-    if (!searchQuery) return allOptions;
+    if (!searchQuery) return options;
     const q = searchQuery.toLowerCase();
-    return allOptions.filter((o) => `${o.code} ${o.name}`.toLowerCase().includes(q));
-  }, [allOptions, searchQuery, searchByBackend]);
+    return options.filter((o) => `${o.code} ${o.name}`.toLowerCase().includes(q));
+  }, [options, searchQuery]);
 
   const filteredItemIds = React.useMemo(() => filteredOptions.map((o) => o.id), [filteredOptions]);
 
@@ -136,54 +94,6 @@ function MultipleCombobox<
     },
     [optionsMap, showSelectedCode],
   );
-
-  React.useEffect(() => {
-    if (searchByBackend && onSearchQueryChange) {
-      onSearchQueryChange(searchQuery);
-    }
-  }, [searchQuery, searchByBackend, onSearchQueryChange]);
-
-  React.useEffect(() => {
-    setFetchedOptions([]);
-  }, [value]);
-
-  React.useEffect(() => {
-    if (!value || value.length === 0) return;
-    if (!fetchOptionsByIds) return;
-    if (selectedOptions && selectedOptions.length > 0) return;
-    if (fetchedOptions.length > 0) return;
-
-    const optionIds = new Set(options.map((o) => o.id));
-    const missingIds = value.filter((id) => !optionIds.has(id));
-    if (missingIds.length === 0) return;
-
-    let cancelled = false;
-
-    const fetch = async () => {
-      const response = await fetchOptionsByIds(missingIds);
-      if (cancelled) return;
-      if (!response) return;
-
-      const mapped = mapFetchOptionsByIdsResponse
-        ? mapFetchOptionsByIdsResponse(response as InferApiResponse<TFetch>)
-        : (response as T[]);
-
-      if (mapped.length > 0) setFetchedOptions(mapped);
-    };
-
-    void fetch();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [
-    value,
-    options,
-    fetchOptionsByIds,
-    selectedOptions,
-    fetchedOptions,
-    mapFetchOptionsByIdsResponse,
-  ]);
 
   const handleOpenChange = (nextOpen: boolean) => {
     if (nextOpen) {
@@ -214,7 +124,10 @@ function MultipleCombobox<
 
   const handleCancel = () => {
     setInternalSelectedIds(new Set(value ?? []));
-    setOpen(false);
+
+    if (!requireApply) {
+      setOpen(false);
+    }
   };
 
   const handleClearAll = (e: React.MouseEvent) => {
@@ -404,9 +317,13 @@ function MultipleCombobox<
                   label={
                     <>
                       {showMenuCode ? `${option.code} - ${option.name}` : option.name}
-                      {internalSelectedIds.has(option.id) && (
-                        <Check className="h-4 w-4 shrink-0 ml-auto text-primary" />
-                      )}
+
+                      <Check
+                        className={cn(
+                          'ml-auto h-4 w-4 shrink-0 text-primary transition-opacity',
+                          internalSelectedIds.has(option.id) ? 'opacity-100' : 'opacity-0',
+                        )}
+                      />
                     </>
                   }
                   labelClassName="font-normal flex w-full"
@@ -418,7 +335,7 @@ function MultipleCombobox<
           {requireApply && (
             <div className="flex items-center gap-2 border-t border-border/70 p-2">
               <Button variant="outline" size="sm" className="flex-1" onClick={handleCancel}>
-                {cancelText}
+                {clearText}
               </Button>
               <Button size="sm" className="flex-1" onClick={handleApply}>
                 {applyText}
