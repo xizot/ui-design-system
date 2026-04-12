@@ -23,7 +23,13 @@ export type ComboboxBaseOption = {
   name: string;
 };
 
-type SingleComboboxProps<T extends ComboboxBaseOption> = {
+type AnyFetchFunction = (id: string | number) => Promise<unknown>;
+
+type InferApiResponse<TFetch> = TFetch extends (id: string | number) => Promise<infer R>
+  ? R
+  : never;
+
+type BaseProps<T extends ComboboxBaseOption> = {
   options: T[];
   value?: string | number;
   onChange?: (value: string | number | undefined, option: T | undefined) => void;
@@ -41,9 +47,26 @@ type SingleComboboxProps<T extends ComboboxBaseOption> = {
   className?: string;
   id?: string;
   size?: FormSize;
+  searchByBackend?: boolean;
+  onSearchQueryChange?: (query: string) => void;
+  selectedOption?: T;
 };
 
-function SingleCombobox<T extends ComboboxBaseOption>({
+type SingleComboboxProps<
+  T extends ComboboxBaseOption,
+  TFetch extends AnyFetchFunction | undefined = undefined,
+> = BaseProps<T> &
+  (TFetch extends undefined
+    ? { fetchOptionById?: never; mapFetchOptionByIdResponse?: never }
+    : {
+        fetchOptionById: TFetch;
+        mapFetchOptionByIdResponse?: (response: InferApiResponse<TFetch>) => T;
+      });
+
+function SingleCombobox<
+  T extends ComboboxBaseOption,
+  TFetch extends AnyFetchFunction | undefined = undefined,
+>({
   options,
   value,
   onChange,
@@ -61,20 +84,39 @@ function SingleCombobox<T extends ComboboxBaseOption>({
   className,
   id,
   size = 'md',
-}: SingleComboboxProps<T>) {
+  searchByBackend = false,
+  onSearchQueryChange,
+  selectedOption,
+  fetchOptionById,
+  mapFetchOptionByIdResponse,
+}: SingleComboboxProps<T, TFetch>) {
   const generatedId = React.useId();
   const inputId = id ?? generatedId;
   const anchorRef = React.useRef<HTMLDivElement>(null);
   const [open, setOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [fetchedOption, setFetchedOption] = React.useState<T | undefined>();
 
-  const optionsMap = React.useMemo(() => new Map(options.map((o) => [o.id, o])), [options]);
+  const allOptions = React.useMemo(() => {
+    const optionIds = new Set(options.map((o) => o.id));
+    let result = options;
+    if (selectedOption && !optionIds.has(selectedOption.id)) {
+      result = [...result, selectedOption];
+    }
+    if (fetchedOption && !optionIds.has(fetchedOption.id)) {
+      result = [...result, fetchedOption];
+    }
+    return result;
+  }, [options, selectedOption, fetchedOption]);
+
+  const optionsMap = React.useMemo(() => new Map(allOptions.map((o) => [o.id, o])), [allOptions]);
 
   const filteredOptions = React.useMemo(() => {
-    if (!searchQuery) return options;
+    if (searchByBackend) return allOptions;
+    if (!searchQuery) return allOptions;
     const q = searchQuery.toLowerCase();
-    return options.filter((o) => `${o.code} ${o.name}`.toLowerCase().includes(q));
-  }, [options, searchQuery]);
+    return allOptions.filter((o) => `${o.code} ${o.name}`.toLowerCase().includes(q));
+  }, [allOptions, searchQuery, searchByBackend]);
 
   const filteredItemIds = React.useMemo(() => filteredOptions.map((o) => o.id), [filteredOptions]);
 
@@ -106,8 +148,48 @@ function SingleCombobox<T extends ComboboxBaseOption>({
   React.useEffect(() => {
     setOpen(false);
     setSearchQuery('');
+    setFetchedOption(undefined);
   }, [value]);
 
+  React.useEffect(() => {
+    if (searchByBackend && onSearchQueryChange) {
+      onSearchQueryChange(searchQuery);
+    }
+  }, [searchQuery, searchByBackend, onSearchQueryChange]);
+
+  React.useEffect(() => {
+    setFetchedOption(undefined);
+  }, [value]);
+
+  React.useEffect(() => {
+    if (!value) return;
+    if (!fetchOptionById) return;
+    if (selectedOption) return;
+    if (fetchedOption) return;
+
+    const optionIds = new Set(options.map((o) => o.id));
+    if (optionIds.has(value)) return;
+
+    let cancelled = false;
+
+    const fetch = async () => {
+      const response = await fetchOptionById(value);
+      if (cancelled) return;
+      if (!response) return;
+
+      const mapped = mapFetchOptionByIdResponse
+        ? mapFetchOptionByIdResponse(response as InferApiResponse<TFetch>)
+        : (response as T);
+
+      if (mapped) setFetchedOption(mapped);
+    };
+
+    void fetch();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [value, options, fetchOptionById, selectedOption, fetchedOption, mapFetchOptionByIdResponse]);
   return (
     <div className={cn('w-full', className)}>
       {label && <FormLabel label={label} htmlFor={inputId} required={required} />}
@@ -206,11 +288,11 @@ function SingleCombobox<T extends ComboboxBaseOption>({
               id={inputId}
               placeholder={searchPlaceholder}
               showClear={true}
-              formSize={'sm'}
+              formSize="sm"
             />
           </div>
 
-          <ComboboxList className={'px-2'}>
+          <ComboboxList className="px-2">
             <ComboboxEmpty>{emptyMessage}</ComboboxEmpty>
             {filteredOptions.map((option) => (
               <ComboboxItem
@@ -231,3 +313,4 @@ function SingleCombobox<T extends ComboboxBaseOption>({
 
 export { SingleCombobox };
 export type { SingleComboboxProps };
+
