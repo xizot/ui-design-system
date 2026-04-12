@@ -96,9 +96,7 @@ export function useUrlFilters<T extends ParserMap, K extends BaseKeyNames = Defa
       ...runtimeBaseParsers,
       ...parsers,
       // Ensure sortOrder always has default if not provided in parsers
-      ...(parsers[resolvedKeys.sortOrder]
-        ? {}
-        : { [resolvedKeys.sortOrder]: parseAsInteger.withDefault(0) }),
+      ...(parsers[resolvedKeys.sortOrder] ? {} : { [resolvedKeys.sortOrder]: parseAsInteger }),
     } as unknown as T,
     { shallow: true, history: 'replace' },
   );
