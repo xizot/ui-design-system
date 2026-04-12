@@ -14,11 +14,14 @@ const guide = {
 } as const;
 
 const props = [
-  { name: 'size', type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'`, defaultValue: `'md'` },
+  { name: 'size', type: `'sm' | 'default'`, defaultValue: `'default'` },
   { name: 'checked', type: 'boolean', defaultValue: 'false' },
   { name: 'defaultChecked', type: 'boolean', defaultValue: 'false' },
   { name: 'onCheckedChange', type: '(checked: boolean) => void', defaultValue: '--' },
   { name: 'disabled', type: 'boolean', defaultValue: 'false' },
+  { name: 'label', type: 'string | ReactNode', defaultValue: '--' },
+  { name: 'required', type: 'boolean', defaultValue: 'false' },
+  { name: 'error', type: 'string', defaultValue: '--' },
   { name: 'className', type: 'string', defaultValue: '--' },
 ];
 

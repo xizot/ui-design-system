@@ -199,14 +199,12 @@ const NumberInput = ({
 
   return (
     <div className={cn('space-y-1.5', wrapperClassName)}>
-      {label ? (
-        <FormLabel label={label} htmlFor={id} required={required} className={labelClassName} />
-      ) : null}
       <div className="flex w-full">
         <div className="relative w-full">
           <Input
             label={label}
             ref={inputRef}
+            required={required}
             placeholder={placeholder}
             {...inputProps}
             type="text"
