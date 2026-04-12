@@ -37,6 +37,7 @@ function RHFInput<T extends FieldValues = FieldValues>({
     <Input
       {...props}
       {...field}
+      value={field.value ?? ''}
       onChange={handleChange}
       error={error?.message}
       id={props.id || String(name)}
