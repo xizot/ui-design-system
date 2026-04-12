@@ -14,7 +14,13 @@ import { FormErrorMessage } from './form-error-message';
 import { FormLabel } from './form-label';
 import type { ComboboxBaseOption } from './single-combobox';
 
-type MultipleComboboxProps<T extends ComboboxBaseOption> = {
+type AnyFetchFunction = (ids: (string | number)[]) => Promise<unknown>;
+
+type InferApiResponse<TFetch> = TFetch extends (ids: (string | number)[]) => Promise<infer R>
+  ? R
+  : never;
+
+type BaseProps<T extends ComboboxBaseOption> = {
   options: T[];
   value?: (string | number)[];
   onChange?: (values: (string | number)[], options: T[]) => void;
@@ -38,9 +44,26 @@ type MultipleComboboxProps<T extends ComboboxBaseOption> = {
   className?: string;
   id?: string;
   size?: FormSize;
+  searchByBackend?: boolean;
+  onSearchQueryChange?: (query: string) => void;
+  selectedOptions?: T[];
 };
 
-function MultipleCombobox<T extends ComboboxBaseOption>({
+type MultipleComboboxProps<
+  T extends ComboboxBaseOption,
+  TFetch extends AnyFetchFunction | undefined = undefined,
+> = BaseProps<T> &
+  (TFetch extends undefined
+    ? { fetchOptionsByIds?: never; mapFetchOptionsByIdsResponse?: never }
+    : {
+        fetchOptionsByIds: TFetch;
+        mapFetchOptionsByIdsResponse?: (response: InferApiResponse<TFetch>) => T[];
+      });
+
+function MultipleCombobox<
+  T extends ComboboxBaseOption,
+  TFetch extends AnyFetchFunction | undefined = undefined,
+>({
   options,
   value,
   onChange,
@@ -64,25 +87,44 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
   className,
   id,
   size = 'md',
-}: MultipleComboboxProps<T>) {
+  searchByBackend = false,
+  onSearchQueryChange,
+  selectedOptions,
+  fetchOptionsByIds,
+  mapFetchOptionsByIdsResponse,
+}: MultipleComboboxProps<T, TFetch>) {
   const generatedId = React.useId();
   const inputId = id ?? generatedId;
   const anchorRef = React.useRef<HTMLDivElement>(null);
   const isApplyingRef = React.useRef(false);
   const [searchQuery, setSearchQuery] = React.useState('');
-
   const [open, setOpen] = React.useState(false);
   const [internalSelectedIds, setInternalSelectedIds] = React.useState<Set<string | number>>(
     () => new Set(value ?? []),
   );
+  const [fetchedOptions, setFetchedOptions] = React.useState<T[]>([]);
 
-  const optionsMap = React.useMemo(() => new Map(options.map((o) => [o.id, o])), [options]);
+  const allOptions = React.useMemo(() => {
+    const optionIds = new Set(options.map((o) => o.id));
+    let result = options;
+    if (selectedOptions) {
+      const missing = selectedOptions.filter((o) => !optionIds.has(o.id));
+      if (missing.length > 0) result = [...result, ...missing];
+    }
+    const mergedIds = new Set(result.map((o) => o.id));
+    const missingFetched = fetchedOptions.filter((o) => !mergedIds.has(o.id));
+    if (missingFetched.length > 0) result = [...result, ...missingFetched];
+    return result;
+  }, [options, selectedOptions, fetchedOptions]);
+
+  const optionsMap = React.useMemo(() => new Map(allOptions.map((o) => [o.id, o])), [allOptions]);
 
   const filteredOptions = React.useMemo(() => {
-    if (!searchQuery) return options;
+    if (searchByBackend) return allOptions;
+    if (!searchQuery) return allOptions;
     const q = searchQuery.toLowerCase();
-    return options.filter((o) => `${o.code} ${o.name}`.toLowerCase().includes(q));
-  }, [options, searchQuery]);
+    return allOptions.filter((o) => `${o.code} ${o.name}`.toLowerCase().includes(q));
+  }, [allOptions, searchQuery, searchByBackend]);
 
   const filteredItemIds = React.useMemo(() => filteredOptions.map((o) => o.id), [filteredOptions]);
 
@@ -94,6 +136,54 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
     },
     [optionsMap, showSelectedCode],
   );
+
+  React.useEffect(() => {
+    if (searchByBackend && onSearchQueryChange) {
+      onSearchQueryChange(searchQuery);
+    }
+  }, [searchQuery, searchByBackend, onSearchQueryChange]);
+
+  React.useEffect(() => {
+    setFetchedOptions([]);
+  }, [value]);
+
+  React.useEffect(() => {
+    if (!value || value.length === 0) return;
+    if (!fetchOptionsByIds) return;
+    if (selectedOptions && selectedOptions.length > 0) return;
+    if (fetchedOptions.length > 0) return;
+
+    const optionIds = new Set(options.map((o) => o.id));
+    const missingIds = value.filter((id) => !optionIds.has(id));
+    if (missingIds.length === 0) return;
+
+    let cancelled = false;
+
+    const fetch = async () => {
+      const response = await fetchOptionsByIds(missingIds);
+      if (cancelled) return;
+      if (!response) return;
+
+      const mapped = mapFetchOptionsByIdsResponse
+        ? mapFetchOptionsByIdsResponse(response as InferApiResponse<TFetch>)
+        : (response as T[]);
+
+      if (mapped.length > 0) setFetchedOptions(mapped);
+    };
+
+    void fetch();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    value,
+    options,
+    fetchOptionsByIds,
+    selectedOptions,
+    fetchedOptions,
+    mapFetchOptionsByIdsResponse,
+  ]);
 
   const handleOpenChange = (nextOpen: boolean) => {
     if (nextOpen) {
@@ -291,7 +381,7 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
             />
           </div>
 
-          <ComboboxList className={'px-2'}>
+          <ComboboxList className="px-2">
             <ComboboxEmpty>{emptyMessage}</ComboboxEmpty>
             {filteredOptions.map((option) => (
               <ComboboxPrimitive.Item
