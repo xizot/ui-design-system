@@ -33,10 +33,10 @@ export type ListResponse<T> = {
   items: T[];
 };
 
-export type MappedPageResult = {
+export type MappedPageResult<TOption extends ComboboxBaseOption = ComboboxBaseOption> = {
   totalPages: number;
   pageNumber: number;
-  items: ComboboxBaseOption[];
+  items: TOption[];
 };
 
 /**
@@ -48,26 +48,30 @@ export type MappedPageResult = {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type FetchOptionsFunction = (params: any) => Promise<unknown>;
 
-export type LazySingleComboboxProps<TRaw = unknown> = {
+export type LazySingleComboboxProps<
+  TRaw = unknown,
+  TOption extends ComboboxBaseOption = ComboboxBaseOption,
+> = {
   // --- Core ---
   value?: string | number;
-  onChange?: (value: string | number | undefined, option: ComboboxBaseOption | undefined) => void;
+  onChange?: (value: string | number | undefined, option: TOption | undefined) => void;
 
   // --- Fetch ---
   fetchOptions: FetchOptionsFunction;
   /**
-   * Map raw API response → MappedPageResult.
-   * Omit when API already returns ListResponse<ComboboxBaseOption>.
+   * Map raw API response → MappedPageResult<TOption>.
+   * Omit when API already returns ListResponse<TOption>.
    * TRaw is inferred from the mapResponse param type — no need to pass it explicitly.
    */
-  mapResponse?: (raw: TRaw) => MappedPageResult;
+  mapResponse?: (raw: TRaw) => MappedPageResult<TOption>;
 
   // --- Backup option ---
   /**
    * Pass the currently selected option when value is pre-set (e.g. form edit mode).
    * Used to display the label before the option appears in the paged list.
+   * Must extend ComboboxBaseOption.
    */
-  backupOption?: ComboboxBaseOption;
+  backupOption?: TOption;
 
   // --- Param key overrides ---
   /** Default: "searchTerm" */
@@ -113,7 +117,10 @@ function useDebounce<T>(value: T, delay: number): T {
 // Component
 // ---------------------------------------------------------------------------
 
-function LazySingleCombobox<TRaw = unknown>({
+function LazySingleCombobox<
+  TRaw = unknown,
+  TOption extends ComboboxBaseOption = ComboboxBaseOption,
+>({
   value,
   onChange,
   fetchOptions,
@@ -137,7 +144,7 @@ function LazySingleCombobox<TRaw = unknown>({
   className,
   id,
   size = 'md',
-}: LazySingleComboboxProps<TRaw>) {
+}: LazySingleComboboxProps<TRaw, TOption>) {
   const generatedId = React.useId();
   const inputId = id ?? generatedId;
   const anchorRef = React.useRef<HTMLDivElement>(null);
@@ -148,9 +155,9 @@ function LazySingleCombobox<TRaw = unknown>({
   const [searchQuery, setSearchQuery] = React.useState('');
   const debouncedSearch = useDebounce(searchQuery, 300);
 
-  // Map<id, ComboboxBaseOption> — dedup + O(1) lookup
-  const itemsMapRef = React.useRef<Map<string | number, ComboboxBaseOption>>(new Map());
-  const [itemsList, setItemsList] = React.useState<ComboboxBaseOption[]>([]);
+  // Map<id, TOption> — dedup + O(1) lookup
+  const itemsMapRef = React.useRef<Map<string | number, TOption>>(new Map());
+  const [itemsList, setItemsList] = React.useState<TOption[]>([]);
 
   const [currentPage, setCurrentPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(1);
@@ -168,13 +175,13 @@ function LazySingleCombobox<TRaw = unknown>({
 
   // Survives search reset — stored in ref so fetchPage does NOT depend on it
   // (avoids fetchPage recreation → useEffect re-trigger → list reset loop)
-  const internalSelectedItemRef = React.useRef<ComboboxBaseOption | undefined>(backupOption);
+  const internalSelectedItemRef = React.useRef<TOption | undefined>(backupOption);
   // State copy only for re-rendering label
-  const [internalSelectedItem, setInternalSelectedItem] = React.useState<
-    ComboboxBaseOption | undefined
-  >(backupOption);
+  const [internalSelectedItem, setInternalSelectedItem] = React.useState<TOption | undefined>(
+    backupOption,
+  );
 
-  const setSelectedItem = React.useCallback((item: ComboboxBaseOption | undefined) => {
+  const setSelectedItem = React.useCallback((item: TOption | undefined) => {
     internalSelectedItemRef.current = item;
     setInternalSelectedItem(item);
   }, []);
@@ -209,11 +216,13 @@ function LazySingleCombobox<TRaw = unknown>({
         // Unwrap AxiosResponse if needed — axios wraps the actual data in `.data`
         const unwrapped = (raw as { data?: unknown })?.data ?? raw;
 
-        let result: MappedPageResult;
+        let result: MappedPageResult<TOption>;
+
         if (mapResponse) {
           result = mapResponse(unwrapped as TRaw);
         } else {
-          const typed = unwrapped as ListResponse<ComboboxBaseOption>;
+          // When mapResponse is omitted, caller guarantees API returns ListResponse<TOption>
+          const typed = unwrapped as ListResponse<TOption>;
           result = {
             totalPages: typed.totalPages,
             pageNumber: typed.pageNumber,
@@ -223,7 +232,7 @@ function LazySingleCombobox<TRaw = unknown>({
 
         if (page === 1) {
           // Fresh search — rebuild map, always re-insert internalSelectedItem
-          const newMap = new Map<string | number, ComboboxBaseOption>();
+          const newMap = new Map<string | number, TOption>();
           const currentSelected = internalSelectedItemRef.current;
           if (currentSelected) {
             newMap.set(currentSelected.id, currentSelected);
@@ -324,7 +333,7 @@ function LazySingleCombobox<TRaw = unknown>({
       setSelectedItem(undefined);
       return;
     }
-    const opt = itemsMapRef.current.get(val);
+    const opt = itemsMapRef.current.get(val); // opt: TOption | undefined
     if (opt) setSelectedItem(opt);
     if (!isControlled) setInternalValue(opt?.id ?? val);
     onChange?.(opt?.id ?? val, opt);

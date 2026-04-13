@@ -13,33 +13,36 @@ import { Checkbox } from './checkbox';
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxList } from './combobox';
 import { FormErrorMessage } from './form-error-message';
 import { FormLabel } from './form-label';
-import type { FetchOptionsFunction, ListResponse, MappedPageResult } from './lazy-single-combobox';
 import type { ComboboxBaseOption } from './single-combobox';
+import type { FetchOptionsFunction, MappedPageResult, ListResponse } from './lazy-single-combobox';
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
-type LazyMultipleComboboxProps<TRaw = unknown> = {
+type LazyMultipleComboboxProps<
+  TRaw = unknown,
+  TOption extends ComboboxBaseOption = ComboboxBaseOption,
+> = {
   // --- Core ---
   value?: (string | number)[];
-  onChange?: (values: (string | number)[], options: ComboboxBaseOption[]) => void;
+  onChange?: (values: (string | number)[], options: TOption[]) => void;
 
   // --- Fetch ---
   fetchOptions: FetchOptionsFunction;
   /**
-   * Map raw API response → MappedPageResult.
-   * Omit when API already returns ListResponse<ComboboxBaseOption>.
-   * TRaw is inferred from the mapResponse param type.
+   * Map raw API response → MappedPageResult<TOption>.
+   * Omit when API already returns ListResponse<TOption>.
    */
-  mapResponse?: (raw: TRaw) => MappedPageResult;
+  mapResponse?: (raw: TRaw) => MappedPageResult<TOption>;
 
   // --- Backup options ---
   /**
    * Pre-selected options for form edit mode.
    * Used to display badges/labels before options appear in the paged list.
+   * Must extend ComboboxBaseOption.
    */
-  backupOptions?: ComboboxBaseOption[];
+  backupOptions?: TOption[];
 
   // --- Param key overrides ---
   /** Default: "searchTerm" */
@@ -68,10 +71,11 @@ type LazyMultipleComboboxProps<TRaw = unknown> = {
   autoResize?: boolean;
   showArrowIcon?: boolean;
   showClearIcon?: boolean;
-  onSelectedRender?: (
-    selectedId: string | number,
-    selectedOption: ComboboxBaseOption,
-  ) => React.ReactNode;
+  /**
+   * Custom renderer cho từng badge đã chọn.
+   * `selectedOption` được typed là `TOption` — có thể access các field mở rộng.
+   */
+  onSelectedRender?: (selectedId: string | number, selectedOption: TOption) => React.ReactNode;
   className?: string;
   id?: string;
   size?: FormSize;
@@ -94,7 +98,10 @@ function useDebounce<T>(value: T, delay: number): T {
 // Component
 // ---------------------------------------------------------------------------
 
-function LazyMultipleCombobox<TRaw = unknown>({
+function LazyMultipleCombobox<
+  TRaw = unknown,
+  TOption extends ComboboxBaseOption = ComboboxBaseOption,
+>({
   value,
   onChange,
   fetchOptions,
@@ -124,7 +131,7 @@ function LazyMultipleCombobox<TRaw = unknown>({
   className,
   id,
   size = 'md',
-}: LazyMultipleComboboxProps<TRaw>) {
+}: LazyMultipleComboboxProps<TRaw, TOption>) {
   const generatedId = React.useId();
   const inputId = id ?? generatedId;
   const anchorRef = React.useRef<HTMLDivElement>(null);
@@ -138,9 +145,9 @@ function LazyMultipleCombobox<TRaw = unknown>({
   const [searchQuery, setSearchQuery] = React.useState('');
   const debouncedSearch = useDebounce(searchQuery, 300);
 
-  // Map<id, ComboboxBaseOption> — dedup + O(1) lookup, persists across pages
-  const itemsMapRef = React.useRef<Map<string | number, ComboboxBaseOption>>(new Map());
-  const [itemsList, setItemsList] = React.useState<ComboboxBaseOption[]>([]);
+  // Map<id, TOption> — dedup + O(1) lookup, persists across pages
+  const itemsMapRef = React.useRef<Map<string | number, TOption>>(new Map());
+  const [itemsList, setItemsList] = React.useState<TOption[]>([]);
 
   const [currentPage, setCurrentPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(1);
@@ -150,7 +157,7 @@ function LazyMultipleCombobox<TRaw = unknown>({
 
   const isLastPage = currentPage >= totalPages;
 
-  // Support uncontrolled mode — track committed value internally when prop not passed
+  // Support uncontrolled mode
   const isControlled = value !== undefined;
   const [internalValue, setInternalValue] = React.useState<(string | number)[]>([]);
   const resolvedValue = isControlled ? value : internalValue;
@@ -171,10 +178,6 @@ function LazyMultipleCombobox<TRaw = unknown>({
   }, [backupOptions]);
 
   // Prevent base-ui from hijacking scroll when user is scrolling.
-  // base-ui calls el.scrollIntoView() on the highlighted item after each selection.
-  // With a virtual list this snaps the container back to the selected item mid-scroll.
-  // Fix: temporarily patch Element.prototype.scrollIntoView to noop when the
-  // element is inside our scroll container and the user recently scrolled.
   React.useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
@@ -202,6 +205,10 @@ function LazyMultipleCombobox<TRaw = unknown>({
     };
   }, [open]);
 
+  // ---------------------------------------------------------------------------
+  // Fetch page
+  // ---------------------------------------------------------------------------
+
   const fetchPage = React.useCallback(
     async (search: string, page: number) => {
       if (isFetchingRef.current) return;
@@ -220,11 +227,13 @@ function LazyMultipleCombobox<TRaw = unknown>({
         // Unwrap AxiosResponse if needed
         const unwrapped = (raw as { data?: unknown })?.data ?? raw;
 
-        let result: MappedPageResult;
+        let result: MappedPageResult<TOption>;
+
         if (mapResponse) {
           result = mapResponse(unwrapped as TRaw);
         } else {
-          const typed = unwrapped as ListResponse<ComboboxBaseOption>;
+          // Caller guarantees API returns ListResponse<TOption> when mapResponse is omitted
+          const typed = unwrapped as ListResponse<TOption>;
           result = {
             totalPages: typed.totalPages,
             pageNumber: typed.pageNumber,
@@ -234,7 +243,7 @@ function LazyMultipleCombobox<TRaw = unknown>({
 
         if (page === 1) {
           // Rebuild map on fresh search — always keep backupOptions + selected items
-          const newMap = new Map<string | number, ComboboxBaseOption>();
+          const newMap = new Map<string | number, TOption>();
 
           // Re-insert backup options
           backupOptions?.forEach((opt) => newMap.set(opt.id, opt));
@@ -299,16 +308,13 @@ function LazyMultipleCombobox<TRaw = unknown>({
   }, [isLastPage, currentPage, debouncedSearch, fetchPage]);
 
   // ---------------------------------------------------------------------------
-  // Virtualizer — dynamic row height
+  // Virtualizer — fixed row height (no measureElement to avoid scroll jumps)
   // ---------------------------------------------------------------------------
 
   const virtualizer = useVirtualizer({
     count: itemsList.length,
     getScrollElement: () => scrollRef.current,
     estimateSize: () => 32,
-    // Fixed height — do NOT use measureElement here.
-    // Dynamic measurement causes layout recalculation on every selection change,
-    // leading to scroll jumps when internalSelectedIds updates.
     overscan: 5,
   });
 
@@ -326,10 +332,8 @@ function LazyMultipleCombobox<TRaw = unknown>({
   );
 
   const resolveOptions = React.useCallback(
-    (ids: (string | number)[]): ComboboxBaseOption[] =>
-      ids
-        .map((id) => itemsMapRef.current.get(id))
-        .filter((o): o is ComboboxBaseOption => o !== undefined),
+    (ids: (string | number)[]): TOption[] =>
+      ids.map((id) => itemsMapRef.current.get(id)).filter((o): o is TOption => o !== undefined),
     [],
   );
 
@@ -339,10 +343,8 @@ function LazyMultipleCombobox<TRaw = unknown>({
 
   const handleOpenChange = (nextOpen: boolean) => {
     if (nextOpen) {
-      // Sync internal selection to committed value on open
       setInternalSelectedIds(new Set(resolvedValue));
     } else if (!isApplyingRef.current) {
-      // Cancelled — revert
       setInternalSelectedIds(new Set(resolvedValue));
     }
     if (!nextOpen) setSearchQuery('');
@@ -373,14 +375,8 @@ function LazyMultipleCombobox<TRaw = unknown>({
 
   const handleCancel = () => {
     setInternalSelectedIds(new Set());
-
-    if (!isControlled) {
-      setInternalValue([]);
-    }
-
-    if (!requireApply) {
-      setOpen(false);
-    }
+    if (!isControlled) setInternalValue([]);
+    if (!requireApply) setOpen(false);
   };
 
   const handleClearAll = (e: React.MouseEvent) => {
@@ -467,6 +463,7 @@ function LazyMultipleCombobox<TRaw = unknown>({
                       className="flex min-w-0 max-w-fit flex-1 items-center gap-1 rounded-sm border-border pr-0.5 font-normal"
                     >
                       {onSelectedRender ? (
+                        // opt is TOption — caller gets full typed access
                         onSelectedRender(id, opt)
                       ) : (
                         <p className="truncate">
@@ -588,7 +585,7 @@ function LazyMultipleCombobox<TRaw = unknown>({
                       <ComboboxPrimitive.Item
                         value={option.id}
                         className={cn(
-                          'mt-px relative flex w-full cursor-default select-none items-center gap-2 rounded-sm py-1.5 px-2 text-sm outline-hidden',
+                          'relative mt-px flex w-full cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden',
                           'data-highlighted:bg-accent data-highlighted:text-accent-foreground',
                           'data-disabled:pointer-events-none data-disabled:opacity-50',
                           isSelected && 'bg-accent text-accent-foreground',
