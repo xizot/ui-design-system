@@ -15,9 +15,10 @@ This workflow creates a new feature with both an App Router page and a feature m
 ## Steps
 
 1. **Create App Router page** at `app/{feature-name}/page.tsx`:
+
    ```typescript
    import { FeatureName } from '@/features/feature-name';
-   
+
    export default function FeatureNamePage() {
      return <FeatureName />;
    }
@@ -26,29 +27,31 @@ This workflow creates a new feature with both an App Router page and a feature m
 2. **Create feature folder** at `features/{feature-name}/` with minimal required files:
 
    a. **Main container** `feature-name.tsx`:
-      ```typescript
-      'use client';
-      
-      import { useState } from 'react';
-      // Import from design-system only
-      
-      export function FeatureName() {
-        return (
-          <div className="space-y-4">
-            {/* Feature content */}
-          </div>
-        );
-      }
-      ```
+
+   ```typescript
+   'use client';
+
+   import { useState } from 'react';
+   // Import from design-system only
+
+   export function FeatureName() {
+     return (
+       <div className="space-y-4">
+         {/* Feature content */}
+       </div>
+     );
+   }
+   ```
 
    b. **Public entry** `index.ts`:
-      ```typescript
-      export { FeatureName } from './feature-name';
-      ```
+
+   ```typescript
+   export { FeatureName } from './feature-name';
+   ```
 
 3. **Create optional folders only when needed**:
-
    - **`components/`** - Only if feature has reusable local components:
+
      ```
      features/feature-name/components/
        ComponentName.tsx
@@ -56,6 +59,7 @@ This workflow creates a new feature with both an App Router page and a feature m
      ```
 
    - **`hooks/`** - Only for feature-specific hooks:
+
      ```
      features/feature-name/hooks/
        use-filters.ts      (use useUrlFilters from design-system)
@@ -64,6 +68,7 @@ This workflow creates a new feature with both an App Router page and a feature m
      ```
 
    - **`data-table/`** - Only for table views:
+
      ```
      features/feature-name/data-table/
        columns.tsx         (define columns)
@@ -72,6 +77,7 @@ This workflow creates a new feature with both an App Router page and a feature m
      ```
 
    - **`forms/`** - Only for forms:
+
      ```
      features/feature-name/forms/
        create-form.tsx     (RHF + zod + design-system rhf components)
@@ -80,12 +86,14 @@ This workflow creates a new feature with both an App Router page and a feature m
      ```
 
    - **`schemas/`** - Only if feature has local Zod schemas:
+
      ```
      features/feature-name/schemas/
        index.ts
      ```
 
    - **`types/`** - Only if feature has local types:
+
      ```
      features/feature-name/types/
        index.ts
@@ -136,7 +144,7 @@ import { RHFInput, RHFSelect } from '@/design-system/components/rhf/rhf-input';
 
 // Hooks (from design-system or local)
 import { useUrlFilters } from '@/design-system/hooks/use-url-filter';
-import { useFilters } from './hooks/use-filters';  // local feature hook
+import { useFilters } from './hooks/use-filters'; // local feature hook
 
 // Services
 import { driverService } from '@/services/driver-service';

@@ -10,19 +10,43 @@ import { Separator } from './separator';
 import { TimePicker, type TimeValue } from './time-picker';
 import { FORM_SIZE_STYLES, type FormSize } from '../../constants/form-sizes';
 import { cn } from '../../lib/utils';
-import { format, setHours, setMinutes, setSeconds, startOfMonth, type Locale } from 'date-fns';
+import {
+  format,
+  isValid,
+  setHours,
+  setMinutes,
+  setSeconds,
+  startOfMonth,
+  type Locale,
+} from 'date-fns';
 import { CalendarIcon, XCircleIcon } from 'lucide-react';
 import type { ComponentProps } from 'react';
 import * as React from 'react';
 import type { DayPickerSingleProps } from 'react-day-picker';
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+/** Coerce Date | string | undefined → Date | undefined. */
+function toDate(value: Date | string | undefined): Date | undefined {
+  if (value === undefined || value === null) return undefined;
+  if (value instanceof Date) return isValid(value) ? value : undefined;
+  const parsed = new Date(value);
+  return isValid(parsed) ? parsed : undefined;
+}
+
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
 
 export type DatePickerProps = Omit<
   DayPickerSingleProps,
   'selected' | 'onSelect' | 'mode' | 'required'
 > & {
   id?: string;
-  value?: Date;
-  onChange?: (date: Date | undefined) => void;
+  value?: Date | string;
+  onChange?: (date: string | undefined) => void;
   placeholder?: string;
   dateFormat?: string;
   showTime?: boolean;
@@ -47,6 +71,10 @@ export type DatePickerProps = Omit<
   monthNames?: string[];
   showClearIcon?: boolean;
 };
+
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
 
 function DatePicker({
   id,
@@ -77,116 +105,98 @@ function DatePicker({
   showClearIcon = true,
   ...calendarProps
 }: DatePickerProps) {
+  // Single source of truth — always a Date internally
+  const resolvedValue = React.useMemo(() => toDate(value), [value]);
+
   const [open, setOpen] = React.useState(false);
-  const [tempDate, setTempDate] = React.useState<Date | undefined>(value);
-  const [currentMonth, setCurrentMonth] = React.useState<Date>(() => value || new Date());
+  const [tempDate, setTempDate] = React.useState<Date | undefined>(resolvedValue);
+  const [currentMonth, setCurrentMonth] = React.useState<Date>(() => resolvedValue ?? new Date());
   const [selectedTime, setSelectedTime] = React.useState<TimeValue>(() => {
-    if (value) {
+    if (resolvedValue) {
       return {
-        hour: value.getHours().toString().padStart(2, '0'),
-        minute: value.getMinutes().toString().padStart(2, '0'),
-        second: value.getSeconds().toString().padStart(2, '0'),
+        hour: resolvedValue.getHours().toString().padStart(2, '0'),
+        minute: resolvedValue.getMinutes().toString().padStart(2, '0'),
+        second: resolvedValue.getSeconds().toString().padStart(2, '0'),
       };
     }
     return { hour: '00', minute: '00', second: '00' };
   });
 
-  // Store initial values when opening popover
-  const initialDateRef = React.useRef<Date | undefined>(value);
-  const initialMonthRef = React.useRef<Date>(value || new Date());
-  const getInitialTime = (): TimeValue => {
-    if (value) {
-      return {
-        hour: value.getHours().toString().padStart(2, '0'),
-        minute: value.getMinutes().toString().padStart(2, '0'),
-        second: value.getSeconds().toString().padStart(2, '0'),
-      };
-    }
-    return { hour: '00', minute: '00', second: '00' };
-  };
-  const initialTimeRef = React.useRef<TimeValue>(getInitialTime());
+  const initialDateRef = React.useRef<Date | undefined>(resolvedValue);
+  const initialMonthRef = React.useRef<Date>(resolvedValue ?? new Date());
+  const initialTimeRef = React.useRef<TimeValue>({ hour: '00', minute: '00', second: '00' });
 
   React.useEffect(() => {
     if (open) {
-      // Store initial values when opening
-      initialDateRef.current = value;
-      initialMonthRef.current = value || new Date();
-      initialTimeRef.current = value
+      initialDateRef.current = resolvedValue;
+      initialMonthRef.current = resolvedValue ?? new Date();
+      initialTimeRef.current = resolvedValue
         ? {
-            hour: value.getHours().toString().padStart(2, '0'),
-            minute: value.getMinutes().toString().padStart(2, '0'),
-            second: value.getSeconds().toString().padStart(2, '0'),
+            hour: resolvedValue.getHours().toString().padStart(2, '0'),
+            minute: resolvedValue.getMinutes().toString().padStart(2, '0'),
+            second: resolvedValue.getSeconds().toString().padStart(2, '0'),
           }
         : { hour: '00', minute: '00', second: '00' };
 
-      // Update currentMonth and tempDate to match value when opening
       if (timeOnly) {
-        // For time only, don't set tempDate or currentMonth
-        if (value) {
-          setSelectedTime({
-            hour: value.getHours().toString().padStart(2, '0'),
-            minute: value.getMinutes().toString().padStart(2, '0'),
-            second: value.getSeconds().toString().padStart(2, '0'),
-          });
-        } else {
-          setSelectedTime({ hour: '00', minute: '00', second: '00' });
-        }
+        setSelectedTime(
+          resolvedValue
+            ? {
+                hour: resolvedValue.getHours().toString().padStart(2, '0'),
+                minute: resolvedValue.getMinutes().toString().padStart(2, '0'),
+                second: resolvedValue.getSeconds().toString().padStart(2, '0'),
+              }
+            : { hour: '00', minute: '00', second: '00' },
+        );
       } else if (mode === 'month') {
-        // For month picker, set tempDate
-        if (value) {
-          setTempDate(startOfMonth(value));
-        } else {
-          setTempDate(startOfMonth(new Date()));
-        }
+        setTempDate(resolvedValue ? startOfMonth(resolvedValue) : startOfMonth(new Date()));
       } else {
-        setTempDate(value);
-        if (value) {
-          setCurrentMonth(value);
-          if (showTime) {
-            setSelectedTime({
-              hour: value.getHours().toString().padStart(2, '0'),
-              minute: value.getMinutes().toString().padStart(2, '0'),
-              second: value.getSeconds().toString().padStart(2, '0'),
-            });
-          }
-        } else {
-          setCurrentMonth(new Date());
-          if (showTime) {
-            setSelectedTime({ hour: '00', minute: '00', second: '00' });
-          }
+        setTempDate(resolvedValue);
+        setCurrentMonth(resolvedValue ?? new Date());
+        if (showTime) {
+          setSelectedTime(
+            resolvedValue
+              ? {
+                  hour: resolvedValue.getHours().toString().padStart(2, '0'),
+                  minute: resolvedValue.getMinutes().toString().padStart(2, '0'),
+                  second: resolvedValue.getSeconds().toString().padStart(2, '0'),
+                }
+              : { hour: '00', minute: '00', second: '00' },
+          );
         }
       }
     }
-  }, [open, value, showTime, timeOnly, mode]);
+  }, [open, resolvedValue, showTime, timeOnly, mode]);
 
-  // Only sync when popover is closed to avoid conflicts with open effect
   React.useEffect(() => {
     if (!open && !timeOnly) {
-      setTempDate(value);
-      if (value) {
-        setCurrentMonth(value);
+      setTempDate(resolvedValue);
+      if (resolvedValue) {
+        setCurrentMonth(resolvedValue);
         if (showTime) {
           setSelectedTime({
-            hour: value.getHours().toString().padStart(2, '0'),
-            minute: value.getMinutes().toString().padStart(2, '0'),
-            second: value.getSeconds().toString().padStart(2, '0'),
+            hour: resolvedValue.getHours().toString().padStart(2, '0'),
+            minute: resolvedValue.getMinutes().toString().padStart(2, '0'),
+            second: resolvedValue.getSeconds().toString().padStart(2, '0'),
           });
         }
       }
-    } else if (!open && timeOnly && value) {
-      // For time only, only update time when closed
+    } else if (!open && timeOnly && resolvedValue) {
       setSelectedTime({
-        hour: value.getHours().toString().padStart(2, '0'),
-        minute: value.getMinutes().toString().padStart(2, '0'),
-        second: value.getSeconds().toString().padStart(2, '0'),
+        hour: resolvedValue.getHours().toString().padStart(2, '0'),
+        minute: resolvedValue.getMinutes().toString().padStart(2, '0'),
+        second: resolvedValue.getSeconds().toString().padStart(2, '0'),
       });
     }
-  }, [value, showTime, timeOnly, open]);
+  }, [resolvedValue, showTime, timeOnly, open]);
+
+  // ---------------------------------------------------------------------------
+  // Handlers
+  // ---------------------------------------------------------------------------
 
   const handleApply = () => {
     if (timeOnly) {
-      // For time only, use current date or today's date with selected time
-      const baseDate = value || new Date();
+      const baseDate = resolvedValue ?? new Date();
       const finalDate = setSeconds(
         setMinutes(
           setHours(baseDate, parseInt(selectedTime.hour, 10)),
@@ -194,14 +204,9 @@ function DatePicker({
         ),
         parseInt(selectedTime.second, 10),
       );
-      onChange?.(finalDate);
+      onChange?.(finalDate?.toISOString());
     } else if (mode === 'month') {
-      // For month picker, use start of month
-      if (tempDate) {
-        onChange?.(startOfMonth(tempDate));
-      } else {
-        onChange?.(undefined);
-      }
+      onChange?.(tempDate ? startOfMonth(tempDate).toISOString() : undefined);
     } else if (tempDate) {
       let finalDate = tempDate;
       if (showTime) {
@@ -209,7 +214,7 @@ function DatePicker({
         finalDate = setMinutes(finalDate, parseInt(selectedTime.minute, 10));
         finalDate = setSeconds(finalDate, parseInt(selectedTime.second, 10));
       }
-      onChange?.(finalDate);
+      onChange?.(finalDate.toISOString());
     } else {
       onChange?.(undefined);
     }
@@ -217,68 +222,56 @@ function DatePicker({
   };
 
   const handleCancel = () => {
-    // Reset to initial values when popover was opened
     setTempDate(initialDateRef.current);
     setCurrentMonth(initialMonthRef.current);
-    if (showTime) {
-      setSelectedTime(initialTimeRef.current);
-    }
+    if (showTime) setSelectedTime(initialTimeRef.current);
     setOpen(false);
   };
 
+  // ---------------------------------------------------------------------------
+  // Display label
+  // ---------------------------------------------------------------------------
+
   const displayValue = React.useMemo(() => {
-    if (!value) return placeholder;
-    // Only use locale if it's a Locale object (not string)
+    if (!resolvedValue) return placeholder;
     const formatOptions = locale && typeof locale !== 'string' ? { locale } : undefined;
     if (timeOnly) {
-      // Time only format
       const hasTimeFormat = /[Hhms]/.test(dateFormat);
-      if (hasTimeFormat) {
-        return format(value, dateFormat, formatOptions);
-      }
-      return format(value, 'HH:mm:ss', formatOptions);
+      return format(resolvedValue, hasTimeFormat ? dateFormat : 'HH:mm:ss', formatOptions);
     }
     if (mode === 'month') {
-      // Month picker format - use locale-aware format
       if (locale) {
-        const localeString = typeof locale === 'string' ? locale : locale?.code || 'en-US';
-        const formatter = new Intl.DateTimeFormat(localeString, {
-          month: '2-digit',
-          year: 'numeric',
-        });
-        return formatter.format(value);
+        const localeString = typeof locale === 'string' ? locale : (locale?.code ?? 'en-US');
+        return new Intl.DateTimeFormat(localeString, { month: '2-digit', year: 'numeric' }).format(
+          resolvedValue,
+        );
       }
-      return format(value, 'MM/yyyy', formatOptions);
+      return format(resolvedValue, 'MM/yyyy', formatOptions);
     }
     if (showTime) {
-      // Check if dateFormat already includes time format
       const hasTimeFormat = /[Hhms]/.test(dateFormat);
-      if (hasTimeFormat) {
-        return format(value, dateFormat, formatOptions);
-      }
-      return format(value, `${dateFormat} HH:mm:ss`, formatOptions);
+      return format(
+        resolvedValue,
+        hasTimeFormat ? dateFormat : `${dateFormat} HH:mm:ss`,
+        formatOptions,
+      );
     }
-    return format(value, dateFormat, formatOptions);
-  }, [value, dateFormat, showTime, timeOnly, mode, placeholder, locale]);
+    return format(resolvedValue, dateFormat, formatOptions);
+  }, [resolvedValue, dateFormat, showTime, timeOnly, mode, placeholder, locale]);
+
+  // ---------------------------------------------------------------------------
+  // Disabled check
+  // ---------------------------------------------------------------------------
 
   const handleCheckDisabled = React.useCallback(
     (date: Date) => {
       if (disabled) return true;
-
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-
       const compareDate = new Date(date);
       compareDate.setHours(0, 0, 0, 0);
-
-      if (disabledPast && compareDate < today) {
-        return true;
-      }
-
-      if (disabledFuture && compareDate > today) {
-        return true;
-      }
-
+      if (disabledPast && compareDate < today) return true;
+      if (disabledFuture && compareDate > today) return true;
       return onDisabled ? onDisabled(date) : false;
     },
     [disabled, disabledPast, disabledFuture, onDisabled],
@@ -298,10 +291,14 @@ function DatePicker({
         disabled: handleCheckDisabled,
         startMonth: new Date(1890, 0, 1),
         endMonth: new Date(new Date().getFullYear() + 50, 11, 31),
-        locale: locale,
+        locale,
       }) as React.ComponentProps<typeof Calendar>,
     [calendarProps, tempDate, currentMonth, handleCheckDisabled, locale],
   );
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   return (
     <div className={cn('w-full', className)}>
@@ -310,28 +307,27 @@ function DatePicker({
       ) : null}
       <div>
         <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger className={'w-full'}>
+          <PopoverTrigger className="w-full">
             <div
               className={cn(
                 'group w-full gap-x-3 inline-flex items-center justify-between rounded-md border border-border bg-background shadow-sm ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
                 FORM_SIZE_STYLES[size].height,
                 FORM_SIZE_STYLES[size].padding,
                 FORM_SIZE_STYLES[size].text,
-                !value && 'text-muted-foreground',
+                !resolvedValue && 'text-muted-foreground',
                 error && 'border-destructive',
                 triggerClassName,
               )}
             >
               <span>{displayValue}</span>
 
-              {/* Clear icon replaces Calendar icon on hover */}
               <div
                 className={cn(
                   'relative z-10 ml-auto flex shrink-0 items-center gap-0.5 self-center',
                   FORM_SIZE_STYLES[size].svgIcon,
                 )}
               >
-                {value && !disabled ? (
+                {resolvedValue && !disabled ? (
                   showClearIcon ? (
                     <div className={cn('relative shrink-0', FORM_SIZE_STYLES[size].icon)}>
                       <span
@@ -340,9 +336,7 @@ function DatePicker({
                           e.preventDefault();
                           e.stopPropagation();
                         }}
-                        onClick={() => {
-                          onChange?.(undefined);
-                        }}
+                        onClick={() => onChange?.(undefined)}
                       >
                         <XCircleIcon className="text-muted-foreground" />
                         <span className="sr-only">Clear</span>
@@ -360,6 +354,7 @@ function DatePicker({
               </div>
             </div>
           </PopoverTrigger>
+
           <PopoverContent
             className={cn('flex w-auto flex-col gap-2 p-0', popoverClassName)}
             align="start"
@@ -398,10 +393,10 @@ function DatePicker({
               )}
               <Separator className="shrink-0" />
               <div className="flex items-center gap-2 px-2 shrink-0">
-                <Button className={'flex-1'} variant="secondary" size="sm" onClick={handleCancel}>
+                <Button className="flex-1" variant="secondary" size="sm" onClick={handleCancel}>
                   {cancelText}
                 </Button>
-                <Button className={'flex-1'} size="sm" onClick={handleApply}>
+                <Button className="flex-1" size="sm" onClick={handleApply}>
                   {applyText}
                 </Button>
               </div>

@@ -10,3 +10,4 @@ export { RHFSingleCombobox } from './rhf-single-combobox';
 export { RHFSwitch } from './rhf-switch';
 export { RHFTextarea } from './rhf-textarea';
 export { RHFTimePicker } from './rhf-time-picker';
+export { RHFLazySingleCombobox } from './rhf-lazy-single-combobox';

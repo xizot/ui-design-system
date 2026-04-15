@@ -113,7 +113,7 @@ function Example() {
 ];
 
 function DatePickerExample({ size, label }: { size?: 'sm' | 'md' | 'lg'; label?: string }) {
-  const [value, setValue] = useState<Date | undefined>(undefined);
+  const [value, setValue] = useState<string | undefined>(new Date().toISOString());
 
   return (
     <DatePicker
@@ -127,7 +127,7 @@ function DatePickerExample({ size, label }: { size?: 'sm' | 'md' | 'lg'; label?:
 }
 
 function DatePickerWithTimeExample() {
-  const [value, setValue] = useState<Date | undefined>(undefined);
+  const [value, setValue] = useState<string | undefined>(new Date().toISOString());
 
   return (
     <DatePicker
@@ -141,7 +141,7 @@ function DatePickerWithTimeExample() {
 }
 
 function DatePickerMonthExample() {
-  const [value, setValue] = useState<Date | undefined>(undefined);
+  const [value, setValue] = useState<string | undefined>(new Date().toISOString());
 
   return (
     <DatePicker

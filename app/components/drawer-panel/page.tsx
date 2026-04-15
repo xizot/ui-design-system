@@ -166,8 +166,8 @@ export default function DrawerPanelGuidePage() {
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            Wrapper cho Drawer để chuẩn hóa header, body, footer và preset kích thước trong các
-            flow ưu tiên mobile.
+            Wrapper cho Drawer để chuẩn hóa header, body, footer và preset kích thước trong các flow
+            ưu tiên mobile.
           </p>
         </section>
 
@@ -193,7 +193,9 @@ export default function DrawerPanelGuidePage() {
           <Card id="props" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
-              <CardDescription>DrawerPanel kế thừa toàn bộ props của DrawerContent.</CardDescription>
+              <CardDescription>
+                DrawerPanel kế thừa toàn bộ props của DrawerContent.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-hidden rounded-2xl border border-border/70">

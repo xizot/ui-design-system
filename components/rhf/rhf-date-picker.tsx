@@ -15,7 +15,7 @@ export type RHFDatePickerProps<T extends FieldValues = FieldValues> = Omit<
   required?: boolean;
   error?: string;
   className?: ComponentProps<'div'>['className'];
-  callback?: (value: Date | undefined) => void;
+  callback?: (value: string | undefined) => void;
 };
 
 export function RHFDatePicker<T extends FieldValues = FieldValues>({
@@ -38,7 +38,7 @@ export function RHFDatePicker<T extends FieldValues = FieldValues>({
 
   const displayError = error || fieldError?.message;
 
-  const handleChange = (date: Date | undefined) => {
+  const handleChange = (date: string | undefined) => {
     field.onChange(date);
     callback?.(date);
   };

@@ -38,9 +38,13 @@ type PaginationLinkProps = {
 function PaginationLink({ className, isActive, ...props }: PaginationLinkProps) {
   return (
     <Button
-      variant={'ghost'}
+      variant="ghost"
       type="button"
-      className={cn('w-8 h-8', className, isActive && 'bg-primary/10! text-primary!')}
+      className={cn(
+        'w-8 h-8',
+        className,
+        isActive && 'bg-primary/10! text-primary! dark:border dark:border-primary',
+      )}
       aria-current={isActive ? 'page' : undefined}
       data-slot="pagination-link"
       data-active={isActive}

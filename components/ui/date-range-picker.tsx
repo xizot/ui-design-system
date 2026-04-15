@@ -249,7 +249,7 @@ function DateRangePicker({
       <div>
         {' '}
         <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger className={'w-full'}>
+          <PopoverTrigger className="w-full">
             <div
               className={cn(
                 'group w-full gap-x-3 inline-flex items-center justify-between rounded-md border border-border bg-background shadow-sm ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
@@ -328,15 +328,10 @@ function DateRangePicker({
               </div>
               <Separator />
               <div className="flex justify-end gap-2 px-2">
-                <Button
-                  size={'sm'}
-                  className={'min-w-20'}
-                  variant="secondary"
-                  onClick={handleCancel}
-                >
+                <Button size="sm" className="min-w-20" variant="secondary" onClick={handleCancel}>
                   {cancelText}
                 </Button>
-                <Button size={'sm'} className={'min-w-20'} onClick={handleApply}>
+                <Button size="sm" className="min-w-20" onClick={handleApply}>
                   {applyText}
                 </Button>
               </div>

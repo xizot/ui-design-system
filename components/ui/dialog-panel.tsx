@@ -17,7 +17,7 @@ const DialogPanelTrigger = DialogTrigger;
 const DialogPanelClose = DialogClose;
 
 type DialogPanelProps = React.ComponentProps<typeof DialogContent> & {
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'auto';
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'auto' | 'fill';
   title?: React.ReactNode;
   description?: React.ReactNode;
   footer?: React.ReactNode;
@@ -29,9 +29,10 @@ type DialogPanelProps = React.ComponentProps<typeof DialogContent> & {
 const dialogPanelSizeClassName: Record<NonNullable<DialogPanelProps['size']>, string> = {
   sm: 'sm:max-w-sm',
   md: 'sm:max-w-md',
-  lg: 'sm:max-w-lg',
-  xl: 'sm:max-w-xl',
+  lg: 'sm:max-w-3xl',
+  xl: 'sm:max-w-4xl',
   auto: '',
+  fill: 'sm:!max-w-[calc(100vw-160px)]',
 };
 
 const dialogPanelSpacing: Record<
@@ -43,6 +44,7 @@ const dialogPanelSpacing: Record<
   lg: { inline: 24, block: 20 },
   xl: { inline: 24, block: 20 },
   auto: { inline: 16, block: 16 },
+  fill: { inline: 24, block: 20 },
 };
 
 function DialogPanel({
@@ -87,7 +89,8 @@ function DialogPanel({
           className={cn('min-h-0 flex-1')}
           style={{
             paddingInline: `calc(${spacing.inline}px - 4px)`,
-            paddingBlock: !hasHeader ? `calc(${spacing.block}px - 4px)` : 0,
+            paddingTop: !hasHeader ? `calc(${spacing.block}px - 4px)` : 0,
+            paddingBottom: !footer ? `calc(${spacing.block}px - 4px)` : 0,
           }}
         >
           <div

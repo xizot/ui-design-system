@@ -159,7 +159,9 @@ export default function PopoverPanelGuidePage() {
           <Card id="props" className="rounded-[24px] border-border/70">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
-              <CardDescription>PopoverPanel kế thừa toàn bộ props của PopoverContent.</CardDescription>
+              <CardDescription>
+                PopoverPanel kế thừa toàn bộ props của PopoverContent.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-hidden rounded-2xl border border-border/70">

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 
+import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from './empty';
 import {
   flexRender,
   getCoreRowModel,
@@ -35,7 +36,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './dropdown-menu';
-import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from './empty';
 import { InputGroup, InputGroupAddon, InputGroupInput } from './input-group';
 import {
   Pagination,
@@ -125,7 +125,7 @@ export function DataColumnHeader<TData>({
   return (
     <div className={cn('flex items-center gap-1', align === 'right' && 'justify-end')}>
       {column?.getCanSort() ? (
-        <button className="flex items-center gap-1" onClick={handleSortToggle}>
+        <button className="flex items-center gap-1 text-left" onClick={handleSortToggle}>
           {label}
           {sorted === 'asc' ? (
             <ArrowUp className={cn('size-4', isActiveSorted && 'text-primary')} />
@@ -311,7 +311,7 @@ export function DataTable<TData>({
                 <TableHead
                   key={header.id}
                   className={cn(
-                    'bg-muted',
+                    'bg-muted whitespace-normal',
                     header.column.columnDef.meta?.className,
                     header.column.getIsPinned() === 'right' &&
                       'sticky right-0 bg-muted z-20 pinned-right-column',
@@ -325,13 +325,13 @@ export function DataTable<TData>({
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id}>
+            <TableRow key={row.id} className="group">
               {row.getVisibleCells().map((cell) => (
                 <TableCell
                   key={cell.id}
                   className={cn(
                     cell.column.getIsPinned() === 'right' &&
-                      'sticky right-0 bg-card pinned-right-column',
+                      'sticky right-0 bg-card pinned-right-column dark:bg-background',
                   )}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}

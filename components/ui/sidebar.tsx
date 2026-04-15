@@ -125,7 +125,7 @@ function SidebarProvider({
           } as React.CSSProperties
         }
         className={cn(
-          'group/sidebar-wrapper flex min-h-svh has-[.layout-flex]:min-h-0 has-[.layout-flex]:h-screen  w-full has-data-[variant=inset]:bg-sidebar',
+          'group/sidebar-wrapper flex min-h-svh has-[.layout-flex]:min-h-0 has-[.layout-flex]:h-screen w-full has-data-[variant=inset]:bg-sidebar',
           className,
         )}
         {...props}
@@ -682,6 +682,5 @@ export {
   SidebarRail,
   SidebarSeparator,
   SidebarTrigger,
-  useSidebar
+  useSidebar,
 };
-
