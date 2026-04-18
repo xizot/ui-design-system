@@ -84,7 +84,7 @@ export function Example() {
     label: 'Size & Side',
     preview: (
       <div className="flex flex-wrap items-center justify-center gap-3">
-        {(['sm', 'md', 'lg', 'xl', 'auto'] as const).map((size) => (
+        {(['sm', 'md', 'lg', 'xl'] as const).map((size) => (
           <SheetPanelRoot key={size}>
             <SheetPanelTrigger render={<Button variant="outline">{`right ${size}`}</Button>} />
             <SheetPanel
@@ -99,9 +99,7 @@ export function Example() {
               }
             >
               <p className="text-sm text-muted-foreground">
-                {size === 'auto'
-                  ? 'Dùng khi muốn tự kiểm soát kích thước bằng className riêng.'
-                  : `Preset kích thước ${size} cho sheet panel.`}
+                Preset kích thước ${size} cho sheet panel.
               </p>
             </SheetPanel>
           </SheetPanelRoot>
@@ -133,9 +131,7 @@ export function Example() {
             }
           >
             <p className="text-sm text-muted-foreground">
-              {size === "auto"
-                ? "Dùng khi muốn tự kiểm soát kích thước bằng className riêng."
-                : \`Preset kích thước \${size} cho sheet panel.\`}
+              \`Preset kích thước \${size} cho sheet panel.\`
             </p>
           </SheetPanel>
         </SheetPanelRoot>

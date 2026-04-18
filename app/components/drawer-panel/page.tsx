@@ -88,7 +88,7 @@ export function Example() {
     label: 'Direction & Size',
     preview: (
       <div className="flex flex-wrap items-center justify-center gap-3">
-        {(['sm', 'md', 'lg', 'xl', 'auto'] as const).map((size) => (
+        {(['sm', 'md', 'lg', 'xl'] as const).map((size) => (
           <DrawerPanelRoot key={size} direction="right">
             <DrawerPanelTrigger asChild>
               <Button variant="outline">{`right ${size}`}</Button>
@@ -104,9 +104,7 @@ export function Example() {
               }
             >
               <p className="text-sm text-muted-foreground">
-                {size === 'auto'
-                  ? 'Dùng khi muốn tự kiểm soát kích thước bằng className riêng.'
-                  : `Preset kích thước ${size} cho drawer panel.`}
+                Preset kích thước {size} cho drawer panel.
               </p>
             </DrawerPanel>
           </DrawerPanelRoot>
@@ -139,9 +137,7 @@ export function Example() {
             }
           >
             <p className="text-sm text-muted-foreground">
-              {size === "auto"
-                ? "Dùng khi muốn tự kiểm soát kích thước bằng className riêng."
-                : \`Preset kích thước \${size} cho drawer panel.\`}
+             \`Preset kích thước \${size} cho drawer panel.\`
             </p>
           </DrawerPanel>
         </DrawerPanelRoot>
