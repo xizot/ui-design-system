@@ -1,5 +1,5 @@
 import { AlertCircle, AlertTriangle, CheckCircle2, X } from 'lucide-react';
- 
+// eslint-disable-next-line no-restricted-imports
 import { toast } from 'sonner';
 
 type ToastType = 'success' | 'error' | 'warning';

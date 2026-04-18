@@ -98,6 +98,7 @@ export type LazySingleComboboxProps<
   className?: string;
   id?: string;
   size?: FormSize;
+  dependencies?: unknown[];
 };
 
 // ---------------------------------------------------------------------------
@@ -144,6 +145,7 @@ function LazySingleCombobox<
   className,
   id,
   size = 'md',
+  dependencies,
 }: LazySingleComboboxProps<TRaw, TOption>) {
   const generatedId = React.useId();
   const inputId = id ?? generatedId;
@@ -165,6 +167,7 @@ function LazySingleCombobox<
   // Separate ref (guard) + state (render) to avoid double-fetch
   const isFetchingRef = React.useRef(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [fetchError, setFetchError] = React.useState<string | null>(null);
 
   const isLastPage = currentPage >= totalPages;
 
@@ -176,23 +179,19 @@ function LazySingleCombobox<
   // Survives search reset — stored in ref so fetchPage does NOT depend on it
   // (avoids fetchPage recreation → useEffect re-trigger → list reset loop)
   const internalSelectedItemRef = React.useRef<TOption | undefined>(backupOption);
-  // State copy only for re-rendering label
-  const [internalSelectedItem, setInternalSelectedItem] = React.useState<TOption | undefined>(
-    backupOption,
-  );
 
-  const setSelectedItem = React.useCallback((item: TOption | undefined) => {
-    internalSelectedItemRef.current = item;
-    setInternalSelectedItem(item);
-  }, []);
-
-  // Sync backupOption → internalSelectedItem when it changes from outside
+  // Sync backupOption → internalSelectedItemRef when it changes from outside
   React.useEffect(() => {
-    if (!backupOption) return;
-    setSelectedItem(backupOption);
+    if (!backupOption) {
+      if (internalSelectedItemRef.current && !resolvedValue) {
+        internalSelectedItemRef.current = undefined;
+      }
+      return;
+    }
+    internalSelectedItemRef.current = backupOption;
     itemsMapRef.current.set(backupOption.id, backupOption);
     setItemsList(Array.from(itemsMapRef.current.values()));
-  }, [backupOption, setSelectedItem]);
+  }, [backupOption, resolvedValue]);
 
   // ---------------------------------------------------------------------------
   // Fetch page
@@ -203,6 +202,7 @@ function LazySingleCombobox<
       if (isFetchingRef.current) return;
       isFetchingRef.current = true;
       setIsLoading(true);
+      setFetchError(null);
 
       try {
         const params = {
@@ -248,6 +248,7 @@ function LazySingleCombobox<
         setCurrentPage(result.pageNumber);
       } catch (err) {
         console.error('[LazySingleCombobox] fetchOptions error:', err);
+        setFetchError('Không thể tải dữ liệu');
       } finally {
         isFetchingRef.current = false;
         setIsLoading(false);
@@ -257,20 +258,42 @@ function LazySingleCombobox<
   );
 
   // ---------------------------------------------------------------------------
+  // Reset search when menu closes
+  // ---------------------------------------------------------------------------
+
+  React.useEffect(() => {
+    if (!open) {
+      setSearchQuery('');
+    }
+  }, [open]);
+
+  // ---------------------------------------------------------------------------
   // Fetch page 1 when dropdown opens or search changes
   // ---------------------------------------------------------------------------
 
   React.useEffect(() => {
-    if (!open) return;
     void fetchPage(debouncedSearch, 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearch, open]);
+  }, [debouncedSearch]);
+
+  // ---------------------------------------------------------------------------
+  // Re-fetch when external dependencies change
+  // ---------------------------------------------------------------------------
+
+  React.useEffect(() => {
+    if (!dependencies) return;
+    setSearchQuery('');
+    void fetchPage('', 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, dependencies ?? []);
 
   // ---------------------------------------------------------------------------
   // IntersectionObserver — load next page on scroll to bottom
   // ---------------------------------------------------------------------------
 
   React.useEffect(() => {
+    if (!open) return;
+
     const sentinel = sentinelRef.current;
     if (!sentinel) return;
 
@@ -286,7 +309,7 @@ function LazySingleCombobox<
 
     observer.observe(sentinel);
     return () => observer.disconnect();
-  }, [isLastPage, currentPage, debouncedSearch, fetchPage]);
+  }, [open, isLastPage, currentPage, debouncedSearch, fetchPage]);
 
   // ---------------------------------------------------------------------------
   // Virtualizer — dynamic row height
@@ -306,17 +329,21 @@ function LazySingleCombobox<
 
   const itemToStringLabel = React.useCallback(
     (id: string | number): string => {
-      const opt = itemsMapRef.current.get(id) ?? internalSelectedItem;
+      const opt = itemsMapRef.current.get(id) ?? internalSelectedItemRef.current;
       if (!opt) return String(id);
       return showSelectedCode ? `${opt.code} - ${opt.name}` : opt.name;
     },
-    [internalSelectedItem, showSelectedCode],
+    [showSelectedCode],
   );
 
   const selectedLabel = React.useMemo(() => {
     if (resolvedValue === undefined || resolvedValue === null) return undefined;
-    return itemToStringLabel(resolvedValue);
-  }, [resolvedValue, itemToStringLabel]);
+    const opt = itemsMapRef.current.get(resolvedValue) ?? internalSelectedItemRef.current;
+    if (!opt) return String(resolvedValue);
+    return showSelectedCode ? `${opt.code} - ${opt.name}` : opt.name;
+    // backupOption and itemsList trigger re-compute when data changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resolvedValue, showSelectedCode, backupOption, itemsList]);
 
   const hasValue = resolvedValue !== undefined && resolvedValue !== null;
 
@@ -330,11 +357,11 @@ function LazySingleCombobox<
     if (val === null || val === undefined) {
       if (!isControlled) setInternalValue(undefined);
       onChange?.(undefined, undefined);
-      setSelectedItem(undefined);
+      internalSelectedItemRef.current = undefined;
       return;
     }
-    const opt = itemsMapRef.current.get(val); // opt: TOption | undefined
-    if (opt) setSelectedItem(opt);
+    const opt = itemsMapRef.current.get(val);
+    if (opt) internalSelectedItemRef.current = opt;
     if (!isControlled) setInternalValue(opt?.id ?? val);
     onChange?.(opt?.id ?? val, opt);
   };
@@ -342,7 +369,7 @@ function LazySingleCombobox<
   const handleClear = () => {
     if (!isControlled) setInternalValue(undefined);
     onChange?.(undefined, undefined);
-    setSelectedItem(undefined);
+    internalSelectedItemRef.current = undefined;
   };
 
   // ---------------------------------------------------------------------------
@@ -449,7 +476,11 @@ function LazySingleCombobox<
 
           <ComboboxList className="px-2">
             <ComboboxEmpty>
-              {!isLoading && itemsList.length === 0 ? emptyMessage : null}
+              {fetchError ? (
+                <div className="text-destructive">{fetchError}</div>
+              ) : !isLoading && itemsList.length === 0 ? (
+                emptyMessage
+              ) : null}
             </ComboboxEmpty>
 
             {/* Scroll container */}

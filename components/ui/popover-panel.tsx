@@ -1,92 +1,156 @@
 'use client';
 
+import { ScrollArea } from './scroll-area';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { XIcon } from 'lucide-react';
 import * as React from 'react';
-
-import { cn } from '../../lib/utils';
+import { Button } from './button';
 import {
   Popover,
+  PopoverClose,
   PopoverContent,
   PopoverDescription,
   PopoverTitle,
   PopoverTrigger,
 } from './popover';
 
-const PopoverPanelRoot = Popover;
-const PopoverPanelTrigger = PopoverTrigger;
+const panelVariants = cva('p-0 gap-0', {
+  variants: {
+    size: {
+      sm: 'w-72',
+      md: 'w-80',
+      lg: 'w-96',
+      xl: 'w-[28rem]',
+      auto: '',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
 
-type PopoverPanelProps = React.ComponentProps<typeof PopoverContent> & {
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'auto';
+const headerVariants = cva('shrink-0', {
+  variants: {
+    size: {
+      sm: 'p-4',
+      md: 'px-5 py-4',
+      lg: 'px-6 py-5',
+      xl: 'px-6 py-5',
+      auto: 'p-4',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const bodyVariants = cva('min-h-0 flex-1 overflow-y-auto', {
+  variants: {
+    size: {
+      sm: 'p-4',
+      md: 'px-5 py-4',
+      lg: 'px-6 py-5',
+      xl: 'px-6 py-5',
+      auto: 'p-4',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const footerVariants = cva('flex gap-3 justify-end', {
+  variants: {
+    size: {
+      sm: 'p-4',
+      md: 'px-5 py-4',
+      lg: 'px-6 py-5',
+      xl: 'px-6 py-5',
+      auto: 'p-4',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+type PopoverPanelProps = {
   title?: React.ReactNode;
   description?: React.ReactNode;
+  children: React.ReactNode;
   footer?: React.ReactNode;
-  headerClassName?: string;
-  bodyClassName?: string;
-  footerClassName?: string;
-};
-
-const popoverPanelSizeClassName: Record<NonNullable<PopoverPanelProps['size']>, string> = {
-  sm: 'w-72',
-  md: 'w-80',
-  lg: 'w-96',
-  xl: 'w-[28rem]',
-  auto: '',
-};
-
-const popoverPanelSpacingClassName: Record<
-  NonNullable<PopoverPanelProps['size']>,
-  { px: string; py: string }
-> = {
-  sm: { px: 'px-4', py: 'py-4' },
-  md: { px: 'px-5', py: 'py-5' },
-  lg: { px: 'px-6', py: 'py-6' },
-  xl: { px: 'px-6', py: 'py-6' },
-  auto: { px: 'px-4', py: 'py-4' },
-};
+  showFooter?: boolean;
+  confirmText?: string;
+  cancelText?: string;
+  showCloseButton?: boolean;
+  className?: string;
+  onConfirm?: () => void;
+} & VariantProps<typeof panelVariants>;
 
 function PopoverPanel({
-  size = 'md',
+  size,
   title,
   description,
-  footer,
-  className,
-  headerClassName,
-  bodyClassName,
-  footerClassName,
   children,
-  ...props
+  footer,
+  showFooter = true,
+  confirmText = 'Áp dụng',
+  cancelText = 'Hủy',
+  showCloseButton = true,
+  className,
+  onConfirm,
 }: PopoverPanelProps) {
-  const hasHeader = title !== undefined || description !== undefined;
-  const spacing = popoverPanelSpacingClassName[size];
+  const hasHeader = title || description;
+  const buttonSize = size === 'sm' ? 'sm' : 'default';
 
   return (
-    <PopoverContent className={cn('p-0', popoverPanelSizeClassName[size], className)} {...props}>
-      <div data-slot="popover-panel" className="flex min-w-0 flex-col gap-0">
-        {hasHeader && (
-          <div
-            data-slot="popover-panel-header"
-            className={cn('flex flex-col gap-1.5', spacing.px, spacing.py, headerClassName)}
-          >
-            {title !== undefined && <PopoverTitle>{title}</PopoverTitle>}
-            {description !== undefined && <PopoverDescription>{description}</PopoverDescription>}
-          </div>
-        )}
-        <div
-          data-slot="popover-panel-body"
-          className={cn('min-w-0', spacing.px, !hasHeader && spacing.py, bodyClassName)}
-        >
-          {children}
+    <PopoverContent className={panelVariants({ size, className })}>
+      {hasHeader && (
+        <div className={headerVariants({ size, className: 'pb-0' })}>
+          {title && <PopoverTitle>{title}</PopoverTitle>}
+          {description && <PopoverDescription className="mt-1.5">{description}</PopoverDescription>}
         </div>
-        {footer !== undefined && (
-          <div
-            data-slot="popover-panel-footer"
-            className={cn('mt-auto flex flex-col gap-2', spacing.px, spacing.py, footerClassName)}
-          >
-            {footer}
-          </div>
-        )}
-      </div>
+      )}
+
+      <ScrollArea className={bodyVariants({ size })}>{children}</ScrollArea>
+
+      {showFooter && (
+        <div className={footerVariants({ size, className: 'pt-0' })}>
+          {footer ?? (
+            <>
+              <PopoverClose
+                render={
+                  <Button variant="secondary" size={buttonSize} className="min-w-25">
+                    {cancelText}
+                  </Button>
+                }
+              />
+              <Button size={buttonSize} className="min-w-25" onClick={onConfirm}>
+                {confirmText}
+              </Button>
+            </>
+          )}
+        </div>
+      )}
+
+      {showCloseButton && (
+        <PopoverClose
+          data-slot="popover-close"
+          render={
+            <Button className="absolute top-4 right-4 p-0 h-fit w-fit" variant="ghost" size="icon">
+              <XIcon className="size-5" />
+              <span className="sr-only">Close</span>
+            </Button>
+          }
+        />
+      )}
     </PopoverContent>
   );
 }
 
-export { PopoverPanel, PopoverPanelRoot, PopoverPanelTrigger };
+const PopoverPanelRoot = Popover;
+const PopoverPanelTrigger = PopoverTrigger;
+const PopoverPanelClose = PopoverClose;
+
+export { PopoverPanel, PopoverPanelRoot, PopoverPanelTrigger, PopoverPanelClose };
+export type { PopoverPanelProps };

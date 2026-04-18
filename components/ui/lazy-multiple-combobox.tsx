@@ -79,6 +79,7 @@ type LazyMultipleComboboxProps<
   className?: string;
   id?: string;
   size?: FormSize;
+  dependencies?: unknown[];
 };
 
 // ---------------------------------------------------------------------------
@@ -131,6 +132,7 @@ function LazyMultipleCombobox<
   className,
   id,
   size = 'md',
+  dependencies,
 }: LazyMultipleComboboxProps<TRaw, TOption>) {
   const generatedId = React.useId();
   const inputId = id ?? generatedId;
@@ -154,6 +156,7 @@ function LazyMultipleCombobox<
 
   const isFetchingRef = React.useRef(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [fetchError, setFetchError] = React.useState<string | null>(null);
 
   const isLastPage = currentPage >= totalPages;
 
@@ -214,6 +217,7 @@ function LazyMultipleCombobox<
       if (isFetchingRef.current) return;
       isFetchingRef.current = true;
       setIsLoading(true);
+      setFetchError(null);
 
       try {
         const params = {
@@ -265,6 +269,7 @@ function LazyMultipleCombobox<
         setCurrentPage(result.pageNumber);
       } catch (err) {
         console.error('[LazyMultipleCombobox] fetchOptions error:', err);
+        setFetchError('Không thể tải dữ liệu');
       } finally {
         isFetchingRef.current = false;
         setIsLoading(false);
@@ -286,10 +291,23 @@ function LazyMultipleCombobox<
   }, [debouncedSearch, open]);
 
   // ---------------------------------------------------------------------------
+  // Re-fetch when external dependencies change
+  // ---------------------------------------------------------------------------
+
+  React.useEffect(() => {
+    if (!dependencies) return;
+    setSearchQuery('');
+    void fetchPage('', 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, dependencies ?? []);
+
+  // ---------------------------------------------------------------------------
   // IntersectionObserver — load next page on scroll to bottom
   // ---------------------------------------------------------------------------
 
   React.useEffect(() => {
+    if (!open) return;
+
     const sentinel = sentinelRef.current;
     if (!sentinel) return;
 
@@ -305,7 +323,7 @@ function LazyMultipleCombobox<
 
     observer.observe(sentinel);
     return () => observer.disconnect();
-  }, [isLastPage, currentPage, debouncedSearch, fetchPage]);
+  }, [open, isLastPage, currentPage, debouncedSearch, fetchPage]);
 
   // ---------------------------------------------------------------------------
   // Virtualizer — fixed row height (no measureElement to avoid scroll jumps)
@@ -560,7 +578,11 @@ function LazyMultipleCombobox<
 
           <ComboboxList className="px-2">
             <ComboboxEmpty>
-              {!isLoading && itemsList.length === 0 ? emptyMessage : null}
+              {fetchError ? (
+                <div className="text-destructive">{fetchError}</div>
+              ) : !isLoading && itemsList.length === 0 ? (
+                emptyMessage
+              ) : null}
             </ComboboxEmpty>
 
             {/* Scroll container */}

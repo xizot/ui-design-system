@@ -1,8 +1,8 @@
 'use client';
 
+import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
-
-import { cn } from '../../lib/utils';
+import { Button } from './button';
 import {
   Dialog,
   DialogClose,
@@ -11,110 +11,130 @@ import {
   DialogTitle,
   DialogTrigger,
 } from './dialog';
+import { ScrollArea } from './scroll-area';
 
+const panelVariants = cva('max-h-[calc(100vh-2rem)] flex flex-col gap-0 overflow-hidden p-0', {
+  variants: {
+    size: {
+      sm: 'sm:max-w-sm',
+      md: 'sm:max-w-md',
+      lg: 'sm:max-w-3xl',
+      xl: 'sm:max-w-4xl',
+      fill: 'sm:!max-w-[calc(100vw-160px)]',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const headerVariants = cva('shrink-0', {
+  variants: {
+    size: {
+      sm: 'p-4',
+      md: 'px-5 py-4',
+      lg: 'px-6 py-5',
+      xl: 'px-6 py-5',
+      fill: 'px-6 py-5',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const bodyVariants = cva('min-h-0 flex-1 overflow-y-auto', {
+  variants: {
+    size: {
+      sm: 'p-4',
+      md: 'px-5 py-4',
+      lg: 'px-6 py-5',
+      xl: 'px-6 py-5',
+      fill: 'px-6 py-5',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const footerVariants = cva('flex gap-3 justify-end', {
+  variants: {
+    size: {
+      sm: 'p-4',
+      md: 'px-5 py-4',
+      lg: 'px-6 py-5',
+      xl: 'px-6 py-5',
+      fill: 'px-6 py-5',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+type DialogPanelProps = {
+  title?: React.ReactNode;
+  description?: React.ReactNode;
+  children: React.ReactNode;
+  footer?: React.ReactNode;
+  showFooter?: boolean;
+  confirmText?: string;
+  cancelText?: string;
+  onConfirm?: () => void;
+  className?: string;
+} & VariantProps<typeof panelVariants>;
+
+function DialogPanel({
+  size,
+  title,
+  description,
+  children,
+  footer,
+  showFooter = true,
+  confirmText = 'Áp dụng',
+  cancelText = 'Hủy',
+  onConfirm,
+  className,
+}: DialogPanelProps) {
+  const hasHeader = title || description;
+  const buttonSize = size === 'sm' ? 'sm' : 'default';
+
+  return (
+    <DialogContent className={panelVariants({ size, className })}>
+      {hasHeader && (
+        <div className={headerVariants({ size, className: 'pb-0' })}>
+          {title && <DialogTitle>{title}</DialogTitle>}
+          {description && <DialogDescription className="mt-1.5">{description}</DialogDescription>}
+        </div>
+      )}
+
+      <ScrollArea className={bodyVariants({ size })}>{children}</ScrollArea>
+
+      {showFooter && (
+        <div className={footerVariants({ size, className: 'pt-0' })}>
+          {footer ?? (
+            <>
+              <DialogClose
+                render={
+                  <Button variant="secondary" size={buttonSize} className="min-w-25">
+                    {cancelText}
+                  </Button>
+                }
+              />
+              <Button size={buttonSize} className="min-w-25" onClick={onConfirm}>
+                {confirmText}
+              </Button>
+            </>
+          )}
+        </div>
+      )}
+    </DialogContent>
+  );
+}
 const DialogPanelRoot = Dialog;
 const DialogPanelTrigger = DialogTrigger;
 const DialogPanelClose = DialogClose;
 
-type DialogPanelProps = React.ComponentProps<typeof DialogContent> & {
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'auto' | 'fill';
-  title?: React.ReactNode;
-  description?: React.ReactNode;
-  footer?: React.ReactNode;
-  headerClassName?: string;
-  bodyClassName?: string;
-  footerClassName?: string;
-};
-
-const dialogPanelSizeClassName: Record<NonNullable<DialogPanelProps['size']>, string> = {
-  sm: 'sm:max-w-sm',
-  md: 'sm:max-w-md',
-  lg: 'sm:max-w-3xl',
-  xl: 'sm:max-w-4xl',
-  auto: '',
-  fill: 'sm:!max-w-[calc(100vw-160px)]',
-};
-
-const dialogPanelSpacing: Record<
-  NonNullable<DialogPanelProps['size']>,
-  { inline: number; block: number }
-> = {
-  sm: { inline: 16, block: 16 },
-  md: { inline: 20, block: 16 },
-  lg: { inline: 24, block: 20 },
-  xl: { inline: 24, block: 20 },
-  auto: { inline: 16, block: 16 },
-  fill: { inline: 24, block: 20 },
-};
-
-function DialogPanel({
-  size = 'md',
-  title,
-  description,
-  footer,
-  className,
-  headerClassName,
-  bodyClassName,
-  footerClassName,
-  children,
-  ...props
-}: DialogPanelProps) {
-  const hasHeader = title !== undefined || description !== undefined;
-  const spacing = dialogPanelSpacing[size];
-
-  return (
-    <DialogContent
-      className={cn(
-        'max-h-[calc(100vh-2rem)] h-auto gap-0 overflow-hidden p-0',
-        dialogPanelSizeClassName[size],
-        className,
-      )}
-      {...props}
-    >
-      <div
-        data-slot="dialog-panel"
-        className="flex max-h-[calc(100vh-2rem)] min-h-0 min-w-0 flex-col gap-0"
-      >
-        {hasHeader && (
-          <div
-            data-slot="dialog-panel-header"
-            className={cn('flex flex-col gap-2', headerClassName)}
-            style={{ paddingInline: spacing.inline, paddingBlock: spacing.block }}
-          >
-            {title !== undefined && <DialogTitle>{title}</DialogTitle>}
-            {description !== undefined && <DialogDescription>{description}</DialogDescription>}
-          </div>
-        )}
-        <div
-          className={cn('min-h-0 flex-1')}
-          style={{
-            paddingInline: `calc(${spacing.inline}px - 4px)`,
-            paddingTop: !hasHeader ? `calc(${spacing.block}px - 4px)` : 0,
-            paddingBottom: !footer ? `calc(${spacing.block}px - 4px)` : 0,
-          }}
-        >
-          <div
-            data-slot="dialog-panel-body"
-            className={cn('h-full overflow-y-auto p-1', bodyClassName)}
-          >
-            {children}
-          </div>
-        </div>
-        {footer !== undefined && (
-          <div
-            data-slot="dialog-panel-footer"
-            className={cn(
-              'mt-auto flex flex-col gap-2 sm:flex-row sm:justify-end',
-              footerClassName,
-            )}
-            style={{ paddingInline: spacing.inline, paddingBlock: spacing.block }}
-          >
-            {footer}
-          </div>
-        )}
-      </div>
-    </DialogContent>
-  );
-}
-
 export { DialogPanel, DialogPanelClose, DialogPanelRoot, DialogPanelTrigger };
+export type { DialogPanelProps };
