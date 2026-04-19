@@ -83,6 +83,10 @@ export type LazySingleComboboxProps<
   /** Default: 20 */
   pageSize?: number;
 
+  // --- Auto-select ---
+  /** Auto-select first option when data loads */
+  autoSelectFirst?: boolean;
+
   // --- UI ---
   placeholder?: string;
   label?: string | React.ReactNode;
@@ -131,6 +135,7 @@ function LazySingleCombobox<
   pageKey = 'page',
   pageSizeKey = 'pageSize',
   pageSize = 20,
+  autoSelectFirst = false,
   placeholder = 'Chọn...',
   label,
   required,
@@ -246,6 +251,15 @@ function LazySingleCombobox<
         setItemsList(Array.from(itemsMapRef.current.values()));
         setTotalPages(result.totalPages);
         setCurrentPage(result.pageNumber);
+
+        if (autoSelectFirst && page === 1 && result.items.length > 0 && !resolvedValue) {
+          const firstItem = result.items[0];
+          if (firstItem) {
+            internalSelectedItemRef.current = firstItem;
+            if (!isControlled) setInternalValue(firstItem.id);
+            onChange?.(firstItem.id, firstItem);
+          }
+        }
       } catch (err) {
         console.error('[LazySingleCombobox] fetchOptions error:', err);
         setFetchError('Không thể tải dữ liệu');
@@ -254,7 +268,7 @@ function LazySingleCombobox<
         setIsLoading(false);
       }
     },
-    [fetchOptions, mapResponse, searchKey, pageKey, pageSizeKey, pageSize],
+    [fetchOptions, mapResponse, searchKey, pageKey, pageSizeKey, pageSize, autoSelectFirst, resolvedValue, isControlled, onChange],
   );
 
   // ---------------------------------------------------------------------------
@@ -393,7 +407,7 @@ function LazySingleCombobox<
         <div
           ref={anchorRef}
           className={cn(
-            'group/trigger relative flex w-full items-center overflow-hidden rounded-md border border-input bg-background shadow-xs transition-[border-color,box-shadow]',
+            'group/trigger bg-transparent dark:bg-input/30 relative flex w-full items-center overflow-hidden rounded-md border border-input shadow-xs transition-[border-color,box-shadow]',
             'focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50',
             disabled && 'pointer-events-none cursor-not-allowed opacity-50',
             error && 'border-destructive focus-within:ring-destructive/20',

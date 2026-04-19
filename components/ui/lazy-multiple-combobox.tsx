@@ -450,7 +450,7 @@ function LazyMultipleCombobox<
         <div
           ref={anchorRef}
           className={cn(
-            'group/trigger relative flex w-full rounded-md border border-input bg-background shadow-xs transition-[border-color,box-shadow]',
+            'group/trigger bg-transparent dark:bg-input/30 relative flex w-full rounded-md border border-input shadow-xs transition-[border-color,box-shadow]',
             autoResize ? 'items-start' : 'items-stretch',
             'focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50',
             disabled && 'pointer-events-none cursor-not-allowed opacity-50',

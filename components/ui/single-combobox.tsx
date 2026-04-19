@@ -128,7 +128,7 @@ function SingleCombobox<T extends ComboboxBaseOption>({
         <div
           ref={anchorRef}
           className={cn(
-            'group/trigger dark:bg-input/30 relative flex w-full items-center overflow-hidden rounded-md border border-input bg-background shadow-xs transition-[border-color,box-shadow]',
+            'group/trigger bg-transparent dark:bg-input/30 relative flex w-full items-center overflow-hidden rounded-md border border-input shadow-xs transition-[border-color,box-shadow]',
             'focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50',
             disabled && 'pointer-events-none cursor-not-allowed opacity-50',
             error && 'border-destructive focus-within:ring-destructive/20',

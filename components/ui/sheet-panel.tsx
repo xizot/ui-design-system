@@ -107,7 +107,9 @@ function SheetPanel({
         </div>
       )}
 
-      <ScrollArea className={bodyVariants({ size })}>{children}</ScrollArea>
+      <ScrollArea className="min-h-0 flex-1 overflow-y-auto">
+        <div className={bodyVariants({ size })}>{children}</div>
+      </ScrollArea>
 
       {showFooter && (
         <div className={footerVariants({ size, className: 'pt-0' })}>
