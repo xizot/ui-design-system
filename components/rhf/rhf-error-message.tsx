@@ -22,17 +22,11 @@ function RHFErrorMessage<T extends FieldValues = FieldValues>({
   });
   const error = get<string>(formState.errors, `${name}.message`);
 
-  return (
-    <p
-      className={cn(
-        'hidden text-xs text-destructive',
-        hasValue(error) && 'input-error mt-1.5 block',
-        className,
-      )}
-    >
-      {error}
-    </p>
-  );
+  if (!hasValue(error)) {
+    return null;
+  }
+
+  return <p className={cn('text-xs text-destructive input-error mt-1.5', className)}>{error}</p>;
 }
 
 export { RHFErrorMessage };

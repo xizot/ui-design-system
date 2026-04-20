@@ -11,6 +11,16 @@ import {
 import { cn } from '../../lib/utils';
 import { Badge } from '../ui/badge';
 import { Textarea } from '../ui/textarea';
+import { RHFErrorMessage } from './rhf-error-message';
+
+const ERROR_CLASSES = [
+  `has-[.input-error]:[&_textarea]:border-destructive`,
+  `has-[.input-error]:[&_textarea]:border-destructive`,
+  `has-[.input-error]:[&_textarea]:ring-3`,
+  `has-[.input-error]:[&_textarea]:ring-destructive/20`,
+  `dark:has-[.input-error]:[&_textarea]:border-destructive/50`,
+  `dark:has-[.input-error]:[&_textarea]:ring-destructive/40`,
+].join(' ');
 
 type RHFTextareaProps<T extends FieldValues = FieldValues> = Omit<
   React.ComponentProps<typeof Textarea>,
@@ -18,7 +28,6 @@ type RHFTextareaProps<T extends FieldValues = FieldValues> = Omit<
 > & {
   control: Control<T>;
   name: Path<T>;
-  callback?: (newValue: string) => void;
   register: UseFormRegister<T>;
   showMaxLength?: boolean;
 };
@@ -29,38 +38,26 @@ function RHFTextarea<T extends FieldValues = FieldValues>({
   showMaxLength = true,
   maxLength = 512,
   rows = 5,
-  // TODO: next update will remove controlled
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   register,
-  callback,
   ...props
 }: RHFTextareaProps<T>) {
-  const {
-    field,
-    fieldState: { error },
-  } = useController({
-    control,
-    name,
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    field.onChange(e.target.value);
-    callback?.(e.target.value);
-  };
-
   return (
-    <div className="relative">
-      <Textarea
-        {...props}
-        {...field}
-        onChange={handleChange}
-        error={error?.message}
-        id={props.id || String(name)}
-        className={cn('w-full', props.className)}
-        maxLength={maxLength}
-        rows={rows}
-      />
-      {showMaxLength ? <TextAreaBadge control={control} name={name} maxLength={maxLength} /> : null}
+    <div className={cn(ERROR_CLASSES)}>
+      <div className="relative">
+        <Textarea
+          {...props}
+          {...register(name)}
+          id={props.id || String(name)}
+          className={cn('w-full', props.className)}
+          maxLength={maxLength}
+          rows={rows}
+        />
+
+        {showMaxLength ? (
+          <TextAreaBadge control={control} name={name} maxLength={maxLength} />
+        ) : null}
+      </div>
+      <RHFErrorMessage control={control} name={name} />
     </div>
   );
 }
