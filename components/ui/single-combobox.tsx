@@ -118,11 +118,7 @@ function SingleCombobox<T extends ComboboxBaseOption>({
         disabled={disabled}
         itemToStringLabel={itemToStringLabel}
         filteredItems={filteredItemIds}
-        onInputValueChange={(v) => setSearchQuery(v)}
-        onOpenChange={(open) => {
-          setOpen(open);
-          if (!open) setSearchQuery('');
-        }}
+        onOpenChange={setOpen}
       >
         {/* Button-style trigger — no typing allowed */}
         <div
@@ -207,6 +203,8 @@ function SingleCombobox<T extends ComboboxBaseOption>({
               placeholder={searchPlaceholder}
               showClear={true}
               formSize="sm"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 

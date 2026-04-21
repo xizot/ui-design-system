@@ -163,7 +163,6 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
         disabled={disabled}
         itemToStringLabel={itemToStringLabel}
         filteredItems={filteredItemIds}
-        onInputValueChange={(v) => setSearchQuery(v)}
       >
         {/* Button-style trigger showing committed selections as badges */}
         <div
@@ -291,6 +290,8 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
               placeholder={searchPlaceholder}
               showClear={false}
               formSize="sm"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 

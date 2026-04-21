@@ -13,8 +13,8 @@ import { Checkbox } from './checkbox';
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxList } from './combobox';
 import { FormErrorMessage } from './form-error-message';
 import { FormLabel } from './form-label';
+import type { FetchOptionsFunction, ListResponse, MappedPageResult } from './lazy-single-combobox';
 import type { ComboboxBaseOption } from './single-combobox';
-import type { FetchOptionsFunction, MappedPageResult, ListResponse } from './lazy-single-combobox';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -444,7 +444,6 @@ function LazyMultipleCombobox<
         disabled={disabled}
         itemToStringLabel={itemToStringLabel}
         filteredItems={filteredItemIds}
-        onInputValueChange={(v) => setSearchQuery(v)}
       >
         {/* Trigger */}
         <div
@@ -573,6 +572,8 @@ function LazyMultipleCombobox<
               placeholder={searchPlaceholder}
               showClear={false}
               formSize="sm"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 
