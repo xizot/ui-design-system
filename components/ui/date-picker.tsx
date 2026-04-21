@@ -1,15 +1,5 @@
 'use client';
 
-import { Button } from './button';
-import { Calendar } from './calendar';
-import { FormErrorMessage } from './form-error-message';
-import { FormLabel } from './form-label';
-import { MonthPicker } from './month-picker';
-import { Popover, PopoverContent, PopoverTrigger } from './popover';
-import { Separator } from './separator';
-import { TimePicker, type TimeValue } from './time-picker';
-import { FORM_SIZE_STYLES, type FormSize } from '../../constants/form-sizes';
-import { cn } from '../../lib/utils';
 import {
   format,
   isValid,
@@ -19,10 +9,21 @@ import {
   startOfMonth,
   type Locale,
 } from 'date-fns';
+import { vi as viLocale } from 'date-fns/locale';
 import { CalendarIcon, XCircleIcon } from 'lucide-react';
 import type { ComponentProps } from 'react';
 import * as React from 'react';
 import type { DayPickerSingleProps } from 'react-day-picker';
+import { FORM_SIZE_STYLES, type FormSize } from '../../constants/form-sizes';
+import { cn } from '../../lib/utils';
+import { Button } from './button';
+import { Calendar } from './calendar';
+import { FormErrorMessage } from './form-error-message';
+import { FormLabel } from './form-label';
+import { MonthPicker } from './month-picker';
+import { Popover, PopoverContent, PopoverTrigger } from './popover';
+import { Separator } from './separator';
+import { TimePicker, type TimeValue } from './time-picker';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -80,7 +81,7 @@ function DatePicker({
   id,
   value,
   onChange,
-  placeholder = 'Pick a date',
+  placeholder = 'Chọn ngày',
   dateFormat = 'dd/MM/yyyy',
   showTime = false,
   timeOnly = false,
@@ -98,7 +99,7 @@ function DatePicker({
   errorClassName,
   triggerClassName,
   popoverClassName,
-  locale,
+  locale = viLocale,
   cancelText = 'Hủy',
   applyText = 'Áp dụng',
   monthNames,
@@ -361,7 +362,7 @@ function DatePicker({
           >
             <div className="flex flex-col gap-2 pb-2">
               {timeOnly ? (
-                <div className="flex h-[350px]">
+                <div className="flex max-h-[350px]">
                   <TimePicker
                     value={selectedTime}
                     onChange={setSelectedTime}
@@ -369,7 +370,7 @@ function DatePicker({
                   />
                 </div>
               ) : mode === 'month' ? (
-                <div className="flex h-[350px]">
+                <div className="flex max-h-[350px]">
                   <MonthPicker
                     value={tempDate}
                     onChange={setTempDate}
@@ -380,7 +381,7 @@ function DatePicker({
                   />
                 </div>
               ) : (
-                <div className={cn('flex h-[350px]', showTime && 'overflow-hidden')}>
+                <div className={cn('flex max-h-[350px]', showTime && 'overflow-hidden')}>
                   <Calendar initialFocus {...calendarPropsWithMode} />
                   {showTime && (
                     <TimePicker
