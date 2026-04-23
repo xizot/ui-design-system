@@ -268,7 +268,18 @@ function LazySingleCombobox<
         setIsLoading(false);
       }
     },
-    [fetchOptions, mapResponse, searchKey, pageKey, pageSizeKey, pageSize, autoSelectFirst, resolvedValue, isControlled, onChange],
+    [
+      fetchOptions,
+      mapResponse,
+      searchKey,
+      pageKey,
+      pageSizeKey,
+      pageSize,
+      autoSelectFirst,
+      resolvedValue,
+      isControlled,
+      onChange,
+    ],
   );
 
   // ---------------------------------------------------------------------------

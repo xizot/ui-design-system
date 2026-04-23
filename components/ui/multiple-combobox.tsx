@@ -122,8 +122,8 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
     setOpen(false);
   };
 
-  const handleCancel = () => {
-    setInternalSelectedIds(new Set(value ?? []));
+  const handleClear = () => {
+    setInternalSelectedIds(new Set([]));
 
     if (!requireApply) {
       setOpen(false);
@@ -335,7 +335,7 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
 
           {requireApply && (
             <div className="flex items-center gap-2 border-t border-border/70 p-2">
-              <Button variant="outline" size="sm" className="flex-1" onClick={handleCancel}>
+              <Button variant="outline" size="sm" className="flex-1" onClick={handleClear}>
                 {clearText}
               </Button>
               <Button size="sm" className="flex-1" onClick={handleApply}>

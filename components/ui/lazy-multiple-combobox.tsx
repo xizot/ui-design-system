@@ -13,8 +13,8 @@ import { Checkbox } from './checkbox';
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxList } from './combobox';
 import { FormErrorMessage } from './form-error-message';
 import { FormLabel } from './form-label';
-import type { FetchOptionsFunction, ListResponse, MappedPageResult } from './lazy-single-combobox';
 import type { ComboboxBaseOption } from './single-combobox';
+import type { FetchOptionsFunction, MappedPageResult, ListResponse } from './lazy-single-combobox';
 
 // ---------------------------------------------------------------------------
 // Types

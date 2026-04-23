@@ -331,7 +331,7 @@ export function DataTable<TData>({
                   key={cell.id}
                   className={cn(
                     cell.column.getIsPinned() === 'right' &&
-                      'sticky right-0 bg-card pinned-right-column dark:bg-background',
+                      'sticky right-0 bg-card pinned-right-column dark:bg-background w-0',
                   )}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
