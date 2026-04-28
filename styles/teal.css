@@ -258,3 +258,11 @@
   background: linear-gradient(to left, rgba(16, 24, 40, 0.03), transparent);
   pointer-events: none;
 }
+
+.dark .pinned-right-column::before {
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.04), transparent);
+}
+
+.dark .pinned-right-column::after {
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.03), transparent);
+}

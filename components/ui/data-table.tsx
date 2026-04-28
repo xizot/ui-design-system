@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 
-import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from './empty';
 import {
   flexRender,
   getCoreRowModel,
@@ -36,6 +35,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './dropdown-menu';
+import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from './empty';
 import { InputGroup, InputGroupAddon, InputGroupInput } from './input-group';
 import {
   Pagination,
@@ -331,7 +331,7 @@ export function DataTable<TData>({
                   key={cell.id}
                   className={cn(
                     cell.column.getIsPinned() === 'right' &&
-                      'sticky right-0 bg-card pinned-right-column dark:bg-background w-0',
+                      'sticky right-0 pinned-right-column w-0',
                   )}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
