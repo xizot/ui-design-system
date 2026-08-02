@@ -14,7 +14,10 @@ const guide = {
   importPath: '@/design-system/components/ui/button-group',
 } as const;
 
-const props = [{ name: 'className', type: 'string', defaultValue: '--' }];
+const props = [
+  { name: 'orientation', type: `"horizontal" | "vertical"`, defaultValue: `"horizontal"` },
+  { name: 'className', type: 'string', defaultValue: '--' },
+];
 
 const usageSamples = [
   {
@@ -37,6 +40,75 @@ export function Example() {
       <Button>Button 2</Button>
       <Button>Button 3</Button>
     </ButtonGroup>
+  );
+}`,
+  },
+  {
+    id: 'sizes',
+    label: 'Sizes',
+    preview: (
+      <div className="flex flex-col items-start gap-4">
+        <ButtonGroup>
+          <Button size="xs">XS</Button>
+          <Button size="xs" variant="outline">
+            XS
+          </Button>
+          <Button size="xs" variant="outline">
+            XS
+          </Button>
+        </ButtonGroup>
+        <ButtonGroup>
+          <Button size="sm">Small</Button>
+          <Button size="sm" variant="outline">
+            Small
+          </Button>
+          <Button size="sm" variant="outline">
+            Small
+          </Button>
+        </ButtonGroup>
+        <ButtonGroup>
+          <Button>Default</Button>
+          <Button variant="outline">Default</Button>
+          <Button variant="outline">Default</Button>
+        </ButtonGroup>
+        <ButtonGroup>
+          <Button size="lg">Large</Button>
+          <Button size="lg" variant="outline">
+            Large
+          </Button>
+          <Button size="lg" variant="outline">
+            Large
+          </Button>
+        </ButtonGroup>
+      </div>
+    ),
+    code: `import { ButtonGroup } from "@/design-system/components/ui/button-group";
+import { Button } from "@/design-system/components/ui/button";
+
+export function Example() {
+  return (
+    <div className="flex flex-col items-start gap-4">
+      <ButtonGroup>
+        <Button size="xs">XS</Button>
+        <Button size="xs" variant="outline">XS</Button>
+        <Button size="xs" variant="outline">XS</Button>
+      </ButtonGroup>
+      <ButtonGroup>
+        <Button size="sm">Small</Button>
+        <Button size="sm" variant="outline">Small</Button>
+        <Button size="sm" variant="outline">Small</Button>
+      </ButtonGroup>
+      <ButtonGroup>
+        <Button>Default</Button>
+        <Button variant="outline">Default</Button>
+        <Button variant="outline">Default</Button>
+      </ButtonGroup>
+      <ButtonGroup>
+        <Button size="lg">Large</Button>
+        <Button size="lg" variant="outline">Large</Button>
+        <Button size="lg" variant="outline">Large</Button>
+      </ButtonGroup>
+    </div>
   );
 }`,
   },

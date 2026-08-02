@@ -14,10 +14,17 @@ const guide = {
 } as const;
 
 const props = [
-  { name: 'value', type: 'TimeValue', defaultValue: '--' },
-  { name: 'onChange', type: '(value: TimeValue) => void', defaultValue: '--' },
+  { name: 'value', type: 'TimeValue | undefined', defaultValue: '--' },
+  { name: 'onChange', type: '(value: TimeValue | undefined) => void', defaultValue: '--' },
+  { name: 'label', type: 'string | React.ReactNode', defaultValue: '--' },
+  { name: 'placeholder', type: 'string', defaultValue: "'Chọn thời gian'" },
   { name: 'showSeconds', type: 'boolean', defaultValue: 'true' },
+  { name: 'showClearIcon', type: 'boolean', defaultValue: 'true' },
+  { name: 'size', type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'`, defaultValue: `'md'` },
+  { name: 'error', type: 'string', defaultValue: '--' },
+  { name: 'disabled', type: 'boolean', defaultValue: 'false' },
   { name: 'className', type: 'string', defaultValue: '--' },
+  { name: 'panelClassName', type: 'string', defaultValue: '--' },
 ];
 
 const usageSamples = [
@@ -33,19 +40,18 @@ const usageSamples = [
 import { useState } from "react";
 
 function Example() {
-  const [value, setValue] = useState<TimeValue>({
+  const [value, setValue] = useState<TimeValue | undefined>({
     hour: "09",
     minute: "30",
     second: "00"
   });
 
   return (
-    <div className="h-80">
-      <TimePicker
-        value={value}
-        onChange={setValue}
-      />
-    </div>
+    <TimePicker
+      label="Time"
+      value={value}
+      onChange={setValue}
+    />
   );
 }`,
   },
@@ -61,26 +67,25 @@ function Example() {
 import { useState } from "react";
 
 function Example() {
-  const [value, setValue] = useState<TimeValue>({
+  const [value, setValue] = useState<TimeValue | undefined>({
     hour: "14",
     minute: "45",
     second: "00"
   });
 
   return (
-    <div className="h-80">
-      <TimePicker
-        value={value}
-        onChange={setValue}
-        showSeconds={false}
-      />
-    </div>
+    <TimePicker
+      label="Time"
+      value={value}
+      onChange={setValue}
+      showSeconds={false}
+    />
   );
 }`,
   },
   {
-    id: 'custom-height',
-    label: 'Custom Height',
+    id: 'panel-height',
+    label: 'Panel Height',
     preview: (
       <div className="w-full max-w-md space-y-4 p-4">
         <TimePickerCustomHeightExample />
@@ -90,65 +95,52 @@ function Example() {
 import { useState } from "react";
 
 function Example() {
-  const [value, setValue] = useState<TimeValue>({
+  const [value, setValue] = useState<TimeValue | undefined>({
     hour: "18",
     minute: "15",
     second: "30"
   });
 
   return (
-    <div className="h-96">
-      <TimePicker
-        value={value}
-        onChange={setValue}
-        className="h-full"
-      />
-    </div>
+    <TimePicker
+      label="Time"
+      value={value}
+      onChange={setValue}
+      panelClassName="h-96"
+    />
   );
 }`,
   },
 ];
 
 function TimePickerExample() {
-  const [value, setValue] = useState<TimeValue>({
+  const [value, setValue] = useState<TimeValue | undefined>({
     hour: '09',
     minute: '30',
     second: '00',
   });
 
-  return (
-    <div className="h-80">
-      <TimePicker value={value} onChange={setValue} />
-    </div>
-  );
+  return <TimePicker label="Time" value={value} onChange={setValue} />;
 }
 
 function TimePickerWithoutSecondsExample() {
-  const [value, setValue] = useState<TimeValue>({
+  const [value, setValue] = useState<TimeValue | undefined>({
     hour: '14',
     minute: '45',
     second: '00',
   });
 
-  return (
-    <div className="h-80">
-      <TimePicker value={value} onChange={setValue} showSeconds={false} />
-    </div>
-  );
+  return <TimePicker label="Time" value={value} onChange={setValue} showSeconds={false} />;
 }
 
 function TimePickerCustomHeightExample() {
-  const [value, setValue] = useState<TimeValue>({
+  const [value, setValue] = useState<TimeValue | undefined>({
     hour: '18',
     minute: '15',
     second: '30',
   });
 
-  return (
-    <div className="h-96">
-      <TimePicker value={value} onChange={setValue} className="h-full" />
-    </div>
-  );
+  return <TimePicker label="Time" value={value} onChange={setValue} panelClassName="h-96" />;
 }
 
 export default function TimePickerGuidePage() {

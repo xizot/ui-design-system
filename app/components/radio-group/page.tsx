@@ -6,6 +6,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
+import { DEFAULT_RADIO_SIZE } from '../../../constants/form-sizes';
 
 const guide = {
   name: 'Radio Group',
@@ -27,7 +28,11 @@ const props = [
 
 const itemProps = [
   { name: 'label', type: 'ReactNode', defaultValue: '--' },
-  { name: 'size', type: '"xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl"', defaultValue: '"md"' },
+  {
+    name: 'size',
+    type: '"xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl"',
+    defaultValue: DEFAULT_RADIO_SIZE,
+  },
   { name: 'labelClassName', type: 'string', defaultValue: '--' },
   { name: 'containerClassName', type: 'string', defaultValue: '--' },
   { name: 'className', type: 'string', defaultValue: '--' },
@@ -229,22 +234,22 @@ export default function RadioGroupGuidePage() {
                 <div>
                   <h4 className="font-medium mb-3">RadioGroupItem Sizes</h4>
                   <div className="space-y-4 max-w-sm">
-                    <RadioGroup label="Extra Small" defaultValue="option1" className="w-fit">
-                      <RadioGroupItem id="xs-option1" value="option1" size="xxs" label="Option 1" />
-                      <RadioGroupItem id="xs-option2" value="option2" size="xxs" label="Option 2" />
-                    </RadioGroup>
-                    <RadioGroup label="Small" defaultValue="option1" className="w-fit">
-                      <RadioGroupItem id="sm-option1" value="option1" size="sm" label="Option 1" />
-                      <RadioGroupItem id="sm-option2" value="option2" size="sm" label="Option 2" />
-                    </RadioGroup>
-                    <RadioGroup label="Medium" defaultValue="option1" className="w-fit">
-                      <RadioGroupItem id="md-option1" value="option1" size="md" label="Option 1" />
-                      <RadioGroupItem id="md-option2" value="option2" size="md" label="Option 2" />
-                    </RadioGroup>
-                    <RadioGroup label="Large" defaultValue="option1" className="w-fit">
-                      <RadioGroupItem id="lg-option1" value="option1" size="lg" label="Option 1" />
-                      <RadioGroupItem id="lg-option2" value="option2" size="lg" label="Option 2" />
-                    </RadioGroup>
+                    {(['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'] as const).map((size) => (
+                      <RadioGroup key={size} label={size.toUpperCase()} defaultValue="option1">
+                        <RadioGroupItem
+                          id={`${size}-option1`}
+                          value="option1"
+                          size={size}
+                          label="Option 1"
+                        />
+                        <RadioGroupItem
+                          id={`${size}-option2`}
+                          value="option2"
+                          size={size}
+                          label="Option 2"
+                        />
+                      </RadioGroup>
+                    ))}
                   </div>
                 </div>
               </div>

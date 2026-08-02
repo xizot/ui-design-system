@@ -56,6 +56,45 @@ export function Example() {
 }`,
   },
   {
+    id: 'sizes',
+    label: 'Sizes',
+    preview: (
+      <div className="flex flex-col items-start gap-3">
+        <NativeSelect size="sm">
+          <NativeSelectOption value="">Small select</NativeSelectOption>
+          <NativeSelectOption value="1">Option 1</NativeSelectOption>
+          <NativeSelectOption value="2">Option 2</NativeSelectOption>
+        </NativeSelect>
+        <NativeSelect>
+          <NativeSelectOption value="">Default select</NativeSelectOption>
+          <NativeSelectOption value="1">Option 1</NativeSelectOption>
+          <NativeSelectOption value="2">Option 2</NativeSelectOption>
+        </NativeSelect>
+      </div>
+    ),
+    code: `import {
+  NativeSelect,
+  NativeSelectOption,
+} from "@/design-system/components/ui/native-select";
+
+export function Example() {
+  return (
+    <div className="flex flex-col items-start gap-3">
+      <NativeSelect size="sm">
+        <NativeSelectOption value="">Small select</NativeSelectOption>
+        <NativeSelectOption value="1">Option 1</NativeSelectOption>
+        <NativeSelectOption value="2">Option 2</NativeSelectOption>
+      </NativeSelect>
+      <NativeSelect>
+        <NativeSelectOption value="">Default select</NativeSelectOption>
+        <NativeSelectOption value="1">Option 1</NativeSelectOption>
+        <NativeSelectOption value="2">Option 2</NativeSelectOption>
+      </NativeSelect>
+    </div>
+  );
+}`,
+  },
+  {
     id: 'small',
     label: 'Small',
     preview: (

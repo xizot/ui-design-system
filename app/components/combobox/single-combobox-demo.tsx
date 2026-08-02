@@ -45,3 +45,21 @@ export function SingleComboboxWithCodeDemo() {
     </div>
   );
 }
+
+export function SingleComboboxSelectedCodeOnlyDemo() {
+  const [value, setValue] = useState<string | number | undefined>();
+
+  return (
+    <div className="w-full max-w-sm p-4">
+      <SingleCombobox
+        label="Phòng ban"
+        options={departments}
+        value={value}
+        onChange={(v) => setValue(v)}
+        placeholder="Chọn phòng ban..."
+        showMenuCode
+        selectedCodeOnly
+      />
+    </div>
+  );
+}

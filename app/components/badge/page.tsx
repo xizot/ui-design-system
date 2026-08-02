@@ -19,6 +19,11 @@ const props = [
     type: `"default" | "secondary" | "destructive" | "outline" | "ghost" | "link"`,
     defaultValue: `"default"`,
   },
+  {
+    name: 'size',
+    type: `"xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl"`,
+    defaultValue: `"sm"`,
+  },
   { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
@@ -43,6 +48,36 @@ export function Example() {
       <Badge variant="secondary">Secondary</Badge>
       <Badge variant="destructive">Destructive</Badge>
       <Badge variant="outline">Outline</Badge>
+    </div>
+  );
+}`,
+  },
+  {
+    id: 'sizes',
+    label: 'Sizes',
+    preview: (
+      <div className="flex flex-wrap items-center gap-2">
+        <Badge size="xxs">XXS</Badge>
+        <Badge size="xs">XS</Badge>
+        <Badge size="sm">SM</Badge>
+        <Badge size="md">MD</Badge>
+        <Badge size="lg">LG</Badge>
+        <Badge size="xl">XL</Badge>
+        <Badge size="xxl">XXL</Badge>
+      </div>
+    ),
+    code: `import { Badge } from "@/design-system/components/ui/badge";
+
+export function Example() {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Badge size="xxs">XXS</Badge>
+      <Badge size="xs">XS</Badge>
+      <Badge size="sm">SM</Badge>
+      <Badge size="md">MD</Badge>
+      <Badge size="lg">LG</Badge>
+      <Badge size="xl">XL</Badge>
+      <Badge size="xxl">XXL</Badge>
     </div>
   );
 }`,

@@ -1,7 +1,11 @@
 import { Input as InputPrimitive } from '@base-ui/react/input';
 import * as React from 'react';
 
-import { FORM_SIZE_STYLES, type FormSize } from '../../constants/form-sizes';
+import {
+  FORM_CONTROL_RING_STYLES,
+  FORM_SIZE_STYLES,
+  type FormSize,
+} from '../../constants/form-sizes';
 import { cn } from '../../lib/utils';
 import { FormErrorMessage } from './form-error-message';
 import { FormLabel } from './form-label';
@@ -42,7 +46,9 @@ function Input({
         data-slot="input"
         aria-invalid={!!error}
         className={cn(
-          'w-full min-w-0 rounded-md border border-input bg-transparent dark:bg-input/30 shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:border-0 file:bg-transparent file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40',
+          'w-full min-w-0 rounded-md border border-input bg-transparent shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:border-0 file:bg-transparent file:font-medium file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30',
+          FORM_CONTROL_RING_STYLES.focusVisible,
+          FORM_CONTROL_RING_STYLES.invalid,
           FORM_SIZE_STYLES[size].height,
           FORM_SIZE_STYLES[size].padding,
           FORM_SIZE_STYLES[size].text,

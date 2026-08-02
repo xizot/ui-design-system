@@ -5,9 +5,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { CodeBlock } from '@/components/ui/code-block';
 import { DialogPanel, DialogPanelRoot, DialogPanelTrigger } from '@/components/ui/dialog-panel';
 import { Input } from '@/components/ui/input';
+import { MultipleCombobox } from '@/components/ui/multiple-combobox';
+import { SingleCombobox } from '@/components/ui/single-combobox';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const guide = {
   name: 'Dialog Panel',
@@ -23,6 +25,67 @@ const props = [
   { name: 'showCloseButton', type: 'boolean', defaultValue: 'true' },
   { name: 'className', type: 'string', defaultValue: '--' },
 ];
+
+const comboboxOptions = Array.from({ length: 60 }, (_, index) => {
+  const value = index + 1;
+
+  return {
+    id: `option-${value}`,
+    code: `OPT${String(value).padStart(2, '0')}`,
+    name: `Tùy chọn kiểm tra scroll ${value}`,
+  };
+});
+
+function DialogComboboxScrollDemo() {
+  const [singleValue, setSingleValue] = useState<string | number>();
+  const [multipleValues, setMultipleValues] = useState<(string | number)[]>([]);
+
+  return (
+    <DialogPanelRoot>
+      <DialogPanelTrigger render={<Button variant="outline">Combobox scroll</Button>} />
+      <DialogPanel
+        size="lg"
+        title="Kiểm tra combobox trong dialog"
+        description="Mở từng combobox để kiểm tra menu nhiều option và scroll trong dialog."
+        footer={
+          <>
+            <Button variant="outline">Hủy</Button>
+            <Button>Áp dụng</Button>
+          </>
+        }
+      >
+        <div className="grid gap-4">
+          <SingleCombobox
+            label="SingleCombobox"
+            options={comboboxOptions}
+            value={singleValue}
+            onChange={(nextValue) => setSingleValue(nextValue)}
+            placeholder="Chọn một tùy chọn"
+            searchPlaceholder="Tìm option..."
+          />
+          <MultipleCombobox
+            label="MultipleCombobox"
+            options={comboboxOptions}
+            value={multipleValues}
+            onChange={(nextValues) => setMultipleValues(nextValues)}
+            placeholder="Chọn nhiều tùy chọn"
+            searchPlaceholder="Tìm option..."
+            limitTags={4}
+          />
+          <div className="grid gap-3">
+            {Array.from({ length: 12 }, (_, index) => (
+              <Input
+                key={index}
+                label={`Dòng nội dung ${index + 1}`}
+                placeholder="Nội dung phụ để kiểm tra scroll body"
+              />
+            ))}
+          </div>
+        </div>
+      </DialogPanel>
+    </DialogPanelRoot>
+  );
+}
 
 const usageSamples = [
   {
@@ -133,6 +196,37 @@ export function Example() {
         </DialogPanelRoot>
       ))}
     </div>
+  );
+}`,
+  },
+  {
+    id: 'combobox-scroll',
+    label: 'Combobox Scroll',
+    preview: <DialogComboboxScrollDemo />,
+    code: `import { Button } from "@/design-system/components/ui/button";
+import {
+  DialogPanel,
+  DialogPanelRoot,
+  DialogPanelTrigger,
+} from "@/design-system/components/ui/dialog-panel";
+import { MultipleCombobox } from "@/design-system/components/ui/multiple-combobox";
+import { SingleCombobox } from "@/design-system/components/ui/single-combobox";
+
+const options = Array.from({ length: 60 }, (_, index) => ({
+  id: \`option-\${index + 1}\`,
+  code: \`OPT\${String(index + 1).padStart(2, "0")}\`,
+  name: \`Tùy chọn kiểm tra scroll \${index + 1}\`,
+}));
+
+export function Example() {
+  return (
+    <DialogPanelRoot>
+      <DialogPanelTrigger render={<Button variant="outline">Combobox scroll</Button>} />
+      <DialogPanel size="lg" title="Kiểm tra combobox trong dialog">
+        <SingleCombobox options={options} placeholder="Chọn một tùy chọn" />
+        <MultipleCombobox options={options} placeholder="Chọn nhiều tùy chọn" limitTags={4} />
+      </DialogPanel>
+    </DialogPanelRoot>
   );
 }`,
   },

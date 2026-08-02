@@ -11,7 +11,10 @@ const installRootName = 'design-system';
 const targetRoot = path.join(projectRoot, installRootName);
 const command = process.argv[2] ?? 'init';
 const directoriesToCopy = ['components', 'constants', 'hooks', 'lib'];
-const rootFilesToCopy = ['AGENTS.md'];
+const agentUsageRulesSource = 'docs/design-system-usage-rules.md';
+const agentUsageRulesTarget = 'AGENTS.md';
+const agentUsageRulesStartMarker = '<!-- BEGIN:design-system-usage-rules -->';
+const agentUsageRulesEndMarker = '<!-- END:design-system-usage-rules -->';
 const projectFilesToCopy = [
   {
     source: 'app/globals.css',
@@ -411,24 +414,59 @@ async function maybeInstallDependencies() {
 
 function copyRootFiles() {
   printSection('Step 3: Agent Rules');
+  upsertAgentUsageRules();
+}
 
-  for (const fileName of rootFilesToCopy) {
-    const sourcePath = path.join(packageRoot, fileName);
-    const targetPath = path.join(projectRoot, fileName);
+function buildAgentUsageRulesSection() {
+  const sourcePath = path.join(packageRoot, agentUsageRulesSource);
 
-    if (!fs.existsSync(sourcePath)) {
-      console.log(color.gray(`Skipping missing file: ${fileName}`));
-      continue;
-    }
-
-    if (fs.existsSync(targetPath)) {
-      console.log(color.yellow(`Already exists, skipping: ${fileName}`));
-      continue;
-    }
-
-    fs.copyFileSync(sourcePath, targetPath);
-    console.log(color.green(`Copied: ${fileName}`));
+  if (!fs.existsSync(sourcePath)) {
+    console.log(color.gray(`Skipping missing file: ${agentUsageRulesSource}`));
+    return null;
   }
+
+  const usageRules = fs.readFileSync(sourcePath, 'utf8').trim();
+
+  return `${agentUsageRulesStartMarker}\n\n${usageRules}\n\n${agentUsageRulesEndMarker}`;
+}
+
+function upsertAgentUsageRules() {
+  const rulesSection = buildAgentUsageRulesSection();
+
+  if (!rulesSection) {
+    return;
+  }
+
+  const targetPath = path.join(projectRoot, agentUsageRulesTarget);
+  ensureDirectoryExists(path.dirname(targetPath));
+
+  const currentContent = fs.existsSync(targetPath) ? fs.readFileSync(targetPath, 'utf8') : '';
+  const startIndex = currentContent.indexOf(agentUsageRulesStartMarker);
+  const endIndex = currentContent.indexOf(agentUsageRulesEndMarker);
+
+  if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
+    const before = currentContent.slice(0, startIndex).trimEnd();
+    const after = currentContent.slice(endIndex + agentUsageRulesEndMarker.length).trimStart();
+    const nextContent = [before, rulesSection, after].filter(Boolean).join('\n\n');
+
+    fs.writeFileSync(targetPath, `${nextContent}\n`);
+    conflictState.overwritten.push(agentUsageRulesTarget);
+    console.log(color.green(`Updated: ${agentUsageRulesTarget} design system rules`));
+    return;
+  }
+
+  if (startIndex !== -1 || endIndex !== -1) {
+    console.log(
+      color.yellow(
+        `Malformed design system rules markers found in ${agentUsageRulesTarget}; appending a fresh section.`,
+      ),
+    );
+  }
+
+  const nextContent = [currentContent.trimEnd(), rulesSection].filter(Boolean).join('\n\n');
+  fs.writeFileSync(targetPath, `${nextContent}\n`);
+  conflictState.copied.push(`${agentUsageRulesTarget} design system rules`);
+  console.log(color.green(`Added: ${agentUsageRulesTarget} design system rules`));
 }
 
 async function copyProjectFiles() {

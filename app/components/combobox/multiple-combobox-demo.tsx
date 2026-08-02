@@ -69,3 +69,38 @@ export function MultipleComboboxLimitTagsDemo() {
     </div>
   );
 }
+
+export function MultipleComboboxAutoResizeDemo() {
+  const [values, setValues] = useState<(string | number)[]>([]);
+
+  return (
+    <div className="w-full max-w-sm p-4">
+      <MultipleCombobox
+        label="Phòng ban"
+        options={departments}
+        value={values}
+        onChange={(v) => setValues(v)}
+        placeholder="Chọn phòng ban..."
+        autoResize
+      />
+    </div>
+  );
+}
+
+export function MultipleComboboxSelectedCodeOnlyDemo() {
+  const [values, setValues] = useState<(string | number)[]>([]);
+
+  return (
+    <div className="w-full max-w-sm p-4">
+      <MultipleCombobox
+        label="Phòng ban"
+        options={departments}
+        value={values}
+        onChange={(v) => setValues(v)}
+        placeholder="Chọn phòng ban..."
+        showMenuCode
+        selectedCodeOnly
+      />
+    </div>
+  );
+}

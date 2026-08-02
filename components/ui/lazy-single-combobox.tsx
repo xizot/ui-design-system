@@ -1,11 +1,14 @@
 'use client';
 
 import { Combobox as ComboboxPrimitive } from '@base-ui/react';
-import { useVirtualizer } from '@tanstack/react-virtual';
 import { ChevronDownIcon, Loader2Icon, XCircleIcon } from 'lucide-react';
 import * as React from 'react';
 
-import { FORM_SIZE_STYLES, type FormSize } from '../../constants/form-sizes';
+import {
+  FORM_CONTROL_RING_STYLES,
+  FORM_SIZE_STYLES,
+  type FormSize,
+} from '../../constants/form-sizes';
 import { cn } from '../../lib/utils';
 import {
   Combobox,
@@ -95,6 +98,7 @@ export type LazySingleComboboxProps<
   error?: string;
   showMenuCode?: boolean;
   showSelectedCode?: boolean;
+  selectedCodeOnly?: boolean;
   searchPlaceholder?: string;
   emptyMessage?: string;
   showArrowIcon?: boolean;
@@ -143,6 +147,7 @@ function LazySingleCombobox<
   error,
   showMenuCode = true,
   showSelectedCode = false,
+  selectedCodeOnly = false,
   searchPlaceholder = 'Tìm kiếm...',
   emptyMessage = 'Không tìm thấy kết quả',
   showArrowIcon = true,
@@ -297,9 +302,10 @@ function LazySingleCombobox<
   // ---------------------------------------------------------------------------
 
   React.useEffect(() => {
+    if (!open) return;
     void fetchPage(debouncedSearch, 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearch]);
+  }, [debouncedSearch, open]);
 
   // ---------------------------------------------------------------------------
   // Re-fetch when external dependencies change
@@ -308,6 +314,7 @@ function LazySingleCombobox<
   React.useEffect(() => {
     if (!dependencies) return;
     setSearchQuery('');
+    if (!open) return;
     void fetchPage('', 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, dependencies ?? []);
@@ -337,18 +344,6 @@ function LazySingleCombobox<
   }, [open, isLastPage, currentPage, debouncedSearch, fetchPage]);
 
   // ---------------------------------------------------------------------------
-  // Virtualizer — dynamic row height
-  // ---------------------------------------------------------------------------
-
-  const virtualizer = useVirtualizer({
-    count: itemsList.length,
-    getScrollElement: () => scrollRef.current,
-    estimateSize: () => 36,
-    measureElement: (el) => el.getBoundingClientRect().height,
-    overscan: 5,
-  });
-
-  // ---------------------------------------------------------------------------
   // Label resolution
   // ---------------------------------------------------------------------------
 
@@ -356,19 +351,21 @@ function LazySingleCombobox<
     (id: string | number): string => {
       const opt = itemsMapRef.current.get(id) ?? internalSelectedItemRef.current;
       if (!opt) return String(id);
+      if (selectedCodeOnly) return opt.code;
       return showSelectedCode ? `${opt.code} - ${opt.name}` : opt.name;
     },
-    [showSelectedCode],
+    [selectedCodeOnly, showSelectedCode],
   );
 
   const selectedLabel = React.useMemo(() => {
     if (resolvedValue === undefined || resolvedValue === null) return undefined;
     const opt = itemsMapRef.current.get(resolvedValue) ?? internalSelectedItemRef.current;
     if (!opt) return String(resolvedValue);
+    if (selectedCodeOnly) return opt.code;
     return showSelectedCode ? `${opt.code} - ${opt.name}` : opt.name;
     // backupOption and itemsList trigger re-compute when data changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resolvedValue, showSelectedCode, backupOption, itemsList]);
+  }, [resolvedValue, selectedCodeOnly, showSelectedCode, backupOption, itemsList]);
 
   const hasValue = resolvedValue !== undefined && resolvedValue !== null;
 
@@ -418,10 +415,11 @@ function LazySingleCombobox<
         <div
           ref={anchorRef}
           className={cn(
-            'group/trigger bg-transparent dark:bg-input/30 relative flex w-full items-center overflow-hidden rounded-md border border-input shadow-xs transition-[border-color,box-shadow]',
-            'focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50',
+            'group/trigger relative flex w-full items-center overflow-hidden rounded-md border border-input bg-transparent shadow-xs transition-[color,box-shadow] dark:bg-input/30',
+            FORM_CONTROL_RING_STYLES.focusWithin,
+            open && (error ? FORM_CONTROL_RING_STYLES.invalidOpen : FORM_CONTROL_RING_STYLES.open),
             disabled && 'pointer-events-none cursor-not-allowed opacity-50',
-            error && 'border-destructive focus-within:ring-destructive/20',
+            error && FORM_CONTROL_RING_STYLES.invalidWithin,
             FORM_SIZE_STYLES[size].height,
             FORM_SIZE_STYLES[size].text,
           )}
@@ -443,7 +441,7 @@ function LazySingleCombobox<
 
           <div
             className={cn(
-              'relative z-10 ml-auto flex shrink-0 items-center gap-0.5 self-center pr-2',
+              'pointer-events-none relative z-10 ml-auto flex shrink-0 items-center gap-0.5 self-center pr-2',
               FORM_SIZE_STYLES[size].svgIcon,
             )}
           >
@@ -451,7 +449,7 @@ function LazySingleCombobox<
               showClearIcon && showArrowIcon ? (
                 <div className={cn('relative shrink-0', FORM_SIZE_STYLES[size].icon)}>
                   <span
-                    className="absolute inset-0 z-10 flex items-center justify-center opacity-0 transition-opacity group-hover/trigger:opacity-100"
+                    className="pointer-events-auto absolute inset-0 z-10 flex items-center justify-center opacity-0 transition-opacity group-hover/trigger:opacity-100"
                     onMouseDown={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
@@ -468,7 +466,7 @@ function LazySingleCombobox<
               ) : showClearIcon ? (
                 <button
                   type="button"
-                  className="flex size-4 cursor-pointer items-center justify-center rounded text-muted-foreground hover:text-foreground"
+                  className="pointer-events-auto flex size-4 cursor-pointer items-center justify-center rounded text-muted-foreground hover:text-foreground"
                   onMouseDown={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -508,43 +506,22 @@ function LazySingleCombobox<
               ) : null}
             </ComboboxEmpty>
 
-            {/* Scroll container */}
             <div ref={scrollRef} className="overflow-y-auto" style={{ maxHeight: 240 }}>
-              {/* Virtual height spacer */}
-              <div style={{ height: virtualizer.getTotalSize(), position: 'relative' }}>
-                {virtualizer.getVirtualItems().map((vItem) => {
-                  const option = itemsList[vItem.index];
-                  if (!option) return null;
-                  return (
-                    <div
-                      key={option.id}
-                      data-index={vItem.index}
-                      ref={virtualizer.measureElement}
-                      style={{
-                        position: 'absolute',
-                        top: 0,
-                        transform: `translateY(${vItem.start}px)`,
-                        width: '100%',
-                      }}
-                    >
-                      <ComboboxItem
-                        value={option.id}
-                        className={cn(
-                          'mt-px',
-                          resolvedValue === option.id && 'bg-accent text-accent-foreground',
-                        )}
-                      >
-                        {showMenuCode ? `${option.code} - ${option.name}` : option.name}
-                      </ComboboxItem>
-                    </div>
-                  );
-                })}
-              </div>
+              {itemsList.map((option) => (
+                <ComboboxItem
+                  key={option.id}
+                  value={option.id}
+                  className={cn(
+                    'mt-px',
+                    resolvedValue === option.id && 'bg-accent text-accent-foreground',
+                  )}
+                >
+                  {showMenuCode ? `${option.code} - ${option.name}` : option.name}
+                </ComboboxItem>
+              ))}
 
-              {/* Sentinel — triggers next page */}
               <div ref={sentinelRef} className="h-1" />
 
-              {/* Loading indicator */}
               {isLoading && (
                 <div className="flex items-center justify-center py-2 text-muted-foreground">
                   <Loader2Icon className="size-4 animate-spin" />

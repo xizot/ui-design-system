@@ -6,6 +6,7 @@ import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
+import { DEFAULT_SWITCH_SIZE } from '../../../constants/form-sizes';
 
 const guide = {
   name: 'Switch',
@@ -14,7 +15,11 @@ const guide = {
 } as const;
 
 const props = [
-  { name: 'size', type: `'sm' | 'default'`, defaultValue: `'default'` },
+  {
+    name: 'size',
+    type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'`,
+    defaultValue: DEFAULT_SWITCH_SIZE,
+  },
   { name: 'checked', type: 'boolean', defaultValue: 'false' },
   { name: 'defaultChecked', type: 'boolean', defaultValue: 'false' },
   { name: 'onCheckedChange', type: '(checked: boolean) => void', defaultValue: '--' },
@@ -151,8 +156,13 @@ export default function SwitchGuidePage() {
             </CardHeader>
             <CardContent>
               <div className="flex flex-col gap-4 max-w-sm">
-                <Switch id="small-switch" size="sm" label="Small Switch" />
-                <Switch id="default-switch" label="Default Switch" />
+                <Switch id="xxs-switch" size="xxs" label="XXS Switch" />
+                <Switch id="xs-switch" size="xs" label="XS Switch" />
+                <Switch id="sm-switch" size="sm" label="Small Switch" />
+                <Switch id="md-switch" size="md" label="Medium Switch" />
+                <Switch id="lg-switch" size="lg" label="Large Switch" />
+                <Switch id="xl-switch" size="xl" label="XL Switch" />
+                <Switch id="xxl-switch" size="xxl" label="XXL Switch" />
               </div>
             </CardContent>
           </Card>

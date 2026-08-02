@@ -4,14 +4,28 @@ export type FormSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
 // Default sizes for form controls
 export const DEFAULT_FORM_CONTROL_SIZE: FormSize = 'md';
-export const DEFAULT_CHECKBOX_SIZE: FormSize = 'sm';
-export const DEFAULT_SWITCH_SIZE: FormSize = 'md';
+export const DEFAULT_SELECTION_CONTROL_SIZE: FormSize = 'md';
+export const DEFAULT_CHECKBOX_SIZE: FormSize = DEFAULT_SELECTION_CONTROL_SIZE;
+export const DEFAULT_SWITCH_SIZE: FormSize = DEFAULT_SELECTION_CONTROL_SIZE;
+export const DEFAULT_RADIO_SIZE: FormSize = DEFAULT_SELECTION_CONTROL_SIZE;
 export const DEFAULT_INPUT_SIZE: FormSize = 'md';
 export const DEFAULT_TEXTAREA_SIZE: FormSize = 'md';
 export const DEFAULT_SELECT_SIZE: FormSize = 'md';
 export const DEFAULT_BUTTON_SIZE: FormSize = 'md';
 export const DEFAULT_DATE_PICKER_SIZE: FormSize = 'md';
 export const DEFAULT_TIME_PICKER_SIZE: FormSize = 'md';
+
+export const FORM_CONTROL_RING_STYLES = {
+  focusVisible: 'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
+  focusWithin: 'focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50',
+  open: 'border-ring ring-3 ring-ring/50',
+  invalid:
+    'aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40',
+  invalidWithin:
+    'border-destructive focus-within:ring-3 focus-within:ring-destructive/20 dark:border-destructive/50 dark:focus-within:ring-destructive/40',
+  invalidOpen:
+    'border-destructive ring-3 ring-destructive/20 dark:border-destructive/50 dark:ring-destructive/40',
+};
 
 type FormSizeStyle = {
   height: string;

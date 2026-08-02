@@ -2,8 +2,8 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.04),transparent_35%),linear-gradient(180deg,var(--background),color-mix(in_oklab,var(--background),var(--muted)_42%))] px-6 py-16">
-      <div className="w-full max-w-4xl rounded-[32px] border border-border/70 bg-card px-10 py-14 shadow-sm">
+    <main className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,color-mix(in_oklab,var(--foreground)_4%,transparent),transparent_35%),linear-gradient(180deg,var(--background),color-mix(in_oklab,var(--background),var(--muted)_42%))] px-6 py-16">
+      <div className="w-full max-w-4xl rounded-4xl border border-border/70 bg-card px-10 py-14 shadow-sm">
         <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
           UI Design System
         </p>

@@ -13,20 +13,23 @@ import {
 } from './dialog';
 import { ScrollArea } from './scroll-area';
 
-const panelVariants = cva('max-h-[calc(100vh-2rem)] flex flex-col gap-0 overflow-hidden p-0', {
-  variants: {
-    size: {
-      sm: 'sm:max-w-sm',
-      md: 'sm:max-w-md',
-      lg: 'sm:max-w-3xl',
-      xl: 'sm:max-w-4xl',
-      fill: 'sm:!max-w-[calc(100vw-160px)]',
+const panelVariants = cva(
+  'max-h-[calc(100vh-2rem)] min-w-0 flex flex-col gap-0 overflow-hidden p-0',
+  {
+    variants: {
+      size: {
+        sm: 'sm:max-w-sm',
+        md: 'sm:max-w-md',
+        lg: 'sm:max-w-3xl',
+        xl: 'sm:max-w-4xl',
+        fill: 'sm:!max-w-[calc(100vw-160px)]',
+      },
+    },
+    defaultVariants: {
+      size: 'md',
     },
   },
-  defaultVariants: {
-    size: 'md',
-  },
-});
+);
 
 const headerVariants = cva('shrink-0', {
   variants: {
@@ -43,7 +46,7 @@ const headerVariants = cva('shrink-0', {
   },
 });
 
-const bodyVariants = cva('', {
+const bodyVariants = cva('min-w-0', {
   variants: {
     size: {
       sm: 'p-4',
@@ -109,7 +112,7 @@ function DialogPanel({
         </div>
       )}
 
-      <ScrollArea className="min-h-0 flex-1 overflow-y-auto">
+      <ScrollArea className="min-h-0 min-w-0 flex-1 overflow-y-auto">
         <div className={bodyVariants({ size })}>{children}</div>
       </ScrollArea>
 

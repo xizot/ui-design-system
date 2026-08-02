@@ -7,11 +7,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
 import {
+  MultipleComboboxAutoResizeDemo,
   MultipleComboboxBasicDemo,
   MultipleComboboxLimitTagsDemo,
+  MultipleComboboxSelectedCodeOnlyDemo,
   MultipleComboboxWithCodeDemo,
 } from './multiple-combobox-demo';
-import { SingleComboboxWithCodeDemo } from './single-combobox-demo';
+import {
+  SingleComboboxSelectedCodeOnlyDemo,
+  SingleComboboxWithCodeDemo,
+} from './single-combobox-demo';
 
 const guide = {
   name: 'Combobox',
@@ -48,6 +53,7 @@ const singleComboboxProps = [
   { name: 'error', type: 'string', defaultValue: '--' },
   { name: 'showMenuCode', type: 'boolean', defaultValue: 'true' },
   { name: 'showSelectedCode', type: 'boolean', defaultValue: 'false' },
+  { name: 'selectedCodeOnly', type: 'boolean', defaultValue: 'false' },
   { name: 'searchPlaceholder', type: 'string', defaultValue: "'Tìm kiếm...'" },
   { name: 'emptyMessage', type: 'string', defaultValue: "'Không tìm thấy kết quả'" },
   { name: 'size', type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'`, defaultValue: `'md'` },
@@ -65,12 +71,11 @@ const multipleComboboxProps = [
   { name: 'error', type: 'string', defaultValue: '--' },
   { name: 'showMenuCode', type: 'boolean', defaultValue: 'true' },
   { name: 'showSelectedCode', type: 'boolean', defaultValue: 'false' },
+  { name: 'selectedCodeOnly', type: 'boolean', defaultValue: 'false' },
   { name: 'searchPlaceholder', type: 'string', defaultValue: "'Tìm kiếm...'" },
   { name: 'emptyMessage', type: 'string', defaultValue: "'Không tìm thấy kết quả'" },
-  { name: 'requireApply', type: 'boolean', defaultValue: 'true' },
-  { name: 'cancelText', type: 'string', defaultValue: "'Hủy'" },
-  { name: 'applyText', type: 'string', defaultValue: "'Áp dụng'" },
   { name: 'limitTags', type: 'number', defaultValue: '--' },
+  { name: 'autoResize', type: 'boolean', defaultValue: 'false' },
   { name: 'size', type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'`, defaultValue: `'md'` },
   { name: 'className', type: 'string', defaultValue: '--' },
 ];
@@ -88,6 +93,20 @@ const singleUsageSamples = [
   placeholder="Chọn phòng ban..."
   showMenuCode    {/* hiện "IT - Công nghệ thông tin" trong dropdown */}
   showSelectedCode {/* hiện "IT - Công nghệ thông tin" sau khi chọn */}
+/>`,
+  },
+  {
+    id: 'selected-code-only',
+    label: 'Chỉ hiện mã',
+    preview: <SingleComboboxSelectedCodeOnlyDemo />,
+    code: `<SingleCombobox
+  label="Phòng ban"
+  options={departments}
+  value={value}
+  onChange={(v) => setValue(v)}
+  placeholder="Chọn phòng ban..."
+  showMenuCode       {/* dropdown vẫn hiện "IT - Công nghệ thông tin" */}
+  selectedCodeOnly   {/* selected chỉ hiện "IT" */}
 />`,
   },
   {
@@ -129,6 +148,33 @@ const multipleUsageSamples = [
   placeholder="Chọn phòng ban..."
   showMenuCode     {/* hiện "IT - Công nghệ thông tin" trong dropdown */}
   showSelectedCode {/* hiện "IT - Công nghệ thông tin" trong chip */}
+/>`,
+  },
+  {
+    id: 'selected-code-only',
+    label: 'Chỉ hiện mã',
+    preview: <MultipleComboboxSelectedCodeOnlyDemo />,
+    code: `<MultipleCombobox
+  label="Phòng ban"
+  options={departments}
+  value={values}
+  onChange={(v) => setValues(v)}
+  placeholder="Chọn phòng ban..."
+  showMenuCode       {/* dropdown vẫn hiện "IT - Công nghệ thông tin" */}
+  selectedCodeOnly   {/* chip chỉ hiện "IT" */}
+/>`,
+  },
+  {
+    id: 'auto-resize',
+    label: 'Auto resize',
+    preview: <MultipleComboboxAutoResizeDemo />,
+    code: `<MultipleCombobox
+  label="Phòng ban"
+  options={departments}
+  value={values}
+  onChange={(v) => setValues(v)}
+  placeholder="Chọn phòng ban..."
+  autoResize  {/* trigger cao lên và chip tự wrap nhiều dòng */}
 />`,
   },
   {

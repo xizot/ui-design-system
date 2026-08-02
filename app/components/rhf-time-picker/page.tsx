@@ -17,11 +17,15 @@ const guide = {
 const props = [
   { name: 'control', type: 'Control<T>', defaultValue: '--' },
   { name: 'name', type: 'Path<T>', defaultValue: '--' },
-  { name: 'label', type: 'string', defaultValue: '--' },
+  { name: 'label', type: 'string | React.ReactNode', defaultValue: '--' },
+  { name: 'placeholder', type: 'string', defaultValue: "'Chọn thời gian'" },
   { name: 'showSeconds', type: 'boolean', defaultValue: 'true' },
-  { name: 'className', type: 'string', defaultValue: '--' },
-  { name: 'wrapperClassName', type: 'string', defaultValue: '--' },
+  { name: 'size', type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'`, defaultValue: `'md'` },
   { name: 'required', type: 'boolean', defaultValue: 'false' },
+  { name: 'disabled', type: 'boolean', defaultValue: 'false' },
+  { name: 'className', type: 'string', defaultValue: '--' },
+  { name: 'panelClassName', type: 'string', defaultValue: '--' },
+  { name: 'callback', type: '(value: string) => void', defaultValue: '--' },
 ];
 
 const usageSamples = [

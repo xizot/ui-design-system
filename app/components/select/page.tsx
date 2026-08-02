@@ -73,6 +73,64 @@ export function Example() {
 }`,
   },
   {
+    id: 'sizes',
+    label: 'Sizes',
+    preview: (
+      <div className="flex flex-col items-start gap-3">
+        <Select>
+          <SelectTrigger size="sm" className="w-64">
+            <SelectValue placeholder="Small select" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="option1">Option 1</SelectItem>
+            <SelectItem value="option2">Option 2</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select>
+          <SelectTrigger className="w-64">
+            <SelectValue placeholder="Default select" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="option1">Option 1</SelectItem>
+            <SelectItem value="option2">Option 2</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+    ),
+    code: `import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/design-system/components/ui/select";
+
+export function Example() {
+  return (
+    <div className="flex flex-col items-start gap-3">
+      <Select>
+        <SelectTrigger size="sm" className="w-64">
+          <SelectValue placeholder="Small select" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="option1">Option 1</SelectItem>
+          <SelectItem value="option2">Option 2</SelectItem>
+        </SelectContent>
+      </Select>
+      <Select>
+        <SelectTrigger className="w-64">
+          <SelectValue placeholder="Default select" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="option1">Option 1</SelectItem>
+          <SelectItem value="option2">Option 2</SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
+  );
+}`,
+  },
+  {
     id: 'small',
     label: 'Small',
     preview: (

@@ -4,7 +4,11 @@ import { Combobox as ComboboxPrimitive } from '@base-ui/react';
 import { ChevronDownIcon, XCircleIcon } from 'lucide-react';
 import * as React from 'react';
 
-import { FORM_SIZE_STYLES, type FormSize } from '../../constants/form-sizes';
+import {
+  FORM_CONTROL_RING_STYLES,
+  FORM_SIZE_STYLES,
+  type FormSize,
+} from '../../constants/form-sizes';
 import { cn } from '../../lib/utils';
 import {
   Combobox,
@@ -34,6 +38,7 @@ type SingleComboboxProps<T extends ComboboxBaseOption> = {
   error?: string;
   showMenuCode?: boolean;
   showSelectedCode?: boolean;
+  selectedCodeOnly?: boolean;
   searchPlaceholder?: string;
   emptyMessage?: string;
   showArrowIcon?: boolean;
@@ -54,6 +59,7 @@ function SingleCombobox<T extends ComboboxBaseOption>({
   error,
   showMenuCode = true,
   showSelectedCode = false,
+  selectedCodeOnly = false,
   searchPlaceholder = 'Tìm kiếm...',
   emptyMessage = 'Không tìm thấy kết quả',
   showArrowIcon = true,
@@ -82,9 +88,10 @@ function SingleCombobox<T extends ComboboxBaseOption>({
     (id: string | number): string => {
       const opt = optionsMap.get(id);
       if (!opt) return String(id);
+      if (selectedCodeOnly) return opt.code;
       return showSelectedCode ? `${opt.code} - ${opt.name}` : opt.name;
     },
-    [optionsMap, showSelectedCode],
+    [optionsMap, selectedCodeOnly, showSelectedCode],
   );
 
   const handleValueChange = (val: string | number | null) => {
@@ -124,10 +131,11 @@ function SingleCombobox<T extends ComboboxBaseOption>({
         <div
           ref={anchorRef}
           className={cn(
-            'group/trigger bg-transparent dark:bg-input/30 relative flex w-full items-center overflow-hidden rounded-md border border-input shadow-xs transition-[border-color,box-shadow]',
-            'focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50',
+            'group/trigger relative flex w-full items-center overflow-hidden rounded-md border border-input bg-transparent shadow-xs transition-[color,box-shadow] dark:bg-input/30',
+            FORM_CONTROL_RING_STYLES.focusWithin,
+            open && (error ? FORM_CONTROL_RING_STYLES.invalidOpen : FORM_CONTROL_RING_STYLES.open),
             disabled && 'pointer-events-none cursor-not-allowed opacity-50',
-            error && 'border-destructive focus-within:ring-destructive/20',
+            error && FORM_CONTROL_RING_STYLES.invalidWithin,
             FORM_SIZE_STYLES[size].height,
             FORM_SIZE_STYLES[size].text,
           )}
@@ -152,7 +160,7 @@ function SingleCombobox<T extends ComboboxBaseOption>({
           {/* Clear-all + Chevron (z-10, above trigger) */}
           <div
             className={cn(
-              'relative z-10 ml-auto flex shrink-0 items-center gap-0.5 self-center pr-2',
+              'pointer-events-none relative z-10 ml-auto flex shrink-0 items-center gap-0.5 self-center pr-2',
               FORM_SIZE_STYLES[size].svgIcon,
             )}
           >
@@ -160,7 +168,7 @@ function SingleCombobox<T extends ComboboxBaseOption>({
               showClearIcon && showArrowIcon ? (
                 <div className={cn('relative shrink-0', FORM_SIZE_STYLES[size].icon)}>
                   <span
-                    className="absolute inset-0 z-10 flex items-center justify-center opacity-0 transition-opacity group-hover/trigger:opacity-100"
+                    className="pointer-events-auto absolute inset-0 z-10 flex items-center justify-center opacity-0 transition-opacity group-hover/trigger:opacity-100"
                     onMouseDown={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
@@ -179,7 +187,7 @@ function SingleCombobox<T extends ComboboxBaseOption>({
               ) : showClearIcon ? (
                 <button
                   type="button"
-                  className="flex size-4 cursor-pointer items-center justify-center rounded text-muted-foreground hover:text-foreground"
+                  className="pointer-events-auto flex size-4 cursor-pointer items-center justify-center rounded text-muted-foreground hover:text-foreground"
                   onClick={() => {
                     onChange?.(undefined, undefined);
                   }}

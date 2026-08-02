@@ -25,11 +25,9 @@ const props = [
   { name: 'placeholder', type: 'string', defaultValue: 'Chọn...' },
   { name: 'showMenuCode', type: 'boolean', defaultValue: 'true' },
   { name: 'showSelectedCode', type: 'boolean', defaultValue: 'false' },
+  { name: 'selectedCodeOnly', type: 'boolean', defaultValue: 'false' },
   { name: 'searchPlaceholder', type: 'string', defaultValue: 'Tìm kiếm...' },
   { name: 'emptyMessage', type: 'string', defaultValue: 'Không tìm thấy kết quả' },
-  { name: 'requireApply', type: 'boolean', defaultValue: 'false' },
-  { name: 'cancelText', type: 'string', defaultValue: 'Hủy' },
-  { name: 'applyText', type: 'string', defaultValue: 'Áp dụng' },
   { name: 'limitTags', type: 'number', defaultValue: '--' },
   { name: 'autoResize', type: 'boolean', defaultValue: 'false' },
   { name: 'showArrowIcon', type: 'boolean', defaultValue: 'true' },
@@ -91,36 +89,6 @@ export function ExampleCombobox() {
       options={departments}
       label="Phòng ban"
       placeholder="Chọn phòng ban"
-    />
-  );
-}`,
-  },
-  {
-    id: 'with-apply',
-    label: 'Require Apply',
-    preview: (
-      <div className="w-full max-w-md space-y-4 p-4">
-        <RHFMultipleComboboxWithApplyExample />
-      </div>
-    ),
-    code: `import { RHFMultipleCombobox } from "@/design-system/components/rhf";
-import { useForm } from "react-hook-form";
-
-export function ExampleCombobox() {
-  const { control } = useForm({
-    defaultValues: {
-      departments: [],
-    },
-  });
-
-  return (
-    <RHFMultipleCombobox
-      control={control}
-      name="departments"
-      options={departments}
-      label="Phòng ban"
-      placeholder="Chọn phòng ban"
-      requireApply={true}
     />
   );
 }`,
@@ -201,25 +169,6 @@ function RHFMultipleComboboxExample() {
       options={departments}
       label="Phòng ban"
       placeholder="Chọn phòng ban"
-    />
-  );
-}
-
-function RHFMultipleComboboxWithApplyExample() {
-  const { control } = useForm({
-    defaultValues: {
-      departments: [],
-    },
-  });
-
-  return (
-    <RHFMultipleCombobox
-      control={control}
-      name="departments"
-      options={departments}
-      label="Phòng ban"
-      placeholder="Chọn phòng ban"
-      requireApply
     />
   );
 }

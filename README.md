@@ -62,6 +62,7 @@ design-system/
   constants/
   hooks/
   lib/
+AGENTS.md
 ```
 
 ## 🤖 CLI Behavior
@@ -72,6 +73,10 @@ The installer uses a guided flow:
    It checks for existing files inside `design-system/` and asks whether to overwrite, skip, or review conflicts one by one.
 2. 📦 Dependencies
    It checks the target project's `package.json`, detects missing runtime dependencies, and asks whether they should be installed automatically.
+3. 🤖 Agent rules
+   It creates or updates the target project's `AGENTS.md` with the rules from `docs/design-system-usage-rules.md`.
+4. 🎨 Project files
+   It asks where to copy theme files such as `app/globals.css`.
 
 Supported package managers:
 
@@ -196,4 +201,4 @@ Update both:
 
 - The source is written with relative imports so copied files do not depend on local alias configuration.
 - The CLI is designed to be safe for existing projects by prompting before overwriting files.
-- The docs app is internal to this repository; the CLI only installs the design system source folders into the target project.
+- The docs app is internal to this repository; the CLI installs the design system source folders plus the consumer rules needed for downstream projects.

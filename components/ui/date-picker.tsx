@@ -7,7 +7,7 @@ import { FormLabel } from './form-label';
 import { MonthPicker } from './month-picker';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
 import { Separator } from './separator';
-import { TimePicker, type TimeValue } from './time-picker';
+import { TimePickerPanel, type TimeValue } from './time-picker';
 import { FORM_SIZE_STYLES, type FormSize } from '../../constants/form-sizes';
 import { cn } from '../../lib/utils';
 import {
@@ -35,6 +35,22 @@ function toDate(value: Date | string | undefined): Date | undefined {
   const parsed = new Date(value);
   return isValid(parsed) ? parsed : undefined;
 }
+
+const datePickerMenuSizeStyles: Record<
+  FormSize,
+  {
+    calendar: string;
+    panelHeight: string;
+  }
+> = {
+  xxs: { calendar: '!p-2 text-xs [--cell-size:--spacing(6)]', panelHeight: 'h-[280px]' },
+  xs: { calendar: '!p-2 text-xs [--cell-size:--spacing(7)]', panelHeight: 'h-[300px]' },
+  sm: { calendar: '!p-2.5 text-sm [--cell-size:--spacing(7)]', panelHeight: 'h-[320px]' },
+  md: { calendar: '!p-3 text-sm [--cell-size:--spacing(8)]', panelHeight: 'h-[350px]' },
+  lg: { calendar: '!p-3 text-base [--cell-size:--spacing(9)]', panelHeight: 'h-[390px]' },
+  xl: { calendar: '!p-3.5 text-base [--cell-size:--spacing(10)]', panelHeight: 'h-[430px]' },
+  xxl: { calendar: '!p-4 text-lg [--cell-size:--spacing(11)]', panelHeight: 'h-[480px]' },
+};
 
 // ---------------------------------------------------------------------------
 // Types
@@ -295,6 +311,7 @@ function DatePicker({
       }) as React.ComponentProps<typeof Calendar>,
     [calendarProps, tempDate, currentMonth, handleCheckDisabled, locale],
   );
+  const menuSizeStyles = datePickerMenuSizeStyles[size];
 
   // ---------------------------------------------------------------------------
   // Render
@@ -323,28 +340,33 @@ function DatePicker({
 
               <div
                 className={cn(
-                  'relative z-10 ml-auto flex shrink-0 items-center gap-0.5 self-center',
+                  'relative z-10 ml-auto flex shrink-0 items-center gap-2 self-center',
                   FORM_SIZE_STYLES[size].svgIcon,
                 )}
               >
                 {resolvedValue && !disabled ? (
                   showClearIcon ? (
-                    <div className={cn('relative shrink-0', FORM_SIZE_STYLES[size].icon)}>
+                    <>
                       <span
-                        className="absolute inset-0 z-10 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100"
+                        className={cn(
+                          'flex shrink-0 items-center justify-center text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 hover:text-foreground',
+                          FORM_SIZE_STYLES[size].icon,
+                        )}
                         onMouseDown={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
                         }}
-                        onClick={() => onChange?.(undefined)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          onChange?.(undefined);
+                        }}
                       >
-                        <XCircleIcon className="text-muted-foreground" />
+                        <XCircleIcon />
                         <span className="sr-only">Clear</span>
                       </span>
-                      <span className="absolute inset-0 flex items-center justify-center transition-opacity group-hover:opacity-0">
-                        <CalendarIcon className={cn('opacity-50', FORM_SIZE_STYLES[size].icon)} />
-                      </span>
-                    </div>
+                      <CalendarIcon className={cn('opacity-50', FORM_SIZE_STYLES[size].icon)} />
+                    </>
                   ) : (
                     <CalendarIcon className={cn('opacity-50', FORM_SIZE_STYLES[size].icon)} />
                   )
@@ -361,18 +383,20 @@ function DatePicker({
           >
             <div className="flex flex-col gap-2 pb-2">
               {timeOnly ? (
-                <div className="flex h-[350px]">
-                  <TimePicker
+                <div className={cn('flex', menuSizeStyles.panelHeight)}>
+                  <TimePickerPanel
                     value={selectedTime}
                     onChange={setSelectedTime}
+                    size={size}
                     className="min-h-0 h-full shrink-0 w-full"
                   />
                 </div>
               ) : mode === 'month' ? (
-                <div className="flex h-[350px]">
+                <div className={cn('flex', menuSizeStyles.panelHeight)}>
                   <MonthPicker
                     value={tempDate}
                     onChange={setTempDate}
+                    size={size}
                     locale={locale}
                     monthNames={monthNames}
                     disabled={handleCheckDisabled}
@@ -380,12 +404,22 @@ function DatePicker({
                   />
                 </div>
               ) : (
-                <div className={cn('flex h-[350px]', showTime && 'overflow-hidden')}>
-                  <Calendar initialFocus {...calendarPropsWithMode} />
+                <div
+                  className={cn(
+                    'flex',
+                    showTime && [menuSizeStyles.panelHeight, 'overflow-hidden'],
+                  )}
+                >
+                  <Calendar
+                    initialFocus
+                    {...calendarPropsWithMode}
+                    className={cn(menuSizeStyles.calendar, calendarPropsWithMode.className)}
+                  />
                   {showTime && (
-                    <TimePicker
+                    <TimePickerPanel
                       value={selectedTime}
                       onChange={setSelectedTime}
+                      size={size}
                       className="min-h-0 h-full shrink-0"
                     />
                   )}

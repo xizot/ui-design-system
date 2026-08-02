@@ -1,11 +1,13 @@
 'use client';
 
+import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { TypographyH4, TypographyMuted, TypographySmall } from '@/components/ui/typography';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useMemo, useState } from 'react';
 import { StylePresetCombobox } from '../../internal-components/style-preset-combobox';
 
 const guides = [
@@ -17,6 +19,7 @@ const guides = [
   { slug: 'avatar', name: 'Avatar', group: 'ui' as const },
   { slug: 'badge', name: 'Badge', group: 'ui' as const },
   { slug: 'breadcrumb', name: 'Breadcrumb', group: 'ui' as const },
+  { slug: 'bubble', name: 'Bubble', group: 'ui' as const },
   { slug: 'button', name: 'Button', group: 'ui' as const },
   { slug: 'button-group', name: 'Button Group', group: 'ui' as const },
   { slug: 'calendar', name: 'Calendar', group: 'ui' as const },
@@ -43,6 +46,7 @@ const guides = [
   { slug: 'kbd', name: 'Kbd', group: 'ui' as const },
   { slug: 'label', name: 'Label', group: 'ui' as const },
   { slug: 'menubar', name: 'Menubar', group: 'ui' as const },
+  { slug: 'message', name: 'Message', group: 'ui' as const },
   { slug: 'native-select', name: 'Native Select', group: 'ui' as const },
   { slug: 'navigation-menu', name: 'Navigation Menu', group: 'ui' as const },
   { slug: 'number-input', name: 'Number Input', group: 'ui' as const },
@@ -59,6 +63,7 @@ const guides = [
   { slug: 'sheet-panel', name: 'Sheet Panel', group: 'ui' as const },
   { slug: 'drawer-panel', name: 'Drawer Panel', group: 'ui' as const },
   { slug: 'sidebar', name: 'Sidebar', group: 'ui' as const },
+  { slug: 'marker', name: 'Marker', group: 'ui' as const },
   { slug: 'skeleton', name: 'Skeleton', group: 'ui' as const },
   { slug: 'slider', name: 'Slider', group: 'ui' as const },
   { slug: 'sonner', name: 'Sonner', group: 'ui' as const },
@@ -93,6 +98,22 @@ export default function ComponentsLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
+  const [search, setSearch] = useState('');
+  const filteredGuides = useMemo(() => {
+    const normalizedSearch = search.trim().toLowerCase();
+
+    if (!normalizedSearch) {
+      return guides;
+    }
+
+    return guides.filter((guide) => {
+      return (
+        guide.name.toLowerCase().includes(normalizedSearch) ||
+        guide.slug.toLowerCase().includes(normalizedSearch) ||
+        guide.group.toLowerCase().includes(normalizedSearch)
+      );
+    });
+  }, [search]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -133,9 +154,17 @@ export default function ComponentsLayout({
                 </TypographySmall>
                 <TypographyH4 className="mt-2">Usage Guide</TypographyH4>
               </div>
+              <Input
+                className="mb-4"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Tìm component..."
+                size="sm"
+                aria-label="Tìm component"
+              />
               <ScrollArea className="h-[calc(100vh-200px)]">
                 <nav className="space-y-1 pr-4">
-                  {guides.map((guide) => {
+                  {filteredGuides.map((guide) => {
                     const path = `/components/${guide.slug}`;
                     const isActive = pathname === path || pathname.startsWith(`${path}/`);
                     return (
@@ -156,6 +185,11 @@ export default function ComponentsLayout({
                       </Link>
                     );
                   })}
+                  {filteredGuides.length === 0 ? (
+                    <p className="px-3 py-2 text-sm text-muted-foreground">
+                      Không tìm thấy component.
+                    </p>
+                  ) : null}
                 </nav>
               </ScrollArea>
             </div>

@@ -6,5 +6,5 @@ type FormErrorMessageProps = {
 };
 
 export function FormErrorMessage({ error, errorClassName }: FormErrorMessageProps) {
-  return <p className={cn('text-sm text-destructive mt-1', errorClassName)}>{error}</p>;
+  return <p className={cn('mt-1 text-sm text-destructive', errorClassName)}>{error}</p>;
 }

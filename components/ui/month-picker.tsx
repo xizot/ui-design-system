@@ -2,6 +2,7 @@
 
 import { ScrollArea } from './scroll-area';
 import { cn } from '../../lib/utils';
+import type { FormSize } from '../../constants/form-sizes';
 import { startOfMonth, type Locale } from 'date-fns';
 import * as React from 'react';
 
@@ -12,6 +13,20 @@ export type MonthPickerProps = {
   monthNames?: string[];
   disabled?: (date: Date) => boolean;
   className?: string;
+  size?: FormSize;
+};
+
+const monthPickerSizeStyles: Record<
+  FormSize,
+  { header: string; item: string; monthColumn: string }
+> = {
+  xxs: { header: 'px-3 py-2 text-sm', item: 'px-1.5 py-1 text-xs', monthColumn: 'w-24' },
+  xs: { header: 'px-3 py-2 text-sm', item: 'px-1.5 py-1 text-xs', monthColumn: 'w-28' },
+  sm: { header: 'px-3 py-2 text-base', item: 'px-2 py-1 text-sm', monthColumn: 'w-28' },
+  md: { header: 'px-4 py-3 text-lg', item: 'px-2 py-1.5 text-sm', monthColumn: 'w-32' },
+  lg: { header: 'px-4 py-3 text-lg', item: 'px-2.5 py-2 text-base', monthColumn: 'w-36' },
+  xl: { header: 'px-5 py-4 text-xl', item: 'px-3 py-2 text-base', monthColumn: 'w-40' },
+  xxl: { header: 'px-5 py-4 text-xl', item: 'px-3 py-2.5 text-lg', monthColumn: 'w-44' },
 };
 
 function MonthPicker({
@@ -21,6 +36,7 @@ function MonthPicker({
   monthNames,
   disabled,
   className,
+  size = 'md',
 }: MonthPickerProps) {
   const [selectedYear, setSelectedYear] = React.useState<number>(() => {
     return value ? value.getFullYear() : new Date().getFullYear();
@@ -139,17 +155,20 @@ function MonthPicker({
     }
     return `${months[new Date().getMonth()]} ${new Date().getFullYear()}`;
   }, [value, months, selectedMonth, selectedYear]);
+  const sizeStyles = monthPickerSizeStyles[size];
 
   return (
     <div className={cn('flex flex-col h-full', className)}>
-      {/* Display selected month/year */}
-      <div className="px-4 py-3 text-center shrink-0">
-        <div className="font-medium text-lg">{displayValue}</div>
+      <div className="text-center shrink-0">
+        <div className={cn('font-medium', sizeStyles.header)}>{displayValue}</div>
       </div>
-      {/* Scrollable columns */}
       <div className="flex flex-1 min-h-0 gap-0.5">
-        {/* Months column - first column */}
-        <ScrollArea className="w-30 [&>[data-slot=scroll-area-viewport]]:rounded-l-md overflow-hidden">
+        <ScrollArea
+          className={cn(
+            '[&>[data-slot=scroll-area-viewport]]:rounded-l-md overflow-hidden',
+            sizeStyles.monthColumn,
+          )}
+        >
           <div ref={monthContainerRef} className="px-2">
             {months.map((month, index) => {
               const isSelected = selectedMonth === index;
@@ -160,8 +179,9 @@ function MonthPicker({
                   data-month={index}
                   onClick={() => !isDisabled && handleMonthSelect(index)}
                   className={cn(
-                    'px-2 py-1.5 text-center cursor-pointer text-sm transition-colors rounded-md',
-                    isSelected ? 'bg-secondary' : 'hover:bg-accent',
+                    'text-center cursor-pointer transition-colors rounded-md',
+                    sizeStyles.item,
+                    isSelected ? 'bg-secondary text-secondary-foreground' : 'hover:bg-accent',
                     isDisabled && 'opacity-50 cursor-not-allowed',
                   )}
                 >
@@ -171,7 +191,6 @@ function MonthPicker({
             })}
           </div>
         </ScrollArea>
-        {/* Years column - second column */}
         <ScrollArea className="flex-1 [&>[data-slot=scroll-area-viewport]]:rounded-r-md overflow-hidden">
           <div ref={yearContainerRef} className="px-2">
             {years.map((year) => {
@@ -182,8 +201,9 @@ function MonthPicker({
                   data-year={year}
                   onClick={() => handleYearSelect(year)}
                   className={cn(
-                    'px-2 py-1.5 text-center cursor-pointer text-sm transition-colors rounded-md',
-                    isSelected ? 'bg-secondary' : 'hover:bg-accent',
+                    'text-center cursor-pointer transition-colors rounded-md',
+                    sizeStyles.item,
+                    isSelected ? 'bg-secondary text-secondary-foreground' : 'hover:bg-accent',
                   )}
                 >
                   {year}

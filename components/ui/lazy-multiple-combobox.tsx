@@ -1,15 +1,16 @@
 'use client';
 
 import { Combobox as ComboboxPrimitive } from '@base-ui/react';
-import { useVirtualizer } from '@tanstack/react-virtual';
 import { Check, ChevronDownIcon, Loader2Icon, XCircleIcon, XIcon } from 'lucide-react';
 import * as React from 'react';
 
-import { FORM_SIZE_STYLES, type FormSize } from '../../constants/form-sizes';
+import {
+  FORM_CONTROL_RING_STYLES,
+  FORM_SIZE_STYLES,
+  type FormSize,
+} from '../../constants/form-sizes';
 import { cn } from '../../lib/utils';
 import { Badge } from './badge';
-import { Button } from './button';
-import { Checkbox } from './checkbox';
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxList } from './combobox';
 import { FormErrorMessage } from './form-error-message';
 import { FormLabel } from './form-label';
@@ -62,11 +63,9 @@ type LazyMultipleComboboxProps<
   error?: string;
   showMenuCode?: boolean;
   showSelectedCode?: boolean;
+  selectedCodeOnly?: boolean;
   searchPlaceholder?: string;
   emptyMessage?: string;
-  requireApply?: boolean;
-  clearText?: string;
-  applyText?: string;
   limitTags?: number;
   autoResize?: boolean;
   showArrowIcon?: boolean;
@@ -119,11 +118,9 @@ function LazyMultipleCombobox<
   error,
   showMenuCode = true,
   showSelectedCode = false,
+  selectedCodeOnly = false,
   searchPlaceholder = 'Tìm kiếm...',
   emptyMessage = 'Không tìm thấy kết quả',
-  requireApply = true,
-  clearText = 'Xóa',
-  applyText = 'Áp dụng',
   limitTags,
   autoResize = false,
   showArrowIcon = true,
@@ -139,9 +136,6 @@ function LazyMultipleCombobox<
   const anchorRef = React.useRef<HTMLDivElement>(null);
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const sentinelRef = React.useRef<HTMLDivElement>(null);
-  const isUserScrollingRef = React.useRef(false);
-  const userScrollTimerRef = React.useRef<NodeJS.Timeout>(null);
-  const isApplyingRef = React.useRef(false);
 
   const [open, setOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -164,11 +158,11 @@ function LazyMultipleCombobox<
   const isControlled = value !== undefined;
   const [internalValue, setInternalValue] = React.useState<(string | number)[]>([]);
   const resolvedValue = isControlled ? value : internalValue;
+  const selectedValuesRef = React.useRef<(string | number)[]>(resolvedValue);
 
-  // Internal selected ids — tracks pending selection before Apply
-  const [internalSelectedIds, setInternalSelectedIds] = React.useState<Set<string | number>>(
-    () => new Set(resolvedValue),
-  );
+  React.useEffect(() => {
+    selectedValuesRef.current = resolvedValue;
+  }, [resolvedValue]);
 
   // ---------------------------------------------------------------------------
   // Seed itemsMap with backupOptions so labels resolve immediately
@@ -179,34 +173,6 @@ function LazyMultipleCombobox<
     backupOptions.forEach((opt) => itemsMapRef.current.set(opt.id, opt));
     setItemsList(Array.from(itemsMapRef.current.values()));
   }, [backupOptions]);
-
-  // Prevent base-ui from hijacking scroll when user is scrolling.
-  React.useEffect(() => {
-    const container = scrollRef.current;
-    if (!container) return;
-
-    const onScroll = () => {
-      isUserScrollingRef.current = true;
-      clearTimeout(userScrollTimerRef.current as NodeJS.Timeout);
-      userScrollTimerRef.current = setTimeout(() => {
-        isUserScrollingRef.current = false;
-      }, 500);
-    };
-
-    const originalScrollIntoView = Element.prototype.scrollIntoView;
-    Element.prototype.scrollIntoView = function (this: Element, ...args) {
-      if (isUserScrollingRef.current && container.contains(this)) return;
-      originalScrollIntoView.apply(this, args);
-    };
-
-    container.addEventListener('scroll', onScroll, { passive: true });
-
-    return () => {
-      container.removeEventListener('scroll', onScroll);
-      Element.prototype.scrollIntoView = originalScrollIntoView;
-      clearTimeout(userScrollTimerRef.current as NodeJS.Timeout);
-    };
-  }, [open]);
 
   // ---------------------------------------------------------------------------
   // Fetch page
@@ -252,8 +218,8 @@ function LazyMultipleCombobox<
           // Re-insert backup options
           backupOptions?.forEach((opt) => newMap.set(opt.id, opt));
 
-          // Re-insert currently selected items (survive search reset)
-          internalSelectedIds.forEach((id) => {
+          // Re-insert currently selected items so labels survive search reset.
+          selectedValuesRef.current.forEach((id) => {
             const existing = itemsMapRef.current.get(id);
             if (existing) newMap.set(id, existing);
           });
@@ -275,8 +241,6 @@ function LazyMultipleCombobox<
         setIsLoading(false);
       }
     },
-    // internalSelectedIds intentionally omitted — read via closure ref pattern below
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [fetchOptions, mapResponse, searchKey, pageKey, pageSizeKey, pageSize, backupOptions],
   );
 
@@ -326,17 +290,6 @@ function LazyMultipleCombobox<
   }, [open, isLastPage, currentPage, debouncedSearch, fetchPage]);
 
   // ---------------------------------------------------------------------------
-  // Virtualizer — fixed row height (no measureElement to avoid scroll jumps)
-  // ---------------------------------------------------------------------------
-
-  const virtualizer = useVirtualizer({
-    count: itemsList.length,
-    getScrollElement: () => scrollRef.current,
-    estimateSize: () => 32,
-    overscan: 5,
-  });
-
-  // ---------------------------------------------------------------------------
   // Label / option resolution
   // ---------------------------------------------------------------------------
 
@@ -344,9 +297,10 @@ function LazyMultipleCombobox<
     (id: string | number): string => {
       const opt = itemsMapRef.current.get(id);
       if (!opt) return String(id);
+      if (selectedCodeOnly) return opt.code;
       return showSelectedCode ? `${opt.code} - ${opt.name}` : opt.name;
     },
-    [showSelectedCode],
+    [selectedCodeOnly, showSelectedCode],
   );
 
   const resolveOptions = React.useCallback(
@@ -360,13 +314,7 @@ function LazyMultipleCombobox<
   // ---------------------------------------------------------------------------
 
   const handleOpenChange = (nextOpen: boolean) => {
-    if (nextOpen) {
-      setInternalSelectedIds(new Set(resolvedValue));
-    } else if (!isApplyingRef.current) {
-      setInternalSelectedIds(new Set(resolvedValue));
-    }
     if (!nextOpen) setSearchQuery('');
-    isApplyingRef.current = false;
     setOpen(nextOpen);
   };
 
@@ -375,45 +323,23 @@ function LazyMultipleCombobox<
   // ---------------------------------------------------------------------------
 
   const handleInternalValueChange = (vals: (string | number)[]) => {
-    const newSet = new Set(vals);
-    setInternalSelectedIds(newSet);
-    if (!requireApply) {
-      if (!isControlled) setInternalValue(vals);
-      onChange?.(vals, resolveOptions(vals));
-    }
-  };
-
-  const handleApply = () => {
-    isApplyingRef.current = true;
-    const vals = Array.from(internalSelectedIds);
     if (!isControlled) setInternalValue(vals);
     onChange?.(vals, resolveOptions(vals));
-    setOpen(false);
-  };
-
-  const handleCancel = () => {
-    setInternalSelectedIds(new Set());
-    if (!isControlled) setInternalValue([]);
-    if (!requireApply) setOpen(false);
   };
 
   const handleClearAll = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     if (!isControlled) setInternalValue([]);
     onChange?.([], []);
-    setInternalSelectedIds(new Set());
   };
 
   const handleRemoveSingle = (e: React.MouseEvent, removeId: string | number) => {
+    e.preventDefault();
     e.stopPropagation();
     const newValues = resolvedValue.filter((v) => v !== removeId);
     if (!isControlled) setInternalValue(newValues);
     onChange?.(newValues, resolveOptions(newValues));
-    setInternalSelectedIds((prev) => {
-      const next = new Set(prev);
-      next.delete(removeId);
-      return next;
-    });
   };
 
   // ---------------------------------------------------------------------------
@@ -421,25 +347,24 @@ function LazyMultipleCombobox<
   // ---------------------------------------------------------------------------
 
   const externalValues = resolvedValue;
+  const selectedIds = React.useMemo(() => new Set(externalValues), [externalValues]);
   const filteredItemIds = React.useMemo(() => itemsList.map((o) => o.id), [itemsList]);
-  const internalValuesArray = React.useMemo(
-    () => Array.from(internalSelectedIds),
-    [internalSelectedIds],
-  );
+  const displayedValues =
+    limitTags !== undefined ? externalValues.slice(0, limitTags) : externalValues;
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <div className={cn('w-full', className)}>
+    <div className={cn('w-full min-w-0', className)}>
       {label && <FormLabel label={label} htmlFor={inputId} required={required} />}
 
       <Combobox<string | number, true>
         multiple
         open={open}
         onOpenChange={handleOpenChange}
-        value={internalValuesArray}
+        value={externalValues}
         onValueChange={handleInternalValueChange}
         disabled={disabled}
         itemToStringLabel={itemToStringLabel}
@@ -449,11 +374,12 @@ function LazyMultipleCombobox<
         <div
           ref={anchorRef}
           className={cn(
-            'group/trigger bg-transparent dark:bg-input/30 relative flex w-full rounded-md border border-input shadow-xs transition-[border-color,box-shadow]',
-            autoResize ? 'items-start' : 'items-stretch',
-            'focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50',
+            'group/trigger relative flex w-full min-w-0 rounded-md border border-input bg-transparent shadow-xs transition-[color,box-shadow] dark:bg-input/30',
+            autoResize ? 'items-start' : 'items-stretch overflow-hidden',
+            FORM_CONTROL_RING_STYLES.focusWithin,
+            open && (error ? FORM_CONTROL_RING_STYLES.invalidOpen : FORM_CONTROL_RING_STYLES.open),
             disabled && 'pointer-events-none cursor-not-allowed opacity-50',
-            error && 'border-destructive focus-within:ring-destructive/20',
+            error && FORM_CONTROL_RING_STYLES.invalidWithin,
             FORM_SIZE_STYLES[size].height,
             FORM_SIZE_STYLES[size].text,
           )}
@@ -462,39 +388,42 @@ function LazyMultipleCombobox<
             className={cn(
               'flex min-w-0 flex-1 items-center gap-1',
               FORM_SIZE_STYLES[size].paddingX,
-              autoResize && 'flex-wrap',
+              autoResize ? 'flex-wrap' : 'overflow-hidden',
             )}
           >
             {externalValues.length > 0 ? (
               <>
-                {(limitTags !== undefined
-                  ? externalValues.slice(0, limitTags)
-                  : externalValues
-                ).map((id) => {
+                {displayedValues.map((id) => {
                   const opt = itemsMapRef.current.get(id);
                   if (!opt) return null;
                   return (
                     <Badge
                       key={id}
                       variant="outline"
-                      className="flex min-w-0 max-w-fit flex-1 items-center gap-1 rounded-sm border-border pr-0.5 font-normal"
+                      className="flex w-fit max-w-full min-w-0 shrink items-center gap-1 overflow-hidden rounded-sm border-border pr-0.5 font-normal"
                     >
                       {onSelectedRender ? (
-                        // opt is TOption — caller gets full typed access
-                        onSelectedRender(id, opt)
+                        <span className="min-w-0 flex-1 truncate">{onSelectedRender(id, opt)}</span>
                       ) : (
-                        <p className="truncate">
-                          {showSelectedCode ? `${opt.code} - ${opt.name}` : opt.name}
+                        <p className="min-w-0 flex-1 truncate">
+                          {selectedCodeOnly
+                            ? opt.code
+                            : showSelectedCode
+                              ? `${opt.code} - ${opt.name}`
+                              : opt.name}
                         </p>
                       )}
-                      {!requireApply && !disabled && (
+                      {!disabled && (
                         <button
                           type="button"
-                          className="pointer-events-auto z-10 me-1 inline-flex size-3.5 shrink-0 cursor-pointer items-center justify-center rounded text-muted-foreground hover:text-foreground"
-                          onPointerDown={(e) => e.stopPropagation()}
+                          className="pointer-events-auto relative z-20 me-1 inline-flex size-3.5 shrink-0 grow-0 cursor-pointer items-center justify-center rounded text-muted-foreground hover:text-foreground"
+                          onPointerDown={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                          }}
                           onClick={(e) => handleRemoveSingle(e, id)}
                         >
-                          <XIcon className="size-3" />
+                          <XIcon className="size-3 shrink-0" />
                         </button>
                       )}
                     </Badge>
@@ -517,24 +446,25 @@ function LazyMultipleCombobox<
           {/* Clear-all + Chevron */}
           <div
             className={cn(
-              'relative ml-auto flex shrink-0 items-center gap-0.5 self-center pr-2',
+              'pointer-events-none relative z-20 ml-auto flex shrink-0 items-center gap-0.5 self-center pr-2',
               FORM_SIZE_STYLES[size].svgIcon,
             )}
           >
             {externalValues.length > 0 && !disabled ? (
               showClearIcon && showArrowIcon ? (
                 <div className={cn('relative shrink-0', FORM_SIZE_STYLES[size].icon)}>
-                  <span
-                    className="absolute inset-0 z-10 flex items-center justify-center opacity-0 transition-opacity group-hover/trigger:opacity-100"
+                  <button
+                    type="button"
+                    className="pointer-events-auto absolute inset-0 z-20 flex cursor-pointer items-center justify-center rounded text-muted-foreground opacity-0 transition-opacity group-hover/trigger:opacity-100 hover:text-foreground"
                     onMouseDown={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
                     }}
                     onClick={handleClearAll}
                   >
-                    <XCircleIcon className="text-muted-foreground" />
+                    <XCircleIcon className="shrink-0" />
                     <span className="sr-only">Clear</span>
-                  </span>
+                  </button>
                   <span className="absolute inset-0 flex items-center justify-center transition-opacity group-hover/trigger:opacity-0">
                     <ChevronDownIcon className="text-muted-foreground" />
                   </span>
@@ -543,7 +473,7 @@ function LazyMultipleCombobox<
                 <button
                   type="button"
                   className={cn(
-                    'flex cursor-pointer items-center justify-center rounded text-muted-foreground hover:text-foreground',
+                    'pointer-events-auto flex cursor-pointer items-center justify-center rounded text-muted-foreground hover:text-foreground',
                     FORM_SIZE_STYLES[size].icon,
                   )}
                   onClick={handleClearAll}
@@ -586,67 +516,37 @@ function LazyMultipleCombobox<
               ) : null}
             </ComboboxEmpty>
 
-            {/* Scroll container */}
             <div ref={scrollRef} className="overflow-y-auto" style={{ maxHeight: 240 }}>
-              {/* Virtual height spacer */}
-              <div style={{ height: virtualizer.getTotalSize(), position: 'relative' }}>
-                {virtualizer.getVirtualItems().map((vItem) => {
-                  const option = itemsList[vItem.index];
-                  if (!option) return null;
-                  const isSelected = internalSelectedIds.has(option.id);
-                  return (
-                    <div
-                      key={option.id}
-                      data-index={vItem.index}
-                      style={{
-                        position: 'absolute',
-                        top: 0,
-                        transform: `translateY(${vItem.start}px)`,
-                        width: '100%',
-                      }}
-                    >
-                      <ComboboxPrimitive.Item
-                        value={option.id}
+              {itemsList.map((option) => {
+                const isSelected = selectedIds.has(option.id);
+                return (
+                  <ComboboxPrimitive.Item
+                    key={option.id}
+                    value={option.id}
+                    className={cn(
+                      'relative mt-px flex w-full cursor-default select-none items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden',
+                      'data-highlighted:bg-accent data-highlighted:text-accent-foreground',
+                      'data-disabled:pointer-events-none data-disabled:opacity-50',
+                      isSelected && 'bg-accent text-accent-foreground',
+                    )}
+                  >
+                    <span className="min-w-0 flex-1 truncate">
+                      {showMenuCode ? `${option.code} - ${option.name}` : option.name}
+                    </span>
+                    <span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center text-primary">
+                      <Check
                         className={cn(
-                          'relative mt-px flex w-full cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden',
-                          'data-highlighted:bg-accent data-highlighted:text-accent-foreground',
-                          'data-disabled:pointer-events-none data-disabled:opacity-50',
-                          isSelected && 'bg-accent text-accent-foreground',
+                          'pointer-events-none text-primary transition-opacity',
+                          isSelected ? 'opacity-100' : 'opacity-0',
                         )}
-                      >
-                        <Checkbox
-                          checked={isSelected}
-                          onCheckedChange={() => {}}
-                          tabIndex={-1}
-                          aria-hidden={true}
-                          className="pointer-events-none"
-                          wrapperClassName="w-full"
-                          label={
-                            <span className="flex w-full items-center">
-                              <span className="flex-1 truncate">
-                                {showMenuCode ? `${option.code} - ${option.name}` : option.name}
-                              </span>
-                              {/* Always reserve space — opacity instead of conditional render to avoid height shift */}
-                              <Check
-                                className={cn(
-                                  'ml-auto h-4 w-4 shrink-0 text-primary transition-opacity',
-                                  isSelected ? 'opacity-100' : 'opacity-0',
-                                )}
-                              />
-                            </span>
-                          }
-                          labelClassName="font-normal flex w-full"
-                        />
-                      </ComboboxPrimitive.Item>
-                    </div>
-                  );
-                })}
-              </div>
+                      />
+                    </span>
+                  </ComboboxPrimitive.Item>
+                );
+              })}
 
-              {/* Sentinel — triggers next page */}
               <div ref={sentinelRef} className="h-1" />
 
-              {/* Loading indicator */}
               {isLoading && (
                 <div className="flex items-center justify-center py-2 text-muted-foreground">
                   <Loader2Icon className="size-4 animate-spin" />
@@ -654,17 +554,6 @@ function LazyMultipleCombobox<
               )}
             </div>
           </ComboboxList>
-
-          {requireApply && (
-            <div className="flex items-center gap-2 border-t border-border/70 p-2">
-              <Button variant="outline" size="sm" className="flex-1" onClick={handleCancel}>
-                {clearText}
-              </Button>
-              <Button size="sm" className="flex-1" onClick={handleApply}>
-                {applyText}
-              </Button>
-            </div>
-          )}
         </ComboboxContent>
       </Combobox>
 

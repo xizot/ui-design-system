@@ -184,12 +184,13 @@ export default function CheckboxGuidePage() {
             </CardHeader>
             <CardContent>
               <div className="flex flex-col gap-4 max-w-sm">
-                <Checkbox id="xxs-checkbox" size="xxs" label="Extra Small" />
-                <Checkbox id="xs-checkbox" size="xs" label="Extra Small" />
+                <Checkbox id="xxs-checkbox" size="xxs" label="XXS Checkbox" />
+                <Checkbox id="xs-checkbox" size="xs" label="XS Checkbox" />
                 <Checkbox id="sm-checkbox" size="sm" label="Small" />
                 <Checkbox id="md-checkbox" size="md" label="Medium" />
                 <Checkbox id="lg-checkbox" size="lg" label="Large" />
-                <Checkbox id="xl-checkbox" size="xl" label="Extra Large" />
+                <Checkbox id="xl-checkbox" size="xl" label="XL Checkbox" />
+                <Checkbox id="xxl-checkbox" size="xxl" label="XXL Checkbox" />
               </div>
             </CardContent>
           </Card>

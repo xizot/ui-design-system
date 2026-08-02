@@ -4,10 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CodeBlock } from '@/components/ui/code-block';
 import { Input } from '@/components/ui/input';
+import { MultipleCombobox } from '@/components/ui/multiple-combobox';
 import { PopoverPanel, PopoverPanelRoot, PopoverPanelTrigger } from '@/components/ui/popover-panel';
+import { SingleCombobox } from '@/components/ui/single-combobox';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const guide = {
   name: 'Popover Panel',
@@ -23,6 +25,63 @@ const props = [
   { name: 'className', type: 'string', defaultValue: '--' },
   { name: 'side', type: `"top" | "right" | "bottom" | "left"`, defaultValue: `"bottom"` },
 ];
+
+const comboboxOptions = Array.from({ length: 60 }, (_, index) => {
+  const value = index + 1;
+
+  return {
+    id: `option-${value}`,
+    code: `OPT${String(value).padStart(2, '0')}`,
+    name: `Tùy chọn kiểm tra scroll ${value}`,
+  };
+});
+
+function PopoverComboboxScrollDemo() {
+  const [singleValue, setSingleValue] = useState<string | number>();
+  const [multipleValues, setMultipleValues] = useState<(string | number)[]>([]);
+
+  return (
+    <PopoverPanelRoot>
+      <PopoverPanelTrigger render={<Button variant="outline">Combobox scroll</Button>} />
+      <PopoverPanel
+        size="xl"
+        title="Kiểm tra combobox trong popover"
+        description="Mở từng combobox để kiểm tra menu nhiều option và scroll trong popover."
+        className="max-h-[calc(100vh-8rem)]"
+        footer={<Button>Áp dụng</Button>}
+      >
+        <div className="grid gap-4">
+          <SingleCombobox
+            label="SingleCombobox"
+            options={comboboxOptions}
+            value={singleValue}
+            onChange={(nextValue) => setSingleValue(nextValue)}
+            placeholder="Chọn một tùy chọn"
+            searchPlaceholder="Tìm option..."
+          />
+          <MultipleCombobox
+            label="MultipleCombobox"
+            options={comboboxOptions}
+            value={multipleValues}
+            onChange={(nextValues) => setMultipleValues(nextValues)}
+            placeholder="Chọn nhiều tùy chọn"
+            searchPlaceholder="Tìm option..."
+            limitTags={3}
+          />
+          <div className="grid gap-3">
+            {Array.from({ length: 8 }, (_, index) => (
+              <Input
+                key={index}
+                label={`Dòng nội dung ${index + 1}`}
+                placeholder="Nội dung phụ để kiểm tra scroll body"
+              />
+            ))}
+          </div>
+        </div>
+      </PopoverPanel>
+    </PopoverPanelRoot>
+  );
+}
 
 const usageSamples = [
   {
@@ -64,6 +123,41 @@ export function Example() {
           <Input label="Từ khóa" placeholder="Nhập từ khóa" />
           <Input label="Mã đơn hàng" placeholder="VD: DH-1024" />
         </div>
+      </PopoverPanel>
+    </PopoverPanelRoot>
+  );
+}`,
+  },
+  {
+    id: 'combobox-scroll',
+    label: 'Combobox Scroll',
+    preview: <PopoverComboboxScrollDemo />,
+    code: `import { Button } from "@/design-system/components/ui/button";
+import { MultipleCombobox } from "@/design-system/components/ui/multiple-combobox";
+import {
+  PopoverPanel,
+  PopoverPanelRoot,
+  PopoverPanelTrigger,
+} from "@/design-system/components/ui/popover-panel";
+import { SingleCombobox } from "@/design-system/components/ui/single-combobox";
+
+const options = Array.from({ length: 60 }, (_, index) => ({
+  id: \`option-\${index + 1}\`,
+  code: \`OPT\${String(index + 1).padStart(2, "0")}\`,
+  name: \`Tùy chọn kiểm tra scroll \${index + 1}\`,
+}));
+
+export function Example() {
+  return (
+    <PopoverPanelRoot>
+      <PopoverPanelTrigger render={<Button variant="outline">Combobox scroll</Button>} />
+      <PopoverPanel
+        size="xl"
+        title="Kiểm tra combobox trong popover"
+        className="max-h-[calc(100vh-8rem)]"
+      >
+        <SingleCombobox options={options} placeholder="Chọn một tùy chọn" />
+        <MultipleCombobox options={options} placeholder="Chọn nhiều tùy chọn" limitTags={3} />
       </PopoverPanel>
     </PopoverPanelRoot>
   );

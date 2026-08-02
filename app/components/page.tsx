@@ -63,6 +63,12 @@ const guides = [
     importPath: '@/design-system/components/ui/breadcrumb',
   },
   {
+    slug: 'bubble',
+    name: 'Bubble',
+    group: 'ui',
+    importPath: '@/design-system/components/ui/bubble',
+  },
+  {
     slug: 'button',
     name: 'Button',
     group: 'ui',
@@ -219,6 +225,12 @@ const guides = [
     importPath: '@/design-system/components/ui/menubar',
   },
   {
+    slug: 'message',
+    name: 'Message',
+    group: 'ui',
+    importPath: '@/design-system/components/ui/message',
+  },
+  {
     slug: 'native-select',
     name: 'Native Select',
     group: 'ui',
@@ -313,6 +325,12 @@ const guides = [
     name: 'Sidebar',
     group: 'ui',
     importPath: '@/design-system/components/ui/sidebar',
+  },
+  {
+    slug: 'marker',
+    name: 'Marker',
+    group: 'ui',
+    importPath: '@/design-system/components/ui/marker',
   },
   {
     slug: 'skeleton',

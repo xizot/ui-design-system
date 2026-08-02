@@ -25,6 +25,7 @@ const props = [
   { name: 'placeholder', type: 'string', defaultValue: 'Chọn...' },
   { name: 'showMenuCode', type: 'boolean', defaultValue: 'true' },
   { name: 'showSelectedCode', type: 'boolean', defaultValue: 'false' },
+  { name: 'selectedCodeOnly', type: 'boolean', defaultValue: 'false' },
   { name: 'searchPlaceholder', type: 'string', defaultValue: 'Tìm kiếm...' },
   { name: 'emptyMessage', type: 'string', defaultValue: 'Không tìm thấy kết quả' },
   {
