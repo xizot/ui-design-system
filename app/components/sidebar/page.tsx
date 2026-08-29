@@ -1,10 +1,3 @@
-import type { Metadata } from 'next';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { cn } from '@/lib/utils';
-import { AppSidebar as AppSidebar04 } from '@/internal-components/sidebar-04/app-sidebar';
-import { AppSidebar as AppSidebar07 } from '@/internal-components/sidebar-07/app-sidebar';
-import { AppSidebar as AppSidebar08 } from '@/internal-components/sidebar-08/app-sidebar';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,8 +6,15 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AppSidebar as AppSidebar04 } from '@/internal-components/sidebar-04/app-sidebar';
+import { AppSidebar as AppSidebar07 } from '@/internal-components/sidebar-07/app-sidebar';
+import { AppSidebar as AppSidebar08 } from '@/internal-components/sidebar-08/app-sidebar';
+import { cn } from '@/lib/utils';
+import type { Metadata } from 'next';
 
 const guide = {
   name: 'Sidebar',
