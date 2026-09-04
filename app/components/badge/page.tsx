@@ -57,13 +57,13 @@ export function Example() {
     label: 'Sizes',
     preview: (
       <div className="flex flex-wrap items-center gap-2">
-        <Badge size="xxs">XXS</Badge>
-        <Badge size="xs">XS</Badge>
-        <Badge size="sm">SM</Badge>
-        <Badge size="md">MD</Badge>
-        <Badge size="lg">LG</Badge>
-        <Badge size="xl">XL</Badge>
-        <Badge size="xxl">XXL</Badge>
+        <Badge>XXS</Badge>
+        <Badge>XS</Badge>
+        <Badge>SM</Badge>
+        <Badge>MD</Badge>
+        <Badge>LG</Badge>
+        <Badge>XL</Badge>
+        <Badge>XXL</Badge>
       </div>
     ),
     code: `import { Badge } from "@/design-system/components/ui/badge";
