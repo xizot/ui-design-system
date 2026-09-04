@@ -17,11 +17,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
 
-const guide = {
-  name: 'Popover',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/popover',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('popover');
 
 const props = [
   { name: 'side', type: `"top" | "right" | "bottom" | "left"`, defaultValue: `"bottom"` },

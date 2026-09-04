@@ -8,11 +8,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 
-const guide = {
-  name: 'RHF Time Picker',
-  group: 'rhf',
-  importPath: '@/design-system/components/rhf',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('rhf-time-picker');
 
 const props = [
   { name: 'control', type: 'Control<T>', defaultValue: '--' },

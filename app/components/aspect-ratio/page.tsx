@@ -6,11 +6,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
 
-const guide = {
-  name: 'Aspect Ratio',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/aspect-ratio',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('aspect-ratio');
 
 const props = [
   { name: 'ratio', type: 'number', defaultValue: '1' },

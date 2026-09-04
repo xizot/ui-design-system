@@ -1,6 +1,6 @@
 ---
 name: xizot-quality
-description: "Use as a final quality gate for Xizot React/Next.js UI before finishing: component fit, color, layout, typography, UX states, accessibility, responsive behavior, dark mode, copy, and production polish."
+description: 'Use as a final quality gate for Xizot React/Next.js UI before finishing: component fit, color, layout, typography, UX states, accessibility, responsive behavior, dark mode, copy, and production polish.'
 metadata:
   version: 0.1.0
 ---

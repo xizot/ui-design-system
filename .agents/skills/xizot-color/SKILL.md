@@ -1,6 +1,6 @@
 ---
 name: xizot-color
-description: "Use when choosing, auditing, or improving UI color for React/Next.js surfaces using the Xizot design system. Covers palette role, OKLCH tokens, semantic status tones, contrast, dark mode, chart colors, and avoiding decorative or inconsistent color."
+description: 'Use when choosing, auditing, or improving UI color for React/Next.js surfaces using the Xizot design system. Covers palette role, OKLCH tokens, semantic status tones, contrast, dark mode, chart colors, and avoiding decorative or inconsistent color.'
 metadata:
   version: 0.1.0
 ---

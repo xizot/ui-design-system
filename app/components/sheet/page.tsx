@@ -16,11 +16,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
 
-const guide = {
-  name: 'Sheet',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/sheet',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('sheet');
 
 const props = [
   { name: 'side', type: `"top" | "right" | "bottom" | "left"`, defaultValue: `"right"` },

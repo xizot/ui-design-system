@@ -22,11 +22,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
 
-const guide = {
-  name: 'Context Menu',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/context-menu',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('context-menu');
 
 const props = [
   { name: 'open', type: 'boolean', defaultValue: 'false' },

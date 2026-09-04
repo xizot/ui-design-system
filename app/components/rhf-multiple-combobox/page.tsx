@@ -8,11 +8,9 @@ import { cn } from '@/lib/utils';
 import { RHFMultipleCombobox } from '@/components/rhf';
 import type { ComboboxBaseOption } from '@/components/ui/single-combobox';
 
-const guide = {
-  name: 'RHF Multiple Combobox',
-  group: 'rhf',
-  importPath: '@/design-system/components/rhf',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('rhf-multiple-combobox');
 
 const props = [
   { name: 'control', type: 'Control<T>', defaultValue: '--' },

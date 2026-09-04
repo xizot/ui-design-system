@@ -7,11 +7,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 
-const guide = {
-  name: 'Time Picker',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/time-picker',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('time-picker');
 
 const props = [
   { name: 'value', type: 'TimeValue | undefined', defaultValue: '--' },

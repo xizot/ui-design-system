@@ -8,11 +8,9 @@ import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
 import { DEFAULT_CHECKBOX_SIZE } from '../../../constants/form-sizes';
 
-const guide = {
-  name: 'Checkbox',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/checkbox',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('checkbox');
 
 const props = [
   { name: 'checked', type: "boolean | 'indeterminate'", defaultValue: 'false' },

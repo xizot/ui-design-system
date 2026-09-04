@@ -7,11 +7,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
 
-const guide = {
-  name: 'Progress',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/progress',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('progress');
 
 const props = [
   { name: 'value', type: 'number', defaultValue: '0' },

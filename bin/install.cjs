@@ -646,8 +646,3 @@ main().catch((error) => {
   console.error(color.red(String(error)));
   process.exit(1);
 });
-
-
-
-
-

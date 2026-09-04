@@ -14,11 +14,9 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useEffect } from 'react';
 
-const guide = {
-  name: 'Message',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/message',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('message');
 
 const code = `import { Avatar, AvatarFallback } from "@/design-system/components/ui/avatar";
 import { Bubble, BubbleContent } from "@/design-system/components/ui/bubble";

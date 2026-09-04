@@ -7,11 +7,9 @@ import { NumberInput } from '@/components/ui/number-input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 
-const guide = {
-  name: 'Number Input',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/number-input',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('number-input');
 
 const props = [
   { name: 'label', type: 'string | React.ReactNode', defaultValue: '--' },

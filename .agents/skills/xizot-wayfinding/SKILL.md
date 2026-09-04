@@ -1,6 +1,6 @@
 ---
 name: xizot-wayfinding
-description: "Use when designing or auditing navigation, information architecture, breadcrumbs, sidebars, tabs, page titles, empty states, search/filter discoverability, and user orientation in Xizot React/Next.js product UI."
+description: 'Use when designing or auditing navigation, information architecture, breadcrumbs, sidebars, tabs, page titles, empty states, search/filter discoverability, and user orientation in Xizot React/Next.js product UI.'
 metadata:
   version: 0.1.0
 ---

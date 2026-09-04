@@ -16,11 +16,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
 
-const guide = {
-  name: 'Select',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/select',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('select');
 
 const props = [
   { name: 'size', type: `"sm" | "default"`, defaultValue: `"default"` },

@@ -1,6 +1,6 @@
 ---
 name: xizot-system
-description: "Use when strengthening the Xizot design system itself: tokens, component API boundaries, variants, composition layers, package/install behavior, agent rules, and deciding whether UI belongs in a feature, app shared layer, or design-system layer."
+description: 'Use when strengthening the Xizot design system itself: tokens, component API boundaries, variants, composition layers, package/install behavior, agent rules, and deciding whether UI belongs in a feature, app shared layer, or design-system layer.'
 metadata:
   version: 0.1.0
 ---

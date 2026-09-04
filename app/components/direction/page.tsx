@@ -6,11 +6,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
 
-const guide = {
-  name: 'Direction',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/direction',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('direction');
 
 const props = [
   { name: 'dir', type: `"ltr" | "rtl"`, defaultValue: `"ltr"` },

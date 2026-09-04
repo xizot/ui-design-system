@@ -1,6 +1,6 @@
 ---
 name: xizot-data-ui
-description: "Use when building or auditing data-heavy Xizot screens: tables, lists, dashboards, filters, pagination, sorting, row selection, pinned actions, empty/loading/error states, charts, status badges, and operational scan density."
+description: 'Use when building or auditing data-heavy Xizot screens: tables, lists, dashboards, filters, pagination, sorting, row selection, pinned actions, empty/loading/error states, charts, status badges, and operational scan density.'
 metadata:
   version: 0.1.0
 ---

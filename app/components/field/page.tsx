@@ -11,11 +11,9 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 
-const guide = {
-  name: 'Field',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/field',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('field');
 
 export const metadata: Metadata = {
   title: `${guide.name} - UI Design System`,

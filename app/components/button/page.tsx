@@ -8,11 +8,9 @@ import { cn } from '@/lib/utils';
 import { ChevronRightIcon, PlusIcon } from 'lucide-react';
 import { useEffect } from 'react';
 
-const guide = {
-  name: 'Button',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/button',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('button');
 
 export default function ButtonGuidePage() {
   useEffect(() => {

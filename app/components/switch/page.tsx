@@ -8,11 +8,9 @@ import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
 import { DEFAULT_SWITCH_SIZE } from '../../../constants/form-sizes';
 
-const guide = {
-  name: 'Switch',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/switch',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('switch');
 
 const props = [
   {

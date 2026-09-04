@@ -1,6 +1,6 @@
 ---
 name: xizot-motion
-description: "Use when adding, auditing, or reducing UI motion in Xizot React/Next.js interfaces: transitions, loading feedback, hover/focus response, dialog/sheet animation, skeletons, charts, and avoiding distracting or inaccessible motion."
+description: 'Use when adding, auditing, or reducing UI motion in Xizot React/Next.js interfaces: transitions, loading feedback, hover/focus response, dialog/sheet animation, skeletons, charts, and avoiding distracting or inaccessible motion.'
 metadata:
   version: 0.1.0
 ---

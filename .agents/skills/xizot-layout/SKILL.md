@@ -1,6 +1,6 @@
 ---
 name: xizot-layout
-description: "Use when planning, building, or auditing UI layout with the Xizot design system. Covers grid, spacing, density, alignment, grouping, responsive behavior, rhythm, forms, tables, dashboards, panels, and avoiding cluttered or generic AI layouts."
+description: 'Use when planning, building, or auditing UI layout with the Xizot design system. Covers grid, spacing, density, alignment, grouping, responsive behavior, rhythm, forms, tables, dashboards, panels, and avoiding cluttered or generic AI layouts.'
 metadata:
   version: 0.1.0
 ---
@@ -30,4 +30,3 @@ Most app UI should be dense but breathable: `gap-2`, `gap-3`, `gap-4`, `p-3`, `p
 - No viewport-scaled typography.
 - No toolbar layout that breaks primary actions on mobile.
 - No spacing that makes related items look unrelated.
-

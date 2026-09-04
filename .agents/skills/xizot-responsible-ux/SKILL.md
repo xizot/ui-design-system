@@ -1,6 +1,6 @@
 ---
 name: xizot-responsible-ux
-description: "Use when evaluating whether Xizot UI is honest, safe, permission-aware, non-manipulative, and respectful of user decisions. Covers destructive actions, consent, dark patterns, error recovery, irreversible changes, and humane product defaults."
+description: 'Use when evaluating whether Xizot UI is honest, safe, permission-aware, non-manipulative, and respectful of user decisions. Covers destructive actions, consent, dark patterns, error recovery, irreversible changes, and humane product defaults.'
 metadata:
   version: 0.1.0
 ---

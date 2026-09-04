@@ -62,4 +62,3 @@ Use theory as a decision filter, not as academic explanation in final UI. In pra
 - design-system theory becomes API boundaries, variants, and extraction rules
 
 Do not quote or reproduce book content. Keep the skill actionable and self-contained.
-

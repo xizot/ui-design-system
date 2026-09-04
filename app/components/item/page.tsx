@@ -15,11 +15,9 @@ import { Badge } from '@/components/ui/badge';
 import { MailIcon, BellIcon, SettingsIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const guide = {
-  name: 'Item',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/item',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('item');
 
 export const metadata: Metadata = {
   title: `${guide.name} - UI Design System`,

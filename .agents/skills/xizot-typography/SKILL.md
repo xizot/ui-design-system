@@ -1,6 +1,6 @@
 ---
 name: xizot-typography
-description: "Use when improving typography, visual hierarchy, labels, readability, metadata, table scanning, form text, or Vietnamese/English UI copy density in Xizot React/Next.js interfaces."
+description: 'Use when improving typography, visual hierarchy, labels, readability, metadata, table scanning, form text, or Vietnamese/English UI copy density in Xizot React/Next.js interfaces.'
 metadata:
   version: 0.1.0
 ---

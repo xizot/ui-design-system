@@ -1,6 +1,6 @@
 ---
 name: xizot-interaction
-description: "Use when designing or auditing interaction behavior in Xizot UI: buttons, menus, tabs, filters, dialogs, sheets, drawers, confirmations, hover/focus states, loading, feedback, and action hierarchy."
+description: 'Use when designing or auditing interaction behavior in Xizot UI: buttons, menus, tabs, filters, dialogs, sheets, drawers, confirmations, hover/focus states, loading, feedback, and action hierarchy.'
 metadata:
   version: 0.1.0
 ---

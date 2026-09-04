@@ -3,11 +3,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 
-const guide = {
-  name: 'RHF Select',
-  group: 'rhf',
-  importPath: '@/design-system/components/rhf',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('rhf-select');
 
 export const metadata: Metadata = {
   title: `${guide.name} - UI Design System`,

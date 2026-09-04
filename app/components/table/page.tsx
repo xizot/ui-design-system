@@ -19,11 +19,9 @@ import { parseAsArrayOf, parseAsInteger, parseAsString } from 'nuqs';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from '../../../components/ui/button';
 
-const guide = {
-  name: 'Table',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/table',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('table');
 
 type Payment = {
   id: string;

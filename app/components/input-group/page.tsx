@@ -5,11 +5,9 @@ import { cn } from '@/lib/utils';
 import { Search } from 'lucide-react';
 import type { Metadata } from 'next';
 
-const guide = {
-  name: 'Input Group',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/input-group',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('input-group');
 
 export const metadata: Metadata = {
   title: `${guide.name} - UI Design System`,

@@ -8,11 +8,9 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
 
-const guide = {
-  name: 'Tooltip',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/tooltip',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('tooltip');
 
 const props = [
   { name: 'children', type: 'ReactNode', defaultValue: '--' },

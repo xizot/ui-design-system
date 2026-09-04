@@ -17,11 +17,9 @@ import {
 import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
 
-const guide = {
-  name: 'Typography',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/typography',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('typography');
 
 const props = [
   { name: 'className', type: 'string', defaultValue: '--' },

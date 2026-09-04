@@ -8,11 +8,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import React, { useEffect } from 'react';
 
-const guide = {
-  name: 'Scroll Area',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/scroll-area',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('scroll-area');
 
 const props = [{ name: 'className', type: 'string', defaultValue: '--' }];
 

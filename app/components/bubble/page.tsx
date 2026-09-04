@@ -6,11 +6,9 @@ import { CodeBlock } from '@/components/ui/code-block';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useEffect } from 'react';
 
-const guide = {
-  name: 'Bubble',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/bubble',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('bubble');
 
 const code = `import { Bubble, BubbleContent, BubbleGroup, BubbleReactions } from "@/design-system/components/ui/bubble";
 

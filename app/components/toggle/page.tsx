@@ -8,11 +8,9 @@ import { cn } from '@/lib/utils';
 import { Bold, Italic, Underline } from 'lucide-react';
 import { useEffect } from 'react';
 
-const guide = {
-  name: 'Toggle',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/toggle',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('toggle');
 
 const props = [
   { name: 'pressed', type: 'boolean', defaultValue: 'false' },

@@ -7,11 +7,9 @@ import { Spinner } from '@/components/ui/spinner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useEffect } from 'react';
 
-const guide = {
-  name: 'Marker',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/marker',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('marker');
 
 const code = `import { Marker, MarkerContent, MarkerIcon } from "@/design-system/components/ui/marker";
 import { Spinner } from "@/design-system/components/ui/spinner";

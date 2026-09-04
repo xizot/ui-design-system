@@ -1,6 +1,6 @@
 ---
 name: xizot-design-system
-description: "Use when the user wants to build, revise, audit, polish, harden, adapt, colorize, layout, typeset, systemize, extract, or document React/Next.js product UI with the Xizot design system. Applies to app shells, CRUD/list pages, dashboards, forms, filters, tables, dialogs, drawers, responsive layouts, color decisions, spacing, hierarchy, typography, Vietnamese product copy, and reusable component composition. Not for backend-only tasks or unrelated visual systems."
+description: 'Use when the user wants to build, revise, audit, polish, harden, adapt, colorize, layout, typeset, systemize, extract, or document React/Next.js product UI with the Xizot design system. Applies to app shells, CRUD/list pages, dashboards, forms, filters, tables, dialogs, drawers, responsive layouts, color decisions, spacing, hierarchy, typography, Vietnamese product copy, and reusable component composition. Not for backend-only tasks or unrelated visual systems.'
 metadata:
   version: 0.3.0
 ---
@@ -70,31 +70,31 @@ Most Xizot work defaults to **Operate**.
 
 The user may invoke this skill directly, for example `$xizot-design-system build orders page` or by asking naturally for the same work.
 
-| Command | Category | Description | Reference |
-|---|---|---|---|
-| `build [surface]` | Create | Implement a new product UI surface using existing components and design-theory checks | use `xizot-page-builder`, or [references/build.md](references/build.md) |
-| `shape [surface]` | Plan | Plan UX structure, component map, hierarchy, states, color role, and layout before implementation | [references/shape.md](references/shape.md) |
-| `audit [target]` | Evaluate | Review UI for design-system fit, accessibility, responsive issues, hierarchy, color, spacing, and AI anti-patterns | [references/audit.md](references/audit.md) |
-| `polish [target]` | Refine | Make an existing UI cleaner, tighter, more consistent, and production-ready | [references/polish.md](references/polish.md) |
-| `harden [target]` | Refine | Add edge states, validation, loading, errors, overflow handling, accessibility, and i18n-aware copy | [references/harden.md](references/harden.md) |
-| `colorize [target]` | Enhance | Choose or improve palette, contrast, semantic color, status tones, and chart color | [references/color.md](references/color.md) |
-| `layout [target]` | Enhance | Improve grid, spacing, rhythm, density, alignment, and responsive structure | [references/layout.md](references/layout.md) |
-| `typeset [target]` | Enhance | Improve typography hierarchy, readable density, labels, and scanning | [references/typography.md](references/typography.md) |
-| `ux [target]` | Enhance | Apply UX psychology to reduce cognitive load and improve discoverability | [references/ux-psychology.md](references/ux-psychology.md) |
-| `systemize [target]` | System | Strengthen tokens, component contracts, variants, governance, and reusable patterns | [references/system.md](references/system.md) |
-| `extract [target]` | System | Pull reusable UI composition into the app or design-system layer | [references/extract.md](references/extract.md) |
-| `adapt [target]` | Fix | Improve mobile/tablet/desktop behavior without changing the product concept | [references/adapt.md](references/adapt.md) |
-| `clarify [target]` | Fix | Improve Vietnamese/English UX copy, labels, empty states, and action names | [references/clarify.md](references/clarify.md) |
-| `form [target]` | Enhance | Improve form structure, field choice, RHF wrappers, validation, and submit behavior | use `xizot-forms` |
-| `data [target]` | Enhance | Improve tables, filters, dashboards, status badges, charts, and scan density | use `xizot-data-ui` |
-| `interact [target]` | Enhance | Improve action hierarchy, menus, overlays, confirmations, and feedback | use `xizot-interaction` |
-| `a11y [target]` | Evaluate | Improve keyboard, focus, labels, contrast, aria, form, and overlay accessibility | use `xizot-accessibility` |
-| `quality [target]` | Evaluate | Run final UI quality gate before finishing | use `xizot-quality` |
-| `wayfind [target]` | Enhance | Improve navigation, IA, breadcrumbs, tabs, filters, and orientation | use `xizot-wayfinding` |
-| `motion [target]` | Enhance | Improve transitions, loading motion, hover/focus response, and reduced-motion behavior | use `xizot-motion` |
-| `responsible [target]` | Evaluate | Check consent, destructive actions, recovery, dark-pattern risk, and safe defaults | use `xizot-responsible-ux` |
-| `depth [target]` | Enhance | Improve spacing contrast, shadow/elevation, border, radius, surface layering, and detail polish | use `xizot-visual-polish` |
-| `document [target]` | Docs | Document component usage or design decisions when the user asks for docs | [references/document.md](references/document.md) |
+| Command                | Category | Description                                                                                                        | Reference                                                               |
+| ---------------------- | -------- | ------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
+| `build [surface]`      | Create   | Implement a new product UI surface using existing components and design-theory checks                              | use `xizot-page-builder`, or [references/build.md](references/build.md) |
+| `shape [surface]`      | Plan     | Plan UX structure, component map, hierarchy, states, color role, and layout before implementation                  | [references/shape.md](references/shape.md)                              |
+| `audit [target]`       | Evaluate | Review UI for design-system fit, accessibility, responsive issues, hierarchy, color, spacing, and AI anti-patterns | [references/audit.md](references/audit.md)                              |
+| `polish [target]`      | Refine   | Make an existing UI cleaner, tighter, more consistent, and production-ready                                        | [references/polish.md](references/polish.md)                            |
+| `harden [target]`      | Refine   | Add edge states, validation, loading, errors, overflow handling, accessibility, and i18n-aware copy                | [references/harden.md](references/harden.md)                            |
+| `colorize [target]`    | Enhance  | Choose or improve palette, contrast, semantic color, status tones, and chart color                                 | [references/color.md](references/color.md)                              |
+| `layout [target]`      | Enhance  | Improve grid, spacing, rhythm, density, alignment, and responsive structure                                        | [references/layout.md](references/layout.md)                            |
+| `typeset [target]`     | Enhance  | Improve typography hierarchy, readable density, labels, and scanning                                               | [references/typography.md](references/typography.md)                    |
+| `ux [target]`          | Enhance  | Apply UX psychology to reduce cognitive load and improve discoverability                                           | [references/ux-psychology.md](references/ux-psychology.md)              |
+| `systemize [target]`   | System   | Strengthen tokens, component contracts, variants, governance, and reusable patterns                                | [references/system.md](references/system.md)                            |
+| `extract [target]`     | System   | Pull reusable UI composition into the app or design-system layer                                                   | [references/extract.md](references/extract.md)                          |
+| `adapt [target]`       | Fix      | Improve mobile/tablet/desktop behavior without changing the product concept                                        | [references/adapt.md](references/adapt.md)                              |
+| `clarify [target]`     | Fix      | Improve Vietnamese/English UX copy, labels, empty states, and action names                                         | [references/clarify.md](references/clarify.md)                          |
+| `form [target]`        | Enhance  | Improve form structure, field choice, RHF wrappers, validation, and submit behavior                                | use `xizot-forms`                                                       |
+| `data [target]`        | Enhance  | Improve tables, filters, dashboards, status badges, charts, and scan density                                       | use `xizot-data-ui`                                                     |
+| `interact [target]`    | Enhance  | Improve action hierarchy, menus, overlays, confirmations, and feedback                                             | use `xizot-interaction`                                                 |
+| `a11y [target]`        | Evaluate | Improve keyboard, focus, labels, contrast, aria, form, and overlay accessibility                                   | use `xizot-accessibility`                                               |
+| `quality [target]`     | Evaluate | Run final UI quality gate before finishing                                                                         | use `xizot-quality`                                                     |
+| `wayfind [target]`     | Enhance  | Improve navigation, IA, breadcrumbs, tabs, filters, and orientation                                                | use `xizot-wayfinding`                                                  |
+| `motion [target]`      | Enhance  | Improve transitions, loading motion, hover/focus response, and reduced-motion behavior                             | use `xizot-motion`                                                      |
+| `responsible [target]` | Evaluate | Check consent, destructive actions, recovery, dark-pattern risk, and safe defaults                                 | use `xizot-responsible-ux`                                              |
+| `depth [target]`       | Enhance  | Improve spacing contrast, shadow/elevation, border, radius, surface layering, and detail polish                    | use `xizot-visual-polish`                                               |
+| `document [target]`    | Docs     | Document component usage or design decisions when the user asks for docs                                           | [references/document.md](references/document.md)                        |
 
 Routing:
 
@@ -130,9 +130,3 @@ Always read [references/component-usage.md](references/component-usage.md) befor
 ## Source Repo Boundary
 
 For now, do not refactor guide pages unless the user explicitly asks. While building the skill pack, guide pages are reference material only. When the user later asks to refactor guides, use the `Read` mode and the `document` command.
-
-
-
-
-
-

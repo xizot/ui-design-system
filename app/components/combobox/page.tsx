@@ -18,11 +18,9 @@ import {
   SingleComboboxWithCodeDemo,
 } from './single-combobox-demo';
 
-const guide = {
-  name: 'Combobox',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/combobox',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('combobox');
 
 const props = [
   { name: 'items', type: 'string[]', defaultValue: '--' },

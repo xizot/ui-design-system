@@ -9,11 +9,9 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 
-const guide = {
-  name: 'Input OTP',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/input-otp',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('input-otp');
 
 export const metadata: Metadata = {
   title: `${guide.name} - UI Design System`,

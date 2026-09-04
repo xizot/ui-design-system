@@ -8,11 +8,9 @@ import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 
-const guide = {
-  name: 'Sonner',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/sonner',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('sonner');
 
 const props = [
   {

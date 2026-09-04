@@ -8,11 +8,9 @@ import type { ComboboxBaseOption } from '@/components/ui/single-combobox';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 
-const guide = {
-  name: 'RHF Single Combobox',
-  group: 'rhf',
-  importPath: '@/design-system/components/rhf',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('rhf-single-combobox');
 
 const props = [
   { name: 'control', type: 'Control<T>', defaultValue: '--' },

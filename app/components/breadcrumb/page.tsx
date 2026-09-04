@@ -14,11 +14,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
 
-const guide = {
-  name: 'Breadcrumb',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/breadcrumb',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('breadcrumb');
 
 const props = [{ name: 'className', type: 'string', defaultValue: '--' }];
 

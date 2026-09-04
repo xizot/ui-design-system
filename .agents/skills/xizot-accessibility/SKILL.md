@@ -1,6 +1,6 @@
 ---
 name: xizot-accessibility
-description: "Use when building or auditing accessible Xizot React/Next.js UI: keyboard flow, focus management, labels, aria state, contrast, dialogs, menus, forms, tables, error messaging, and icon-only actions."
+description: 'Use when building or auditing accessible Xizot React/Next.js UI: keyboard flow, focus management, labels, aria state, contrast, dialogs, menus, forms, tables, error messaging, and icon-only actions.'
 metadata:
   version: 0.1.0
 ---

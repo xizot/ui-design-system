@@ -69,5 +69,3 @@
 ## Verification
 
 Run relevant checks for the repo. If lint/build failures are unrelated pre-existing issues, report them clearly without hiding them.
-
-

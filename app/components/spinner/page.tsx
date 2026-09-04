@@ -5,11 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 
-const guide = {
-  name: 'Spinner',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/spinner',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('spinner');
 
 export const metadata: Metadata = {
   title: `${guide.name} - UI Design System`,

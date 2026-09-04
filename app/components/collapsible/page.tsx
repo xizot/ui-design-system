@@ -9,11 +9,9 @@ import { cn } from '@/lib/utils';
 import { ChevronsUpDown } from 'lucide-react';
 import React, { useEffect } from 'react';
 
-const guide = {
-  name: 'Collapsible',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/collapsible',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('collapsible');
 
 const props = [
   { name: 'open', type: 'boolean', defaultValue: 'false' },

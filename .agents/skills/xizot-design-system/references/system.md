@@ -59,6 +59,3 @@ Do not extract merely because a component is long. Extract because the boundary 
 ## Package Rules
 
 When skills change, ensure `package.json` includes `.agents/skills` and `npm pack --dry-run` shows the skill files. The CLI should install both the design-system source and the complete skill pack into consumer projects.
-
-
-

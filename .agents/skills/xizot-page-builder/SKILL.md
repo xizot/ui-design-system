@@ -1,6 +1,6 @@
 ---
 name: xizot-page-builder
-description: "Use when building complete React/Next.js pages with Xizot design-system components. Orchestrates component choice, color, layout, typography, UX states, responsive behavior, and system boundaries for modern production app screens."
+description: 'Use when building complete React/Next.js pages with Xizot design-system components. Orchestrates component choice, color, layout, typography, UX states, responsive behavior, and system boundaries for modern production app screens.'
 metadata:
   version: 0.1.0
 ---
@@ -33,7 +33,3 @@ Read [references/page-build-gate.md](references/page-build-gate.md) before imple
 ## Hard Rule
 
 Do not create a visually impressive page that bypasses the system. A strong Xizot page is useful, consistent, responsive, accessible, and built from the local components.
-
-
-
-

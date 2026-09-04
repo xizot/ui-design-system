@@ -16,11 +16,9 @@ import { AppSidebar as AppSidebar08 } from '@/internal-components/sidebar-08/app
 import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
 
-const guide = {
-  name: 'Sidebar',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/sidebar',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('sidebar');
 
 export const metadata: Metadata = {
   title: `${guide.name} - UI Design System`,

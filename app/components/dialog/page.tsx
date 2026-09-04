@@ -20,11 +20,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 
-const guide = {
-  name: 'Dialog',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/dialog',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('dialog');
 
 const props = [
   { name: 'open', type: 'boolean', defaultValue: '--' },

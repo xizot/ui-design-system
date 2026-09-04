@@ -8,11 +8,9 @@ import { cn } from '@/lib/utils';
 import { AlignCenter, AlignLeft, AlignRight, Bold, Italic, Underline } from 'lucide-react';
 import { useEffect } from 'react';
 
-const guide = {
-  name: 'Toggle Group',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/toggle-group',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('toggle-group');
 
 const props = [
   { name: 'variant', type: `"default" | "outline"`, defaultValue: `"default"` },

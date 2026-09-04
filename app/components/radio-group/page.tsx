@@ -8,11 +8,9 @@ import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
 import { DEFAULT_RADIO_SIZE } from '../../../constants/form-sizes';
 
-const guide = {
-  name: 'Radio Group',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/radio-group',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('radio-group');
 
 const props = [
   { name: 'label', type: 'ReactNode', defaultValue: '--' },

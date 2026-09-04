@@ -20,11 +20,9 @@ import { FileTextIcon, FolderIcon, HomeIcon, InboxIcon, PlusIcon } from 'lucide-
 import * as React from 'react';
 import { useEffect } from 'react';
 
-const guide = {
-  name: 'Command',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/command',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('command');
 
 const props = [
   { name: 'open', type: 'boolean', defaultValue: 'false' },

@@ -8,11 +8,9 @@ import { cn } from '@/lib/utils';
 import { AlertCircle, CheckCircle2, Info } from 'lucide-react';
 import { useEffect } from 'react';
 
-const guide = {
-  name: 'Alert',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/alert',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('alert');
 
 const props = [
   { name: 'variant', type: `"default" | "destructive"`, defaultValue: `"default"` },

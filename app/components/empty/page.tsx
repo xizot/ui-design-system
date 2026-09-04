@@ -13,11 +13,9 @@ import { Button } from '@/components/ui/button';
 import { InboxIcon, PlusIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const guide = {
-  name: 'Empty',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/empty',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('empty');
 
 export const metadata: Metadata = {
   title: `${guide.name} - UI Design System`,

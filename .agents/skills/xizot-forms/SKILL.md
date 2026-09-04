@@ -1,6 +1,6 @@
 ---
 name: xizot-forms
-description: "Use when building, reviewing, or improving forms with the Xizot design system and React Hook Form: field grouping, labels, validation, required states, errors, submit behavior, defaults, comboboxes, date/time fields, and multi-step flows."
+description: 'Use when building, reviewing, or improving forms with the Xizot design system and React Hook Form: field grouping, labels, validation, required states, errors, submit behavior, defaults, comboboxes, date/time fields, and multi-step flows.'
 metadata:
   version: 0.1.0
 ---

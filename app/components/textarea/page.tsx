@@ -7,11 +7,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
 
-const guide = {
-  name: 'Textarea',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/textarea',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('textarea');
 
 const props = [
   { name: 'value', type: 'string', defaultValue: '--' },

@@ -11,11 +11,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 
-const guide = {
-  name: 'Popover Panel',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/popover-panel',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('popover-panel');
 
 const props = [
   { name: 'size', type: `"sm" | "md" | "lg" | "xl" | "auto"`, defaultValue: `"md"` },

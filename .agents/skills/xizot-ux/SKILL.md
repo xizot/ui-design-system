@@ -1,6 +1,6 @@
 ---
 name: xizot-ux
-description: "Use when improving UX behavior in Xizot interfaces: cognitive load, wayfinding, forms, feedback, empty/loading/error states, destructive flows, onboarding, user-centered copy, and error prevention."
+description: 'Use when improving UX behavior in Xizot interfaces: cognitive load, wayfinding, forms, feedback, empty/loading/error states, destructive flows, onboarding, user-centered copy, and error prevention.'
 metadata:
   version: 0.1.0
 ---

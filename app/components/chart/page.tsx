@@ -8,11 +8,9 @@ import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
 import { Bar, BarChart } from 'recharts';
 
-const guide = {
-  name: 'Chart',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/chart',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('chart');
 
 const props = [
   { name: 'data', type: 'ChartData', defaultValue: '--' },

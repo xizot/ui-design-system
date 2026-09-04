@@ -1,6 +1,6 @@
 ---
 name: xizot-visual-polish
-description: "Use when refining visual polish in Xizot React/Next.js UI: spacing contrast, shadow/elevation, border treatment, radius, surface layering, depth, icon sizing, alignment details, visual hierarchy, and avoiding flat or overdecorated interfaces."
+description: 'Use when refining visual polish in Xizot React/Next.js UI: spacing contrast, shadow/elevation, border treatment, radius, surface layering, depth, icon sizing, alignment details, visual hierarchy, and avoiding flat or overdecorated interfaces.'
 metadata:
   version: 0.1.0
 ---

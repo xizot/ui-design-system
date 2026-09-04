@@ -8,11 +8,9 @@ import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import type { DateRange } from 'react-day-picker';
 
-const guide = {
-  name: 'Date Range Picker',
-  group: 'ui',
-  importPath: '@/design-system/components/ui/date-range-picker',
-} as const;
+import { getGuide } from '../guide-data';
+
+const guide = getGuide('date-range-picker');
 
 const props = [
   { name: 'label', type: 'string | React.ReactNode', defaultValue: '--' },
