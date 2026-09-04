@@ -11,10 +11,12 @@ const installRootName = 'design-system';
 const targetRoot = path.join(projectRoot, installRootName);
 const command = process.argv[2] ?? 'init';
 const directoriesToCopy = ['components', 'constants', 'hooks', 'lib'];
-const agentUsageRulesSource = 'docs/design-system-usage-rules.md';
+const agentUsageRulesSource = '.agents/skills/xizot-design-system/references/agent-rules.md';
 const agentUsageRulesTarget = 'AGENTS.md';
 const agentUsageRulesStartMarker = '<!-- BEGIN:design-system-usage-rules -->';
 const agentUsageRulesEndMarker = '<!-- END:design-system-usage-rules -->';
+const codexSkillSource = '.agents/skills';
+const codexSkillTarget = '.agents/skills';
 const projectFilesToCopy = [
   {
     source: 'app/globals.css',
@@ -415,6 +417,7 @@ async function maybeInstallDependencies() {
 function copyRootFiles() {
   printSection('Step 3: Agent Rules');
   upsertAgentUsageRules();
+  installCodexSkill();
 }
 
 function buildAgentUsageRulesSection() {
@@ -467,6 +470,51 @@ function upsertAgentUsageRules() {
   fs.writeFileSync(targetPath, `${nextContent}\n`);
   conflictState.copied.push(`${agentUsageRulesTarget} design system rules`);
   console.log(color.green(`Added: ${agentUsageRulesTarget} design system rules`));
+}
+
+function copyDirectoryOverwrite(sourceDir, targetDir) {
+  ensureDirectoryExists(targetDir);
+
+  for (const entry of fs.readdirSync(sourceDir, { withFileTypes: true })) {
+    const sourcePath = path.join(sourceDir, entry.name);
+    const targetPath = path.join(targetDir, entry.name);
+
+    if (entry.isDirectory()) {
+      copyDirectoryOverwrite(sourcePath, targetPath);
+      continue;
+    }
+
+    fs.copyFileSync(sourcePath, targetPath);
+  }
+}
+
+function installCodexSkill() {
+  const sourcePath = path.join(packageRoot, codexSkillSource);
+
+  if (!fs.existsSync(sourcePath)) {
+    console.log(color.gray(`Skipping missing Codex skills: ${codexSkillSource}`));
+    return;
+  }
+
+  const targetPath = path.join(projectRoot, codexSkillTarget);
+
+  if (path.resolve(sourcePath) === path.resolve(targetPath)) {
+    console.log(color.green(`Codex skills already available: ${codexSkillTarget}`));
+    return;
+  }
+
+  const existed = fs.existsSync(targetPath);
+
+  copyDirectoryOverwrite(sourcePath, targetPath);
+
+  if (existed) {
+    conflictState.overwritten.push(codexSkillTarget);
+    console.log(color.green(`Updated Codex skills: ${codexSkillTarget}`));
+    return;
+  }
+
+  conflictState.copied.push(codexSkillTarget);
+  console.log(color.green(`Added Codex skills: ${codexSkillTarget}`));
 }
 
 async function copyProjectFiles() {
@@ -598,3 +646,8 @@ main().catch((error) => {
   console.error(color.red(String(error)));
   process.exit(1);
 });
+
+
+
+
+

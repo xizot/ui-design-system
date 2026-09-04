@@ -1,0 +1,3 @@
+display_name: Xizot Quality
+short_description: Run the final quality gate for Xizot UI implementation.
+default_prompt: Run a final Xizot UI quality gate for component fit, color, layout, type, UX, accessibility, responsive, and states.

@@ -10,7 +10,7 @@
     "app/globals.css",
     "components",
     "constants",
-    "docs/design-system-usage-rules.md",
+    ".agents/skills",
     "hooks",
     "lib",
     "public",

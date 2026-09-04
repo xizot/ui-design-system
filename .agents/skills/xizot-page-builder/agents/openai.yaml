@@ -1,0 +1,3 @@
+display_name: Xizot Page Builder
+short_description: Build complete Xizot pages with full UI quality gates.
+default_prompt: Build this page end to end with Xizot components, color, layout, typography, UX states, accessibility, and quality checks.

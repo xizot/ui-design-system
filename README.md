@@ -74,7 +74,7 @@ The installer uses a guided flow:
 2. 📦 Dependencies
    It checks the target project's `package.json`, detects missing runtime dependencies, and asks whether they should be installed automatically.
 3. 🤖 Agent rules
-   It creates or updates the target project's `AGENTS.md` with the rules from `docs/design-system-usage-rules.md`.
+   It installs the complete `.agents/skills` pack and creates or updates the target project's `AGENTS.md` with the rules from `.agents/skills/xizot-design-system/references/agent-rules.md`.
 4. 🎨 Project files
    It asks where to copy theme files such as `app/globals.css`.
 
@@ -202,3 +202,5 @@ Update both:
 - The source is written with relative imports so copied files do not depend on local alias configuration.
 - The CLI is designed to be safe for existing projects by prompting before overwriting files.
 - The docs app is internal to this repository; the CLI installs the design system source folders plus the consumer rules needed for downstream projects.
+
+

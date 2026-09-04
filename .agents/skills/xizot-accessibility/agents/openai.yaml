@@ -1,0 +1,3 @@
+display_name: Xizot Accessibility
+short_description: Improve keyboard, focus, labels, aria state, contrast, forms, and overlays.
+default_prompt: Audit and improve accessibility while preserving Xizot component semantics and focus behavior.

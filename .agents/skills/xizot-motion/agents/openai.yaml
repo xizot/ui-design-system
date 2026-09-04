@@ -1,0 +1,3 @@
+display_name: Xizot Motion
+short_description: Improve transitions, loading feedback, microinteractions, and reduced motion.
+default_prompt: Use motion only where it clarifies feedback, continuity, attention, loading, or spatial relationship.
