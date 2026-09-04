@@ -25,20 +25,20 @@ export default function InstallationGuidePage() {
 
   const CodeBlock = ({ code, id }: { code: string; id: string }) => (
     <div className="group relative">
-      <div className="overflow-x-auto rounded-2xl border border-border/70 bg-card p-5 text-card-foreground">
+      <div className="border-border/70 bg-card text-card-foreground overflow-x-auto rounded-2xl border p-5">
         <pre className="text-sm leading-6">
           <code>{code}</code>
         </pre>
       </div>
       <button
         onClick={() => handleCopy(code, id)}
-        className="absolute right-3 top-3 rounded-lg bg-card p-2 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-accent"
+        className="bg-card hover:bg-accent absolute top-3 right-3 rounded-lg p-2 opacity-0 transition-opacity group-hover:opacity-100"
         aria-label="Copy code"
       >
         {copiedId === id ? (
           <Check className="h-4 w-4 text-green-500" />
         ) : (
-          <Copy className="h-4 w-4 text-muted-foreground" />
+          <Copy className="text-muted-foreground h-4 w-4" />
         )}
       </button>
     </div>
@@ -47,8 +47,8 @@ export default function InstallationGuidePage() {
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">
-        <section className="rounded-[28px] border border-border/70 bg-card px-8 py-10 shadow-sm">
-          <TypographySmall className="text-sm uppercase tracking-[0.24em]">guide</TypographySmall>
+        <section className="border-border/70 bg-card rounded-[28px] border px-8 py-10 shadow-sm">
+          <TypographySmall className="text-sm tracking-[0.24em] uppercase">guide</TypographySmall>
           <TypographyH1 className="mt-4">Installation</TypographyH1>
           <TypographyLead className="mt-4 max-w-2xl">
             Hướng dẫn cài design system bằng CLI. Phần này là điểm vào chính cho consumer trước khi
@@ -57,7 +57,7 @@ export default function InstallationGuidePage() {
         </section>
 
         <div className="mt-8 space-y-6">
-          <Card id="cli" className="rounded-[24px] border-border/70">
+          <Card id="cli" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>1. Cài bằng CLI</CardTitle>
               <CardDescription>
@@ -71,7 +71,7 @@ export default function InstallationGuidePage() {
             </CardContent>
           </Card>
 
-          <Card id="structure" className="rounded-[24px] border-border/70">
+          <Card id="structure" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>2. Cấu trúc được copy vào project</CardTitle>
               <CardDescription>
@@ -90,14 +90,14 @@ export default function InstallationGuidePage() {
             </CardContent>
           </Card>
 
-          <Card id="behavior" className="rounded-[24px] border-border/70">
+          <Card id="behavior" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>3. CLI sẽ làm gì</CardTitle>
               <CardDescription>
                 Flow cài đặt hiện tại tập trung vào copy file và cài dependency cần thiết.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4 text-sm text-muted-foreground">
+            <CardContent className="text-muted-foreground space-y-4 text-sm">
               <p>
                 CLI kiểm tra file đã tồn tại trong thư mục đích và hỏi bạn muốn overwrite, skip hay
                 review từng conflict.
@@ -110,7 +110,7 @@ export default function InstallationGuidePage() {
             </CardContent>
           </Card>
 
-          <Card id="usage" className="rounded-[24px] border-border/70">
+          <Card id="usage" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>4. Import sau khi cài</CardTitle>
               <CardDescription>
@@ -128,19 +128,19 @@ export default function InstallationGuidePage() {
       </main>
 
       <aside className="hidden xl:block">
-        <div className="sticky top-24 rounded-[24px] border border-border/70 bg-card p-5">
-          <TypographySmall className="uppercase tracking-[0.24em]">TOC</TypographySmall>
-          <nav className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <a href="#cli" className="block transition hover:text-foreground">
+        <div className="border-border/70 bg-card sticky top-24 rounded-[24px] border p-5">
+          <TypographySmall className="tracking-[0.24em] uppercase">TOC</TypographySmall>
+          <nav className="text-muted-foreground mt-4 space-y-3 text-sm">
+            <a href="#cli" className="hover:text-foreground block transition">
               Cài bằng CLI
             </a>
-            <a href="#structure" className="block transition hover:text-foreground">
+            <a href="#structure" className="hover:text-foreground block transition">
               Cấu trúc thư mục
             </a>
-            <a href="#behavior" className="block transition hover:text-foreground">
+            <a href="#behavior" className="hover:text-foreground block transition">
               CLI behavior
             </a>
-            <a href="#usage" className="block transition hover:text-foreground">
+            <a href="#usage" className="hover:text-foreground block transition">
               Import path
             </a>
           </nav>

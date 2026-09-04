@@ -216,7 +216,7 @@ const NumberInput = ({
             className={cn(
               rightOutside && 'rounded-r-none!',
               error &&
-                'border-error-300 outline-error-500 focus-visible:border-transparent focus-visible:ring-2 focus-visible:ring-error-500 pr-8',
+                'border-error-300 outline-error-500 focus-visible:ring-error-500 pr-8 focus-visible:border-transparent focus-visible:ring-2',
               inputClassName,
             )}
             size={size}
@@ -224,7 +224,7 @@ const NumberInput = ({
         </div>
         {rightOutside}
       </div>
-      {error && <p className="text-xs text-error-500">{error}</p>}
+      {error && <p className="text-error-500 text-xs">{error}</p>}
     </div>
   );
 };

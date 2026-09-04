@@ -42,7 +42,7 @@ function Textarea({
       <textarea
         data-slot="textarea"
         className={cn(
-          'flex field-sizing-content min-h-16 w-full rounded-md border border-input bg-transparent shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30',
+          'border-input placeholder:text-muted-foreground dark:bg-input/30 flex field-sizing-content min-h-16 w-full rounded-md border bg-transparent shadow-xs transition-[color,box-shadow] outline-none disabled:cursor-not-allowed disabled:opacity-50',
           FORM_CONTROL_RING_STYLES.focusVisible,
           FORM_CONTROL_RING_STYLES.invalid,
           FORM_SIZE_STYLES[size].padding,

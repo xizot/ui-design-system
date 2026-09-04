@@ -136,7 +136,7 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
         <div
           ref={anchorRef}
           className={cn(
-            'group/trigger relative flex w-full min-w-0 rounded-md border border-input bg-transparent shadow-xs transition-[color,box-shadow] dark:bg-input/30',
+            'group/trigger border-input dark:bg-input/30 relative flex w-full min-w-0 rounded-md border bg-transparent shadow-xs transition-[color,box-shadow]',
             autoResize ? 'items-start' : 'items-stretch overflow-hidden',
             FORM_CONTROL_RING_STYLES.focusWithin,
             open && (error ? FORM_CONTROL_RING_STYLES.invalidOpen : FORM_CONTROL_RING_STYLES.open),
@@ -162,7 +162,7 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
                     <Badge
                       key={id}
                       variant="outline"
-                      className="flex w-fit max-w-full min-w-0 shrink items-center gap-1 overflow-hidden rounded-sm border-border pr-0.5 font-normal"
+                      className="border-border flex w-fit max-w-full min-w-0 shrink items-center gap-1 overflow-hidden rounded-sm pr-0.5 font-normal"
                     >
                       {onSelectedRender ? (
                         <span className="min-w-0 flex-1 truncate">{onSelectedRender(id, opt)}</span>
@@ -178,7 +178,7 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
                       {!disabled && (
                         <button
                           type="button"
-                          className="pointer-events-auto relative z-20 me-1 inline-flex size-3.5 shrink-0 grow-0 cursor-pointer items-center justify-center rounded text-muted-foreground hover:text-foreground"
+                          className="text-muted-foreground hover:text-foreground pointer-events-auto relative z-20 me-1 inline-flex size-3.5 shrink-0 grow-0 cursor-pointer items-center justify-center rounded"
                           onPointerDown={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
@@ -194,14 +194,14 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
                 {limitTags !== undefined && externalValues.length > limitTags && (
                   <Badge
                     variant="outline"
-                    className="shrink-0 rounded-sm border-border font-normal"
+                    className="border-border shrink-0 rounded-sm font-normal"
                   >
                     +{externalValues.length - limitTags}
                   </Badge>
                 )}
               </>
             ) : (
-              <span className="truncate text-muted-foreground">{placeholder}</span>
+              <span className="text-muted-foreground truncate">{placeholder}</span>
             )}
           </div>
 
@@ -217,7 +217,7 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
                 <div className={cn('relative shrink-0', FORM_SIZE_STYLES[size].icon)}>
                   <button
                     type="button"
-                    className="pointer-events-auto absolute inset-0 z-20 flex cursor-pointer items-center justify-center rounded text-muted-foreground opacity-0 transition-opacity group-hover/trigger:opacity-100 hover:text-foreground"
+                    className="text-muted-foreground hover:text-foreground pointer-events-auto absolute inset-0 z-20 flex cursor-pointer items-center justify-center rounded opacity-0 transition-opacity group-hover/trigger:opacity-100"
                     onMouseDown={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
@@ -235,7 +235,7 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
                 <button
                   type="button"
                   className={cn(
-                    'pointer-events-auto flex cursor-pointer items-center justify-center rounded text-muted-foreground hover:text-foreground',
+                    'text-muted-foreground hover:text-foreground pointer-events-auto flex cursor-pointer items-center justify-center rounded',
                     FORM_SIZE_STYLES[size].icon,
                   )}
                   onClick={handleClearAll}
@@ -276,7 +276,7 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
                 key={option.id}
                 value={option.id}
                 className={cn(
-                  'relative mt-px flex w-full cursor-default select-none items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden',
+                  'relative mt-px flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none',
                   'data-highlighted:bg-accent data-highlighted:text-accent-foreground',
                   'data-disabled:pointer-events-none data-disabled:opacity-50',
                   selectedIds.has(option.id) && 'bg-accent text-accent-foreground',
@@ -285,10 +285,10 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
                 <span className="min-w-0 flex-1 truncate">
                   {showMenuCode ? `${option.code} - ${option.name}` : option.name}
                 </span>
-                <span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center text-primary">
+                <span className="text-primary pointer-events-none absolute right-2 flex size-4 items-center justify-center">
                   <Check
                     className={cn(
-                      'pointer-events-none text-primary transition-opacity',
+                      'text-primary pointer-events-none transition-opacity',
                       selectedIds.has(option.id) ? 'opacity-100' : 'opacity-0',
                     )}
                   />

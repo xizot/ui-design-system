@@ -56,21 +56,21 @@ export const CustomToast = ({ id, title, description, type }: CustomToastProps) 
   const Icon = c.icon;
 
   return (
-    <div className={`flex items-start gap-3 rounded-xl px-4 py-3.5 w-[360px] ${c.wrapper}`}>
+    <div className={`flex w-[360px] items-start gap-3 rounded-xl px-4 py-3.5 ${c.wrapper}`}>
       <div
-        className={`flex items-center justify-center w-7 h-7 rounded-md shrink-0 ${c.iconWrapper}`}
+        className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md ${c.iconWrapper}`}
       >
         <Icon size={15} strokeWidth={2.2} className={c.iconColor} />
       </div>
 
-      <div className="flex-1 min-w-0">
-        <p className={`text-sm font-medium leading-snug mb-0.5 ${c.titleColor}`}>{title}</p>
+      <div className="min-w-0 flex-1">
+        <p className={`mb-0.5 text-sm leading-snug font-medium ${c.titleColor}`}>{title}</p>
         {description && <p className={`text-[13px] leading-snug ${c.descColor}`}>{description}</p>}
       </div>
 
       <button
         onClick={() => toast.dismiss(id)}
-        className={`shrink-0 -mt-0.5 p-0.5 rounded cursor-pointer bg-transparent border-none ${c.closeColor}`}
+        className={`-mt-0.5 shrink-0 cursor-pointer rounded border-none bg-transparent p-0.5 ${c.closeColor}`}
       >
         <X size={12} strokeWidth={2} />
       </button>

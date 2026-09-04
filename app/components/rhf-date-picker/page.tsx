@@ -120,18 +120,18 @@ export default function RHFDatePickerGuidePage() {
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">
-        <section className="rounded-[28px] border border-border/70 bg-card px-8 py-10 shadow-sm">
-          <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
+        <section className="border-border/70 bg-card rounded-[28px] border px-8 py-10 shadow-sm">
+          <p className="text-muted-foreground text-sm font-medium tracking-[0.24em] uppercase">
             {guide.group}
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
-          <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
+          <p className="text-muted-foreground mt-4 max-w-2xl text-base leading-7">
             React Hook Form wrapper cho DatePicker với hỗ trợ validation và error handling tích hợp.
           </p>
         </section>
 
         <div className="mt-8 space-y-6">
-          <Card id="import" className="rounded-[24px] border-border/70">
+          <Card id="import" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
               <CardDescription>
@@ -139,19 +139,19 @@ export default function RHFDatePickerGuidePage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
+              <div className="border-border/70 bg-muted/30 overflow-x-auto rounded-2xl border p-4">
                 <code className="text-sm">{`import { RHFDatePicker } from "${guide.importPath}";`}</code>
               </div>
             </CardContent>
           </Card>
 
-          <Card id="props" className="rounded-[24px] border-border/70">
+          <Card id="props" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
               <CardDescription>RHF Date Picker component props.</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="overflow-hidden rounded-2xl border border-border/70">
+              <div className="border-border/70 overflow-hidden rounded-2xl border">
                 <table className="w-full text-left text-sm">
                   <thead className="bg-muted/40 text-muted-foreground">
                     <tr>
@@ -164,11 +164,11 @@ export default function RHFDatePickerGuidePage() {
                     {props.map((prop, index) => (
                       <tr
                         key={prop.name}
-                        className={cn(index !== props.length - 1 && 'border-b border-border/70')}
+                        className={cn(index !== props.length - 1 && 'border-border/70 border-b')}
                       >
                         <td className="px-4 py-3 font-medium">{prop.name}</td>
-                        <td className="px-4 py-3 text-muted-foreground">{prop.type}</td>
-                        <td className="px-4 py-3 text-muted-foreground">{prop.defaultValue}</td>
+                        <td className="text-muted-foreground px-4 py-3">{prop.type}</td>
+                        <td className="text-muted-foreground px-4 py-3">{prop.defaultValue}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -177,7 +177,7 @@ export default function RHFDatePickerGuidePage() {
             </CardContent>
           </Card>
 
-          <Card id="usages" className="rounded-[24px] border-border/70">
+          <Card id="usages" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
               <CardDescription>Các pattern và cấu hình RHFDatePicker phổ biến.</CardDescription>
@@ -194,13 +194,13 @@ export default function RHFDatePickerGuidePage() {
 
                 {usageSamples.map((sample) => (
                   <TabsContent key={sample.id} value={sample.id} className="space-y-5">
-                    <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-8">
-                      <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
+                    <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-8">
+                      <div className="bg-card flex min-h-56 items-center justify-center rounded-[18px] px-6 shadow-sm">
                         {sample.preview}
                       </div>
                     </div>
 
-                    <div className="overflow-x-auto rounded-2xl border border-border/70 bg-card p-5 text-card-foreground">
+                    <div className="border-border/70 bg-card text-card-foreground overflow-x-auto rounded-2xl border p-5">
                       <pre className="text-sm leading-6">
                         <code>{sample.code}</code>
                       </pre>
@@ -214,18 +214,18 @@ export default function RHFDatePickerGuidePage() {
       </main>
 
       <aside className="hidden xl:block">
-        <div className="sticky top-24 rounded-[24px] border border-border/70 bg-card p-5">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
+        <div className="border-border/70 bg-card sticky top-24 rounded-[24px] border p-5">
+          <p className="text-muted-foreground text-xs font-semibold tracking-[0.24em] uppercase">
             TOC
           </p>
-          <nav className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <a href="#import" className="block transition hover:text-foreground">
+          <nav className="text-muted-foreground mt-4 space-y-3 text-sm">
+            <a href="#import" className="hover:text-foreground block transition">
               Import
             </a>
-            <a href="#props" className="block transition hover:text-foreground">
+            <a href="#props" className="hover:text-foreground block transition">
               Props
             </a>
-            <a href="#usages" className="block transition hover:text-foreground">
+            <a href="#usages" className="hover:text-foreground block transition">
               Usages
             </a>
           </nav>

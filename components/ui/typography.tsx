@@ -25,20 +25,20 @@ function TypographyH4({ className, ...props }: React.ComponentProps<'h4'>) {
 }
 
 function TypographyLead({ className, ...props }: React.ComponentProps<'p'>) {
-  return <p className={cn('text-base leading-7 text-muted-foreground', className)} {...props} />;
+  return <p className={cn('text-muted-foreground text-base leading-7', className)} {...props} />;
 }
 
 function TypographyP({ className, ...props }: React.ComponentProps<'p'>) {
-  return <p className={cn('text-sm leading-7 text-foreground', className)} {...props} />;
+  return <p className={cn('text-foreground text-sm leading-7', className)} {...props} />;
 }
 
 function TypographyMuted({ className, ...props }: React.ComponentProps<'p'>) {
-  return <p className={cn('text-sm text-muted-foreground', className)} {...props} />;
+  return <p className={cn('text-muted-foreground text-sm', className)} {...props} />;
 }
 
 function TypographySmall({ className, ...props }: React.ComponentProps<'small'>) {
   return (
-    <small className={cn('text-xs font-medium text-muted-foreground', className)} {...props} />
+    <small className={cn('text-muted-foreground text-xs font-medium', className)} {...props} />
   );
 }
 
@@ -46,7 +46,7 @@ function TypographyCode({ className, ...props }: React.ComponentProps<'code'>) {
   return (
     <code
       className={cn(
-        'rounded-md border border-border/70 bg-muted px-1.5 py-0.5 font-mono text-sm',
+        'border-border/70 bg-muted rounded-md border px-1.5 py-0.5 font-mono text-sm',
         className,
       )}
       {...props}

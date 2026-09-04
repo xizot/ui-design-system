@@ -179,13 +179,14 @@ export const {service}{Controller}Service = {
 ```
 
 **Response Type Rules:**
-| Response | Type Pattern |
-|----------|--------------|
-| Single object | `ApiResponse<{SchemaName}>` |
-| Paginated list | `ApiResponse<ListResponse<{SchemaName}>>` |
-| Array (no pagination) | `ApiResponse<{SchemaName}[]>` |
-| No body | `ApiResponse<void>` |
-| Unknown | `ApiResponse<unknown>` |
+
+| Response              | Type Pattern                              |
+| --------------------- | ----------------------------------------- |
+| Single object         | `ApiResponse<{SchemaName}>`               |
+| Paginated list        | `ApiResponse<ListResponse<{SchemaName}>>` |
+| Array (no pagination) | `ApiResponse<{SchemaName}[]>`             |
+| No body               | `ApiResponse<void>`                       |
+| Unknown               | `ApiResponse<unknown>`                    |
 
 ### 9. Create services/index.ts
 

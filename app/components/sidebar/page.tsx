@@ -42,7 +42,7 @@ const usageSamples = [
       'Floating sidebar variant for documentation-style navigation with nested sub-items.',
     preview: (
       <div
-        className="overflow-hidden rounded-[18px] border border-border/70"
+        className="border-border/70 overflow-hidden rounded-[18px] border"
         style={{ height: 500, transform: 'translateZ(0)' }}
       >
         <SidebarProvider style={{ '--sidebar-width': '19rem' } as React.CSSProperties}>
@@ -68,11 +68,11 @@ const usageSamples = [
             </header>
             <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
               <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                <div className="aspect-video rounded-xl bg-muted/50" />
-                <div className="aspect-video rounded-xl bg-muted/50" />
-                <div className="aspect-video rounded-xl bg-muted/50" />
+                <div className="bg-muted/50 aspect-video rounded-xl" />
+                <div className="bg-muted/50 aspect-video rounded-xl" />
+                <div className="bg-muted/50 aspect-video rounded-xl" />
               </div>
-              <div className="min-h-[100px] flex-1 rounded-xl bg-muted/50" />
+              <div className="bg-muted/50 min-h-[100px] flex-1 rounded-xl" />
             </div>
           </SidebarInset>
         </SidebarProvider>
@@ -208,7 +208,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     description: 'Collapsible icon sidebar with team switcher and rail.',
     preview: (
       <div
-        className="overflow-hidden rounded-[18px] border border-border/70"
+        className="border-border/70 overflow-hidden rounded-[18px] border"
         style={{ height: 500, transform: 'translateZ(0)' }}
       >
         <SidebarProvider>
@@ -236,11 +236,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </header>
             <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
               <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                <div className="aspect-video rounded-xl bg-muted/50" />
-                <div className="aspect-video rounded-xl bg-muted/50" />
-                <div className="aspect-video rounded-xl bg-muted/50" />
+                <div className="bg-muted/50 aspect-video rounded-xl" />
+                <div className="bg-muted/50 aspect-video rounded-xl" />
+                <div className="bg-muted/50 aspect-video rounded-xl" />
               </div>
-              <div className="min-h-[100px] flex-1 rounded-xl bg-muted/50" />
+              <div className="bg-muted/50 min-h-[100px] flex-1 rounded-xl" />
             </div>
           </SidebarInset>
         </SidebarProvider>
@@ -522,7 +522,7 @@ export function NavUser({ user }: { user: { name: string; email: string; avatar:
       'Inset sidebar with app logo header, collapsible nav, projects, secondary nav, and user footer.',
     preview: (
       <div
-        className="overflow-hidden rounded-[18px] border border-border/70"
+        className="border-border/70 overflow-hidden rounded-[18px] border"
         style={{ height: 500, transform: 'translateZ(0)' }}
       >
         <SidebarProvider>
@@ -550,11 +550,11 @@ export function NavUser({ user }: { user: { name: string; email: string; avatar:
             </header>
             <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
               <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                <div className="aspect-video rounded-xl bg-muted/50" />
-                <div className="aspect-video rounded-xl bg-muted/50" />
-                <div className="aspect-video rounded-xl bg-muted/50" />
+                <div className="bg-muted/50 aspect-video rounded-xl" />
+                <div className="bg-muted/50 aspect-video rounded-xl" />
+                <div className="bg-muted/50 aspect-video rounded-xl" />
               </div>
-              <div className="min-h-[100px] flex-1 rounded-xl bg-muted/50" />
+              <div className="bg-muted/50 min-h-[100px] flex-1 rounded-xl" />
             </div>
           </SidebarInset>
         </SidebarProvider>
@@ -883,18 +883,18 @@ export default function SidebarGuidePage() {
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">
-        <section className="rounded-[28px] border border-border/70 bg-card px-8 py-10 shadow-sm">
-          <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
+        <section className="border-border/70 bg-card rounded-[28px] border px-8 py-10 shadow-sm">
+          <p className="text-muted-foreground text-sm font-medium tracking-[0.24em] uppercase">
             {guide.group}
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
-          <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
+          <p className="text-muted-foreground mt-4 max-w-2xl text-base leading-7">
             A composable, themeable and customizable sidebar component.
           </p>
         </section>
 
         <div className="mt-8 space-y-6">
-          <Card id="import" className="rounded-[24px] border-border/70">
+          <Card id="import" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
               <CardDescription>
@@ -902,7 +902,7 @@ export default function SidebarGuidePage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto rounded-2xl border border-border/70 bg-muted/30 p-4">
+              <div className="border-border/70 bg-muted/30 overflow-x-auto rounded-2xl border p-4">
                 <code className="text-sm">{`import {
   Sidebar,
   SidebarContent,
@@ -923,13 +923,13 @@ export default function SidebarGuidePage() {
             </CardContent>
           </Card>
 
-          <Card id="props" className="rounded-[24px] border-border/70">
+          <Card id="props" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
               <CardDescription>Sidebar component props.</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="overflow-hidden rounded-2xl border border-border/70">
+              <div className="border-border/70 overflow-hidden rounded-2xl border">
                 <table className="w-full text-left text-sm">
                   <thead className="bg-muted/40 text-muted-foreground">
                     <tr>
@@ -942,11 +942,11 @@ export default function SidebarGuidePage() {
                     {props.map((prop, index) => (
                       <tr
                         key={prop.name}
-                        className={cn(index !== props.length - 1 && 'border-b border-border/70')}
+                        className={cn(index !== props.length - 1 && 'border-border/70 border-b')}
                       >
                         <td className="px-4 py-3 font-medium">{prop.name}</td>
-                        <td className="px-4 py-3 text-muted-foreground">{prop.type}</td>
-                        <td className="px-4 py-3 text-muted-foreground">{prop.defaultValue}</td>
+                        <td className="text-muted-foreground px-4 py-3">{prop.type}</td>
+                        <td className="text-muted-foreground px-4 py-3">{prop.defaultValue}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -955,7 +955,7 @@ export default function SidebarGuidePage() {
             </CardContent>
           </Card>
 
-          <Card id="usages" className="rounded-[24px] border-border/70">
+          <Card id="usages" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
               <CardDescription>Common sidebar patterns and configurations.</CardDescription>
@@ -973,21 +973,21 @@ export default function SidebarGuidePage() {
                 {usageSamples.map((sample) => (
                   <TabsContent key={sample.id} value={sample.id} className="space-y-5">
                     {sample.description && (
-                      <p className="text-sm text-muted-foreground">{sample.description}</p>
+                      <p className="text-muted-foreground text-sm">{sample.description}</p>
                     )}
 
-                    <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-4">
+                    <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-4">
                       {sample.preview}
                     </div>
 
                     <Tabs defaultValue={sample.files[0]?.name} className="gap-0">
-                      <div className="flex items-center rounded-t-2xl border border-border/70 bg-muted/30 px-4 pt-3">
+                      <div className="border-border/70 bg-muted/30 flex items-center rounded-t-2xl border px-4 pt-3">
                         <TabsList className="h-auto gap-0 rounded-none bg-transparent p-0">
                           {sample.files.map((file) => (
                             <TabsTrigger
                               key={file.name}
                               value={file.name}
-                              className="rounded-none border-b-2 border-transparent px-3 pb-3 text-xs text-muted-foreground data-selected:border-foreground data-selected:text-foreground"
+                              className="text-muted-foreground data-selected:border-foreground data-selected:text-foreground rounded-none border-b-2 border-transparent px-3 pb-3 text-xs"
                             >
                               {file.name}
                             </TabsTrigger>
@@ -996,7 +996,7 @@ export default function SidebarGuidePage() {
                       </div>
                       {sample.files.map((file) => (
                         <TabsContent key={file.name} value={file.name} className="mt-0">
-                          <div className="overflow-x-auto rounded-b-2xl border border-t-0 border-border/70 bg-card p-5 text-card-foreground">
+                          <div className="border-border/70 bg-card text-card-foreground overflow-x-auto rounded-b-2xl border border-t-0 p-5">
                             <pre className="text-sm leading-6">
                               <code>{file.code}</code>
                             </pre>
@@ -1013,18 +1013,18 @@ export default function SidebarGuidePage() {
       </main>
 
       <aside className="hidden xl:block">
-        <div className="sticky top-24 rounded-[24px] border border-border/70 bg-card p-5">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
+        <div className="border-border/70 bg-card sticky top-24 rounded-[24px] border p-5">
+          <p className="text-muted-foreground text-xs font-semibold tracking-[0.24em] uppercase">
             TOC
           </p>
-          <nav className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <a href="#import" className="block transition hover:text-foreground">
+          <nav className="text-muted-foreground mt-4 space-y-3 text-sm">
+            <a href="#import" className="hover:text-foreground block transition">
               Import
             </a>
-            <a href="#props" className="block transition hover:text-foreground">
+            <a href="#props" className="hover:text-foreground block transition">
               Props
             </a>
-            <a href="#usages" className="block transition hover:text-foreground">
+            <a href="#usages" className="hover:text-foreground block transition">
               Usages
             </a>
           </nav>

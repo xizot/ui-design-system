@@ -40,18 +40,18 @@ export default function MarkerGuidePage() {
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">
-        <section className="rounded-3xl border border-border/70 bg-card px-8 py-10 shadow-sm">
-          <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
+        <section className="border-border/70 bg-card rounded-3xl border px-8 py-10 shadow-sm">
+          <p className="text-muted-foreground text-sm font-medium tracking-[0.24em] uppercase">
             {guide.group}
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
-          <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
+          <p className="text-muted-foreground mt-4 max-w-2xl text-base leading-7">
             Hiển thị trạng thái, ghi chú hệ thống hoặc dòng phân tách trong hội thoại.
           </p>
         </section>
 
         <div className="mt-8 space-y-6">
-          <Card id="import" className="rounded-3xl border-border/70">
+          <Card id="import" className="border-border/70 rounded-3xl">
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
               <CardDescription>Import marker component từ design system.</CardDescription>
@@ -61,7 +61,7 @@ export default function MarkerGuidePage() {
             </CardContent>
           </Card>
 
-          <Card id="usage" className="rounded-3xl border-border/70">
+          <Card id="usage" className="border-border/70 rounded-3xl">
             <CardHeader>
               <CardTitle>2. Usage</CardTitle>
               <CardDescription>Marker trạng thái và separator.</CardDescription>
@@ -73,7 +73,7 @@ export default function MarkerGuidePage() {
                   <TabsTrigger value="code">Code</TabsTrigger>
                 </TabsList>
                 <TabsContent value="preview">
-                  <div className="space-y-4 rounded-2xl border border-dashed border-border bg-muted/30 p-8">
+                  <div className="border-border bg-muted/30 space-y-4 rounded-2xl border border-dashed p-8">
                     <Marker role="status">
                       <MarkerIcon>
                         <Spinner />

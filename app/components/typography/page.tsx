@@ -130,8 +130,8 @@ export default function TypographyGuidePage() {
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">
-        <section className="rounded-[28px] border border-border/70 bg-card px-8 py-10 shadow-sm">
-          <TypographySmall className="text-sm uppercase tracking-[0.24em]">
+        <section className="border-border/70 bg-card rounded-[28px] border px-8 py-10 shadow-sm">
+          <TypographySmall className="text-sm tracking-[0.24em] uppercase">
             {guide.group}
           </TypographySmall>
           <TypographyH1 className="mt-4">{guide.name}</TypographyH1>
@@ -142,7 +142,7 @@ export default function TypographyGuidePage() {
         </section>
 
         <div className="mt-8 space-y-6">
-          <Card id="import" className="rounded-[24px] border-border/70">
+          <Card id="import" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
               <CardDescription>Import các primitive typography từ design system.</CardDescription>
@@ -166,7 +166,7 @@ export default function TypographyGuidePage() {
             </CardContent>
           </Card>
 
-          <Card id="props" className="rounded-[24px] border-border/70">
+          <Card id="props" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
               <CardDescription>
@@ -174,7 +174,7 @@ export default function TypographyGuidePage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="overflow-hidden rounded-2xl border border-border/70">
+              <div className="border-border/70 overflow-hidden rounded-2xl border">
                 <table className="w-full text-left text-sm">
                   <thead className="bg-muted/40 text-muted-foreground">
                     <tr>
@@ -187,11 +187,11 @@ export default function TypographyGuidePage() {
                     {props.map((prop, index) => (
                       <tr
                         key={prop.name}
-                        className={cn(index !== props.length - 1 && 'border-b border-border/70')}
+                        className={cn(index !== props.length - 1 && 'border-border/70 border-b')}
                       >
                         <td className="px-4 py-3 font-medium">{prop.name}</td>
-                        <td className="px-4 py-3 text-muted-foreground">{prop.type}</td>
-                        <td className="px-4 py-3 text-muted-foreground">{prop.defaultValue}</td>
+                        <td className="text-muted-foreground px-4 py-3">{prop.type}</td>
+                        <td className="text-muted-foreground px-4 py-3">{prop.defaultValue}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -200,7 +200,7 @@ export default function TypographyGuidePage() {
             </CardContent>
           </Card>
 
-          <Card id="usages" className="rounded-[24px] border-border/70">
+          <Card id="usages" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
               <CardDescription>
@@ -219,8 +219,8 @@ export default function TypographyGuidePage() {
 
                 {usageSamples.map((sample) => (
                   <TabsContent key={sample.id} value={sample.id} className="space-y-5">
-                    <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-8">
-                      <div className="rounded-[18px] bg-card px-6 py-8 shadow-sm">
+                    <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-8">
+                      <div className="bg-card rounded-[18px] px-6 py-8 shadow-sm">
                         {sample.preview}
                       </div>
                     </div>
@@ -235,16 +235,16 @@ export default function TypographyGuidePage() {
       </main>
 
       <aside className="hidden xl:block">
-        <div className="sticky top-24 rounded-[24px] border border-border/70 bg-card p-5">
-          <TypographySmall className="uppercase tracking-[0.24em]">TOC</TypographySmall>
-          <nav className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <a href="#import" className="block transition hover:text-foreground">
+        <div className="border-border/70 bg-card sticky top-24 rounded-[24px] border p-5">
+          <TypographySmall className="tracking-[0.24em] uppercase">TOC</TypographySmall>
+          <nav className="text-muted-foreground mt-4 space-y-3 text-sm">
+            <a href="#import" className="hover:text-foreground block transition">
               Import
             </a>
-            <a href="#props" className="block transition hover:text-foreground">
+            <a href="#props" className="hover:text-foreground block transition">
               Props
             </a>
-            <a href="#usages" className="block transition hover:text-foreground">
+            <a href="#usages" className="hover:text-foreground block transition">
               Usages
             </a>
           </nav>

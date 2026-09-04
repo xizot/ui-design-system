@@ -24,20 +24,20 @@ export function CodeBlock({ code, id, className }: CodeBlockProps) {
 
   return (
     <div className={`group relative ${className || ''}`}>
-      <div className="overflow-x-auto rounded-2xl border border-border/70 bg-card p-5 text-card-foreground">
+      <div className="border-border/70 bg-card text-card-foreground overflow-x-auto rounded-2xl border p-5">
         <pre className="text-sm leading-6">
           <code>{code}</code>
         </pre>
       </div>
       <button
         onClick={handleCopy}
-        className="absolute right-3 top-3 rounded-lg bg-card p-2 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-accent"
+        className="bg-card hover:bg-accent absolute top-3 right-3 rounded-lg p-2 opacity-0 transition-opacity group-hover:opacity-100"
         aria-label="Copy code"
       >
         {copiedId === id ? (
           <Check className="h-4 w-4 text-green-500" />
         ) : (
-          <Copy className="h-4 w-4 text-muted-foreground" />
+          <Copy className="text-muted-foreground h-4 w-4" />
         )}
       </button>
     </div>

@@ -53,7 +53,7 @@ function Switch({
           data-slot="switch"
           data-size={size}
           className={cn(
-            'peer group/switch relative inline-flex shrink-0 items-center rounded-full border border-transparent p-0.5 transition-all outline-none after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:bg-primary data-unchecked:bg-input dark:data-unchecked:bg-input/80 data-disabled:cursor-not-allowed data-disabled:opacity-50',
+            'peer group/switch focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:bg-primary data-unchecked:bg-input dark:data-unchecked:bg-input/80 relative inline-flex shrink-0 items-center rounded-full border border-transparent p-0.5 transition-all outline-none after:-inset-x-3 after:-inset-y-2 focus-visible:ring-3 aria-invalid:ring-3 data-disabled:cursor-not-allowed data-disabled:opacity-50',
             switchSizeStyles[size].root,
             className,
           )}
@@ -62,7 +62,7 @@ function Switch({
           <SwitchPrimitive.Thumb
             data-slot="switch-thumb"
             className={cn(
-              'pointer-events-none block rounded-full bg-background ring-0 transition-transform data-unchecked:translate-x-0 dark:data-checked:bg-primary-foreground dark:data-unchecked:bg-foreground',
+              'bg-background dark:data-checked:bg-primary-foreground dark:data-unchecked:bg-foreground pointer-events-none block rounded-full ring-0 transition-transform data-unchecked:translate-x-0',
               switchSizeStyles[size].thumb,
               switchSizeStyles[size].checked,
             )}

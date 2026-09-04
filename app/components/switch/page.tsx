@@ -92,18 +92,18 @@ export default function SwitchGuidePage() {
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">
-        <section className="rounded-[28px] border border-border/70 bg-card px-8 py-10 shadow-sm">
-          <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
+        <section className="border-border/70 bg-card rounded-[28px] border px-8 py-10 shadow-sm">
+          <p className="text-muted-foreground text-sm font-medium tracking-[0.24em] uppercase">
             {guide.group}
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
-          <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
+          <p className="text-muted-foreground mt-4 max-w-2xl text-base leading-7">
             A control that allows the user to toggle between checked and not checked.
           </p>
         </section>
 
         <div className="mt-8 space-y-6">
-          <Card id="import" className="rounded-[24px] border-border/70">
+          <Card id="import" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
               <CardDescription>Import the switch component from the design system.</CardDescription>
@@ -117,13 +117,13 @@ export default function SwitchGuidePage() {
             </CardContent>
           </Card>
 
-          <Card id="props" className="rounded-[24px] border-border/70">
+          <Card id="props" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>2. Props</CardTitle>
               <CardDescription>Switch component props.</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="overflow-hidden rounded-2xl border border-border/70">
+              <div className="border-border/70 overflow-hidden rounded-2xl border">
                 <table className="w-full text-left text-sm">
                   <thead className="bg-muted/40 text-muted-foreground">
                     <tr>
@@ -136,11 +136,11 @@ export default function SwitchGuidePage() {
                     {props.map((prop, index) => (
                       <tr
                         key={prop.name}
-                        className={cn(index !== props.length - 1 && 'border-b border-border/70')}
+                        className={cn(index !== props.length - 1 && 'border-border/70 border-b')}
                       >
                         <td className="px-4 py-3 font-medium">{prop.name}</td>
-                        <td className="px-4 py-3 text-muted-foreground">{prop.type}</td>
-                        <td className="px-4 py-3 text-muted-foreground">{prop.defaultValue}</td>
+                        <td className="text-muted-foreground px-4 py-3">{prop.type}</td>
+                        <td className="text-muted-foreground px-4 py-3">{prop.defaultValue}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -149,13 +149,13 @@ export default function SwitchGuidePage() {
             </CardContent>
           </Card>
 
-          <Card id="sizes" className="rounded-[24px] border-border/70">
+          <Card id="sizes" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>3. Sizes</CardTitle>
               <CardDescription>Available sizes for the Switch component.</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col gap-4 max-w-sm">
+              <div className="flex max-w-sm flex-col gap-4">
                 <Switch id="xxs-switch" size="xxs" label="XXS Switch" />
                 <Switch id="xs-switch" size="xs" label="XS Switch" />
                 <Switch id="sm-switch" size="sm" label="Small Switch" />
@@ -167,7 +167,7 @@ export default function SwitchGuidePage() {
             </CardContent>
           </Card>
 
-          <Card id="usages" className="rounded-[24px] border-border/70">
+          <Card id="usages" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>4. Usages</CardTitle>
               <CardDescription>Common switch patterns and configurations.</CardDescription>
@@ -184,8 +184,8 @@ export default function SwitchGuidePage() {
 
                 {usageSamples.map((sample) => (
                   <TabsContent key={sample.id} value={sample.id} className="space-y-5">
-                    <div className="rounded-[20px] border border-dashed border-border bg-muted/30 p-8">
-                      <div className="flex min-h-56 items-center justify-center rounded-[18px] bg-card px-6 shadow-sm">
+                    <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-8">
+                      <div className="bg-card flex min-h-56 items-center justify-center rounded-[18px] px-6 shadow-sm">
                         {sample.preview}
                       </div>
                     </div>
@@ -200,21 +200,21 @@ export default function SwitchGuidePage() {
       </main>
 
       <aside className="hidden xl:block">
-        <div className="sticky top-24 rounded-[24px] border border-border/70 bg-card p-5">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
+        <div className="border-border/70 bg-card sticky top-24 rounded-[24px] border p-5">
+          <p className="text-muted-foreground text-xs font-semibold tracking-[0.24em] uppercase">
             TOC
           </p>
-          <nav className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <a href="#import" className="block transition hover:text-foreground">
+          <nav className="text-muted-foreground mt-4 space-y-3 text-sm">
+            <a href="#import" className="hover:text-foreground block transition">
               Import
             </a>
-            <a href="#props" className="block transition hover:text-foreground">
+            <a href="#props" className="hover:text-foreground block transition">
               Props
             </a>
-            <a href="#sizes" className="block transition hover:text-foreground">
+            <a href="#sizes" className="hover:text-foreground block transition">
               Sizes
             </a>
-            <a href="#usages" className="block transition hover:text-foreground">
+            <a href="#usages" className="hover:text-foreground block transition">
               Usages
             </a>
           </nav>

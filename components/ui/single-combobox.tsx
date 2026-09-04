@@ -131,7 +131,7 @@ function SingleCombobox<T extends ComboboxBaseOption>({
         <div
           ref={anchorRef}
           className={cn(
-            'group/trigger relative flex w-full items-center overflow-hidden rounded-md border border-input bg-transparent shadow-xs transition-[color,box-shadow] dark:bg-input/30',
+            'group/trigger border-input dark:bg-input/30 relative flex w-full items-center overflow-hidden rounded-md border bg-transparent shadow-xs transition-[color,box-shadow]',
             FORM_CONTROL_RING_STYLES.focusWithin,
             open && (error ? FORM_CONTROL_RING_STYLES.invalidOpen : FORM_CONTROL_RING_STYLES.open),
             disabled && 'pointer-events-none cursor-not-allowed opacity-50',
@@ -187,7 +187,7 @@ function SingleCombobox<T extends ComboboxBaseOption>({
               ) : showClearIcon ? (
                 <button
                   type="button"
-                  className="pointer-events-auto flex size-4 cursor-pointer items-center justify-center rounded text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground pointer-events-auto flex size-4 cursor-pointer items-center justify-center rounded"
                   onClick={() => {
                     onChange?.(undefined, undefined);
                   }}

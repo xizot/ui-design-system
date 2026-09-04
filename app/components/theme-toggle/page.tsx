@@ -9,24 +9,24 @@ export default function ThemeToggleGuidePage() {
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">
-        <section className="rounded-[28px] border border-border/70 bg-card px-8 py-10 shadow-sm">
-          <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
+        <section className="border-border/70 bg-card rounded-[28px] border px-8 py-10 shadow-sm">
+          <p className="text-muted-foreground text-sm font-medium tracking-[0.24em] uppercase">
             ui
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">Theme Toggle</h1>
-          <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
+          <p className="text-muted-foreground mt-4 max-w-2xl text-base leading-7">
             A button component that allows users to toggle between light and dark themes.
           </p>
         </section>
 
         <div className="mt-8 space-y-6">
-          <div className="rounded-[24px] border border-border/70 bg-card px-8 py-6">
+          <div className="border-border/70 bg-card rounded-[24px] border px-8 py-6">
             <h2 className="text-2xl font-semibold">Installation</h2>
             <div className="mt-4 space-y-4">
               <div>
                 <h3 className="text-lg font-medium">1. Install next-themes</h3>
-                <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-card p-4 text-card-foreground">
-                  <pre className="text-sm text-card-foreground">
+                <div className="border-border/70 bg-card text-card-foreground mt-2 overflow-x-auto rounded-2xl border p-4">
+                  <pre className="text-card-foreground text-sm">
                     <code>npm install next-themes</code>
                   </pre>
                 </div>
@@ -34,15 +34,15 @@ export default function ThemeToggleGuidePage() {
 
               <div>
                 <h3 className="text-lg font-medium">2. Create ThemeProvider</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
+                <p className="text-muted-foreground mt-2 text-sm">
                   Create a provider component at{' '}
-                  <code className="bg-muted px-1 py-0.5 rounded">
+                  <code className="bg-muted rounded px-1 py-0.5">
                     components/providers/theme-provider.tsx
                   </code>
                   :
                 </p>
-                <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-card p-4 text-card-foreground">
-                  <pre className="text-sm text-card-foreground">
+                <div className="border-border/70 bg-card text-card-foreground mt-2 overflow-x-auto rounded-2xl border p-4">
+                  <pre className="text-card-foreground text-sm">
                     <code>{`'use client'
 
 import * as React from 'react'
@@ -58,11 +58,11 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
 
               <div>
                 <h3 className="text-lg font-medium">3. Add ThemeProvider to root layout</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Update your <code className="bg-muted px-1 py-0.5 rounded">app/layout.tsx</code>:
+                <p className="text-muted-foreground mt-2 text-sm">
+                  Update your <code className="bg-muted rounded px-1 py-0.5">app/layout.tsx</code>:
                 </p>
-                <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-card p-4 text-card-foreground">
-                  <pre className="text-sm text-card-foreground">
+                <div className="border-border/70 bg-card text-card-foreground mt-2 overflow-x-auto rounded-2xl border p-4">
+                  <pre className="text-card-foreground text-sm">
                     <code>{`import { ThemeProvider } from '@/components/providers/theme-provider'
 
 export default function RootLayout({
@@ -91,15 +91,15 @@ export default function RootLayout({
 
               <div>
                 <h3 className="text-lg font-medium">4. Create ThemeToggle component</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
+                <p className="text-muted-foreground mt-2 text-sm">
                   Create the toggle component at{' '}
-                  <code className="bg-muted px-1 py-0.5 rounded">
+                  <code className="bg-muted rounded px-1 py-0.5">
                     components/ui/theme-toggle.tsx
                   </code>
                   :
                 </p>
-                <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-card p-4 text-card-foreground">
-                  <pre className="text-sm text-card-foreground">
+                <div className="border-border/70 bg-card text-card-foreground mt-2 overflow-x-auto rounded-2xl border p-4">
+                  <pre className="text-card-foreground text-sm">
                     <code>{`'use client'
 
 import * as React from 'react'
@@ -129,12 +129,12 @@ export function ThemeToggle() {
 
               <div>
                 <h3 className="text-lg font-medium">5. Add CSS variables for dark mode</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Update your <code className="bg-muted px-1 py-0.5 rounded">app/globals.css</code>{' '}
+                <p className="text-muted-foreground mt-2 text-sm">
+                  Update your <code className="bg-muted rounded px-1 py-0.5">app/globals.css</code>{' '}
                   with dark mode variables:
                 </p>
-                <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-card p-4 text-card-foreground">
-                  <pre className="text-sm text-card-foreground">
+                <div className="border-border/70 bg-card text-card-foreground mt-2 overflow-x-auto rounded-2xl border p-4">
+                  <pre className="text-card-foreground text-sm">
                     <code>{`@layer base {
   :root {
     --background: 0 0% 100%;
@@ -196,13 +196,13 @@ export function ThemeToggle() {
             </div>
           </div>
 
-          <div className="rounded-[24px] border border-border/70 bg-card px-8 py-6">
+          <div className="border-border/70 bg-card rounded-[24px] border px-8 py-6">
             <h2 className="text-2xl font-semibold">Usage</h2>
             <div className="mt-4 space-y-4">
               <div>
                 <h3 className="text-lg font-medium">Import and use</h3>
-                <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-card p-4 text-card-foreground">
-                  <pre className="text-sm text-card-foreground">
+                <div className="border-border/70 bg-card text-card-foreground mt-2 overflow-x-auto rounded-2xl border p-4">
+                  <pre className="text-card-foreground text-sm">
                     <code>{`import { ThemeToggle } from '@/design-system/components/ui/theme-toggle'
 
 export default function Header() {
@@ -221,11 +221,11 @@ export default function Header() {
 
               <div>
                 <h3 className="text-lg font-medium">In navigation</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
+                <p className="text-muted-foreground mt-2 text-sm">
                   Add the theme toggle to your navigation or header component:
                 </p>
-                <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-card p-4 text-card-foreground">
-                  <pre className="text-sm text-card-foreground">
+                <div className="border-border/70 bg-card text-card-foreground mt-2 overflow-x-auto rounded-2xl border p-4">
+                  <pre className="text-card-foreground text-sm">
                     <code>{`import { ThemeToggle } from '@/design-system/components/ui/theme-toggle'
 import { Button } from '@/design-system/components/ui/button'
 
@@ -247,9 +247,9 @@ export function Navigation() {
             </div>
           </div>
 
-          <div className="rounded-[24px] border border-border/70 bg-card px-8 py-6">
+          <div className="border-border/70 bg-card rounded-[24px] border px-8 py-6">
             <h2 className="text-2xl font-semibold">ThemeProvider Props</h2>
-            <div className="mt-4 overflow-hidden rounded-2xl border border-border/70">
+            <div className="border-border/70 mt-4 overflow-hidden rounded-2xl border">
               <table className="w-full text-left text-sm">
                 <thead className="bg-muted/40 text-muted-foreground">
                   <tr>
@@ -260,33 +260,33 @@ export function Navigation() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-b border-border/70">
+                  <tr className="border-border/70 border-b">
                     <td className="px-4 py-3 font-medium">attribute</td>
-                    <td className="px-4 py-3 text-muted-foreground">string</td>
-                    <td className="px-4 py-3 text-muted-foreground">"class"</td>
-                    <td className="px-4 py-3 text-muted-foreground">
+                    <td className="text-muted-foreground px-4 py-3">string</td>
+                    <td className="text-muted-foreground px-4 py-3">"class"</td>
+                    <td className="text-muted-foreground px-4 py-3">
                       HTML attribute to apply theme to
                     </td>
                   </tr>
-                  <tr className="border-b border-border/70">
+                  <tr className="border-border/70 border-b">
                     <td className="px-4 py-3 font-medium">defaultTheme</td>
-                    <td className="px-4 py-3 text-muted-foreground">string</td>
-                    <td className="px-4 py-3 text-muted-foreground">"system"</td>
-                    <td className="px-4 py-3 text-muted-foreground">Default theme to use</td>
+                    <td className="text-muted-foreground px-4 py-3">string</td>
+                    <td className="text-muted-foreground px-4 py-3">"system"</td>
+                    <td className="text-muted-foreground px-4 py-3">Default theme to use</td>
                   </tr>
-                  <tr className="border-b border-border/70">
+                  <tr className="border-border/70 border-b">
                     <td className="px-4 py-3 font-medium">enableSystem</td>
-                    <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                    <td className="px-4 py-3 text-muted-foreground">true</td>
-                    <td className="px-4 py-3 text-muted-foreground">
+                    <td className="text-muted-foreground px-4 py-3">boolean</td>
+                    <td className="text-muted-foreground px-4 py-3">true</td>
+                    <td className="text-muted-foreground px-4 py-3">
                       Enable system theme detection
                     </td>
                   </tr>
                   <tr>
                     <td className="px-4 py-3 font-medium">disableTransitionOnChange</td>
-                    <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                    <td className="px-4 py-3 text-muted-foreground">false</td>
-                    <td className="px-4 py-3 text-muted-foreground">
+                    <td className="text-muted-foreground px-4 py-3">boolean</td>
+                    <td className="text-muted-foreground px-4 py-3">false</td>
+                    <td className="text-muted-foreground px-4 py-3">
                       Disable transitions when changing theme
                     </td>
                   </tr>
@@ -295,15 +295,15 @@ export function Navigation() {
             </div>
           </div>
 
-          <div className="rounded-[24px] border border-border/70 bg-card px-8 py-6">
+          <div className="border-border/70 bg-card rounded-[24px] border px-8 py-6">
             <h2 className="text-2xl font-semibold">useTheme Hook</h2>
             <div className="mt-4 space-y-4">
-              <p className="text-sm text-muted-foreground">
-                The <code className="bg-muted px-1 py-0.5 rounded">useTheme</code> hook from
+              <p className="text-muted-foreground text-sm">
+                The <code className="bg-muted rounded px-1 py-0.5">useTheme</code> hook from
                 next-themes provides access to theme state and controls:
               </p>
-              <div className="mt-2 overflow-x-auto rounded-2xl border border-border/70 bg-card p-4 text-card-foreground">
-                <pre className="text-sm text-card-foreground">
+              <div className="border-border/70 bg-card text-card-foreground mt-2 overflow-x-auto rounded-2xl border p-4">
+                <pre className="text-card-foreground text-sm">
                   <code>{`'use client'
 
 import { useTheme } from 'next-themes'
@@ -324,7 +324,7 @@ export function ThemeInfo() {
 }`}</code>
                 </pre>
               </div>
-              <div className="mt-4 overflow-hidden rounded-2xl border border-border/70">
+              <div className="border-border/70 mt-4 overflow-hidden rounded-2xl border">
                 <table className="w-full text-left text-sm">
                   <thead className="bg-muted/40 text-muted-foreground">
                     <tr>
@@ -334,25 +334,25 @@ export function ThemeInfo() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border-b border-border/70">
+                    <tr className="border-border/70 border-b">
                       <td className="px-4 py-3 font-medium">theme</td>
-                      <td className="px-4 py-3 text-muted-foreground">string</td>
-                      <td className="px-4 py-3 text-muted-foreground">Current theme value</td>
+                      <td className="text-muted-foreground px-4 py-3">string</td>
+                      <td className="text-muted-foreground px-4 py-3">Current theme value</td>
                     </tr>
-                    <tr className="border-b border-border/70">
+                    <tr className="border-border/70 border-b">
                       <td className="px-4 py-3 font-medium">setTheme</td>
-                      <td className="px-4 py-3 text-muted-foreground">function</td>
-                      <td className="px-4 py-3 text-muted-foreground">Function to set theme</td>
+                      <td className="text-muted-foreground px-4 py-3">function</td>
+                      <td className="text-muted-foreground px-4 py-3">Function to set theme</td>
                     </tr>
-                    <tr className="border-b border-border/70">
+                    <tr className="border-border/70 border-b">
                       <td className="px-4 py-3 font-medium">systemTheme</td>
-                      <td className="px-4 py-3 text-muted-foreground">string</td>
-                      <td className="px-4 py-3 text-muted-foreground">System's preferred theme</td>
+                      <td className="text-muted-foreground px-4 py-3">string</td>
+                      <td className="text-muted-foreground px-4 py-3">System's preferred theme</td>
                     </tr>
                     <tr>
                       <td className="px-4 py-3 font-medium">resolvedTheme</td>
-                      <td className="px-4 py-3 text-muted-foreground">string</td>
-                      <td className="px-4 py-3 text-muted-foreground">
+                      <td className="text-muted-foreground px-4 py-3">string</td>
+                      <td className="text-muted-foreground px-4 py-3">
                         Actual theme being applied
                       </td>
                     </tr>
@@ -365,21 +365,21 @@ export function ThemeInfo() {
       </main>
 
       <aside className="hidden xl:block">
-        <div className="sticky top-24 rounded-[24px] border border-border/70 bg-card p-5">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
+        <div className="border-border/70 bg-card sticky top-24 rounded-[24px] border p-5">
+          <p className="text-muted-foreground text-xs font-semibold tracking-[0.24em] uppercase">
             TOC
           </p>
-          <nav className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <a href="#installation" className="block transition hover:text-foreground">
+          <nav className="text-muted-foreground mt-4 space-y-3 text-sm">
+            <a href="#installation" className="hover:text-foreground block transition">
               Installation
             </a>
-            <a href="#usage" className="block transition hover:text-foreground">
+            <a href="#usage" className="hover:text-foreground block transition">
               Usage
             </a>
-            <a href="#themeprovider-props" className="block transition hover:text-foreground">
+            <a href="#themeprovider-props" className="hover:text-foreground block transition">
               ThemeProvider Props
             </a>
-            <a href="#usetheme-hook" className="block transition hover:text-foreground">
+            <a href="#usetheme-hook" className="hover:text-foreground block transition">
               useTheme Hook
             </a>
           </nav>

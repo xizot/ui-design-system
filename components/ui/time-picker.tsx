@@ -150,18 +150,18 @@ function TimePickerPanel({
   const sizeStyles = timePickerSizeStyles[size];
 
   return (
-    <div className={cn('flex flex-col h-full border-l', className)}>
+    <div className={cn('flex h-full flex-col border-l', className)}>
       {showHeader ? (
-        <div className="text-center shrink-0">
+        <div className="shrink-0 text-center">
           <div className={cn('font-medium', sizeStyles.header)}>{displayValue}</div>
         </div>
       ) : null}
 
-      <div className="relative flex flex-1 min-h-0 gap-0.5">
-        <div className="pointer-events-none absolute inset-x-2 top-1/2 z-0 h-8 -translate-y-1/2 rounded-md bg-muted/50" />
+      <div className="relative flex min-h-0 flex-1 gap-0.5">
+        <div className="bg-muted/50 pointer-events-none absolute inset-x-2 top-1/2 z-0 h-8 -translate-y-1/2 rounded-md" />
         <ScrollArea
           className={cn(
-            'relative z-10 flex-1 [&>[data-slot=scroll-area-viewport]]:rounded-l-md overflow-hidden',
+            'relative z-10 flex-1 overflow-hidden [&>[data-slot=scroll-area-viewport]]:rounded-l-md',
             sizeStyles.column,
           )}
         >
@@ -210,7 +210,7 @@ function TimePickerPanel({
         {showSeconds && (
           <ScrollArea
             className={cn(
-              'relative z-10 flex-1 [&>[data-slot=scroll-area-viewport]]:rounded-r-md overflow-hidden',
+              'relative z-10 flex-1 overflow-hidden [&>[data-slot=scroll-area-viewport]]:rounded-r-md',
               sizeStyles.column,
             )}
           >
@@ -288,7 +288,7 @@ function TimePicker({
         <PopoverTrigger className="w-full" disabled={disabled}>
           <div
             className={cn(
-              'group relative inline-flex w-full items-center justify-between gap-x-3 rounded-md border border-input bg-transparent shadow-xs transition-[color,box-shadow] dark:bg-input/30',
+              'group border-input dark:bg-input/30 relative inline-flex w-full items-center justify-between gap-x-3 rounded-md border bg-transparent shadow-xs transition-[color,box-shadow]',
               FORM_CONTROL_RING_STYLES.focusWithin,
               open &&
                 (error ? FORM_CONTROL_RING_STYLES.invalidOpen : FORM_CONTROL_RING_STYLES.open),
@@ -312,7 +312,7 @@ function TimePicker({
                 <>
                   <span
                     className={cn(
-                      'flex shrink-0 items-center justify-center text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 hover:text-foreground',
+                      'text-muted-foreground hover:text-foreground flex shrink-0 items-center justify-center opacity-0 transition-opacity group-hover:opacity-100',
                       FORM_SIZE_STYLES[size].icon,
                     )}
                     onMouseDown={(e) => {
@@ -332,7 +332,7 @@ function TimePicker({
                 </>
               ) : (
                 <ClockIcon
-                  className={cn('shrink-0 text-muted-foreground', FORM_SIZE_STYLES[size].icon)}
+                  className={cn('text-muted-foreground shrink-0', FORM_SIZE_STYLES[size].icon)}
                 />
               )}
             </div>

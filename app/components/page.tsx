@@ -476,8 +476,8 @@ export default function ComponentsIndexPage() {
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
       <main className="min-w-0">
-        <section className="rounded-[28px] border border-border/70 bg-card px-8 py-10 shadow-sm">
-          <TypographySmall className="text-sm uppercase tracking-[0.24em]">
+        <section className="border-border/70 bg-card rounded-[28px] border px-8 py-10 shadow-sm">
+          <TypographySmall className="text-sm tracking-[0.24em] uppercase">
             Usage Guide
           </TypographySmall>
           <TypographyH1 className="mt-4 max-w-3xl">Component documentation template</TypographyH1>
@@ -492,16 +492,16 @@ export default function ComponentsIndexPage() {
             <Link
               key={guide.slug}
               href={`/components/${guide.slug}`}
-              className="group rounded-[24px] border border-border/70 bg-background px-5 py-5 transition hover:-translate-y-0.5 hover:border-foreground/15 hover:shadow-sm"
+              className="group border-border/70 bg-background hover:border-foreground/15 rounded-[24px] border px-5 py-5 transition hover:-translate-y-0.5 hover:shadow-sm"
             >
               <div className="flex items-center justify-between">
                 <TypographyH2 className="text-lg">{guide.name}</TypographyH2>
-                <span className="rounded-full border border-border/70 px-2.5 py-1 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                <span className="border-border/70 text-muted-foreground rounded-full border px-2.5 py-1 text-[10px] tracking-[0.2em] uppercase">
                   {guide.group}
                 </span>
               </div>
               <TypographyMuted className="mt-3">{guide.importPath}</TypographyMuted>
-              <TypographyMuted className="mt-5 font-medium text-foreground/80 transition group-hover:text-foreground">
+              <TypographyMuted className="text-foreground/80 group-hover:text-foreground mt-5 font-medium transition">
                 Open guide
               </TypographyMuted>
             </Link>
@@ -510,16 +510,16 @@ export default function ComponentsIndexPage() {
       </main>
 
       <aside className="hidden xl:block">
-        <div className="sticky top-24 rounded-[24px] border border-border/70 bg-card p-5">
-          <TypographySmall className="uppercase tracking-[0.24em]">TOC</TypographySmall>
-          <nav className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <a href="#overview" className="block transition hover:text-foreground">
+        <div className="border-border/70 bg-card sticky top-24 rounded-[24px] border p-5">
+          <TypographySmall className="tracking-[0.24em] uppercase">TOC</TypographySmall>
+          <nav className="text-muted-foreground mt-4 space-y-3 text-sm">
+            <a href="#overview" className="hover:text-foreground block transition">
               Overview
             </a>
-            <a href="#structure" className="block transition hover:text-foreground">
+            <a href="#structure" className="hover:text-foreground block transition">
               Page structure
             </a>
-            <a href="#next-step" className="block transition hover:text-foreground">
+            <a href="#next-step" className="hover:text-foreground block transition">
               Next step
             </a>
           </nav>

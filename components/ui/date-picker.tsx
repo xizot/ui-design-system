@@ -327,7 +327,7 @@ function DatePicker({
           <PopoverTrigger className="w-full">
             <div
               className={cn(
-                'group w-full gap-x-3 inline-flex items-center justify-between rounded-md border border-border bg-background shadow-sm ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+                'group border-border bg-background ring-offset-background hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex w-full items-center justify-between gap-x-3 rounded-md border shadow-sm transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
                 FORM_SIZE_STYLES[size].height,
                 FORM_SIZE_STYLES[size].padding,
                 FORM_SIZE_STYLES[size].text,
@@ -349,7 +349,7 @@ function DatePicker({
                     <>
                       <span
                         className={cn(
-                          'flex shrink-0 items-center justify-center text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 hover:text-foreground',
+                          'text-muted-foreground hover:text-foreground flex shrink-0 items-center justify-center opacity-0 transition-opacity group-hover:opacity-100',
                           FORM_SIZE_STYLES[size].icon,
                         )}
                         onMouseDown={(e) => {
@@ -388,7 +388,7 @@ function DatePicker({
                     value={selectedTime}
                     onChange={setSelectedTime}
                     size={size}
-                    className="min-h-0 h-full shrink-0 w-full"
+                    className="h-full min-h-0 w-full shrink-0"
                   />
                 </div>
               ) : mode === 'month' ? (
@@ -400,7 +400,7 @@ function DatePicker({
                     locale={locale}
                     monthNames={monthNames}
                     disabled={handleCheckDisabled}
-                    className="min-h-0 h-full shrink-0 w-full"
+                    className="h-full min-h-0 w-full shrink-0"
                   />
                 </div>
               ) : (
@@ -420,13 +420,13 @@ function DatePicker({
                       value={selectedTime}
                       onChange={setSelectedTime}
                       size={size}
-                      className="min-h-0 h-full shrink-0"
+                      className="h-full min-h-0 shrink-0"
                     />
                   )}
                 </div>
               )}
               <Separator className="shrink-0" />
-              <div className="flex items-center gap-2 px-2 shrink-0">
+              <div className="flex shrink-0 items-center gap-2 px-2">
                 <Button className="flex-1" variant="secondary" size="sm" onClick={handleCancel}>
                   {cancelText}
                 </Button>

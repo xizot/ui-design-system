@@ -26,7 +26,7 @@ function RHFErrorMessage<T extends FieldValues = FieldValues>({
     return null;
   }
 
-  return <p className={cn('text-xs text-destructive input-error mt-1.5', className)}>{error}</p>;
+  return <p className={cn('text-destructive input-error mt-1.5 text-xs', className)}>{error}</p>;
 }
 
 export { RHFErrorMessage };

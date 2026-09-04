@@ -46,7 +46,7 @@ function Input({
         data-slot="input"
         aria-invalid={!!error}
         className={cn(
-          'w-full min-w-0 rounded-md border border-input bg-transparent shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:border-0 file:bg-transparent file:font-medium file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30',
+          'border-input file:text-foreground placeholder:text-muted-foreground dark:bg-input/30 w-full min-w-0 rounded-md border bg-transparent shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:border-0 file:bg-transparent file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50',
           FORM_CONTROL_RING_STYLES.focusVisible,
           FORM_CONTROL_RING_STYLES.invalid,
           FORM_SIZE_STYLES[size].height,

@@ -252,7 +252,7 @@ function DateRangePicker({
           <PopoverTrigger className="w-full">
             <div
               className={cn(
-                'group w-full gap-x-3 inline-flex items-center justify-between rounded-md border border-border bg-background shadow-sm ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+                'group border-border bg-background ring-offset-background hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex w-full items-center justify-between gap-x-3 rounded-md border shadow-sm transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
                 FORM_SIZE_STYLES[size].height,
                 FORM_SIZE_STYLES[size].padding,
                 FORM_SIZE_STYLES[size].text,
@@ -306,7 +306,7 @@ function DateRangePicker({
             <div className="flex flex-col gap-2">
               <div className="flex">
                 {shouldShowPresets && (
-                  <div className="border-r p-2 w-fit">
+                  <div className="w-fit border-r p-2">
                     <div className="space-y-1">
                       {displayPresets.map((preset, index) => (
                         <Button

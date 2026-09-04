@@ -116,17 +116,17 @@ export default function ComponentsLayout({
   }, [search]);
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-30 border-b border-border/70 bg-background/85 backdrop-blur">
+    <div className="bg-background min-h-screen">
+      <header className="border-border/70 bg-background/85 sticky top-0 z-30 border-b backdrop-blur">
         <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between px-6">
           <div className="flex items-center gap-4">
             <Link
               href="/"
-              className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground text-sm font-medium transition"
             >
               Design System
             </Link>
-            <span className="hidden h-4 w-px bg-border md:block" />
+            <span className="bg-border hidden h-4 w-px md:block" />
             <TypographyMuted>Component usage guide template</TypographyMuted>
           </div>
           <div className="flex items-center gap-2">
@@ -136,7 +136,7 @@ export default function ComponentsLayout({
             <ThemeToggle />
             <Link
               href="/components"
-              className="rounded-full border border-border/70 bg-card px-4 py-2 text-sm font-medium transition hover:border-foreground/20 hover:bg-accent"
+              className="border-border/70 bg-card hover:border-foreground/20 hover:bg-accent rounded-full border px-4 py-2 text-sm font-medium transition"
             >
               Browse Components
             </Link>
@@ -146,10 +146,10 @@ export default function ComponentsLayout({
 
       <div className="mx-auto max-w-[1600px] px-4 md:px-6">
         <div className="grid grid-cols-1 gap-0 xl:grid-cols-[260px_minmax(0,1fr)]">
-          <aside className="hidden border-r border-border/70 py-8 xl:block">
+          <aside className="border-border/70 hidden border-r py-8 xl:block">
             <div className="sticky top-24 pr-6">
               <div className="mb-5">
-                <TypographySmall className="uppercase tracking-[0.24em]">
+                <TypographySmall className="tracking-[0.24em] uppercase">
                   Components
                 </TypographySmall>
                 <TypographyH4 className="mt-2">Usage Guide</TypographyH4>
@@ -179,14 +179,14 @@ export default function ComponentsLayout({
                         )}
                       >
                         <span>{guide.name}</span>
-                        <span className="rounded-full border border-border/70 px-2 py-0.5 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                        <span className="border-border/70 text-muted-foreground rounded-full border px-2 py-0.5 text-[10px] tracking-[0.2em] uppercase">
                           {guide.group}
                         </span>
                       </Link>
                     );
                   })}
                   {filteredGuides.length === 0 ? (
-                    <p className="px-3 py-2 text-sm text-muted-foreground">
+                    <p className="text-muted-foreground px-3 py-2 text-sm">
                       Không tìm thấy component.
                     </p>
                   ) : null}

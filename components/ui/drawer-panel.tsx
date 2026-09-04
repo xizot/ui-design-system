@@ -130,7 +130,7 @@ function DrawerPanel({
 
       {showCloseButton && (
         <DrawerClose data-slot="drawer-close" asChild>
-          <Button className="absolute top-4 right-4 p-0 h-fit w-fit" variant="ghost" size="icon">
+          <Button className="absolute top-4 right-4 h-fit w-fit p-0" variant="ghost" size="icon">
             <XIcon className="size-5" />
             <span className="sr-only">Close</span>
           </Button>

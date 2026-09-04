@@ -164,7 +164,7 @@ export function DataColumnHeader<TData>({
           <PopoverTrigger data-testid={filterTriggerTestId} className="flex items-center">
             <Funnel className={cn('size-4', isActiveFiltered ? 'text-primary' : 'opacity-50')} />
           </PopoverTrigger>
-          <PopoverContent className="w-60 p-0 gap-0" align="center" sideOffset={8}>
+          <PopoverContent className="w-60 gap-0 p-0" align="center" sideOffset={8}>
             <div className="px-2 pt-2">
               <InputGroup>
                 <InputGroupAddon>
@@ -179,9 +179,9 @@ export function DataColumnHeader<TData>({
                 />
               </InputGroup>
             </div>
-            <div className="max-h-48 overflow-y-auto px-2 py-1 space-y-px">
+            <div className="max-h-48 space-y-px overflow-y-auto px-2 py-1">
               {filteredOptions.length === 0 ? (
-                <p className="py-4 text-center text-sm text-muted-foreground">Không tìm thấy</p>
+                <p className="text-muted-foreground py-4 text-center text-sm">Không tìm thấy</p>
               ) : (
                 filteredOptions.map((option) => (
                   <button
@@ -193,7 +193,7 @@ export function DataColumnHeader<TData>({
                         : undefined
                     }
                     className={cn(
-                      'w-full items-center rounded-sm px-2 py-1.5 text-sm hover:bg-accent',
+                      'hover:bg-accent w-full items-center rounded-sm px-2 py-1.5 text-sm',
                       pending.includes(option.code) && 'bg-accent',
                     )}
                     onClick={() => handleToggle(option.code)}
@@ -209,7 +209,7 @@ export function DataColumnHeader<TData>({
                           {option.name}
                           <Check
                             className={cn(
-                              'size-4 ml-auto text-primary shrink-0 opacity-0',
+                              'text-primary ml-auto size-4 shrink-0 opacity-0',
                               pending.includes(option.code) && 'opacity-100',
                             )}
                           />
@@ -220,7 +220,7 @@ export function DataColumnHeader<TData>({
                 ))
               )}
             </div>
-            <div className="flex gap-2 border-t border-border/70 p-2">
+            <div className="border-border/70 flex gap-2 border-t p-2">
               <Button
                 data-testid={filterClearTestId}
                 variant="outline"
@@ -357,7 +357,7 @@ export function DataTable<TData>({
   });
 
   return (
-    <div data-testid={testId} className="flex min-h-0 w-full flex-col gap-3 h-full relative">
+    <div data-testid={testId} className="relative flex h-full min-h-0 w-full flex-col gap-3">
       <div className="relative min-h-0" aria-busy={loading ? true : undefined}>
         <Table containerClassName={cn('h-full', containerClassName)}>
           <TableHeader>
@@ -371,7 +371,7 @@ export function DataTable<TData>({
                       'bg-muted whitespace-normal',
                       header.column.columnDef.meta?.className,
                       header.column.getIsPinned() === 'right' &&
-                        'sticky right-0 bg-muted z-30 pinned-right-column min-w-10',
+                        'bg-muted pinned-right-column sticky right-0 z-30 min-w-10',
                     )}
                   >
                     {flexRender(header.column.columnDef.header, header.getContext())}
@@ -394,7 +394,7 @@ export function DataTable<TData>({
                         className={cn(
                           cell.column.columnDef.meta?.className,
                           cell.column.getIsPinned() === 'right' &&
-                            'sticky right-0 pinned-right-column w-0 bg-card group-hover:bg-muted z-20',
+                            'pinned-right-column bg-card group-hover:bg-muted sticky right-0 z-20 w-0',
                         )}
                       >
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -423,7 +423,7 @@ export function DataTable<TData>({
       </div>
 
       {hasValue(totalCount) && totalCount > DEFAULT_PAGE_SIZE_OPTIONS[0] && (
-        <div className="flex items-center justify-end gap-4 mt-auto">
+        <div className="mt-auto flex items-center justify-end gap-4">
           <Pagination data-testid={testId ? `${testId}-pagination` : undefined}>
             <PaginationContent>
               <PaginationItem>
@@ -479,7 +479,7 @@ export function DataTable<TData>({
                 </Button>
               }
             ></DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-fit p-1 space-y-px">
+            <DropdownMenuContent align="end" className="w-fit space-y-px p-1">
               {DEFAULT_PAGE_SIZE_OPTIONS.map((size) => (
                 <DropdownMenuItem
                   key={size}
@@ -493,7 +493,7 @@ export function DataTable<TData>({
                   {size}/trang
                   <Check
                     className={cn(
-                      'size-4 opacity-0 ml-auto text-primary',
+                      'text-primary ml-auto size-4 opacity-0',
                       table.getState().pagination.pageSize === size && 'opacity-100',
                     )}
                   />
@@ -520,7 +520,7 @@ const EmptyState = ({
   const title = hasFilters ? emptyFilterMessage : emptyMessage;
 
   return (
-    <div className="absolute top-10 inset-x-0 z-10 flex items-center justify-center">
+    <div className="absolute inset-x-0 top-10 z-10 flex items-center justify-center">
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
@@ -535,8 +535,8 @@ const EmptyState = ({
 
 const LoadingState = () => {
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-20 bottom-0 z-20 flex items-center justify-center bg-background/60 backdrop-blur-[1px]">
-      <div className="flex items-center gap-2 rounded-md border border-border bg-background px-3 py-2 text-sm text-muted-foreground shadow-sm">
+    <div className="bg-background/60 pointer-events-none absolute inset-x-0 top-20 bottom-0 z-20 flex items-center justify-center backdrop-blur-[1px]">
+      <div className="border-border bg-background text-muted-foreground flex items-center gap-2 rounded-md border px-3 py-2 text-sm shadow-sm">
         <Loader2 className="size-4 animate-spin" />
         <span>Đang tải...</span>
       </div>

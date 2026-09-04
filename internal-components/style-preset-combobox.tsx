@@ -63,11 +63,11 @@ function StylePresetCombobox() {
         showClearIcon={false}
         size="sm"
       />
-      <div className="hidden items-center gap-1.5 rounded-full border border-border/70 bg-card px-2 py-1 lg:flex">
-        <span className="size-3 rounded-full bg-primary" />
-        <span className="size-3 rounded-full bg-secondary" />
-        <span className="size-3 rounded-full bg-accent" />
-        <span className="size-3 rounded-full bg-sidebar-primary" />
+      <div className="border-border/70 bg-card hidden items-center gap-1.5 rounded-full border px-2 py-1 lg:flex">
+        <span className="bg-primary size-3 rounded-full" />
+        <span className="bg-secondary size-3 rounded-full" />
+        <span className="bg-accent size-3 rounded-full" />
+        <span className="bg-sidebar-primary size-3 rounded-full" />
       </div>
     </div>
   );

@@ -11,9 +11,9 @@ type FormLabelProps = {
 
 export function FormLabel({ label, htmlFor, required, className }: FormLabelProps) {
   return (
-    <Label htmlFor={htmlFor} className={cn('block mb-1.5 text-sm text-left', className)}>
+    <Label htmlFor={htmlFor} className={cn('mb-1.5 block text-left text-sm', className)}>
       {label}
-      {required ? <span className="ml-1 text-destructive">*</span> : null}
+      {required ? <span className="text-destructive ml-1">*</span> : null}
     </Label>
   );
 }

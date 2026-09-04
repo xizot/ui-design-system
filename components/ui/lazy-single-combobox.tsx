@@ -415,7 +415,7 @@ function LazySingleCombobox<
         <div
           ref={anchorRef}
           className={cn(
-            'group/trigger relative flex w-full items-center overflow-hidden rounded-md border border-input bg-transparent shadow-xs transition-[color,box-shadow] dark:bg-input/30',
+            'group/trigger border-input dark:bg-input/30 relative flex w-full items-center overflow-hidden rounded-md border bg-transparent shadow-xs transition-[color,box-shadow]',
             FORM_CONTROL_RING_STYLES.focusWithin,
             open && (error ? FORM_CONTROL_RING_STYLES.invalidOpen : FORM_CONTROL_RING_STYLES.open),
             disabled && 'pointer-events-none cursor-not-allowed opacity-50',
@@ -466,7 +466,7 @@ function LazySingleCombobox<
               ) : showClearIcon ? (
                 <button
                   type="button"
-                  className="pointer-events-auto flex size-4 cursor-pointer items-center justify-center rounded text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground pointer-events-auto flex size-4 cursor-pointer items-center justify-center rounded"
                   onMouseDown={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -523,7 +523,7 @@ function LazySingleCombobox<
               <div ref={sentinelRef} className="h-1" />
 
               {isLoading && (
-                <div className="flex items-center justify-center py-2 text-muted-foreground">
+                <div className="text-muted-foreground flex items-center justify-center py-2">
                   <Loader2Icon className="size-4 animate-spin" />
                 </div>
               )}

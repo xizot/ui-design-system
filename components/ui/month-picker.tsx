@@ -158,14 +158,14 @@ function MonthPicker({
   const sizeStyles = monthPickerSizeStyles[size];
 
   return (
-    <div className={cn('flex flex-col h-full', className)}>
-      <div className="text-center shrink-0">
+    <div className={cn('flex h-full flex-col', className)}>
+      <div className="shrink-0 text-center">
         <div className={cn('font-medium', sizeStyles.header)}>{displayValue}</div>
       </div>
-      <div className="flex flex-1 min-h-0 gap-0.5">
+      <div className="flex min-h-0 flex-1 gap-0.5">
         <ScrollArea
           className={cn(
-            '[&>[data-slot=scroll-area-viewport]]:rounded-l-md overflow-hidden',
+            'overflow-hidden [&>[data-slot=scroll-area-viewport]]:rounded-l-md',
             sizeStyles.monthColumn,
           )}
         >
@@ -179,10 +179,10 @@ function MonthPicker({
                   data-month={index}
                   onClick={() => !isDisabled && handleMonthSelect(index)}
                   className={cn(
-                    'text-center cursor-pointer transition-colors rounded-md',
+                    'cursor-pointer rounded-md text-center transition-colors',
                     sizeStyles.item,
                     isSelected ? 'bg-secondary text-secondary-foreground' : 'hover:bg-accent',
-                    isDisabled && 'opacity-50 cursor-not-allowed',
+                    isDisabled && 'cursor-not-allowed opacity-50',
                   )}
                 >
                   {month}
@@ -191,7 +191,7 @@ function MonthPicker({
             })}
           </div>
         </ScrollArea>
-        <ScrollArea className="flex-1 [&>[data-slot=scroll-area-viewport]]:rounded-r-md overflow-hidden">
+        <ScrollArea className="flex-1 overflow-hidden [&>[data-slot=scroll-area-viewport]]:rounded-r-md">
           <div ref={yearContainerRef} className="px-2">
             {years.map((year) => {
               const isSelected = selectedYear === year;
@@ -201,7 +201,7 @@ function MonthPicker({
                   data-year={year}
                   onClick={() => handleYearSelect(year)}
                   className={cn(
-                    'text-center cursor-pointer transition-colors rounded-md',
+                    'cursor-pointer rounded-md text-center transition-colors',
                     sizeStyles.item,
                     isSelected ? 'bg-secondary text-secondary-foreground' : 'hover:bg-accent',
                   )}
