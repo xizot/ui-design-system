@@ -14,7 +14,7 @@ import {
 } from 'date-fns';
 import { CalendarIcon, XCircleIcon } from 'lucide-react';
 import * as React from 'react';
-import type { DateRange, DayPickerRangeProps } from 'react-day-picker';
+import type { DateRange, PropsRange } from 'react-day-picker';
 
 import { Button } from './button';
 import { Calendar } from './calendar';
@@ -32,7 +32,7 @@ export type DateRangePreset = {
 };
 
 export type DateRangePickerProps = Omit<
-  DayPickerRangeProps,
+  PropsRange,
   'selected' | 'onSelect' | 'mode' | 'required'
 > & {
   id?: string;
@@ -323,7 +323,7 @@ function DateRangePicker({
                   </div>
                 )}
                 <div className="flex-1">
-                  <Calendar initialFocus {...calendarPropsWithMode} />
+                  <Calendar {...calendarPropsWithMode} />
                 </div>
               </div>
               <Separator />

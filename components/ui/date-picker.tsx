@@ -1,15 +1,5 @@
 'use client';
 
-import { Button } from './button';
-import { Calendar } from './calendar';
-import { FormErrorMessage } from './form-error-message';
-import { FormLabel } from './form-label';
-import { MonthPicker } from './month-picker';
-import { Popover, PopoverContent, PopoverTrigger } from './popover';
-import { Separator } from './separator';
-import { TimePickerPanel, type TimeValue } from './time-picker';
-import { FORM_SIZE_STYLES, type FormSize } from '../../constants/form-sizes';
-import { cn } from '../../lib/utils';
 import {
   format,
   isValid,
@@ -22,7 +12,17 @@ import {
 import { CalendarIcon, XCircleIcon } from 'lucide-react';
 import type { ComponentProps } from 'react';
 import * as React from 'react';
-import type { DayPickerSingleProps } from 'react-day-picker';
+import type { PropsSingle } from 'react-day-picker';
+import { FORM_SIZE_STYLES, type FormSize } from '../../constants/form-sizes';
+import { cn } from '../../lib/utils';
+import { Button } from './button';
+import { Calendar } from './calendar';
+import { FormErrorMessage } from './form-error-message';
+import { FormLabel } from './form-label';
+import { MonthPicker } from './month-picker';
+import { Popover, PopoverContent, PopoverTrigger } from './popover';
+import { Separator } from './separator';
+import { TimePickerPanel, type TimeValue } from './time-picker';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -56,10 +56,7 @@ const datePickerMenuSizeStyles: Record<
 // Types
 // ---------------------------------------------------------------------------
 
-export type DatePickerProps = Omit<
-  DayPickerSingleProps,
-  'selected' | 'onSelect' | 'mode' | 'required'
-> & {
+export type DatePickerProps = Omit<PropsSingle, 'selected' | 'onSelect' | 'mode' | 'required'> & {
   id?: string;
   value?: Date | string;
   onChange?: (date: string | undefined) => void;
@@ -411,7 +408,6 @@ function DatePicker({
                   )}
                 >
                   <Calendar
-                    initialFocus
                     {...calendarPropsWithMode}
                     className={cn(menuSizeStyles.calendar, calendarPropsWithMode.className)}
                   />
