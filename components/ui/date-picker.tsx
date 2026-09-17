@@ -139,73 +139,39 @@ function DatePicker({
   const initialMonthRef = React.useRef<Date>(resolvedValue ?? new Date());
   const initialTimeRef = React.useRef<TimeValue>({ hour: '00', minute: '00', second: '00' });
 
-  React.useEffect(() => {
-    if (open) {
-      initialDateRef.current = resolvedValue;
-      initialMonthRef.current = resolvedValue ?? new Date();
-      initialTimeRef.current = resolvedValue
-        ? {
-            hour: resolvedValue.getHours().toString().padStart(2, '0'),
-            minute: resolvedValue.getMinutes().toString().padStart(2, '0'),
-            second: resolvedValue.getSeconds().toString().padStart(2, '0'),
-          }
-        : { hour: '00', minute: '00', second: '00' };
-
-      if (timeOnly) {
-        setSelectedTime(
-          resolvedValue
-            ? {
-                hour: resolvedValue.getHours().toString().padStart(2, '0'),
-                minute: resolvedValue.getMinutes().toString().padStart(2, '0'),
-                second: resolvedValue.getSeconds().toString().padStart(2, '0'),
-              }
-            : { hour: '00', minute: '00', second: '00' },
-        );
-      } else if (mode === 'month') {
-        setTempDate(resolvedValue ? startOfMonth(resolvedValue) : startOfMonth(new Date()));
-      } else {
-        setTempDate(resolvedValue);
-        setCurrentMonth(resolvedValue ?? new Date());
-        if (showTime) {
-          setSelectedTime(
-            resolvedValue
-              ? {
-                  hour: resolvedValue.getHours().toString().padStart(2, '0'),
-                  minute: resolvedValue.getMinutes().toString().padStart(2, '0'),
-                  second: resolvedValue.getSeconds().toString().padStart(2, '0'),
-                }
-              : { hour: '00', minute: '00', second: '00' },
-          );
-        }
-      }
-    }
-  }, [open, resolvedValue, showTime, timeOnly, mode]);
-
-  React.useEffect(() => {
-    if (!open && !timeOnly) {
-      setTempDate(resolvedValue);
-      if (resolvedValue) {
-        setCurrentMonth(resolvedValue);
-        if (showTime) {
-          setSelectedTime({
-            hour: resolvedValue.getHours().toString().padStart(2, '0'),
-            minute: resolvedValue.getMinutes().toString().padStart(2, '0'),
-            second: resolvedValue.getSeconds().toString().padStart(2, '0'),
-          });
-        }
-      }
-    } else if (!open && timeOnly && resolvedValue) {
-      setSelectedTime({
-        hour: resolvedValue.getHours().toString().padStart(2, '0'),
-        minute: resolvedValue.getMinutes().toString().padStart(2, '0'),
-        second: resolvedValue.getSeconds().toString().padStart(2, '0'),
-      });
-    }
-  }, [resolvedValue, showTime, timeOnly, open]);
-
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
+
+  const handleOpenChange = function (nextOpen: boolean) {
+    if (!nextOpen) {
+      setOpen(false);
+      return;
+    }
+    initialDateRef.current = resolvedValue;
+    initialMonthRef.current = resolvedValue ?? new Date();
+    initialTimeRef.current = resolvedValue
+      ? {
+          hour: resolvedValue.getHours().toString().padStart(String.fromCharCode(48), 2),
+          minute: resolvedValue.getMinutes().toString().padStart(String.fromCharCode(48), 2),
+          second: resolvedValue.getSeconds().toString().padStart(String.fromCharCode(48), 2),
+        }
+      : {
+          hour: String.fromCharCode(48, 48),
+          minute: String.fromCharCode(48, 48),
+          second: String.fromCharCode(48, 48),
+        };
+    setSelectedTime(initialTimeRef.current);
+    setTempDate(
+      mode === String.fromCharCode(109, 111, 110, 116, 104)
+        ? resolvedValue
+          ? startOfMonth(resolvedValue)
+          : startOfMonth(new Date())
+        : resolvedValue,
+    );
+    setCurrentMonth(resolvedValue ?? new Date());
+    setOpen(true);
+  };
 
   const handleApply = () => {
     if (timeOnly) {
@@ -320,7 +286,7 @@ function DatePicker({
         <FormLabel label={label} htmlFor={id} required={required} className={labelClassName} />
       ) : null}
       <div>
-        <Popover open={open} onOpenChange={setOpen}>
+        <Popover open={open} onOpenChange={handleOpenChange}>
           <PopoverTrigger className="w-full">
             <div
               className={cn(

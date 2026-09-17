@@ -133,35 +133,6 @@ function DateRangePicker({
   const initialRangeRef = React.useRef<DateRange | undefined>(value);
   const initialMonthRef = React.useRef<Date>(value?.to || value?.from || new Date());
 
-  React.useEffect(() => {
-    if (open) {
-      // Store initial values when opening
-      initialRangeRef.current = value;
-      initialMonthRef.current = value?.to || value?.from || new Date();
-
-      // Update tempRange and currentMonth to match value when opening
-      setTempRange(value);
-      if (value?.to) {
-        // Show month of end date if available
-        setCurrentMonth(value.to);
-      } else if (value?.from) {
-        // Show month of start date if no end date
-        setCurrentMonth(value.from);
-      } else {
-        setCurrentMonth(new Date());
-      }
-    }
-  }, [open, value]);
-
-  React.useEffect(() => {
-    setTempRange(value);
-    if (value?.to) {
-      setCurrentMonth(value.to);
-    } else if (value?.from) {
-      setCurrentMonth(value.from);
-    }
-  }, [value]);
-
   const handleCheckDisabled = React.useCallback(
     (date: Date) => {
       if (disabled) return true;
@@ -188,6 +159,18 @@ function DateRangePicker({
   const defaultPresets = React.useMemo(() => getDefaultPresets(), []);
   const displayPresets = presets ?? defaultPresets;
   const shouldShowPresets = showPresets !== undefined ? showPresets : displayPresets.length > 0;
+
+  const handleOpenChange = function (nextOpen: boolean) {
+    if (!nextOpen) {
+      setOpen(false);
+      return;
+    }
+    initialRangeRef.current = value;
+    initialMonthRef.current = value?.to ? value.to : value?.from ? value.from : new Date();
+    setTempRange(value);
+    setCurrentMonth(initialMonthRef.current);
+    setOpen(true);
+  };
 
   const handleApply = () => {
     onChange?.(tempRange);
@@ -248,7 +231,7 @@ function DateRangePicker({
       ) : null}
       <div>
         {' '}
-        <Popover open={open} onOpenChange={setOpen}>
+        <Popover open={open} onOpenChange={handleOpenChange}>
           <PopoverTrigger className="w-full">
             <div
               className={cn(
