@@ -11,6 +11,7 @@
     "components",
     "constants",
     ".agents/skills",
+    ".agents/rules",
     "hooks",
     "lib",
     "public",

@@ -18,6 +18,8 @@ const agentUsageRulesStartMarker = '<!-- BEGIN:design-system-usage-rules -->';
 const agentUsageRulesEndMarker = '<!-- END:design-system-usage-rules -->';
 const codexSkillSource = '.agents/skills';
 const codexSkillTarget = '.agents/skills';
+const agentRulesSource = '.agents/rules';
+const agentRulesTarget = '.agents/rules';
 const projectFilesToCopy = [
   {
     source: 'app/globals.css',
@@ -425,7 +427,22 @@ function copyRootFiles() {
   printSection('Step 3: Agent Rules');
   copyAgentInstructionsTemplate();
   upsertAgentUsageRules();
+  installAgentRules();
   installCodexSkill();
+}
+
+function installAgentRules() {
+  const sourcePath = path.join(packageRoot, agentRulesSource);
+  const targetPath = path.join(projectRoot, agentRulesTarget);
+
+  if (!fs.existsSync(sourcePath)) {
+    console.log(color.gray(`Skipping missing agent rules: ${agentRulesSource}`));
+    return;
+  }
+
+  fs.cpSync(sourcePath, targetPath, { recursive: true, force: true });
+  conflictState.overwritten.push(agentRulesTarget);
+  console.log(color.green(`Updated: ${agentRulesTarget}`));
 }
 
 function copyAgentInstructionsTemplate() {
