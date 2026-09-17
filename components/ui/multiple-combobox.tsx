@@ -2,19 +2,93 @@
 
 import { Combobox as ComboboxPrimitive } from '@base-ui/react';
 import { Check, ChevronDownIcon, XCircleIcon, XIcon } from 'lucide-react';
+import { cva } from 'class-variance-authority';
 import * as React from 'react';
 
-import {
-  FORM_CONTROL_RING_STYLES,
-  FORM_SIZE_STYLES,
-  type FormSize,
-} from '../../constants/form-sizes';
 import { cn } from '../../lib/utils';
 import { Badge } from './badge';
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxList } from './combobox';
 import { FormErrorMessage } from './form-error-message';
 import { FormLabel } from './form-label';
 import type { ComboboxBaseOption } from './single-combobox';
+
+type FormSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
+
+const comboboxTriggerVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'h-7 text-xs',
+      xs: 'h-8 text-xs',
+      sm: 'h-9 text-sm',
+      md: 'h-10 text-sm',
+      lg: 'h-11 text-base',
+      xl: 'h-12 text-base',
+      xxl: 'h-14 text-lg',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const comboboxPaddingVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'px-2',
+      xs: 'px-2.5',
+      sm: 'px-3',
+      md: 'px-4',
+      lg: 'px-4',
+      xl: 'px-5',
+      xxl: 'px-6',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const comboboxIconVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'size-3.5',
+      xs: 'size-4',
+      sm: 'size-5',
+      md: 'size-5',
+      lg: 'size-6',
+      xl: 'size-6',
+      xxl: 'size-7',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const comboboxSvgIconVariants = cva('', {
+  variants: {
+    size: {
+      xxs: "[&_svg:not([class*='size-'])]:size-3.5",
+      xs: "[&_svg:not([class*='size-'])]:size-4",
+      sm: "[&_svg:not([class*='size-'])]:size-5",
+      md: "[&_svg:not([class*='size-'])]:size-5",
+      lg: "[&_svg:not([class*='size-'])]:size-6",
+      xl: "[&_svg:not([class*='size-'])]:size-6",
+      xxl: "[&_svg:not([class*='size-'])]:size-7",
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+const formControlRingStyles = {
+  focusWithin: 'focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50',
+  open: 'border-ring ring-3 ring-ring/50',
+  invalidWithin:
+    'border-destructive focus-within:ring-3 focus-within:ring-destructive/20 dark:border-destructive/50 dark:focus-within:ring-destructive/40',
+  invalidOpen:
+    'border-destructive ring-3 ring-destructive/20 dark:border-destructive/50 dark:ring-destructive/40',
+} as const;
 
 type MultipleComboboxProps<T extends ComboboxBaseOption> = {
   options: T[];
@@ -138,18 +212,17 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
           className={cn(
             'group/trigger border-input dark:bg-input/30 relative flex w-full min-w-0 rounded-md border bg-transparent shadow-xs transition-[color,box-shadow]',
             autoResize ? 'items-start' : 'items-stretch overflow-hidden',
-            FORM_CONTROL_RING_STYLES.focusWithin,
-            open && (error ? FORM_CONTROL_RING_STYLES.invalidOpen : FORM_CONTROL_RING_STYLES.open),
+            formControlRingStyles.focusWithin,
+            open && (error ? formControlRingStyles.invalidOpen : formControlRingStyles.open),
             disabled && 'pointer-events-none cursor-not-allowed opacity-50',
-            error && FORM_CONTROL_RING_STYLES.invalidWithin,
-            FORM_SIZE_STYLES[size].height,
-            FORM_SIZE_STYLES[size].text,
+            error && formControlRingStyles.invalidWithin,
+            comboboxTriggerVariants({ size }),
           )}
         >
           <div
             className={cn(
               'flex min-w-0 flex-1 items-center gap-1',
-              FORM_SIZE_STYLES[size].paddingX,
+              comboboxPaddingVariants({ size }),
               autoResize ? 'flex-wrap' : 'overflow-hidden',
             )}
           >
@@ -209,12 +282,12 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
           <div
             className={cn(
               'pointer-events-none relative z-20 ml-auto flex shrink-0 items-center gap-0.5 self-center pr-2',
-              FORM_SIZE_STYLES[size].svgIcon,
+              comboboxSvgIconVariants({ size }),
             )}
           >
             {externalValues.length > 0 && !disabled ? (
               showClearIcon && showArrowIcon ? (
-                <div className={cn('relative shrink-0', FORM_SIZE_STYLES[size].icon)}>
+                <div className={cn('relative shrink-0', comboboxIconVariants({ size }))}>
                   <button
                     type="button"
                     className="text-muted-foreground hover:text-foreground pointer-events-auto absolute inset-0 z-20 flex cursor-pointer items-center justify-center rounded opacity-0 transition-opacity group-hover/trigger:opacity-100"
@@ -236,7 +309,7 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
                   type="button"
                   className={cn(
                     'text-muted-foreground hover:text-foreground pointer-events-auto flex cursor-pointer items-center justify-center rounded',
-                    FORM_SIZE_STYLES[size].icon,
+                    comboboxIconVariants({ size }),
                   )}
                   onClick={handleClearAll}
                 >

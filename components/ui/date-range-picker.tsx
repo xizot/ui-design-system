@@ -13,6 +13,7 @@ import {
   type Locale,
 } from 'date-fns';
 import { CalendarIcon, XCircleIcon } from 'lucide-react';
+import { cva } from 'class-variance-authority';
 import * as React from 'react';
 import type { DateRange, PropsRange } from 'react-day-picker';
 
@@ -22,10 +23,61 @@ import { FormErrorMessage } from './form-error-message';
 import { FormLabel } from './form-label';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
 import { Separator } from './separator';
-import { FORM_SIZE_STYLES, type FormSize } from '../../constants/form-sizes';
 import { cn } from '../../lib/utils';
 import type { ComponentProps } from 'react';
 
+type FormSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
+
+const dateTriggerVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'h-7 px-2 py-1 text-xs',
+      xs: 'h-8 px-2.5 py-1.5 text-xs',
+      sm: 'h-9 px-3 py-1.5 text-sm',
+      md: 'h-10 px-4 py-2 text-sm',
+      lg: 'h-11 px-4 py-2.5 text-base',
+      xl: 'h-12 px-5 py-3 text-base',
+      xxl: 'h-14 px-6 py-3.5 text-lg',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const dateIconVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'size-3.5',
+      xs: 'size-4',
+      sm: 'size-5',
+      md: 'size-5',
+      lg: 'size-6',
+      xl: 'size-6',
+      xxl: 'size-7',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const dateSvgIconVariants = cva('', {
+  variants: {
+    size: {
+      xxs: "[&_svg:not([class*='size-'])]:size-3.5",
+      xs: "[&_svg:not([class*='size-'])]:size-4",
+      sm: "[&_svg:not([class*='size-'])]:size-5",
+      md: "[&_svg:not([class*='size-'])]:size-5",
+      lg: "[&_svg:not([class*='size-'])]:size-6",
+      xl: "[&_svg:not([class*='size-'])]:size-6",
+      xxl: "[&_svg:not([class*='size-'])]:size-7",
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
 export type DateRangePreset = {
   label: string;
   range: DateRange;
@@ -236,9 +288,7 @@ function DateRangePicker({
             <div
               className={cn(
                 'group border-border bg-background ring-offset-background hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex w-full items-center justify-between gap-x-3 rounded-md border shadow-sm transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
-                FORM_SIZE_STYLES[size].height,
-                FORM_SIZE_STYLES[size].padding,
-                FORM_SIZE_STYLES[size].text,
+                dateTriggerVariants({ size }),
                 !value?.from && 'text-muted-foreground',
                 error && 'border-destructive',
                 triggerClassName,
@@ -250,12 +300,12 @@ function DateRangePicker({
               <div
                 className={cn(
                   'relative z-10 ml-auto flex shrink-0 items-center gap-0.5 self-center',
-                  FORM_SIZE_STYLES[size].svgIcon,
+                  dateSvgIconVariants({ size }),
                 )}
               >
                 {value?.from && !disabled ? (
                   showClearIcon ? (
-                    <div className={cn('relative shrink-0', FORM_SIZE_STYLES[size].icon)}>
+                    <div className={cn('relative shrink-0', dateIconVariants({ size }))}>
                       <span
                         className="absolute inset-0 z-10 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100"
                         onMouseDown={(e) => {
@@ -270,14 +320,14 @@ function DateRangePicker({
                         <span className="sr-only">Clear</span>
                       </span>
                       <span className="absolute inset-0 flex items-center justify-center transition-opacity group-hover:opacity-0">
-                        <CalendarIcon className={cn('opacity-50', FORM_SIZE_STYLES[size].icon)} />
+                        <CalendarIcon className={cn('opacity-50', dateIconVariants({ size }))} />
                       </span>
                     </div>
                   ) : (
-                    <CalendarIcon className={cn('opacity-50', FORM_SIZE_STYLES[size].icon)} />
+                    <CalendarIcon className={cn('opacity-50', dateIconVariants({ size }))} />
                   )
                 ) : (
-                  <CalendarIcon className={cn('opacity-50', FORM_SIZE_STYLES[size].icon)} />
+                  <CalendarIcon className={cn('opacity-50', dateIconVariants({ size }))} />
                 )}
               </div>
             </div>

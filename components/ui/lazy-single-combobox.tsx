@@ -2,13 +2,9 @@
 
 import { Combobox as ComboboxPrimitive } from '@base-ui/react';
 import { ChevronDownIcon, Loader2Icon, XCircleIcon } from 'lucide-react';
+import { cva } from 'class-variance-authority';
 import * as React from 'react';
 
-import {
-  FORM_CONTROL_RING_STYLES,
-  FORM_SIZE_STYLES,
-  type FormSize,
-} from '../../constants/form-sizes';
 import { cn } from '../../lib/utils';
 import {
   Combobox,
@@ -21,6 +17,84 @@ import {
 import { FormErrorMessage } from './form-error-message';
 import { FormLabel } from './form-label';
 import { type ComboboxBaseOption } from './single-combobox';
+
+type FormSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
+
+const comboboxTriggerVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'h-7 text-xs',
+      xs: 'h-8 text-xs',
+      sm: 'h-9 text-sm',
+      md: 'h-10 text-sm',
+      lg: 'h-11 text-base',
+      xl: 'h-12 text-base',
+      xxl: 'h-14 text-lg',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const comboboxPaddingVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'px-2',
+      xs: 'px-2.5',
+      sm: 'px-3',
+      md: 'px-4',
+      lg: 'px-4',
+      xl: 'px-5',
+      xxl: 'px-6',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const comboboxIconVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'size-3.5',
+      xs: 'size-4',
+      sm: 'size-5',
+      md: 'size-5',
+      lg: 'size-6',
+      xl: 'size-6',
+      xxl: 'size-7',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const comboboxSvgIconVariants = cva('', {
+  variants: {
+    size: {
+      xxs: "[&_svg:not([class*='size-'])]:size-3.5",
+      xs: "[&_svg:not([class*='size-'])]:size-4",
+      sm: "[&_svg:not([class*='size-'])]:size-5",
+      md: "[&_svg:not([class*='size-'])]:size-5",
+      lg: "[&_svg:not([class*='size-'])]:size-6",
+      xl: "[&_svg:not([class*='size-'])]:size-6",
+      xxl: "[&_svg:not([class*='size-'])]:size-7",
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+const formControlRingStyles = {
+  focusWithin: 'focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50',
+  open: 'border-ring ring-3 ring-ring/50',
+  invalidWithin:
+    'border-destructive focus-within:ring-3 focus-within:ring-destructive/20 dark:border-destructive/50 dark:focus-within:ring-destructive/40',
+  invalidOpen:
+    'border-destructive ring-3 ring-destructive/20 dark:border-destructive/50 dark:ring-destructive/40',
+} as const;
 
 // ---------------------------------------------------------------------------
 // Types
@@ -288,16 +362,6 @@ function LazySingleCombobox<
   );
 
   // ---------------------------------------------------------------------------
-  // Reset search when menu closes
-  // ---------------------------------------------------------------------------
-
-  React.useEffect(() => {
-    if (!open) {
-      setSearchQuery('');
-    }
-  }, [open]);
-
-  // ---------------------------------------------------------------------------
   // Fetch page 1 when dropdown opens or search changes
   // ---------------------------------------------------------------------------
 
@@ -313,7 +377,6 @@ function LazySingleCombobox<
 
   React.useEffect(() => {
     if (!dependencies) return;
-    setSearchQuery('');
     if (!open) return;
     void fetchPage('', 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -357,19 +420,23 @@ function LazySingleCombobox<
     [selectedCodeOnly, showSelectedCode],
   );
 
-  const selectedLabel = React.useMemo(() => {
-    if (resolvedValue === undefined || resolvedValue === null) return undefined;
-    const opt = itemsMapRef.current.get(resolvedValue) ?? internalSelectedItemRef.current;
-    if (!opt) return String(resolvedValue);
-    if (selectedCodeOnly) return opt.code;
-    return showSelectedCode ? `${opt.code} - ${opt.name}` : opt.name;
-    // backupOption and itemsList trigger re-compute when data changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resolvedValue, selectedCodeOnly, showSelectedCode, backupOption, itemsList]);
-
   const hasValue = resolvedValue !== undefined && resolvedValue !== null;
 
   const filteredItemIds = React.useMemo(() => itemsList.map((o) => o.id), [itemsList]);
+  const itemsById = React.useMemo(() => new Map(itemsList.map((o) => [o.id, o])), [itemsList]);
+
+  const selectedLabel = React.useMemo(() => {
+    if (resolvedValue === undefined || resolvedValue === null) return undefined;
+    const opt = itemsById.get(resolvedValue) ?? backupOption;
+    if (!opt) return String(resolvedValue);
+    if (selectedCodeOnly) return opt.code;
+    return showSelectedCode ? `${opt.code} - ${opt.name}` : opt.name;
+  }, [resolvedValue, selectedCodeOnly, showSelectedCode, backupOption, itemsById]);
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (!nextOpen) setSearchQuery('');
+    setOpen(nextOpen);
+  };
 
   // ---------------------------------------------------------------------------
   // Handlers
@@ -409,19 +476,18 @@ function LazySingleCombobox<
         disabled={disabled}
         itemToStringLabel={itemToStringLabel}
         filteredItems={filteredItemIds}
-        onOpenChange={setOpen}
+        onOpenChange={handleOpenChange}
       >
         {/* Trigger */}
         <div
           ref={anchorRef}
           className={cn(
             'group/trigger border-input dark:bg-input/30 relative flex w-full items-center overflow-hidden rounded-md border bg-transparent shadow-xs transition-[color,box-shadow]',
-            FORM_CONTROL_RING_STYLES.focusWithin,
-            open && (error ? FORM_CONTROL_RING_STYLES.invalidOpen : FORM_CONTROL_RING_STYLES.open),
+            formControlRingStyles.focusWithin,
+            open && (error ? formControlRingStyles.invalidOpen : formControlRingStyles.open),
             disabled && 'pointer-events-none cursor-not-allowed opacity-50',
-            error && FORM_CONTROL_RING_STYLES.invalidWithin,
-            FORM_SIZE_STYLES[size].height,
-            FORM_SIZE_STYLES[size].text,
+            error && formControlRingStyles.invalidWithin,
+            comboboxTriggerVariants({ size }),
           )}
         >
           <ComboboxPrimitive.Trigger
@@ -432,7 +498,7 @@ function LazySingleCombobox<
           <span
             className={cn(
               'pointer-events-none flex-1 truncate',
-              FORM_SIZE_STYLES[size].paddingX,
+              comboboxPaddingVariants({ size }),
               selectedLabel ? 'text-foreground' : 'text-muted-foreground',
             )}
           >
@@ -442,12 +508,12 @@ function LazySingleCombobox<
           <div
             className={cn(
               'pointer-events-none relative z-10 ml-auto flex shrink-0 items-center gap-0.5 self-center pr-2',
-              FORM_SIZE_STYLES[size].svgIcon,
+              comboboxSvgIconVariants({ size }),
             )}
           >
             {hasValue && !disabled ? (
               showClearIcon && showArrowIcon ? (
-                <div className={cn('relative shrink-0', FORM_SIZE_STYLES[size].icon)}>
+                <div className={cn('relative shrink-0', comboboxIconVariants({ size }))}>
                   <span
                     className="pointer-events-auto absolute inset-0 z-10 flex items-center justify-center opacity-0 transition-opacity group-hover/trigger:opacity-100"
                     onMouseDown={(e) => {

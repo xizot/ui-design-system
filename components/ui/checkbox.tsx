@@ -1,7 +1,7 @@
 'use client';
 
-import { DEFAULT_CHECKBOX_SIZE, FORM_SIZE_STYLES, type FormSize } from '../../constants/form-sizes';
 import { Checkbox as CheckboxPrimitive } from '@base-ui/react/checkbox';
+import { cva } from 'class-variance-authority';
 import { CheckIcon } from 'lucide-react';
 
 import { cn } from '../../lib/utils';
@@ -16,8 +16,24 @@ type CheckboxProps = CheckboxPrimitive.Root.Props & {
   errorClassName?: React.ComponentProps<'p'>['className'];
   wrapperClassName?: React.ComponentProps<'div'>['className'];
   error?: string;
-  size?: FormSize;
+  size?: 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 };
+const checkboxVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'size-3.5',
+      xs: 'size-4',
+      sm: 'size-5',
+      md: 'size-5',
+      lg: 'size-6',
+      xl: 'size-7',
+      xxl: 'size-8',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
 function Checkbox({
   className,
   label,
@@ -26,7 +42,7 @@ function Checkbox({
   error,
   errorClassName,
   wrapperClassName,
-  size = DEFAULT_CHECKBOX_SIZE,
+  size = 'md',
   ...props
 }: CheckboxProps) {
   return (
@@ -36,7 +52,7 @@ function Checkbox({
           data-slot="checkbox"
           className={cn(
             'peer border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 aria-invalid:aria-checked:border-primary dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary relative flex shrink-0 items-center justify-center rounded-xs border shadow-xs transition-shadow outline-none group-has-disabled/field:opacity-50 after:-inset-x-3 after:-inset-y-2 focus-visible:ring-3 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-3',
-            FORM_SIZE_STYLES[size].icon,
+            checkboxVariants({ size }),
             { 'rounded-[3px]': size === 'md' || size === 'lg' || size === 'xl' },
 
             className,
@@ -47,7 +63,7 @@ function Checkbox({
             data-slot="checkbox-indicator"
             className={cn('grid place-content-center text-current transition-none')}
           >
-            <CheckIcon className={FORM_SIZE_STYLES[size].icon} />
+            <CheckIcon className={checkboxVariants({ size })} />
           </CheckboxPrimitive.Indicator>
         </CheckboxPrimitive.Root>
         {label ? (

@@ -6,7 +6,6 @@ import { CodeBlock } from '@/components/ui/code-block';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
-import { DEFAULT_CHECKBOX_SIZE } from '../../../constants/form-sizes';
 
 import { getGuide } from '../guide-data';
 
@@ -27,7 +26,7 @@ const props = [
   {
     name: 'size',
     type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'`,
-    defaultValue: DEFAULT_CHECKBOX_SIZE,
+    defaultValue: 'md',
   },
   { name: 'labelClassName', type: 'string', defaultValue: '--' },
   { name: 'errorClassName', type: 'string', defaultValue: '--' },

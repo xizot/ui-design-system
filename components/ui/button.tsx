@@ -1,7 +1,6 @@
 import { Button as ButtonPrimitive } from '@base-ui/react/button';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-import { FORM_SIZE_STYLES } from '../../constants/form-sizes';
 import { cn } from '../../lib/utils';
 import { Spinner } from './spinner';
 
@@ -22,22 +21,23 @@ const buttonVariants = cva(
         link: 'text-primary underline-offset-4 hover:underline',
       },
       size: {
-        default: `${FORM_SIZE_STYLES.md.height} ${FORM_SIZE_STYLES.md.padding} ${FORM_SIZE_STYLES.md.text} gap-1.5 in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 ${FORM_SIZE_STYLES.md.svgIcon}`,
-        xxs: `${FORM_SIZE_STYLES.xxs.height} ${FORM_SIZE_STYLES.xxs.padding} ${FORM_SIZE_STYLES.xxs.text} gap-1 in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 ${FORM_SIZE_STYLES.xxs.svgIcon}`,
-        xs: `${FORM_SIZE_STYLES.xs.height} ${FORM_SIZE_STYLES.xs.padding} ${FORM_SIZE_STYLES.xs.text} gap-1 in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 ${FORM_SIZE_STYLES.xs.svgIcon}`,
-        sm: `${FORM_SIZE_STYLES.sm.height} ${FORM_SIZE_STYLES.sm.padding} ${FORM_SIZE_STYLES.sm.text} gap-1 in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 ${FORM_SIZE_STYLES.sm.svgIcon}`,
-        md: `${FORM_SIZE_STYLES.md.height} ${FORM_SIZE_STYLES.md.padding} ${FORM_SIZE_STYLES.md.text} gap-1.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 ${FORM_SIZE_STYLES.md.svgIcon}`,
-        lg: `${FORM_SIZE_STYLES.lg.height} ${FORM_SIZE_STYLES.lg.padding} ${FORM_SIZE_STYLES.lg.text} gap-1.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 ${FORM_SIZE_STYLES.lg.svgIcon}`,
-        xl: `${FORM_SIZE_STYLES.xl.height} ${FORM_SIZE_STYLES.xl.padding} ${FORM_SIZE_STYLES.xl.text} gap-1.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 ${FORM_SIZE_STYLES.xl.svgIcon}`,
-        xxl: `${FORM_SIZE_STYLES.xxl.height} ${FORM_SIZE_STYLES.xxl.padding} ${FORM_SIZE_STYLES.xxl.text} gap-1.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 ${FORM_SIZE_STYLES.xxl.svgIcon}`,
-        icon: FORM_SIZE_STYLES.md.iconButton,
-        'icon-xxs': `${FORM_SIZE_STYLES.xxs.iconButton} ${FORM_SIZE_STYLES.xxs.svgIcon}`,
-        'icon-xs': `${FORM_SIZE_STYLES.xs.iconButton} ${FORM_SIZE_STYLES.xs.svgIcon}`,
-        'icon-sm': `${FORM_SIZE_STYLES.sm.iconButton} ${FORM_SIZE_STYLES.sm.svgIcon}`,
-        'icon-md': `${FORM_SIZE_STYLES.md.iconButton} ${FORM_SIZE_STYLES.md.svgIcon}`,
-        'icon-lg': `${FORM_SIZE_STYLES.lg.iconButton} ${FORM_SIZE_STYLES.lg.svgIcon}`,
-        'icon-xl': `${FORM_SIZE_STYLES.xl.iconButton} ${FORM_SIZE_STYLES.xl.svgIcon}`,
-        'icon-xxl': `${FORM_SIZE_STYLES.xxl.iconButton} ${FORM_SIZE_STYLES.xxl.svgIcon}`,
+        default:
+          "h-10 gap-1.5 px-4 text-sm has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3 [&_svg:not([class*='size-'])]:size-4",
+        xxs: "h-7 gap-1 rounded-md px-2 text-xs [&_svg:not([class*='size-'])]:size-3",
+        xs: "h-8 gap-1 rounded-md px-2.5 text-xs [&_svg:not([class*='size-'])]:size-3.5",
+        sm: "h-9 gap-1.5 rounded-md px-3 text-sm [&_svg:not([class*='size-'])]:size-3.5",
+        md: "h-10 gap-1.5 px-3.5 text-sm [&_svg:not([class*='size-'])]:size-4",
+        lg: "h-11 gap-1.5 px-4 text-base [&_svg:not([class*='size-'])]:size-4",
+        xl: "h-12 gap-1.5 px-5 text-base [&_svg:not([class*='size-'])]:size-5",
+        xxl: "h-14 gap-2 px-6 text-lg [&_svg:not([class*='size-'])]:size-5",
+        icon: 'size-10',
+        'icon-xxs': "size-7 rounded-md [&_svg:not([class*='size-'])]:size-3",
+        'icon-xs': "size-8 rounded-md [&_svg:not([class*='size-'])]:size-3.5",
+        'icon-sm': "size-9 rounded-md [&_svg:not([class*='size-'])]:size-3.5",
+        'icon-md': "size-10 [&_svg:not([class*='size-'])]:size-4",
+        'icon-lg': "size-11 [&_svg:not([class*='size-'])]:size-4",
+        'icon-xl': "size-12 [&_svg:not([class*='size-'])]:size-5",
+        'icon-xxl': "size-14 [&_svg:not([class*='size-'])]:size-5",
       },
     },
     defaultVariants: {

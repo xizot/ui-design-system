@@ -3,7 +3,6 @@
 import { OTPInput, OTPInputContext } from 'input-otp';
 import * as React from 'react';
 
-import { FORM_SIZE_STYLES } from '../../constants/form-sizes';
 import { MinusIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
@@ -57,8 +56,7 @@ function InputOTPSlot({
       data-active={isActive}
       className={cn(
         'border-input aria-invalid:border-destructive data-[active=true]:border-ring data-[active=true]:ring-ring/50 data-[active=true]:aria-invalid:border-destructive data-[active=true]:aria-invalid:ring-destructive/20 dark:bg-input/30 dark:data-[active=true]:aria-invalid:ring-destructive/40 relative flex items-center justify-center border-y border-r shadow-xs transition-all outline-none first:rounded-l-md first:border-l last:rounded-r-md data-[active=true]:z-10 data-[active=true]:ring-3',
-        FORM_SIZE_STYLES.md.iconButton,
-        FORM_SIZE_STYLES.md.text,
+        'size-10 text-sm',
         className,
       )}
       {...props}

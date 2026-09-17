@@ -2,9 +2,11 @@
 
 import { ScrollArea } from './scroll-area';
 import { cn } from '../../lib/utils';
-import type { FormSize } from '../../constants/form-sizes';
 import { startOfMonth, type Locale } from 'date-fns';
+import { cva } from 'class-variance-authority';
 import * as React from 'react';
+
+type FormSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
 export type MonthPickerProps = {
   value?: Date;
@@ -16,18 +18,56 @@ export type MonthPickerProps = {
   size?: FormSize;
 };
 
-const monthPickerSizeStyles: Record<
-  FormSize,
-  { header: string; item: string; monthColumn: string }
-> = {
-  xxs: { header: 'px-3 py-2 text-sm', item: 'px-1.5 py-1 text-xs', monthColumn: 'w-24' },
-  xs: { header: 'px-3 py-2 text-sm', item: 'px-1.5 py-1 text-xs', monthColumn: 'w-28' },
-  sm: { header: 'px-3 py-2 text-base', item: 'px-2 py-1 text-sm', monthColumn: 'w-28' },
-  md: { header: 'px-4 py-3 text-lg', item: 'px-2 py-1.5 text-sm', monthColumn: 'w-32' },
-  lg: { header: 'px-4 py-3 text-lg', item: 'px-2.5 py-2 text-base', monthColumn: 'w-36' },
-  xl: { header: 'px-5 py-4 text-xl', item: 'px-3 py-2 text-base', monthColumn: 'w-40' },
-  xxl: { header: 'px-5 py-4 text-xl', item: 'px-3 py-2.5 text-lg', monthColumn: 'w-44' },
-};
+const monthPickerHeaderVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'px-3 py-2 text-sm',
+      xs: 'px-3 py-2 text-sm',
+      sm: 'px-3 py-2 text-base',
+      md: 'px-4 py-3 text-lg',
+      lg: 'px-4 py-3 text-lg',
+      xl: 'px-5 py-4 text-xl',
+      xxl: 'px-5 py-4 text-xl',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const monthPickerItemVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'px-1.5 py-1 text-xs',
+      xs: 'px-1.5 py-1 text-xs',
+      sm: 'px-2 py-1 text-sm',
+      md: 'px-2 py-1.5 text-sm',
+      lg: 'px-2.5 py-2 text-base',
+      xl: 'px-3 py-2 text-base',
+      xxl: 'px-3 py-2.5 text-lg',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const monthPickerColumnVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'w-24',
+      xs: 'w-28',
+      sm: 'w-28',
+      md: 'w-32',
+      lg: 'w-36',
+      xl: 'w-40',
+      xxl: 'w-44',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
 
 function MonthPicker({
   value,
@@ -38,37 +78,11 @@ function MonthPicker({
   className,
   size = 'md',
 }: MonthPickerProps) {
-  const [selectedYear, setSelectedYear] = React.useState<number>(() => {
-    return value ? value.getFullYear() : new Date().getFullYear();
-  });
-  const [selectedMonth, setSelectedMonth] = React.useState<number>(() => {
-    return value ? value.getMonth() : new Date().getMonth();
-  });
+  const [initialDate] = React.useState(() => new Date());
+  const selectedYear = value ? value.getFullYear() : initialDate.getFullYear();
+  const selectedMonth = value ? value.getMonth() : initialDate.getMonth();
   const monthContainerRef = React.useRef<HTMLDivElement>(null);
   const yearContainerRef = React.useRef<HTMLDivElement>(null);
-
-  // Sync with value prop when it changes (only if different from current state)
-  React.useEffect(() => {
-    if (value) {
-      const year = value.getFullYear();
-      const month = value.getMonth();
-      // Only update if different to avoid unnecessary re-renders
-      if (selectedYear !== year || selectedMonth !== month) {
-        setSelectedYear(year);
-        setSelectedMonth(month);
-      }
-    } else {
-      // Reset to current month/year if value is undefined
-      const now = new Date();
-      const nowYear = now.getFullYear();
-      const nowMonth = now.getMonth();
-      if (selectedYear !== nowYear || selectedMonth !== nowMonth) {
-        setSelectedYear(nowYear);
-        setSelectedMonth(nowMonth);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
 
   // Scroll to selected month on mount and when selectedMonth changes
   React.useEffect(() => {
@@ -114,7 +128,6 @@ function MonthPicker({
 
   const handleMonthSelect = React.useCallback(
     (monthIndex: number) => {
-      setSelectedMonth(monthIndex);
       const newDate = new Date(selectedYear, monthIndex, 1);
       onChange(startOfMonth(newDate));
     },
@@ -123,7 +136,6 @@ function MonthPicker({
 
   const handleYearSelect = React.useCallback(
     (year: number) => {
-      setSelectedYear(year);
       const newDate = new Date(year, selectedMonth, 1);
       onChange(startOfMonth(newDate));
     },
@@ -145,28 +157,26 @@ function MonthPicker({
   }, [locale, monthNames]);
 
   const years = React.useMemo(
-    () => Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - 50 + i),
-    [],
+    () => Array.from({ length: 100 }, (_, i) => initialDate.getFullYear() - 50 + i),
+    [initialDate],
   );
 
   const displayValue = React.useMemo(() => {
     if (value) {
       return `${months[selectedMonth]} ${selectedYear}`;
     }
-    return `${months[new Date().getMonth()]} ${new Date().getFullYear()}`;
-  }, [value, months, selectedMonth, selectedYear]);
-  const sizeStyles = monthPickerSizeStyles[size];
-
+    return `${months[initialDate.getMonth()]} ${initialDate.getFullYear()}`;
+  }, [value, months, selectedMonth, selectedYear, initialDate]);
   return (
     <div className={cn('flex h-full flex-col', className)}>
       <div className="shrink-0 text-center">
-        <div className={cn('font-medium', sizeStyles.header)}>{displayValue}</div>
+        <div className={cn('font-medium', monthPickerHeaderVariants({ size }))}>{displayValue}</div>
       </div>
       <div className="flex min-h-0 flex-1 gap-0.5">
         <ScrollArea
           className={cn(
             'overflow-hidden [&>[data-slot=scroll-area-viewport]]:rounded-l-md',
-            sizeStyles.monthColumn,
+            monthPickerColumnVariants({ size }),
           )}
         >
           <div ref={monthContainerRef} className="px-2">
@@ -180,7 +190,7 @@ function MonthPicker({
                   onClick={() => !isDisabled && handleMonthSelect(index)}
                   className={cn(
                     'cursor-pointer rounded-md text-center transition-colors',
-                    sizeStyles.item,
+                    monthPickerItemVariants({ size }),
                     isSelected ? 'bg-secondary text-secondary-foreground' : 'hover:bg-accent',
                     isDisabled && 'cursor-not-allowed opacity-50',
                   )}
@@ -202,7 +212,7 @@ function MonthPicker({
                   onClick={() => handleYearSelect(year)}
                   className={cn(
                     'cursor-pointer rounded-md text-center transition-colors',
-                    sizeStyles.item,
+                    monthPickerItemVariants({ size }),
                     isSelected ? 'bg-secondary text-secondary-foreground' : 'hover:bg-accent',
                   )}
                 >

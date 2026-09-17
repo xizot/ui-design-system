@@ -2,8 +2,8 @@
 
 import { Radio as RadioPrimitive } from '@base-ui/react/radio';
 import { RadioGroup as RadioGroupPrimitive } from '@base-ui/react/radio-group';
+import { cva } from 'class-variance-authority';
 
-import { DEFAULT_RADIO_SIZE, FORM_SIZE_STYLES, type FormSize } from '../../constants/form-sizes';
 import { cn } from '../../lib/utils';
 import { FormErrorMessage } from './form-error-message';
 import { FormLabel } from './form-label';
@@ -19,11 +19,44 @@ type RadioGroupProps = RadioGroupPrimitive.Props & {
 };
 
 type RadioGroupItemProps = RadioPrimitive.Root.Props & {
-  size?: FormSize;
+  size?: 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
   label?: string | React.ReactNode;
   labelClassName?: React.ComponentProps<typeof Label>['className'];
   containerClassName?: React.ComponentProps<'div'>['className'];
 };
+const radioItemVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'size-3.5',
+      xs: 'size-4',
+      sm: 'size-5',
+      md: 'size-5',
+      lg: 'size-6',
+      xl: 'size-7',
+      xxl: 'size-8',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const radioIndicatorVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'size-1.5',
+      xs: 'size-2',
+      sm: 'size-2.5',
+      md: 'size-2.5',
+      lg: 'size-3',
+      xl: 'size-3.5',
+      xxl: 'size-4',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
 
 function RadioGroup({
   className,
@@ -58,7 +91,7 @@ function RadioGroup({
 
 function RadioGroupItem({
   className,
-  size = DEFAULT_RADIO_SIZE,
+  size = 'md',
   label,
   labelClassName,
   containerClassName,
@@ -69,19 +102,19 @@ function RadioGroupItem({
       data-slot="radio-group-item"
       className={cn(
         'group/radio-group-item peer border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 aria-invalid:aria-checked:border-primary dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary relative flex aspect-square shrink-0 rounded-full border outline-none after:-inset-x-3 after:-inset-y-2 focus-visible:ring-3 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-3',
-        FORM_SIZE_STYLES[size].icon,
+        radioItemVariants({ size }),
         className,
       )}
       {...props}
     >
       <RadioPrimitive.Indicator
         data-slot="radio-group-indicator"
-        className={cn('flex items-center justify-center', FORM_SIZE_STYLES[size].icon)}
+        className={cn('flex items-center justify-center', radioItemVariants({ size }))}
       >
         <span
           className={cn(
             'bg-primary-foreground absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full',
-            FORM_SIZE_STYLES[size].radioDot,
+            radioIndicatorVariants({ size }),
           )}
         />
       </RadioPrimitive.Indicator>

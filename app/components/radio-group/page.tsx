@@ -6,7 +6,6 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
-import { DEFAULT_RADIO_SIZE } from '../../../constants/form-sizes';
 
 import { getGuide } from '../guide-data';
 
@@ -29,7 +28,7 @@ const itemProps = [
   {
     name: 'size',
     type: '"xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl"',
-    defaultValue: DEFAULT_RADIO_SIZE,
+    defaultValue: 'md',
   },
   { name: 'labelClassName', type: 'string', defaultValue: '--' },
   { name: 'containerClassName', type: 'string', defaultValue: '--' },

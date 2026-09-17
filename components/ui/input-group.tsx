@@ -3,12 +3,6 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
-import {
-  DEFAULT_INPUT_SIZE,
-  FORM_CONTROL_RING_STYLES,
-  FORM_SIZE_STYLES,
-  type FormSize,
-} from '../../constants/form-sizes';
 import { cn } from '../../lib/utils';
 import { Button } from './button';
 import { FormErrorMessage } from './form-error-message';
@@ -17,7 +11,31 @@ import { Input } from './input';
 import { Label } from './label';
 import { Textarea } from './textarea';
 
-const InputGroupContext = React.createContext<FormSize>(DEFAULT_INPUT_SIZE);
+type FormSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
+
+const inputGroupVariants = cva('', {
+  variants: {
+    formSize: {
+      xxs: 'h-7',
+      xs: 'h-8',
+      sm: 'h-9',
+      md: 'h-10',
+      lg: 'h-11',
+      xl: 'h-12',
+      xxl: 'h-14',
+    },
+  },
+  defaultVariants: {
+    formSize: 'md',
+  },
+});
+
+const inputGroupRingStyles = {
+  invalid:
+    'aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40',
+} as const;
+
+const InputGroupContext = React.createContext<FormSize>('md');
 
 type InputGroupProps = React.ComponentProps<'div'> & {
   label?: string | React.ReactNode;
@@ -35,7 +53,7 @@ function InputGroup({
   labelClassName,
   errorClassName,
   error,
-  formSize = DEFAULT_INPUT_SIZE,
+  formSize = 'md',
   ...props
 }: InputGroupProps) {
   return (
@@ -54,8 +72,8 @@ function InputGroup({
           role="group"
           className={cn(
             'group/input-group border-input has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:border-destructive has-[[data-slot][aria-invalid=true]]:ring-destructive/20 dark:bg-input/30 dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 relative flex w-full min-w-0 items-center rounded-md border shadow-xs transition-[color,box-shadow] outline-none in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col has-[>textarea]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5',
-            FORM_CONTROL_RING_STYLES.invalid,
-            FORM_SIZE_STYLES[formSize].height,
+            inputGroupRingStyles.invalid,
+            inputGroupVariants({ formSize }),
             className,
           )}
           {...props}

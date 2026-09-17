@@ -6,7 +6,6 @@ import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
-import { DEFAULT_SWITCH_SIZE } from '../../../constants/form-sizes';
 
 import { getGuide } from '../guide-data';
 
@@ -16,7 +15,7 @@ const props = [
   {
     name: 'size',
     type: `'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'`,
-    defaultValue: DEFAULT_SWITCH_SIZE,
+    defaultValue: 'md',
   },
   { name: 'checked', type: 'boolean', defaultValue: 'false' },
   { name: 'defaultChecked', type: 'boolean', defaultValue: 'false' },

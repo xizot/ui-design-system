@@ -1,15 +1,34 @@
 'use client';
 
 import { Combobox as ComboboxPrimitive } from '@base-ui/react';
+import { cva } from 'class-variance-authority';
 import * as React from 'react';
 
 import { CheckIcon, ChevronDownIcon, Search, XIcon } from 'lucide-react';
-import { FORM_SIZE_STYLES, type FormSize } from '../../constants/form-sizes';
 import { cn } from '../../lib/utils';
 import { Button } from './button';
 import { InputGroup, InputGroupAddon, InputGroupInput } from './input-group';
 
 const Combobox = ComboboxPrimitive.Root;
+
+type FormSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
+
+const comboboxIconVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'size-3.5',
+      xs: 'size-4',
+      sm: 'size-5',
+      md: 'size-5',
+      lg: 'size-6',
+      xl: 'size-6',
+      xxl: 'size-7',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
 
 function ComboboxValue({ ...props }: ComboboxPrimitive.Value.Props) {
   return <ComboboxPrimitive.Value data-slot="combobox-value" {...props} />;
@@ -27,7 +46,10 @@ function ComboboxTrigger({
     <ComboboxPrimitive.Trigger data-slot="combobox-trigger" className={cn(className)} {...props}>
       {children}
       <ChevronDownIcon
-        className={cn('text-muted-foreground pointer-events-none', FORM_SIZE_STYLES[formSize].icon)}
+        className={cn(
+          'text-muted-foreground pointer-events-none',
+          comboboxIconVariants({ size: formSize }),
+        )}
       />
     </ComboboxPrimitive.Trigger>
   );
@@ -42,7 +64,7 @@ function ComboboxClear({
 }) {
   return (
     <ComboboxPrimitive.Clear data-slot="combobox-clear" className={cn(className)} {...props}>
-      <XIcon className={cn('pointer-events-none', FORM_SIZE_STYLES[formSize].icon)} />
+      <XIcon className={cn('pointer-events-none', comboboxIconVariants({ size: formSize }))} />
     </ComboboxPrimitive.Clear>
   );
 }
@@ -69,7 +91,7 @@ function ComboboxInput({
         <Search className="size-5" />
       </InputGroupAddon>
       <InputGroupAddon align="inline-end">
-        {showClear && <ComboboxClear disabled={disabled} />}
+        {showClear && <ComboboxClear disabled={disabled} formSize={formSize} />}
       </InputGroupAddon>
       {children}
     </InputGroup>

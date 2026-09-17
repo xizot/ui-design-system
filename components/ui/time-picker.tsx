@@ -1,13 +1,9 @@
 'use client';
 
 import * as React from 'react';
+import { cva } from 'class-variance-authority';
 import { ClockIcon, XCircleIcon } from 'lucide-react';
 
-import {
-  FORM_CONTROL_RING_STYLES,
-  FORM_SIZE_STYLES,
-  type FormSize,
-} from '../../constants/form-sizes';
 import { cn } from '../../lib/utils';
 import { FormErrorMessage } from './form-error-message';
 import { FormLabel } from './form-label';
@@ -20,6 +16,67 @@ export type TimeValue = {
   second: string;
 };
 
+type FormSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
+
+const timeTriggerVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'h-7 px-2 text-xs',
+      xs: 'h-8 px-2.5 text-xs',
+      sm: 'h-9 px-3 text-sm',
+      md: 'h-10 px-4 text-sm',
+      lg: 'h-11 px-4 text-base',
+      xl: 'h-12 px-5 text-base',
+      xxl: 'h-14 px-6 text-lg',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const timeIconVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'size-3.5',
+      xs: 'size-4',
+      sm: 'size-5',
+      md: 'size-5',
+      lg: 'size-6',
+      xl: 'size-6',
+      xxl: 'size-7',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const timeSvgIconVariants = cva('', {
+  variants: {
+    size: {
+      xxs: "[&_svg:not([class*='size-'])]:size-3.5",
+      xs: "[&_svg:not([class*='size-'])]:size-4",
+      sm: "[&_svg:not([class*='size-'])]:size-5",
+      md: "[&_svg:not([class*='size-'])]:size-5",
+      lg: "[&_svg:not([class*='size-'])]:size-6",
+      xl: "[&_svg:not([class*='size-'])]:size-6",
+      xxl: "[&_svg:not([class*='size-'])]:size-7",
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+const formControlRingStyles = {
+  focusWithin: 'focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50',
+  open: 'border-ring ring-3 ring-ring/50',
+  invalidWithin:
+    'border-destructive focus-within:ring-3 focus-within:ring-destructive/20 dark:border-destructive/50 dark:focus-within:ring-destructive/40',
+  invalidOpen:
+    'border-destructive ring-3 ring-destructive/20 dark:border-destructive/50 dark:ring-destructive/40',
+} as const;
+
 export type TimePickerPanelProps = {
   value: TimeValue;
   onChange: (value: TimeValue) => void;
@@ -29,15 +86,56 @@ export type TimePickerPanelProps = {
   showHeader?: boolean;
 };
 
-const timePickerSizeStyles: Record<FormSize, { header: string; item: string; column: string }> = {
-  xxs: { header: 'px-3 py-2 text-sm', item: 'px-1.5 py-1 text-xs', column: 'w-12' },
-  xs: { header: 'px-3 py-2 text-sm', item: 'px-1.5 py-1 text-xs', column: 'w-14' },
-  sm: { header: 'px-3 py-2 text-base', item: 'px-2 py-1 text-sm', column: 'w-14' },
-  md: { header: 'px-4 py-3 text-lg', item: 'px-2 py-1.5 text-sm', column: 'w-16' },
-  lg: { header: 'px-4 py-3 text-lg', item: 'px-2.5 py-2 text-base', column: 'w-20' },
-  xl: { header: 'px-5 py-4 text-xl', item: 'px-3 py-2 text-base', column: 'w-20' },
-  xxl: { header: 'px-5 py-4 text-xl', item: 'px-3 py-2.5 text-lg', column: 'w-24' },
-};
+const timePickerHeaderVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'px-3 py-2 text-sm',
+      xs: 'px-3 py-2 text-sm',
+      sm: 'px-3 py-2 text-base',
+      md: 'px-4 py-3 text-lg',
+      lg: 'px-4 py-3 text-lg',
+      xl: 'px-5 py-4 text-xl',
+      xxl: 'px-5 py-4 text-xl',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const timePickerItemVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'px-1.5 py-1 text-xs',
+      xs: 'px-1.5 py-1 text-xs',
+      sm: 'px-2 py-1 text-sm',
+      md: 'px-2 py-1.5 text-sm',
+      lg: 'px-2.5 py-2 text-base',
+      xl: 'px-3 py-2 text-base',
+      xxl: 'px-3 py-2.5 text-lg',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const timePickerColumnVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'w-12',
+      xs: 'w-14',
+      sm: 'w-14',
+      md: 'w-16',
+      lg: 'w-20',
+      xl: 'w-20',
+      xxl: 'w-24',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
 
 function TimePickerPanel({
   value,
@@ -147,13 +245,13 @@ function TimePickerPanel({
   };
 
   const displayValue = `${value.hour}:${value.minute}${showSeconds ? `:${value.second}` : ''}`;
-  const sizeStyles = timePickerSizeStyles[size];
-
   return (
     <div className={cn('flex h-full flex-col border-l', className)}>
       {showHeader ? (
         <div className="shrink-0 text-center">
-          <div className={cn('font-medium', sizeStyles.header)}>{displayValue}</div>
+          <div className={cn('font-medium', timePickerHeaderVariants({ size }))}>
+            {displayValue}
+          </div>
         </div>
       ) : null}
 
@@ -162,7 +260,7 @@ function TimePickerPanel({
         <ScrollArea
           className={cn(
             'relative z-10 flex-1 overflow-hidden [&>[data-slot=scroll-area-viewport]]:rounded-l-md',
-            sizeStyles.column,
+            timePickerColumnVariants({ size }),
           )}
         >
           <div ref={hourContainerRef} className="px-2 py-[calc(50%_-_1rem)]">
@@ -173,7 +271,7 @@ function TimePickerPanel({
                 onClick={() => handleHourClick(hour)}
                 className={cn(
                   'cursor-pointer rounded-md text-left transition-colors',
-                  sizeStyles.item,
+                  timePickerItemVariants({ size }),
                   currentHour === hour ? 'bg-secondary' : 'hover:bg-accent',
                 )}
               >
@@ -186,7 +284,7 @@ function TimePickerPanel({
         <ScrollArea
           className={cn(
             'relative z-10 flex-1 [&>[data-slot=scroll-area-viewport]]:overflow-hidden',
-            sizeStyles.column,
+            timePickerColumnVariants({ size }),
           )}
         >
           <div ref={minuteContainerRef} className="px-2 py-[calc(50%_-_1rem)]">
@@ -197,7 +295,7 @@ function TimePickerPanel({
                 onClick={() => handleMinuteClick(minute)}
                 className={cn(
                   'cursor-pointer rounded-md text-left transition-colors',
-                  sizeStyles.item,
+                  timePickerItemVariants({ size }),
                   currentMinute === minute ? 'bg-secondary' : 'hover:bg-accent',
                 )}
               >
@@ -211,7 +309,7 @@ function TimePickerPanel({
           <ScrollArea
             className={cn(
               'relative z-10 flex-1 overflow-hidden [&>[data-slot=scroll-area-viewport]]:rounded-r-md',
-              sizeStyles.column,
+              timePickerColumnVariants({ size }),
             )}
           >
             <div ref={secondContainerRef} className="px-2 py-[calc(50%_-_1rem)]">
@@ -222,7 +320,7 @@ function TimePickerPanel({
                   onClick={() => handleSecondClick(second)}
                   className={cn(
                     'cursor-pointer rounded-md text-left transition-colors',
-                    sizeStyles.item,
+                    timePickerItemVariants({ size }),
                     currentSecond === second ? 'bg-secondary' : 'hover:bg-accent',
                   )}
                 >
@@ -289,14 +387,11 @@ function TimePicker({
           <div
             className={cn(
               'group border-input dark:bg-input/30 relative inline-flex w-full items-center justify-between gap-x-3 rounded-md border bg-transparent shadow-xs transition-[color,box-shadow]',
-              FORM_CONTROL_RING_STYLES.focusWithin,
-              open &&
-                (error ? FORM_CONTROL_RING_STYLES.invalidOpen : FORM_CONTROL_RING_STYLES.open),
+              formControlRingStyles.focusWithin,
+              open && (error ? formControlRingStyles.invalidOpen : formControlRingStyles.open),
               disabled && 'pointer-events-none cursor-not-allowed opacity-50',
-              error && FORM_CONTROL_RING_STYLES.invalidWithin,
-              FORM_SIZE_STYLES[size].height,
-              FORM_SIZE_STYLES[size].paddingX,
-              FORM_SIZE_STYLES[size].text,
+              error && formControlRingStyles.invalidWithin,
+              timeTriggerVariants({ size }),
               !value && 'text-muted-foreground',
               triggerClassName,
             )}
@@ -305,7 +400,7 @@ function TimePicker({
             <div
               className={cn(
                 'relative z-10 ml-auto flex shrink-0 items-center gap-2 self-center',
-                FORM_SIZE_STYLES[size].svgIcon,
+                timeSvgIconVariants({ size }),
               )}
             >
               {value && !disabled && showClearIcon ? (
@@ -313,7 +408,7 @@ function TimePicker({
                   <span
                     className={cn(
                       'text-muted-foreground hover:text-foreground flex shrink-0 items-center justify-center opacity-0 transition-opacity group-hover:opacity-100',
-                      FORM_SIZE_STYLES[size].icon,
+                      timeIconVariants({ size }),
                     )}
                     onMouseDown={(e) => {
                       e.preventDefault();
@@ -328,11 +423,11 @@ function TimePicker({
                     <XCircleIcon />
                     <span className="sr-only">Clear</span>
                   </span>
-                  <ClockIcon className={cn('text-muted-foreground', FORM_SIZE_STYLES[size].icon)} />
+                  <ClockIcon className={cn('text-muted-foreground', timeIconVariants({ size }))} />
                 </>
               ) : (
                 <ClockIcon
-                  className={cn('text-muted-foreground shrink-0', FORM_SIZE_STYLES[size].icon)}
+                  className={cn('text-muted-foreground shrink-0', timeIconVariants({ size }))}
                 />
               )}
             </div>

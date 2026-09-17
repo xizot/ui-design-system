@@ -11,9 +11,9 @@ import {
 } from 'date-fns';
 import { CalendarIcon, XCircleIcon } from 'lucide-react';
 import type { ComponentProps } from 'react';
+import { cva } from 'class-variance-authority';
 import * as React from 'react';
 import type { PropsSingle } from 'react-day-picker';
-import { FORM_SIZE_STYLES, type FormSize } from '../../constants/form-sizes';
 import { cn } from '../../lib/utils';
 import { Button } from './button';
 import { Calendar } from './calendar';
@@ -28,6 +28,58 @@ import { TimePickerPanel, type TimeValue } from './time-picker';
 // Helpers
 // ---------------------------------------------------------------------------
 
+type FormSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
+
+const dateTriggerVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'h-7 px-2 py-1 text-xs',
+      xs: 'h-8 px-2.5 py-1.5 text-xs',
+      sm: 'h-9 px-3 py-1.5 text-sm',
+      md: 'h-10 px-4 py-2 text-sm',
+      lg: 'h-11 px-4 py-2.5 text-base',
+      xl: 'h-12 px-5 py-3 text-base',
+      xxl: 'h-14 px-6 py-3.5 text-lg',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const dateIconVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'size-3.5',
+      xs: 'size-4',
+      sm: 'size-5',
+      md: 'size-5',
+      lg: 'size-6',
+      xl: 'size-6',
+      xxl: 'size-7',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const dateSvgIconVariants = cva('', {
+  variants: {
+    size: {
+      xxs: "[&_svg:not([class*='size-'])]:size-3.5",
+      xs: "[&_svg:not([class*='size-'])]:size-4",
+      sm: "[&_svg:not([class*='size-'])]:size-5",
+      md: "[&_svg:not([class*='size-'])]:size-5",
+      lg: "[&_svg:not([class*='size-'])]:size-6",
+      xl: "[&_svg:not([class*='size-'])]:size-6",
+      xxl: "[&_svg:not([class*='size-'])]:size-7",
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
 /** Coerce Date | string | undefined → Date | undefined. */
 function toDate(value: Date | string | undefined): Date | undefined {
   if (value === undefined || value === null) return undefined;
@@ -36,21 +88,39 @@ function toDate(value: Date | string | undefined): Date | undefined {
   return isValid(parsed) ? parsed : undefined;
 }
 
-const datePickerMenuSizeStyles: Record<
-  FormSize,
-  {
-    calendar: string;
-    panelHeight: string;
-  }
-> = {
-  xxs: { calendar: '!p-2 text-xs [--cell-size:--spacing(6)]', panelHeight: 'h-[280px]' },
-  xs: { calendar: '!p-2 text-xs [--cell-size:--spacing(7)]', panelHeight: 'h-[300px]' },
-  sm: { calendar: '!p-2.5 text-sm [--cell-size:--spacing(7)]', panelHeight: 'h-[320px]' },
-  md: { calendar: '!p-3 text-sm [--cell-size:--spacing(8)]', panelHeight: 'h-[350px]' },
-  lg: { calendar: '!p-3 text-base [--cell-size:--spacing(9)]', panelHeight: 'h-[390px]' },
-  xl: { calendar: '!p-3.5 text-base [--cell-size:--spacing(10)]', panelHeight: 'h-[430px]' },
-  xxl: { calendar: '!p-4 text-lg [--cell-size:--spacing(11)]', panelHeight: 'h-[480px]' },
-};
+const datePickerCalendarVariants = cva('', {
+  variants: {
+    size: {
+      xxs: '!p-2 text-xs [--cell-size:--spacing(6)]',
+      xs: '!p-2 text-xs [--cell-size:--spacing(7)]',
+      sm: '!p-2.5 text-sm [--cell-size:--spacing(7)]',
+      md: '!p-3 text-sm [--cell-size:--spacing(8)]',
+      lg: '!p-3 text-base [--cell-size:--spacing(9)]',
+      xl: '!p-3.5 text-base [--cell-size:--spacing(10)]',
+      xxl: '!p-4 text-lg [--cell-size:--spacing(11)]',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+const datePickerPanelVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'h-[280px]',
+      xs: 'h-[300px]',
+      sm: 'h-[320px]',
+      md: 'h-[350px]',
+      lg: 'h-[390px]',
+      xl: 'h-[430px]',
+      xxl: 'h-[480px]',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
 
 // ---------------------------------------------------------------------------
 // Types
@@ -274,8 +344,6 @@ function DatePicker({
       }) as React.ComponentProps<typeof Calendar>,
     [calendarProps, tempDate, currentMonth, handleCheckDisabled, locale],
   );
-  const menuSizeStyles = datePickerMenuSizeStyles[size];
-
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -291,9 +359,7 @@ function DatePicker({
             <div
               className={cn(
                 'group border-border bg-background ring-offset-background hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex w-full items-center justify-between gap-x-3 rounded-md border shadow-sm transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
-                FORM_SIZE_STYLES[size].height,
-                FORM_SIZE_STYLES[size].padding,
-                FORM_SIZE_STYLES[size].text,
+                dateTriggerVariants({ size }),
                 !resolvedValue && 'text-muted-foreground',
                 error && 'border-destructive',
                 triggerClassName,
@@ -304,7 +370,7 @@ function DatePicker({
               <div
                 className={cn(
                   'relative z-10 ml-auto flex shrink-0 items-center gap-2 self-center',
-                  FORM_SIZE_STYLES[size].svgIcon,
+                  dateSvgIconVariants({ size }),
                 )}
               >
                 {resolvedValue && !disabled ? (
@@ -313,7 +379,7 @@ function DatePicker({
                       <span
                         className={cn(
                           'text-muted-foreground hover:text-foreground flex shrink-0 items-center justify-center opacity-0 transition-opacity group-hover:opacity-100',
-                          FORM_SIZE_STYLES[size].icon,
+                          dateIconVariants({ size }),
                         )}
                         onMouseDown={(e) => {
                           e.preventDefault();
@@ -328,13 +394,13 @@ function DatePicker({
                         <XCircleIcon />
                         <span className="sr-only">Clear</span>
                       </span>
-                      <CalendarIcon className={cn('opacity-50', FORM_SIZE_STYLES[size].icon)} />
+                      <CalendarIcon className={cn('opacity-50', dateIconVariants({ size }))} />
                     </>
                   ) : (
-                    <CalendarIcon className={cn('opacity-50', FORM_SIZE_STYLES[size].icon)} />
+                    <CalendarIcon className={cn('opacity-50', dateIconVariants({ size }))} />
                   )
                 ) : (
-                  <CalendarIcon className={cn('opacity-50', FORM_SIZE_STYLES[size].icon)} />
+                  <CalendarIcon className={cn('opacity-50', dateIconVariants({ size }))} />
                 )}
               </div>
             </div>
@@ -346,7 +412,7 @@ function DatePicker({
           >
             <div className="flex flex-col gap-2 pb-2">
               {timeOnly ? (
-                <div className={cn('flex', menuSizeStyles.panelHeight)}>
+                <div className={cn('flex', datePickerPanelVariants({ size }))}>
                   <TimePickerPanel
                     value={selectedTime}
                     onChange={setSelectedTime}
@@ -355,7 +421,7 @@ function DatePicker({
                   />
                 </div>
               ) : mode === 'month' ? (
-                <div className={cn('flex', menuSizeStyles.panelHeight)}>
+                <div className={cn('flex', datePickerPanelVariants({ size }))}>
                   <MonthPicker
                     value={tempDate}
                     onChange={setTempDate}
@@ -370,12 +436,15 @@ function DatePicker({
                 <div
                   className={cn(
                     'flex',
-                    showTime && [menuSizeStyles.panelHeight, 'overflow-hidden'],
+                    showTime && [datePickerPanelVariants({ size }), 'overflow-hidden'],
                   )}
                 >
                   <Calendar
                     {...calendarPropsWithMode}
-                    className={cn(menuSizeStyles.calendar, calendarPropsWithMode.className)}
+                    className={cn(
+                      datePickerCalendarVariants({ size }),
+                      calendarPropsWithMode.className,
+                    )}
                   />
                   {showTime && (
                     <TimePickerPanel
