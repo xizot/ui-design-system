@@ -22,21 +22,13 @@ function fixture(t) {
 test('CLI defaults to source and validates package options before mutations', () => {
   assert.equal(parseArguments([]).mode, 'source');
   assert.equal(parseArguments(['init', '--mode', 'source']).mode, 'source');
-  assert.deepEqual(
-    parseArguments(['--mode', 'package', '--css', 'src/index.css']),
-    {
-      command: 'init',
-      mode: 'package',
-      css: 'src/index.css',
-      packageSpec: null,
-    },
-  );
-  for (const args of [
-    ['--mode'],
-    ['--mode', 'other'],
-    ['--unknown'],
-    ['--css', 'x.css'],
-  ]) {
+  assert.deepEqual(parseArguments(['--mode', 'package', '--css', 'src/index.css']), {
+    command: 'init',
+    mode: 'package',
+    css: 'src/index.css',
+    packageSpec: null,
+  });
+  for (const args of [['--mode'], ['--mode', 'other'], ['--unknown'], ['--css', 'x.css']]) {
     assert.throws(() => parseArguments(args));
   }
 });
@@ -45,35 +37,34 @@ test('stylesheet setup preserves existing CSS, charset and repeated setup', (t) 
   const project = fixture(t);
   const target = resolveStylesheet(project, 'src/styles.css');
   fs.mkdirSync(path.dirname(target));
-  const original =
-    '@charset "UTF-8";\n@import "tailwindcss";\n.app { color: red; }\n';
+  const original = '@charset "UTF-8";\n@import "tailwindcss";\n.app { color: red; }\n';
   fs.writeFileSync(target, original);
   setupStylesheet(target);
   setupStylesheet(target);
   const updated = fs.readFileSync(target, 'utf8');
   assert.ok(updated.startsWith('@charset "UTF-8";'));
-  assert.equal(
-    updated.replace("@import 'ui-design-system/styles.css';\n", ''),
-    original,
-  );
+  assert.equal(updated.replace("@import 'ui-design-system/styles.css';\n", ''), original);
   assert.equal(updated.match(/ui-design-system\/styles.css/g).length, 1);
   assert.throws(() => resolveStylesheet(project, '../outside.css'));
   assert.throws(() => resolveStylesheet(project, 'file.ts'));
 });
 
+test('a commented stylesheet import does not skip setup', (t) => {
+  const target = resolveStylesheet(fixture(t), null);
+  fs.writeFileSync(target, "/* @import 'ui-design-system/styles.css'; */\n");
+  setupStylesheet(target);
+  assert.ok(fs.readFileSync(target, 'utf8').startsWith("@import 'ui-design-system/styles.css';\n"));
+});
+
 test('failed dependency install does not write CSS or agent rules', (t) => {
   const projectRoot = fixture(t);
-  fs.writeFileSync(
-    path.join(projectRoot, 'package.json'),
-    '{"name":"consumer"}',
-  );
+  fs.writeFileSync(path.join(projectRoot, 'package.json'), '{"name":"consumer"}');
   installPackageMode(
     { css: null, packageSpec: null },
     {
       projectRoot,
       installDependencies: () => false,
-      upsertAgentUsageRules: () =>
-        assert.fail('must not update rules after failure'),
+      upsertAgentUsageRules: () => assert.fail('must not update rules after failure'),
     },
   );
   assert.deepEqual(fs.readdirSync(projectRoot), ['package.json']);
@@ -88,10 +79,7 @@ test('package setup retains saved dependency and leaves source copies untouched'
       dependencies: { 'ui-design-system': 'file:../ui.tgz' },
     }),
   );
-  const installed = path.join(
-    projectRoot,
-    'node_modules/ui-design-system/dist',
-  );
+  const installed = path.join(projectRoot, 'node_modules/ui-design-system/dist');
   fs.mkdirSync(installed, { recursive: true });
   fs.writeFileSync(path.join(installed, 'styles.css'), '');
   let rules;
@@ -118,14 +106,11 @@ test('all emitted ESM modules load and public export targets exist', async () =>
   for (const file of fs.readdirSync(path.join(root, 'dist'), {
     recursive: true,
   })) {
-    if (file.endsWith('.js'))
-      await import(pathToFileURL(path.join(root, 'dist', file)).href);
+    if (file.endsWith('.js')) await import(pathToFileURL(path.join(root, 'dist', file)).href);
   }
   for (const [key, entry] of Object.entries(manifest.exports)) {
     if (key.includes('*')) continue;
-    for (const target of typeof entry === 'string'
-      ? [entry]
-      : Object.values(entry)) {
+    for (const target of typeof entry === 'string' ? [entry] : Object.values(entry)) {
       assert.ok(fs.existsSync(path.join(root, target)), target);
     }
   }
@@ -171,18 +156,9 @@ test('source mode still copies components and preserves existing project files',
       else reject(new Error(`Source installer exited ${code}: ${output}`));
     });
   });
-  assert.ok(
-    fs.existsSync(path.join(project, 'design-system/components/ui/button.tsx')),
-  );
-  assert.ok(
-    fs.existsSync(
-      path.join(project, '.agents/skills/xizot-design-system/SKILL.md'),
-    ),
-  );
-  assert.match(
-    fs.readFileSync(path.join(project, 'AGENTS.md'), 'utf8'),
-    /^# Consumer rules/,
-  );
+  assert.ok(fs.existsSync(path.join(project, 'design-system/components/ui/button.tsx')));
+  assert.ok(fs.existsSync(path.join(project, '.agents/skills/xizot-design-system/SKILL.md')));
+  assert.match(fs.readFileSync(path.join(project, 'AGENTS.md'), 'utf8'), /^# Consumer rules/);
   assert.ok(!fs.existsSync(path.join(project, 'app/globals.css')));
 });
 

@@ -4,14 +4,8 @@ const ts = require('typescript');
 
 const root = path.resolve(__dirname, '..');
 const outDir = path.join(root, 'dist');
-const config = ts.readConfigFile(
-  path.join(root, 'tsconfig.package.json'),
-  ts.sys.readFile,
-);
-if (config.error)
-  throw new Error(
-    ts.flattenDiagnosticMessageText(config.error.messageText, '\n'),
-  );
+const config = ts.readConfigFile(path.join(root, 'tsconfig.package.json'), ts.sys.readFile);
+if (config.error) throw new Error(ts.flattenDiagnosticMessageText(config.error.messageText, '\n'));
 const parsed = ts.parseJsonConfigFileContent(config.config, ts.sys, root);
 const program = ts.createProgram(parsed.fileNames, parsed.options);
 const diagnostics = [...parsed.errors, ...ts.getPreEmitDiagnostics(program)];
@@ -39,35 +33,20 @@ function rewriteImports(file) {
   const edits = [];
   function visit(node) {
     const isModule =
-      (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
-      node.moduleSpecifier;
-    const isImportType =
-      ts.isImportTypeNode(node) && ts.isLiteralTypeNode(node.argument);
-    const specifier = isModule
-      ? node.moduleSpecifier
-      : isImportType
-        ? node.argument.literal
-        : null;
+      (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) && node.moduleSpecifier;
+    const isImportType = ts.isImportTypeNode(node) && ts.isLiteralTypeNode(node.argument);
+    const specifier = isModule ? node.moduleSpecifier : isImportType ? node.argument.literal : null;
     if (specifier && ts.isStringLiteral(specifier)) {
       const value = specifier.text;
       if (value.startsWith('.') || value.startsWith('@/')) {
         const target = value.startsWith('@/')
           ? path.join(outDir, value.slice(2))
           : path.resolve(path.dirname(file), value);
-        const resolved = [
-          target + '.js',
-          path.join(target, 'index.js'),
-          target,
-        ].find(
-          (candidate) =>
-            fs.existsSync(candidate) && fs.statSync(candidate).isFile(),
+        const resolved = [target + '.js', path.join(target, 'index.js'), target].find(
+          (candidate) => fs.existsSync(candidate) && fs.statSync(candidate).isFile(),
         );
-        if (!resolved)
-          throw new Error(`Unresolved package import ${value} in ${file}`);
-        let relative = path
-          .relative(path.dirname(file), resolved)
-          .split(path.sep)
-          .join('/');
+        if (!resolved) throw new Error(`Unresolved package import ${value} in ${file}`);
+        let relative = path.relative(path.dirname(file), resolved).split(path.sep).join('/');
         if (!relative.startsWith('.')) relative = './' + relative;
         edits.push({
           start: specifier.getStart(source),
@@ -90,10 +69,5 @@ for (const file of fs.readdirSync(outDir, { recursive: true })) {
 }
 fs.writeFileSync(path.join(outDir, 'package.json'), '{"type":"module"}\n');
 const css = fs.readFileSync(path.join(root, 'app/globals.css'), 'utf8');
-fs.writeFileSync(
-  path.join(outDir, 'styles.css'),
-  `${css}\n@source "./**/*.js";\n`,
-);
-console.log(
-  'Built ESM modules, declarations and Tailwind stylesheet in dist/.',
-);
+fs.writeFileSync(path.join(outDir, 'styles.css'), `${css}\n@source "./**/*.js";\n`);
+console.error('Built ESM modules, declarations and Tailwind stylesheet in dist/.');
