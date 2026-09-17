@@ -5,12 +5,18 @@ import { defineConfig, globalIgnores } from 'eslint/config';
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  // Node CLI/build entry points are CommonJS, unlike the React application.
+  {
+    files: ['bin/**/*.cjs', 'scripts/**/*.cjs'],
+    rules: { '@typescript-eslint/no-require-imports': 'off' },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
     '.next/**',
     'out/**',
     'build/**',
+    'dist/**',
     'next-env.d.ts',
   ]),
 ]);

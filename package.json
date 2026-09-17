@@ -17,35 +17,35 @@
     "public",
     "AGENTS.md",
     "README.md",
-    "package.json"
+    "package.json",
+    "dist",
+    "scripts/build-package.cjs",
+    "tsconfig.package.json"
   ],
   "scripts": {
     "dev": "next dev --port 6001",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "build:package": "node scripts/build-package.cjs",
+    "prepare": "npm run build:package",
+    "test:package": "node --test scripts/package.test.cjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
-    "@shadcn/react": "^0.2.1",
     "@tanstack/react-table": "^8.21.3",
     "@tanstack/react-virtual": "^3.14.13",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
-    "cn": "^0.3.0",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.6.0",
     "input-otp": "^1.4.2",
     "lucide-react": "^1.7.0",
-    "next": "16.2.3",
     "next-themes": "^0.4.6",
     "nuqs": "^2.8.9",
-    "react": "19.2.4",
     "react-day-picker": "^10.0.1",
-    "react-dom": "19.2.4",
-    "react-hook-form": "^7.72.1",
     "react-resizable-panels": "^4.9.0",
     "recharts": "^3.8.0",
     "shadcn": "^4.2.0",
@@ -65,14 +65,62 @@
     "prettier": "^3.9.6",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "next": "16.2.3",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "@shadcn/react": "^0.2.1",
+    "cn": "^0.3.0",
+    "react-hook-form": "^7.72.1"
   },
-  "description": "Repo này có thể chạy như một CLI để copy source UI sang project khác.",
-  "main": "index.js",
-  "directories": {
-    "lib": "lib"
-  },
+  "description": "React UI components with source-copy and ESM package installation modes.",
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.72.1",
+    "tailwindcss": "^4.0.0"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    "./components/ui/*": {
+      "types": "./dist/components/ui/*.d.ts",
+      "import": "./dist/components/ui/*.js",
+      "default": "./dist/components/ui/*.js"
+    },
+    "./components/rhf/*": {
+      "types": "./dist/components/rhf/*.d.ts",
+      "import": "./dist/components/rhf/*.js",
+      "default": "./dist/components/rhf/*.js"
+    },
+    "./hooks/*": {
+      "types": "./dist/hooks/*.d.ts",
+      "import": "./dist/hooks/*.js",
+      "default": "./dist/hooks/*.js"
+    },
+    "./lib/*": {
+      "types": "./dist/lib/*.d.ts",
+      "import": "./dist/lib/*.js",
+      "default": "./dist/lib/*.js"
+    },
+    "./constants/*": {
+      "types": "./dist/constants/*.d.ts",
+      "import": "./dist/constants/*.js",
+      "default": "./dist/constants/*.js"
+    },
+    "./components/rhf": {
+      "types": "./dist/components/rhf/index.d.ts",
+      "import": "./dist/components/rhf/index.js",
+      "default": "./dist/components/rhf/index.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  }
 }

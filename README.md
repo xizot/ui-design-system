@@ -36,6 +36,86 @@ This repository serves two purposes:
 
 ## 🚀 Installation via CLI
 
+Two installation modes are available. `source` (the default) copies editable
+components into `design-system/`. `package` installs a dependency managed by
+npm, Yarn, pnpm, or Bun in `node_modules`, without copying component source into
+the application.
+
+### Package mode
+
+Requires Node.js 20.19+, React 19, React DOM 19, React Hook Form 7.72+ and a
+Tailwind CSS v4 pipeline in the consuming application. The React libraries and
+Tailwind are peer dependencies; package-manager peer dependency errors must be
+resolved in the application. ESM imports and TypeScript `bundler`/`node16`/
+`nodenext` module resolution are supported.
+
+After the package-enabled revision has been pushed to GitHub:
+
+```bash
+npx github:xizot/ui-design-system init --mode package
+```
+
+The installer detects the package manager from the lockfile, adds the dependency,
+prepends the stylesheet import to an existing `app/globals.css`,
+`src/app/globals.css`, `src/index.css`, or `src/globals.css`, and updates only its
+marked section in `AGENTS.md`. Repeating setup preserves the dependency's saved
+version/source and does not duplicate the CSS import or agent rules. Package mode
+reads its skills directly from the installed dependency.
+
+Specify another global stylesheet or a pinned Git revision/tarball as needed:
+
+```bash
+npx github:xizot/ui-design-system init --mode package \
+  --package 'github:xizot/ui-design-system#<commit-or-tag>' \
+  --css src/styles.css
+```
+
+If no known stylesheet exists, the installer creates `design-system.css`. Import
+that file from your application entry point and process it through Tailwind v4.
+Existing CSS is preserved; the package stylesheet includes the design-system
+theme, base styles, animations and its own Tailwind `@source` registration.
+
+```tsx
+import { Button } from 'ui-design-system/components/ui/button';
+import { RHFInput } from 'ui-design-system/components/rhf';
+import { cn } from 'ui-design-system/lib/utils';
+```
+
+Imports use explicit component/hook/utility paths; there is no root barrel export.
+Compiled JavaScript and declarations live in `dist/`; source and skills also ship
+for inspection. Do not edit files in `node_modules`. Upgrade the dependency to
+receive changes. Existing `design-system/` files and imports are not migrated or
+deleted automatically when switching modes.
+
+For direct package installation without the CLI, install a tarball or Git
+revision using your package manager, then add this to your global CSS:
+
+```css
+@import 'ui-design-system/styles.css';
+```
+
+### Build and test a local package
+
+```bash
+npm run build:package
+npm run test:package
+npm pack
+```
+
+`prepare` builds the library during packing and Git dependency installation.
+Registry/tarball consumers receive prebuilt files and do not need TypeScript or
+Next.js to build the library. The existing `npm run build` still builds the docs app.
+
+From a consuming application's directory:
+
+```bash
+node /path/to/ui-design-system/bin/install.cjs init --mode package \
+  --package /path/to/ui-design-system/ui-design-system-0.1.0.tgz \
+  --css src/index.css
+```
+
+### Source mode (default)
+
 After pushing this repository to GitHub as `xizot/ui-design-system`, consumers can install it with:
 
 ```bash

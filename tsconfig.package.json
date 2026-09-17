@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "declaration": true,
+    "noEmitOnError": true,
+    "rootDir": ".",
+    "outDir": "dist",
+    "paths": { "@/*": ["./*"] }
+  },
+  "include": [
+    "components/**/*.tsx",
+    "components/**/*.ts",
+    "hooks/**/*.ts",
+    "lib/**/*.ts",
+    "lib/**/*.tsx",
+    "constants/**/*.ts"
+  ],
+  "exclude": ["node_modules", "dist"]
+}

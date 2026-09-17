@@ -4,14 +4,15 @@ const { spawnSync } = require('node:child_process');
 const fs = require('node:fs');
 const path = require('node:path');
 const readline = require('node:readline');
+const { parseArguments, installPackageMode } = require('./package-mode.cjs');
 
 const packageRoot = path.resolve(__dirname, '..');
 const projectRoot = process.cwd();
 const installRootName = 'design-system';
 const targetRoot = path.join(projectRoot, installRootName);
-const command = process.argv[2] ?? 'init';
 const directoriesToCopy = ['components', 'constants', 'hooks', 'lib'];
-const agentUsageRulesSource = '.agents/skills/xizot-design-system/references/agent-rules.md';
+const agentUsageRulesSource =
+  '.agents/skills/xizot-design-system/references/agent-rules.md';
 const agentInstructionsSource = 'AGENTS.md';
 const agentUsageRulesTarget = 'AGENTS.md';
 const agentUsageRulesStartMarker = '<!-- BEGIN:design-system-usage-rules -->';
@@ -24,7 +25,8 @@ const projectFilesToCopy = [
   {
     source: 'app/globals.css',
     defaultTarget: 'app/globals.css',
-    prompt: 'Target path for globals.css (default: app/globals.css, type "skip" to skip): ',
+    prompt:
+      'Target path for globals.css (default: app/globals.css, type "skip" to skip): ',
     label: 'globals.css',
   },
 ];
@@ -97,11 +99,23 @@ function printHelp() {
   console.log('');
   console.log('Usage:');
   console.log('  npx github:xizot/ui-design-system init');
+  console.log('  npx github:xizot/ui-design-system init --mode package');
   console.log('  npx github:xizot/ui-design-system');
   console.log('');
   console.log('Commands:');
   console.log('  init    Install the design system into ./design-system');
   console.log('  help    Show this help message');
+  console.log('');
+  console.log('Options:');
+  console.log(
+    '  --mode source|package   Copy source (default) or install a dependency',
+  );
+  console.log(
+    '  --package <spec>        Package mode: Git URL, tarball, or npm package spec',
+  );
+  console.log(
+    '  --css <path>            Package mode: global CSS path inside the project',
+  );
 }
 
 function printList(items, limit = 10) {
@@ -184,7 +198,9 @@ async function askConflictAction(targetPath) {
   const relativeTargetPath = relativePath(targetRoot, targetPath);
   console.log('');
   console.log(color.yellow(`Existing file: ${relativeTargetPath}`));
-  const answer = await askQuestion('Choose 1 to overwrite or 2 to skip (default: 2): ');
+  const answer = await askQuestion(
+    'Choose 1 to overwrite or 2 to skip (default: 2): ',
+  );
 
   switch (answer) {
     case '1':
@@ -254,9 +270,11 @@ function getTargetPackageJson() {
 
   try {
     return JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-  } catch (error) {
+  } catch {
     console.warn(
-      color.yellow('Skipping dependency install because target package.json is invalid JSON.'),
+      color.yellow(
+        'Skipping dependency install because target package.json is invalid JSON.',
+      ),
     );
     return null;
   }
@@ -349,7 +367,9 @@ async function askProjectFileConflictAction(targetPath) {
   const relativeTargetPath = relativePath(projectRoot, targetPath);
   console.log('');
   console.log(color.yellow(`Existing file: ${relativeTargetPath}`));
-  const answer = await askQuestion('Choose 1 to overwrite or 2 to skip (default: 2): ');
+  const answer = await askQuestion(
+    'Choose 1 to overwrite or 2 to skip (default: 2): ',
+  );
 
   switch (answer) {
     case '1':
@@ -366,7 +386,11 @@ function installDependencies(dependencies) {
   const packageManager = detectPackageManager();
   const { command, args } = getInstallCommand(packageManager, dependencies);
 
-  console.log(color.green(`Installing with ${packageManager}: ${dependencies.join(', ')}`));
+  console.log(
+    color.green(
+      `Installing with ${packageManager}: ${dependencies.join(', ')}`,
+    ),
+  );
 
   const result = spawnSync(command, args, {
     cwd: projectRoot,
@@ -375,7 +399,9 @@ function installDependencies(dependencies) {
   });
 
   if (result.status !== 0) {
-    console.error(color.red(`Dependency installation failed with ${packageManager}.`));
+    console.error(
+      color.red(`Dependency installation failed with ${packageManager}.`),
+    );
     process.exitCode = result.status || 1;
     return false;
   }
@@ -400,7 +426,9 @@ async function maybeInstallDependencies() {
   const missingDependencies = getMissingDependencies(packageJson);
 
   if (missingDependencies.length === 0) {
-    console.log(color.green('All required dependencies are already installed.'));
+    console.log(
+      color.green('All required dependencies are already installed.'),
+    );
     return;
   }
 
@@ -436,7 +464,9 @@ function installAgentRules() {
   const targetPath = path.join(projectRoot, agentRulesTarget);
 
   if (!fs.existsSync(sourcePath)) {
-    console.log(color.gray(`Skipping missing agent rules: ${agentRulesSource}`));
+    console.log(
+      color.gray(`Skipping missing agent rules: ${agentRulesSource}`),
+    );
     return;
   }
 
@@ -450,7 +480,11 @@ function copyAgentInstructionsTemplate() {
   const targetPath = path.join(projectRoot, agentUsageRulesTarget);
 
   if (!fs.existsSync(sourcePath)) {
-    console.log(color.gray(`Skipping missing agent instructions: ${agentInstructionsSource}`));
+    console.log(
+      color.gray(
+        `Skipping missing agent instructions: ${agentInstructionsSource}`,
+      ),
+    );
     return;
   }
 
@@ -476,8 +510,10 @@ function buildAgentUsageRulesSection() {
   return `${agentUsageRulesStartMarker}\n\n${usageRules}\n\n${agentUsageRulesEndMarker}`;
 }
 
-function upsertAgentUsageRules() {
-  const rulesSection = buildAgentUsageRulesSection();
+function upsertAgentUsageRules(content) {
+  const rulesSection = content
+    ? `${agentUsageRulesStartMarker}\n\n${content}\n\n${agentUsageRulesEndMarker}`
+    : buildAgentUsageRulesSection();
 
   if (!rulesSection) {
     return;
@@ -486,18 +522,26 @@ function upsertAgentUsageRules() {
   const targetPath = path.join(projectRoot, agentUsageRulesTarget);
   ensureDirectoryExists(path.dirname(targetPath));
 
-  const currentContent = fs.existsSync(targetPath) ? fs.readFileSync(targetPath, 'utf8') : '';
+  const currentContent = fs.existsSync(targetPath)
+    ? fs.readFileSync(targetPath, 'utf8')
+    : '';
   const startIndex = currentContent.indexOf(agentUsageRulesStartMarker);
   const endIndex = currentContent.indexOf(agentUsageRulesEndMarker);
 
   if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
     const before = currentContent.slice(0, startIndex).trimEnd();
-    const after = currentContent.slice(endIndex + agentUsageRulesEndMarker.length).trimStart();
-    const nextContent = [before, rulesSection, after].filter(Boolean).join('\n\n');
+    const after = currentContent
+      .slice(endIndex + agentUsageRulesEndMarker.length)
+      .trimStart();
+    const nextContent = [before, rulesSection, after]
+      .filter(Boolean)
+      .join('\n\n');
 
     fs.writeFileSync(targetPath, `${nextContent}\n`);
     conflictState.overwritten.push(agentUsageRulesTarget);
-    console.log(color.green(`Updated: ${agentUsageRulesTarget} design system rules`));
+    console.log(
+      color.green(`Updated: ${agentUsageRulesTarget} design system rules`),
+    );
     return;
   }
 
@@ -509,10 +553,14 @@ function upsertAgentUsageRules() {
     );
   }
 
-  const nextContent = [currentContent.trimEnd(), rulesSection].filter(Boolean).join('\n\n');
+  const nextContent = [currentContent.trimEnd(), rulesSection]
+    .filter(Boolean)
+    .join('\n\n');
   fs.writeFileSync(targetPath, `${nextContent}\n`);
   conflictState.copied.push(`${agentUsageRulesTarget} design system rules`);
-  console.log(color.green(`Added: ${agentUsageRulesTarget} design system rules`));
+  console.log(
+    color.green(`Added: ${agentUsageRulesTarget} design system rules`),
+  );
 }
 
 function copyDirectoryOverwrite(sourceDir, targetDir) {
@@ -535,14 +583,18 @@ function installCodexSkill() {
   const sourcePath = path.join(packageRoot, codexSkillSource);
 
   if (!fs.existsSync(sourcePath)) {
-    console.log(color.gray(`Skipping missing Codex skills: ${codexSkillSource}`));
+    console.log(
+      color.gray(`Skipping missing Codex skills: ${codexSkillSource}`),
+    );
     return;
   }
 
   const targetPath = path.join(projectRoot, codexSkillTarget);
 
   if (path.resolve(sourcePath) === path.resolve(targetPath)) {
-    console.log(color.green(`Codex skills already available: ${codexSkillTarget}`));
+    console.log(
+      color.green(`Codex skills already available: ${codexSkillTarget}`),
+    );
     return;
   }
 
@@ -586,7 +638,9 @@ async function copyProjectFiles() {
 
       if (action === 'skip') {
         conflictState.skipped.push(relativePath(projectRoot, targetPath));
-        console.log(color.yellow(`Skipped: ${relativePath(projectRoot, targetPath)}`));
+        console.log(
+          color.yellow(`Skipped: ${relativePath(projectRoot, targetPath)}`),
+        );
         continue;
       }
 
@@ -595,7 +649,9 @@ async function copyProjectFiles() {
 
     fs.copyFileSync(sourcePath, targetPath);
     conflictState.copied.push(relativePath(projectRoot, targetPath));
-    console.log(color.green(`Copied: ${relativePath(projectRoot, targetPath)}`));
+    console.log(
+      color.green(`Copied: ${relativePath(projectRoot, targetPath)}`),
+    );
   }
 }
 
@@ -626,6 +682,8 @@ function printSummary() {
 }
 
 async function main() {
+  const options = parseArguments(process.argv.slice(2));
+  const { command } = options;
   if (command === 'help' || command === '--help' || command === '-h') {
     printHelp();
     return;
@@ -636,6 +694,15 @@ async function main() {
     console.log('');
     printHelp();
     process.exitCode = 1;
+    return;
+  }
+
+  if (options.mode === 'package') {
+    installPackageMode(options, {
+      projectRoot,
+      installDependencies,
+      upsertAgentUsageRules,
+    });
     return;
   }
 
