@@ -26,31 +26,31 @@ const projectFilesToCopy = [
   },
 ];
 const runtimeDependencies = [
-  '@tanstack/react-virtual',
-  '@hookform/resolvers',
-  'shadcn',
-  'tw-animate-css',
-  '@base-ui/react',
-  '@tanstack/react-table',
-  'class-variance-authority',
-  'clsx',
-  'cmdk',
-  'date-fns',
-  'embla-carousel-react',
-  'input-otp',
-  'lucide-react',
-  'next-themes',
-  'nuqs',
-  'react',
-  'react-day-picker',
-  'react-dom',
-  'react-hook-form',
-  'react-resizable-panels',
-  'recharts',
-  'sonner',
-  'tailwind-merge',
-  'vaul',
-  'zod',
+  '@tanstack/react-virtual@3.14.13',
+  '@hookform/resolvers@5.9.1',
+  'shadcn@4.21.0',
+  'tw-animate-css@1.4.0',
+  '@base-ui/react@1.8.0',
+  '@tanstack/react-table@8.21.3',
+  'class-variance-authority@0.7.1',
+  'clsx@2.1.1',
+  'cmdk@1.1.1',
+  'date-fns@4.4.0',
+  'embla-carousel-react@8.6.0',
+  'input-otp@1.5.0',
+  'lucide-react@1.46.0',
+  'next-themes@0.4.6',
+  'nuqs@2.10.1',
+  'react@19.2.4',
+  'react-day-picker@10.0.1',
+  'react-dom@19.2.4',
+  'react-hook-form@7.88.0',
+  'react-resizable-panels@4.12.4',
+  'recharts@3.10.1',
+  'sonner@2.0.8',
+  'tailwind-merge@3.7.0',
+  'vaul@1.1.2',
+  'zod@4.6.5',
 ];
 
 function ensureDirectoryExists(directoryPath) {
@@ -267,7 +267,13 @@ function getMissingDependencies(packageJson) {
     ...Object.keys(packageJson.optionalDependencies || {}),
   ]);
 
-  return runtimeDependencies.filter((dependency) => !installed.has(dependency));
+  return runtimeDependencies.filter((dependency) => {
+    const atIndex = dependency.startsWith('@')
+      ? dependency.indexOf('@', 1)
+      : dependency.indexOf('@');
+    const dependencyName = dependency.slice(0, atIndex);
+    return !installed.has(dependencyName);
+  });
 }
 
 function detectPackageManager() {
