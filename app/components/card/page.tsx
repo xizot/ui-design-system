@@ -1,112 +1,36 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CodeBlock } from '@/components/ui/code-block';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
 
 import { getGuide } from '../guide-data';
+import { CardApiReferenceContent, cardApiReferenceLinks } from './card-api-reference';
+import { CardSpacingExample, cardSpacingCode } from './card-spacing-example';
+import { CardWithImageExample, cardWithImageCode } from './card-with-image-example';
+import { DefaultCardExample, defaultCardCode } from './default-card-example';
 
 const guide = getGuide('card');
-
-const props = [{ name: 'className', type: 'string', defaultValue: '--' }];
 
 const usageSamples = [
   {
     id: 'default',
     label: 'Default',
-    preview: (
-      <Card className="w-[350px]">
-        <CardHeader>
-          <CardTitle>Card Title</CardTitle>
-          <CardDescription>Card description goes here.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>Card content goes here.</p>
-        </CardContent>
-        <CardFooter>
-          <Button>Confirm</Button>
-        </CardFooter>
-      </Card>
-    ),
-    code: `import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/design-system/components/ui/card";
-import { Button } from "@/design-system/components/ui/button";
-
-export function Example() {
-  return (
-    <Card className="w-[350px]">
-      <CardHeader>
-        <CardTitle>Card Title</CardTitle>
-        <CardDescription>Card description goes here.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p>Card content goes here.</p>
-      </CardContent>
-      <CardFooter>
-        <Button>Confirm</Button>
-      </CardFooter>
-    </Card>
-  );
-}`,
+    preview: <DefaultCardExample />,
+    code: defaultCardCode,
+  },
+  {
+    id: 'spacing',
+    label: 'Spacing',
+    preview: <CardSpacingExample />,
+    code: cardSpacingCode,
   },
   {
     id: 'with-image',
     label: 'With Image',
-    preview: (
-      <Card className="w-[350px]">
-        <div className="bg-muted h-48 w-full rounded-t-lg" />
-        <CardHeader>
-          <CardTitle>Featured Article</CardTitle>
-          <CardDescription>Published on January 15, 2024</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground text-sm">
-            This is a preview of the article content. It provides a brief overview of what the
-            reader can expect.
-          </p>
-        </CardContent>
-      </Card>
-    ),
-    code: `import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/design-system/components/ui/card";
-
-export function Example() {
-  return (
-    <Card className="w-[350px]">
-      <div className="h-48 w-full bg-muted rounded-t-lg" />
-      <CardHeader>
-        <CardTitle>Featured Article</CardTitle>
-        <CardDescription>Published on January 15, 2024</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p className="text-sm text-muted-foreground">
-          This is a preview of the article content.
-        </p>
-      </CardContent>
-    </Card>
-  );
-}`,
+    preview: <CardWithImageExample />,
+    code: cardWithImageCode,
   },
 ];
 
@@ -128,7 +52,7 @@ export default function CardGuidePage() {
         </section>
 
         <div className="mt-8 space-y-6">
-          <Card id="import" className="border-border/70 rounded-[24px]">
+          <Card id="import" className="border-border/70 scroll-mt-20 rounded-[24px]">
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
               <CardDescription>Import the card components from the design system.</CardDescription>
@@ -137,6 +61,7 @@ export default function CardGuidePage() {
               <CodeBlock
                 code={`import {
   Card,
+  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
@@ -149,41 +74,9 @@ export default function CardGuidePage() {
             </CardContent>
           </Card>
 
-          <Card id="props" className="border-border/70 rounded-[24px]">
+          <Card id="usages" className="border-border/70 scroll-mt-20 rounded-[24px]">
             <CardHeader>
-              <CardTitle>2. Props</CardTitle>
-              <CardDescription>Card component props.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="border-border/70 overflow-hidden rounded-2xl border">
-                <table className="w-full text-left text-sm">
-                  <thead className="bg-muted/40 text-muted-foreground">
-                    <tr>
-                      <th className="px-4 py-3 font-medium">Prop</th>
-                      <th className="px-4 py-3 font-medium">Type</th>
-                      <th className="px-4 py-3 font-medium">Default</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {props.map((prop, index) => (
-                      <tr
-                        key={prop.name}
-                        className={cn(index !== props.length - 1 && 'border-border/70 border-b')}
-                      >
-                        <td className="px-4 py-3 font-medium">{prop.name}</td>
-                        <td className="text-muted-foreground px-4 py-3">{prop.type}</td>
-                        <td className="text-muted-foreground px-4 py-3">{prop.defaultValue}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card id="usages" className="border-border/70 rounded-[24px]">
-            <CardHeader>
-              <CardTitle>3. Usages</CardTitle>
+              <CardTitle>2. Usages</CardTitle>
               <CardDescription>Common card patterns and configurations.</CardDescription>
             </CardHeader>
             <CardContent>
@@ -199,7 +92,7 @@ export default function CardGuidePage() {
                 {usageSamples.map((sample) => (
                   <TabsContent key={sample.id} value={sample.id} className="space-y-5">
                     <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-8">
-                      <div className="bg-card flex min-h-56 items-center justify-center rounded-[18px] px-6 shadow-sm">
+                      <div className="bg-card flex min-h-56 items-center justify-center rounded-[18px] p-6 shadow-sm">
                         {sample.preview}
                       </div>
                     </div>
@@ -208,6 +101,16 @@ export default function CardGuidePage() {
                   </TabsContent>
                 ))}
               </Tabs>
+            </CardContent>
+          </Card>
+
+          <Card id="api-reference" className="border-border/70 scroll-mt-20 rounded-[24px]">
+            <CardHeader>
+              <CardTitle>3. API Reference</CardTitle>
+              <CardDescription>Props and responsibilities for each card component.</CardDescription>
+            </CardHeader>
+            <CardContent className="gap-10">
+              <CardApiReferenceContent />
             </CardContent>
           </Card>
         </div>
@@ -222,12 +125,25 @@ export default function CardGuidePage() {
             <a href="#import" className="hover:text-foreground block transition">
               Import
             </a>
-            <a href="#props" className="hover:text-foreground block transition">
-              Props
-            </a>
             <a href="#usages" className="hover:text-foreground block transition">
               Usages
             </a>
+            <div className="space-y-2">
+              <a href="#api-reference" className="hover:text-foreground block transition">
+                API Reference
+              </a>
+              <div className="border-border/70 space-y-2 border-l pl-3 text-xs">
+                {cardApiReferenceLinks.map((link) => (
+                  <a
+                    key={link.id}
+                    href={`#${link.id}`}
+                    className="hover:text-foreground block transition"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            </div>
           </nav>
         </div>
       </aside>
