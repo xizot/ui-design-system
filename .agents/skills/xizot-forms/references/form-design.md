@@ -2,9 +2,8 @@
 
 ## Field Choice
 
-- Text: `RHFInput` or `Input`.
-- Long text: `RHFTextarea` or `Textarea`.
-- Number: `RHFNumberInput` or `NumberInput`.
+- Submitted forms: `RHFInput`, `RHFTextarea`, `RHFNumberInput`; read their actual required props.
+- Base controls are for non-form controls or the explicit user/platform exceptions in SKILL.md.
 - Boolean: `RHFSwitch` or `RHFCheckbox` depending on meaning.
 - Few mutually exclusive choices: `RHFRadioGroup`.
 - Searchable options: `RHFSingleCombobox` or `RHFMultipleCombobox`.

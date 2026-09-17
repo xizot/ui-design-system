@@ -4,6 +4,12 @@ These rules are installed into downstream `AGENTS.md` by the design-system CLI. 
 
 ## Source Of Truth
 
+Before UI edits, read `.agents/skills/xizot-design-system/SKILL.md` from the target application root. For submitted forms read `xizot-forms/SKILL.md` in the same skills folder; for full pages use `xizot-page-builder`; finish with `xizot-quality`. Read files directly when the client does not discover skills.
+
+Run `python .agents/skills/xizot-design-system/scripts/ui-source.py --root . discover "rhf"`, then read selected source. Before finishing, run the same script with `review path/to/changed.tsx`, scoped lint/types and relevant behavior checks. Requires Python 3.10+; use rg/manual review if unavailable. Heuristic findings are review prompts, not correctness certificates.
+
+Submitted product forms use RHF and existing wrappers. Search/filter controls may use local/URL state. Respect explicit user choices or existing native/server-action contracts and explain the exception. Review ownership, state and duplication using core `references/code-contract.md`.
+
 - Treat `design-system/` as the source of truth for shared UI primitives, RHF wrappers, hooks, constants, utilities, and agent UI rules.
 - Inspect `design-system/components/ui`, `design-system/components/rhf`, `design-system/hooks`, `design-system/constants`, and nearby app components before creating UI.
 - Do not create app-local copies of primitives already available in the design system.

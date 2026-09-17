@@ -1,0 +1,57 @@
+"""Behavior checks for shipped skill tooling; no application files are modified."""
+import importlib.util
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+import unittest
+
+sys.dont_write_bytecode = True
+ROOT = Path(__file__).resolve().parents[1]
+SCRIPT = ROOT / '.agents/skills/xizot-design-system/scripts/ui-source.py'
+spec = importlib.util.spec_from_file_location('ui_source', SCRIPT)
+tool = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(tool)
+
+
+class SkillToolingTests(unittest.TestCase):
+    def test_source_and_installed_discovery(self):
+        for prefix in ('', 'design-system'):
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory).resolve()
+                source = root / prefix
+                (source / 'components/ui').mkdir(parents=True)
+                (source / 'components/rhf').mkdir()
+                (source / 'components/rhf/rhf-input.tsx').write_text('export function RHFInput() {}', encoding='utf-8')
+                result = tool.discover(root, 'rhf')
+                self.assertEqual(len(result['files']), 1)
+                self.assertEqual(Path(result['source_root']), source)
+
+    def test_missing_root_and_invalid_review_paths_fail(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            with self.assertRaises(ValueError):
+                tool.discover(root, 'input')
+            for path in ('missing.tsx', '../outside.tsx'):
+                with self.assertRaises(ValueError):
+                    tool.review(root, [path])
+
+    def test_form_review_and_valid_composition(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            file = root / 'form.tsx'
+            file.write_text('const data: any = {};\nconst ui = <form><input /></form>;', encoding='utf-8')
+            result = tool.review(root, ['form.tsx'])
+            self.assertEqual({f['rule'] for f in result['findings']}, {'unsafe-type', 'form-owner', 'native-control'})
+            file.write_text('const ui = <form onSubmit={handleSubmit(save)}><RHFInput /></form>;', encoding='utf-8')
+            result = tool.review(root, ['form.tsx'])
+            self.assertEqual(result['findings'], [])
+            self.assertEqual(result['semantic_review'], 'not_performed')
+
+    def test_cli_invalid_input_has_nonzero_status(self):
+        result = subprocess.run([sys.executable, str(SCRIPT), '--root', str(ROOT), 'review', 'missing.tsx'], capture_output=True, text=True)
+        self.assertEqual(result.returncode, 2)
+
+
+if __name__ == '__main__':
+    unittest.main()

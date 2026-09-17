@@ -15,6 +15,8 @@ Read [references/page-build-gate.md](references/page-build-gate.md) before imple
 
 ## Build Order
 
+Start with the [core executable workflow](../xizot-design-system/SKILL.md#executable-workflow). For submitted forms execute [xizot-forms](../xizot-forms/SKILL.md) before implementing fields. The following list is a review aid, not a requirement to load every specialized skill.
+
 1. Identify the workflow and screen type.
 2. Inspect nearby screens and actual Xizot component APIs.
 3. Shape the page skeleton.

@@ -7,6 +7,16 @@ metadata:
 
 # Xizot Design System
 
+## Executable workflow
+
+1. From the application root, run `python .agents/skills/xizot-design-system/scripts/ui-source.py --root . discover "input"`, replacing the query with the needed control. Read matched source and callers before using props. Supports source repos and consumers with `design-system/`. Requires Python 3.10+; use rg/manual reads if unavailable.
+2. Identify UI owner, reusable components and state owner. For submitted forms, read [xizot-forms](../xizot-forms/SKILL.md); use RHF and existing wrappers unless an explicit user/platform contract requires otherwise.
+3. Read [code-contract.md](references/code-contract.md). Load only specialized skills relevant to the task, not the whole catalog.
+4. Implement, then run `python .agents/skills/xizot-design-system/scripts/ui-source.py --root . review path/to/changed.tsx`. Review findings against callers: text heuristics are not automatic failures or proof of quality.
+5. Run scoped lint/types and relevant behavior checks. Use [xizot-quality](../xizot-quality/SKILL.md) for final review. Report actual commands/results, unresolved limitations and exceptions.
+
+Use the actual script path if installed elsewhere. The script never edits source or installs dependencies.
+
 This skill is the orchestrator for Xizot frontend work. It coordinates the local React component contracts with the specialized Xizot skills for page building, color, layout, typography, UX psychology, accessibility, interaction, forms, data UI, wayfinding, motion, responsible UX, visual polish, quality gates, and design-system governance.
 
 Use it when creating, editing, reviewing, or polishing React/Next.js UI in:

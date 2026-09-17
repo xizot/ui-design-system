@@ -12,6 +12,7 @@ const targetRoot = path.join(projectRoot, installRootName);
 const command = process.argv[2] ?? 'init';
 const directoriesToCopy = ['components', 'constants', 'hooks', 'lib'];
 const agentUsageRulesSource = '.agents/skills/xizot-design-system/references/agent-rules.md';
+const agentInstructionsSource = 'AGENTS.md';
 const agentUsageRulesTarget = 'AGENTS.md';
 const agentUsageRulesStartMarker = '<!-- BEGIN:design-system-usage-rules -->';
 const agentUsageRulesEndMarker = '<!-- END:design-system-usage-rules -->';
@@ -422,8 +423,27 @@ async function maybeInstallDependencies() {
 
 function copyRootFiles() {
   printSection('Step 3: Agent Rules');
+  copyAgentInstructionsTemplate();
   upsertAgentUsageRules();
   installCodexSkill();
+}
+
+function copyAgentInstructionsTemplate() {
+  const sourcePath = path.join(packageRoot, agentInstructionsSource);
+  const targetPath = path.join(projectRoot, agentUsageRulesTarget);
+
+  if (!fs.existsSync(sourcePath)) {
+    console.log(color.gray(`Skipping missing agent instructions: ${agentInstructionsSource}`));
+    return;
+  }
+
+  if (fs.existsSync(targetPath)) {
+    return;
+  }
+
+  fs.copyFileSync(sourcePath, targetPath);
+  conflictState.copied.push(agentUsageRulesTarget);
+  console.log(color.green(`Added: ${agentUsageRulesTarget}`));
 }
 
 function buildAgentUsageRulesSection() {
