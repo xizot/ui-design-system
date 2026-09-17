@@ -202,5 +202,3 @@ Update both:
 - The source is written with relative imports so copied files do not depend on local alias configuration.
 - The CLI is designed to be safe for existing projects by prompting before overwriting files.
 - The docs app is internal to this repository; the CLI installs the design system source folders plus the consumer rules needed for downstream projects.
-
-

@@ -152,18 +152,18 @@ function DatePicker({
     initialMonthRef.current = resolvedValue ?? new Date();
     initialTimeRef.current = resolvedValue
       ? {
-          hour: resolvedValue.getHours().toString().padStart(String.fromCharCode(48), 2),
-          minute: resolvedValue.getMinutes().toString().padStart(String.fromCharCode(48), 2),
-          second: resolvedValue.getSeconds().toString().padStart(String.fromCharCode(48), 2),
+          hour: resolvedValue.getHours().toString().padStart(2, '0'),
+          minute: resolvedValue.getMinutes().toString().padStart(2, '0'),
+          second: resolvedValue.getSeconds().toString().padStart(2, '0'),
         }
       : {
-          hour: String.fromCharCode(48, 48),
-          minute: String.fromCharCode(48, 48),
-          second: String.fromCharCode(48, 48),
+          hour: '00',
+          minute: '00',
+          second: '00',
         };
     setSelectedTime(initialTimeRef.current);
     setTempDate(
-      mode === String.fromCharCode(109, 111, 110, 116, 104)
+      mode === 'month'
         ? resolvedValue
           ? startOfMonth(resolvedValue)
           : startOfMonth(new Date())
