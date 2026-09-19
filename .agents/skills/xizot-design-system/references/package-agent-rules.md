@@ -1,10 +1,10 @@
-# Design system source mode
+# Design system package mode
 
 These rules are installed into downstream `AGENTS.md` by the design-system CLI. Keep this file inside the skill folder so agent guidance ships with the skill instead of being split into `/docs`.
 
 ## Source Of Truth
 
-Read `.agents/rules/react.md` and `.agents/skills/xizot-design-system/references/installation-modes.md` for React policy and installation boundaries. This section selects source mode even when a package installation also exists.
+Read `.agents/rules/react.md` and `.agents/skills/xizot-design-system/references/installation-modes.md` for React policy and installation boundaries. This section selects package mode even when a source installation also exists.
 
 Before UI edits, read `.agents/skills/xizot-design-system/SKILL.md` from the target application root. For submitted forms read `xizot-forms/SKILL.md` in the same skills folder; for full pages use `xizot-page-builder`; finish with `xizot-quality`. Read files directly when the client does not discover skills.
 
@@ -12,8 +12,8 @@ Run `python .agents/skills/xizot-design-system/scripts/ui-source.py --root . dis
 
 Submitted product forms use RHF and existing wrappers. Search/filter controls may use local/URL state. Respect explicit user choices or existing native/server-action contracts and explain the exception. Review ownership, state and duplication using core `references/code-contract.md`.
 
-- Treat `design-system/` as the source of truth for shared UI primitives, RHF wrappers, hooks, constants, and utilities. Agent guidance lives in local `.agents/`.
-- Inspect `design-system/components/ui`, `design-system/components/rhf`, `design-system/hooks`, `design-system/constants`, and nearby app components before creating UI.
+- Treat `node_modules/ui-design-system/` as the source of truth for shared UI primitives, RHF wrappers, hooks, constants, and utilities. Agent guidance lives in local `.agents/`.
+- Inspect `node_modules/ui-design-system/components/ui`, `node_modules/ui-design-system/components/rhf`, `node_modules/ui-design-system/hooks`, `node_modules/ui-design-system/constants`, and nearby app components before creating UI.
 - Do not create app-local copies of primitives already available in the design system.
 - Do not import lower-level third-party primitives directly when a design-system wrapper exists.
 - Use `lucide-react` icons for generic actions unless the product already has a specific icon set.
@@ -23,12 +23,12 @@ Submitted product forms use RHF and existing wrappers. Search/filter controls ma
 Use the installed consumer path:
 
 ```tsx
-import { Button } from '@/design-system/components/ui/button';
-import { Input } from '@/design-system/components/ui/input';
-import { DataTable } from '@/design-system/components/ui/data-table';
+import { Button } from 'ui-design-system/components/ui/button';
+import { Input } from 'ui-design-system/components/ui/input';
+import { DataTable } from 'ui-design-system/components/ui/data-table';
 ```
 
-If the project uses a different alias, keep the `design-system/` folder boundary and adjust only the prefix.
+Use public package exports without an application alias. Never edit or fork node_modules; compose in the app or update the library and install a new revision. Import `ui-design-system/styles.css` in global CSS processed by Tailwind v4.
 
 ## Visual Direction
 

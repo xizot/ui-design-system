@@ -67,18 +67,32 @@ function setupStylesheet(target) {
   );
 }
 
-function packageAgentRules() {
-  return [
-    '# Design system package mode',
-    '',
-    '- Shared UI is installed as the `ui-design-system` dependency. Import from `ui-design-system/components/ui/<component>`, `ui-design-system/components/rhf`, `ui-design-system/hooks/<hook>`, or `ui-design-system/lib/<utility>`.',
-    '- Read source and prop contracts in `node_modules/ui-design-system/components`, `hooks`, `lib`, and `constants`. Do not edit or copy components out of node_modules; upgrade the dependency to receive changes.',
-    '- Read `node_modules/ui-design-system/.agents/skills/xizot-design-system/SKILL.md` before UI work and the sibling forms/page-builder/quality skills as appropriate. Resolve skill references relative to that package.',
-    '- Discover components with `python3 node_modules/ui-design-system/.agents/skills/xizot-design-system/scripts/ui-source.py --root node_modules/ui-design-system discover "input"`. Review app code with the same script and `--root . review path/to/file.tsx`.',
-    '- Package imports take precedence over source-mode `@/design-system/...` examples in the bundled skills. Keep product logic in the application and use existing RHF wrappers for submitted forms.',
-    "- Import `ui-design-system/styles.css` in the application's global CSS processed by Tailwind CSS v4. The package registers its own class sources.",
-    '- Run scoped lint/types and relevant behavior checks; do not treat heuristic scans as correctness or accessibility proof.',
-  ].join('\n');
+function installAgentGuidance(installed, projectRoot) {
+  const source = path.join(installed, '.agents');
+  const rulesFile = path.join(
+    source,
+    'skills/xizot-design-system/references/package-agent-rules.md',
+  );
+  for (const required of [
+    'skills/xizot-design-system/SKILL.md',
+    'rules/react.md',
+    'skills/xizot-design-system/references/package-agent-rules.md',
+  ]) {
+    if (!fs.existsSync(path.join(source, required))) {
+      throw new Error(
+        `Installed package is missing agent guidance: ${required}. Install a revision supporting package guidance.`,
+      );
+    }
+  }
+  const rules = fs.readFileSync(rulesFile, 'utf8');
+  // Merge shipped guidance, preserving unrelated consumer skills and rules.
+  for (const folder of ['skills', 'rules']) {
+    fs.cpSync(path.join(source, folder), path.join(projectRoot, '.agents', folder), {
+      recursive: true,
+      force: true,
+    });
+  }
+  return rules;
 }
 
 function installPackageMode(options, { projectRoot, installDependencies, upsertAgentUsageRules }) {
@@ -100,8 +114,10 @@ function installPackageMode(options, { projectRoot, installDependencies, upsertA
       'Installed package has no dist/styles.css. Build a package-enabled revision and retry.',
     );
   }
+  const agentRules = installAgentGuidance(installed, projectRoot);
   setupStylesheet(stylesheet);
-  upsertAgentUsageRules(packageAgentRules());
+  upsertAgentUsageRules(agentRules);
+  console.log('Agent skills and rules updated: .agents/');
   console.log(`Package installed: ${installed}`);
   console.log(`Styles configured: ${path.relative(projectRoot, stylesheet)}`);
   console.log('Ensure this CSS file is imported by your app and processed by Tailwind CSS v4.');

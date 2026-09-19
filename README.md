@@ -5,7 +5,7 @@ A reusable UI design system starter built on top of the shadcn ecosystem, Base U
 This repository serves two purposes:
 
 - 🏗️ a source workspace for building and documenting components
-- 📦 a CLI-distributed template that can install the design system into another project
+- 📦 a CLI installer with editable Source mode and dependency-based Package mode
 
 ## 📁 What This Project Includes
 
@@ -39,7 +39,14 @@ This repository serves two purposes:
 Two installation modes are available. `source` (the default) copies editable
 components into `design-system/`. `package` installs a dependency managed by
 npm, Yarn, pnpm, or Bun in `node_modules`, without copying component source into
-the application.
+the application. Both modes install skills and rules locally.
+
+| | Source | Package |
+| --- | --- | --- |
+| Component source | `design-system/` | `node_modules/ui-design-system/` |
+| Button import | `@/design-system/components/ui/button` | `ui-design-system/components/ui/button` |
+| Agent guidance | `.agents/skills`, `.agents/rules`, `AGENTS.md` | Same local paths, copied from installed dependency |
+| Updates | Rerun CLI and review source conflicts | Rerun CLI with a package revision; refresh dependency and guidance |
 
 ### Package mode
 
@@ -60,7 +67,7 @@ prepends the stylesheet import to an existing `app/globals.css`,
 `src/app/globals.css`, `src/index.css`, or `src/globals.css`, and updates only its
 marked section in `AGENTS.md`. Repeating setup preserves the dependency's saved
 version/source and does not duplicate the CSS import or agent rules. Package mode
-reads its skills directly from the installed dependency.
+copies the complete `.agents/skills` and `.agents/rules` from the installed dependency into the application so agent clients can discover them locally. Shipped guidance files are refreshed on each setup; unrelated skills/rules and text outside the marked AGENTS section are preserved. Keep custom instructions outside installer-owned files.
 
 Specify another global stylesheet or a pinned Git revision/tarball as needed:
 
@@ -88,7 +95,7 @@ receive changes. Existing `design-system/` files and imports are not migrated or
 deleted automatically when switching modes.
 
 For direct package installation without the CLI, install a tarball or Git
-revision using your package manager, then add this to your global CSS:
+revision using your package manager, then run `npx ui-design-system init --mode package` to install local agent guidance and configure CSS. A dependency install alone does not set up `.agents` or `AGENTS.md`. The stylesheet import is:
 
 ```css
 @import 'ui-design-system/styles.css';
@@ -119,7 +126,7 @@ node /path/to/ui-design-system/bin/install.cjs init --mode package \
 After pushing this repository to GitHub as `xizot/ui-design-system`, consumers can install it with:
 
 ```bash
-npx github:xizot/ui-design-system init
+npx github:xizot/ui-design-system init --mode source
 ```
 
 Shortcut:
@@ -145,7 +152,7 @@ design-system/
 AGENTS.md
 ```
 
-## 🤖 CLI Behavior
+### Source CLI behavior
 
 The installer uses a guided flow:
 
@@ -154,7 +161,7 @@ The installer uses a guided flow:
 2. 📦 Dependencies
    It checks the target project's `package.json`, detects missing runtime dependencies, and asks whether they should be installed automatically.
 3. 🤖 Agent rules
-   It installs the complete `.agents/skills` pack and creates or updates the target project's `AGENTS.md` with the rules from `.agents/skills/xizot-design-system/references/agent-rules.md`.
+   It installs the complete `.agents/skills` pack and `.agents/rules` and creates or updates the target project's `AGENTS.md` with the rules from `.agents/skills/xizot-design-system/references/agent-rules.md`.
 4. 🎨 Project files
    It asks where to copy theme files such as `app/globals.css`.
 
@@ -165,7 +172,7 @@ Supported package managers:
 - `bun`
 - `npm`
 
-## 📥 Import Path for Consumers
+### Source import path
 
 The usage guides should document imports from the installed target path, for example:
 
@@ -174,6 +181,14 @@ import { Button } from '@/design-system/components/ui/button';
 ```
 
 This is the public consumption path after the CLI copies files into a project.
+
+## Agent discovery in both modes
+
+```bash
+python3 .agents/skills/xizot-design-system/scripts/ui-source.py --root . discover "input"
+```
+
+Discovery uses the mode in the installer-marked `AGENTS.md` section. If both installations exist without that marker, add `--mode source` or `--mode package` before `discover`. Component references are relative to the discovered source root. See [installation modes](.agents/skills/xizot-design-system/references/installation-modes.md). After a manual dependency upgrade, rerun package setup to synchronize local skills with that revision.
 
 ## 📖 Internal Docs App
 
@@ -279,6 +294,6 @@ Update both:
 
 ## 📝 Notes
 
-- The source is written with relative imports so copied files do not depend on local alias configuration.
-- The CLI is designed to be safe for existing projects by prompting before overwriting files.
-- The docs app is internal to this repository; the CLI installs the design system source folders plus the consumer rules needed for downstream projects.
+- Source mode rewrites repository aliases for copied components; package builds emit relative ESM imports.
+- Source component conflicts prompt before overwrite. Installer-owned skills/rules refresh on setup in both modes.
+- The docs app is internal to this repository; both installation modes include the consumer skills and rules needed for downstream projects.

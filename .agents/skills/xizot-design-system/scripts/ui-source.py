@@ -6,18 +6,37 @@ from pathlib import Path
 import re
 
 
-def locate(root):
-    for candidate in (root / 'design-system', root):
-        if (candidate / 'components/ui').is_dir() and (candidate / 'components/rhf').is_dir():
+def locate(root, mode=None):
+    if mode is None and (root / 'AGENTS.md').is_file():
+        content = (root / 'AGENTS.md').read_text(encoding='utf-8')
+        section = re.search(r'<!-- BEGIN:design-system-usage-rules -->(.*?)<!-- END:design-system-usage-rules -->', content, re.S)
+        if section:
+            selected = re.search(r'^# Design system (source|package) mode$', section[1], re.M)
+            if selected:
+                mode = selected[1]
+    sources = [root / 'design-system', root]
+    package = root / 'node_modules/ui-design-system'
+    valid = lambda p: (p / 'components/ui').is_dir() and (p / 'components/rhf').is_dir()
+    source = next((p for p in sources if valid(p)), None)
+    if mode:
+        candidate = package if mode == 'package' else source
+        if candidate is not None and valid(candidate):
             return candidate
-    raise ValueError('No components/ui and components/rhf found; pass the application root with --root.')
+        raise ValueError('Selected ' + mode + ' installation is missing.')
+    if source is not None and valid(package):
+        raise ValueError('Both installations exist; pass --mode source or --mode package.')
+    if source is not None:
+        return source
+    if valid(package):
+        return package
+    raise ValueError('No design-system source found; pass the application root with --root.')
 
 
-def discover(root, query):
-    source = locate(root)
+def discover(root, query, mode=None):
+    source = locate(root, mode)
     terms = query.lower().split()
     matches = []
-    for folder in ('components/ui', 'components/rhf', 'hooks', 'constants'):
+    for folder in ('components/ui', 'components/rhf', 'hooks', 'lib', 'constants'):
         for file in sorted((source / folder).rglob('*')):
             if file.suffix not in ('.ts', '.tsx'):
                 continue
@@ -55,6 +74,7 @@ def review(root, paths):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', type=Path, default=Path.cwd())
+    parser.add_argument('--mode', choices=('source', 'package'))
     sub = parser.add_subparsers(dest='command', required=True)
     lookup = sub.add_parser('discover')
     lookup.add_argument('query', nargs='?', default='')
@@ -63,7 +83,7 @@ def main():
     args = parser.parse_args()
     root = args.root.resolve()
     try:
-        result = discover(root, args.query) if args.command == 'discover' else review(root, args.paths)
+        result = discover(root, args.query, args.mode) if args.command == 'discover' else review(root, args.paths)
     except (ValueError, OSError) as error:
         parser.exit(2, str(error) + '\n')
     print(json.dumps(result, ensure_ascii=True, indent=2))

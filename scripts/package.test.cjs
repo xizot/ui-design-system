@@ -82,6 +82,18 @@ test('package setup retains saved dependency and leaves source copies untouched'
   const installed = path.join(projectRoot, 'node_modules/ui-design-system/dist');
   fs.mkdirSync(installed, { recursive: true });
   fs.writeFileSync(path.join(installed, 'styles.css'), '');
+  const guidance = path.join(path.dirname(installed), '.agents');
+  fs.cpSync(path.join(root, '.agents'), guidance, { recursive: true });
+  const custom = path.join(projectRoot, '.agents/skills/custom/SKILL.md');
+  fs.mkdirSync(path.dirname(custom), { recursive: true });
+  fs.writeFileSync(custom, 'consumer-owned');
+  const localSkill = path.join(projectRoot, '.agents/skills/xizot-design-system/SKILL.md');
+  fs.mkdirSync(path.dirname(localSkill), { recursive: true });
+  fs.writeFileSync(localSkill, 'stale guidance');
+  fs.appendFileSync(
+    path.join(guidance, 'skills/xizot-design-system/SKILL.md'),
+    '\nInstalled revision sentinel\n',
+  );
   let rules;
   installPackageMode(
     { css: null, packageSpec: null },
@@ -97,6 +109,27 @@ test('package setup retains saved dependency and leaves source copies untouched'
     },
   );
   assert.match(rules, /node_modules\/ui-design-system/);
+  assert.match(rules, /# Design system package mode/);
+  assert.doesNotMatch(rules, /@\/design-system/);
+  assert.match(fs.readFileSync(localSkill, 'utf8'), /Installed revision sentinel/);
+  assert.equal(fs.readFileSync(custom, 'utf8'), 'consumer-owned');
+  assert.ok(fs.existsSync(path.join(projectRoot, '.agents/rules/react.md')));
+  const discovery = spawnSync(
+    'python3',
+    [
+      path.join(projectRoot, '.agents/skills/xizot-design-system/scripts/ui-source.py'),
+      '--root',
+      projectRoot,
+      '--mode',
+      'package',
+      'discover',
+      'input',
+    ],
+    { encoding: 'utf8' },
+  );
+  // The fixture contains guidance only; a missing component tree must fail explicitly.
+  assert.equal(discovery.status, 2);
+  assert.match(discovery.stderr, /Selected package installation is missing/);
   assert.ok(!fs.existsSync(path.join(projectRoot, 'design-system')));
   assert.ok(fs.existsSync(path.join(projectRoot, 'design-system.css')));
 });
