@@ -1,34 +1,14 @@
 ---
 name: xizot-system
-description: 'Use when strengthening the Xizot design system itself: tokens, component API boundaries, variants, composition layers, package/install behavior, agent rules, and deciding whether UI belongs in a feature, app shared layer, or design-system layer.'
-metadata:
-  version: 0.1.0
+description: Change Xizot shared component contracts, tokens, source installer or agent harness. Trace callers and consumer impact; validate packaging and guidance upgrades. Not needed for ordinary page composition.
 ---
 
-# Xizot System
+# Shared system changes
 
-Use this skill when the task is about making the design system stronger, not just making one screen prettier.
+1. Inspect source, callers, package files and installer before proposing a public contract. Read [system governance](references/system-governance.md).
+2. State which layer owns the change: feature, app shared, primitive/composition, token or tooling. Keep domain behavior in the app. Preserve supported callers or identify the required migration.
+3. For harness changes, each instruction has one owner: `AGENTS.md` routes; React rules define code constraints; core skill runs the workflow; conditional references provide contracts. Remove redundant routing and generic advice. Do not add a skill for each visual adjective.
+4. For deleted guidance, inspect callers and links. Update installer migration data so unchanged retired files disappear in consumers while modified files are preserved and reported. Do not delete arbitrary user skills by a name prefix.
+5. Test the changed contract. For installer/harness work run `python scripts/test-skill-tooling.py`, `node --test scripts/installer.test.cjs` and `npm pack --dry-run`; review package files. Structural checks are not behavioral proof that an agent follows the instructions.
 
-## Core Model
-
-A strong system has clear layers:
-
-- **Tokens:** color, radius, spacing, typography, focus, chart, and semantic state decisions.
-- **Primitives:** buttons, inputs, labels, overlays, menus, table pieces.
-- **Compositions:** data table, panel variants, RHF wrappers, input groups, badge groups.
-- **Feature components:** domain-specific flows built from system parts.
-- **Screens:** route-level layout and data orchestration.
-
-Keep domain behavior out of generic primitives. Keep generic behavior out of feature-only copies.
-
-## Required Reference
-
-Read [references/system-governance.md](references/system-governance.md) before adding tokens, variants, reusable components, package files, or installer behavior.
-
-## Default Decisions
-
-- Add a token only when a semantic role repeats across screens or components.
-- Add a variant only when it represents a reusable state or visual role.
-- Extract to design-system only when the composition is product-neutral.
-- Use `className` for layout escape hatches, not for replacing component visuals.
-- Keep skill guidance under `.agents/skills`; do not split it into `/docs`.
+The harness audit and realistic evaluation cases live in [harness evaluation](../xizot-design-system/references/harness-evaluation.md). Use those cases to evaluate future revisions, not to expand ordinary UI tasks.

@@ -305,3 +305,37 @@ test('unsupported options and projects do not copy files', (t) => {
   write(dir, 'package.json', { dependencies: { react: '19.2.4' } });
   assert.throws(() => planProject(dir, runtimeDependencies), /Supported projects/);
 });
+
+test('guidance upgrade retires exact old files and preserves customized guidance', (t) => {
+  const manifest = require('../bin/retired-guidance.json');
+  const dir = fixture(t);
+  const old = '.agents/skills/xizot-color/SKILL.md';
+  const modified = '.agents/skills/xizot-layout/SKILL.md';
+  const previous = fs.readFileSync(path.join(__dirname, 'fixtures/retired-color-skill.md'), 'utf8');
+  const { createHash } = require('node:crypto');
+  assert.equal(
+    createHash('sha256').update(previous.replace(/\r\n/g, '\n')).digest('hex'),
+    manifest[old],
+  );
+  write(dir, old, previous);
+  write(dir, modified, '# Consumer customized layout rules');
+  write(dir, '.agents/skills/user-skill/SKILL.md', '# User skill');
+  write(dir, 'AGENTS.md', '# Consumer instructions\n');
+  const output = install(dir);
+  assert.ok(!fs.existsSync(path.join(dir, old)));
+  assert.equal(
+    fs.readFileSync(path.join(dir, modified), 'utf8'),
+    '# Consumer customized layout rules',
+  );
+  assert.match(output, /Preserved modified retired guidance/);
+  assert.equal(
+    fs.readFileSync(path.join(dir, '.agents/skills/user-skill/SKILL.md'), 'utf8'),
+    '# User skill',
+  );
+  assert.ok(
+    fs.existsSync(path.join(dir, '.agents/skills/xizot-design-system/data/website-profiles.json')),
+  );
+  assert.match(fs.readFileSync(path.join(dir, 'AGENTS.md'), 'utf8'), /^# Consumer instructions/);
+  install(dir, '2\n');
+  assert.ok(!fs.existsSync(path.join(dir, old)));
+});

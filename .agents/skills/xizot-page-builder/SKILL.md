@@ -1,37 +1,17 @@
 ---
 name: xizot-page-builder
-description: 'Use when building complete React/Next.js pages with Xizot design-system components. Orchestrates component choice, color, layout, typography, UX states, responsive behavior, and system boundaries for modern production app screens.'
-metadata:
-  version: 0.1.0
+description: Build a complete Xizot page or website, or revise its visual direction. Select a product profile and record layout, component, state and responsive decisions. Not needed for small component fixes.
 ---
 
-# Xizot Page Builder
+# Page and site design
 
-Use this skill for end-to-end page implementation. It coordinates the specialized skills: `xizot-design-system`, `xizot-color`, `xizot-layout`, `xizot-typography`, `xizot-ux`, `xizot-accessibility`, `xizot-interaction`, `xizot-forms`, `xizot-data-ui`, `xizot-wayfinding`, `xizot-motion`, `xizot-responsible-ux`, `xizot-visual-polish`, `xizot-quality`, and `xizot-system`.
+Use the core workflow for source discovery; this workflow owns only page-level decisions.
 
-## Required Reference
+1. Read existing product decisions and nearby pages. Identify audience, primary task, content/data, language, framework and brand constraints. Missing business rules remain unresolved; do not invent them.
+2. Select a profile using `python .agents/skills/xizot-design-system/scripts/ui-source.py profile commerce` (choices: `operations`, `marketing`, `commerce`, `content`, `portfolio`). The command works without an installed component tree. For hybrid products choose per surface: a SaaS landing page can be marketing while its dashboard is operations. Read [website profiles](../xizot-design-system/references/website-profiles.md) for adaptation.
+3. For a new page or redesign, state a compact brief: primary task; ordered regions; chosen components and source paths; state ownership; theme/type/density; narrow-screen changes; reachable states and acceptance checks. A short commentary is enough. Do not pause for approval unless a material product decision is missing.
+4. For a new multi-page site or requested design direction, persist the agreed decisions in application-owned `design/MASTER.md`; use `design/pages/<route>.md` only for real exceptions. Read existing files first and edit only the requested scope. Existing small changes need no new documentation. See [decision record](../xizot-design-system/references/design-record.md).
+5. Build the static page using real typed data or explicitly labeled fixtures, then add interaction. Compose existing primitives. Inspect forms and data component contracts before wiring state. Preserve existing theme unless redesign is requested.
+6. Execute the relevant checks in `xizot-quality`; compare the rendered page with the brief.
 
-Read [references/page-build-gate.md](references/page-build-gate.md) before implementing a complete page.
-
-## Build Order
-
-Start with the [core executable workflow](../xizot-design-system/SKILL.md#executable-workflow). For submitted forms execute [xizot-forms](../xizot-forms/SKILL.md) before implementing fields. The following list is a review aid, not a requirement to load every specialized skill.
-
-1. Identify the workflow and screen type.
-2. Inspect nearby screens and actual Xizot component APIs.
-3. Shape the page skeleton.
-4. Choose components.
-5. Decide color roles.
-6. Decide layout/spacing rhythm.
-7. Decide typography hierarchy and copy density.
-8. Add UX states, accessibility, wayfinding, interaction feedback, and error prevention.
-9. Check forms, data/table behavior, overlays, and responsive accessibility where relevant.
-10. Decide spacing contrast, shadow/elevation, border treatment, radius, and surface depth.
-11. Decide whether motion clarifies state or should be omitted.
-12. Check responsible UX for destructive, permission, consent, or recovery flows.
-13. Confirm system boundary: screen, feature component, shared component, or design-system component.
-14. Implement, run the visual polish and quality gates, and verify.
-
-## Hard Rule
-
-Do not create a visually impressive page that bypasses the system. A strong Xizot page is useful, consistent, responsive, accessible, and built from the local components.
+[UI UX Pro Max integration](../xizot-design-system/references/upstream-integration.md) explains optional broader design research. Its suggestions do not replace Xizot API inspection or introduce dependencies automatically.

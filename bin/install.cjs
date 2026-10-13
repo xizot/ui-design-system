@@ -6,6 +6,7 @@ const path = require('node:path');
 const readline = require('node:readline');
 const ts = require('typescript');
 const { planProject, setJson, slash } = require('./project.cjs');
+const { retireGuidance } = require('./guidance.cjs');
 
 const packageRoot = path.resolve(__dirname, '..');
 const projectRoot = process.cwd();
@@ -489,6 +490,7 @@ function installCodexSkill() {
 
   const existed = fs.existsSync(targetPath);
 
+  retireGuidance(projectRoot, (message) => console.log(color.yellow(message)));
   copyDirectoryOverwrite(sourcePath, targetPath);
 
   if (existed) {

@@ -71,6 +71,28 @@ class SkillToolingTests(unittest.TestCase):
             self.assertEqual(result['findings'], [])
             self.assertEqual(result['semantic_review'], 'not_performed')
 
+    def test_profiles_work_without_component_installation(self):
+        for name in ('operations', 'marketing', 'commerce', 'content', 'portfolio'):
+            result = tool.profile(name)
+            self.assertEqual(result['profile'], name)
+            self.assertTrue(result['regions'])
+            self.assertTrue(result['checks'])
+        with self.assertRaises(ValueError):
+            tool.profile('unknown')
+        with tempfile.TemporaryDirectory() as directory:
+            result = subprocess.run([sys.executable, str(SCRIPT), '--root', directory, 'profile', 'commerce'], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(__import__('json').loads(result.stdout)['profile'], 'commerce')
+
+    def test_guidance_links_resolve(self):
+        import re
+        files = [ROOT / 'AGENTS.md', * (ROOT / '.agents').rglob('*.md')]
+        for file in files:
+            for target in re.findall(r'\[[^\]]*\]\(([^)]+)\)', file.read_text(encoding='utf-8')):
+                if '://' in target or target.startswith('#'):
+                    continue
+                self.assertTrue((file.parent / target.split('#')[0]).exists(), f'{file}: {target}')
+
     def test_cli_invalid_input_has_nonzero_status(self):
         result = subprocess.run([sys.executable, str(SCRIPT), '--root', str(ROOT), 'review', 'missing.tsx'], capture_output=True, text=True)
         self.assertEqual(result.returncode, 2)

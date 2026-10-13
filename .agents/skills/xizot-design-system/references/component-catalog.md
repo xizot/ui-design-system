@@ -115,7 +115,7 @@ Use this catalog to choose a component, then read its implementation before writ
 
 ## React Hook Form wrappers
 
-Import these named exports from `components/rhf` (package mode: `ui-design-system/components/rhf`). The exported wrapper list is in `components/rhf/index.ts`; shared `control`, `name`, and label/description types are in `components/rhf/types.ts`. Define complete form `defaultValues` using the value types below, and verify validation/error behavior at the form owner.
+Import these named exports from the resolved source root's `components/rhf`; use the consumer alias described in [installation modes](installation-modes.md). The exported wrapper list is in `components/rhf/index.ts`; shared `control`, `name`, and label/description types are in `components/rhf/types.ts`. Define complete form `defaultValues` using the value types below, and verify validation/error behavior at the form owner.
 
 | Module / export                                              | Contract to check                                                                                                                     |
 | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |

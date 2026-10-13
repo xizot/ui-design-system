@@ -1,0 +1,117 @@
+{
+  "operations": {
+    "use_for": "Admin, SaaS workspace, dashboards, internal tools",
+    "priority": "Complete repeated tasks and scan operational state",
+    "regions": [
+      "Navigation and page identity",
+      "Actions and filters",
+      "Data/work area",
+      "Detail or edit surface when needed"
+    ],
+    "components": [
+      "DataTable for interactive rows",
+      "Table for static data",
+      "Sidebar, Tabs, Badge, RHF wrappers, Panel overlays"
+    ],
+    "visual": "Compact readable hierarchy; existing semantic status tokens; avoid decorative hero sections in the work area",
+    "responsive": "Keep identity and primary action visible; wrap filters; constrain table overflow within its region",
+    "checks": [
+      "Loading, empty and filtered no-results differ",
+      "Sort/filter/page ownership and stale requests",
+      "Keyboard access and row actions"
+    ]
+  },
+  "marketing": {
+    "use_for": "Landing, service business, campaign, SaaS acquisition, pricing",
+    "priority": "Explain the offer and support a clear next step",
+    "regions": [
+      "Brand navigation",
+      "Value proposition and primary action",
+      "Benefits with credible evidence",
+      "Offer/pricing or service detail",
+      "Next step and footer"
+    ],
+    "components": [
+      "Button and navigation links",
+      "Accordion for genuine FAQ",
+      "Card for comparable offers",
+      "RHF wrappers for lead capture"
+    ],
+    "visual": "Brand-led typography, imagery and section rhythm; preserve token-based controls; allow expressive composition when requested",
+    "responsive": "Stack sections by reading order; scale headline and media; keep CTA readable without clipping",
+    "checks": [
+      "No invented testimonials, metrics or claims",
+      "CTA destination/form completion",
+      "Long copy and image loading layout"
+    ]
+  },
+  "commerce": {
+    "use_for": "Storefront, catalog, product detail, cart and checkout",
+    "priority": "Find, compare and purchase with clear cost and state",
+    "regions": [
+      "Search/category navigation",
+      "Product grid or product detail",
+      "Price, variants and availability",
+      "Cart/checkout summary"
+    ],
+    "components": [
+      "Cards/lists for product discovery",
+      "Select/Combobox for options",
+      "NumberInput for quantities when appropriate",
+      "RHF wrappers for checkout"
+    ],
+    "visual": "Product media and pricing hierarchy; consistent actionable controls; no artificial scarcity",
+    "responsive": "Keep product identity, total and purchase action visible; make variant selection usable on narrow screens",
+    "checks": [
+      "Price/stock from verified data",
+      "Unavailable variants and empty cart",
+      "Pending/failure retains selections; prevent duplicate mutation"
+    ]
+  },
+  "content": {
+    "use_for": "Documentation, help, editorial, blog, learning resources",
+    "priority": "Find and understand information",
+    "regions": [
+      "Search/navigation",
+      "Title and context",
+      "Readable article/reference",
+      "Related content or next step"
+    ],
+    "components": [
+      "Navigation links and Breadcrumb",
+      "Tabs only for alternative views",
+      "Accordion for optional detail",
+      "Table for factual comparisons"
+    ],
+    "visual": "Readable measure and heading hierarchy; use existing typography; avoid boxing each paragraph",
+    "responsive": "Article reflows; code/table overflow stays local; navigation remains reachable",
+    "checks": [
+      "Heading/link meaning and keyboard navigation",
+      "Long code, tables and translated copy",
+      "Search no-results if search exists"
+    ]
+  },
+  "portfolio": {
+    "use_for": "Personal website, creative portfolio, studio case studies",
+    "priority": "Communicate identity and demonstrate work",
+    "regions": [
+      "Identity and positioning",
+      "Selected projects",
+      "Project evidence and process",
+      "Contact action"
+    ],
+    "components": [
+      "Links and Button",
+      "Cards or editorial project list",
+      "Dialog only when an overlay serves the task",
+      "RHF wrappers for contact forms"
+    ],
+    "visual": "Allow distinctive art direction and imagery; consistent navigation and controls; derive style from supplied work",
+    "responsive": "Reflow project layouts and keep media aspect ratio stable; touch users can access hover content",
+    "checks": [
+      "Real projects and working destinations",
+      "Media alternatives and reduced motion",
+      "Contact success/failure if implemented"
+    ]
+  }
+}

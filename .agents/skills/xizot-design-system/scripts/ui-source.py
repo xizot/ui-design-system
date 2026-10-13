@@ -6,6 +6,15 @@ from pathlib import Path
 import re
 
 
+def profile(name):
+    """Return an explicit website profile; never silently classify a product."""
+    file = Path(__file__).resolve().parents[1] / 'data/website-profiles.json'
+    profiles = json.loads(file.read_text(encoding='utf-8'))
+    if name not in profiles:
+        raise ValueError('Unknown profile. Choose: ' + ', '.join(profiles))
+    return {'profile': name, **profiles[name], 'authority': 'Design starting point; user requirements and verified local contracts take precedence.'}
+
+
 def locate(root, mode=None):
     if mode is None and (root / 'AGENTS.md').is_file():
         content = (root / 'AGENTS.md').read_text(encoding='utf-8')
@@ -81,10 +90,17 @@ def main():
     lookup.add_argument('query', nargs='?', default='')
     check = sub.add_parser('review')
     check.add_argument('paths', nargs='+')
+    design = sub.add_parser('profile')
+    design.add_argument('name')
     args = parser.parse_args()
     root = args.root.resolve()
     try:
-        result = discover(root, args.query, args.mode) if args.command == 'discover' else review(root, args.paths)
+        if args.command == 'profile':
+            result = profile(args.name)
+        elif args.command == 'discover':
+            result = discover(root, args.query, args.mode)
+        else:
+            result = review(root, args.paths)
     except (ValueError, OSError) as error:
         parser.exit(2, str(error) + '\n')
     print(json.dumps(result, ensure_ascii=True, indent=2))

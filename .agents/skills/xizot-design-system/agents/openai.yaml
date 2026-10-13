@@ -1,3 +1,4 @@
-display_name: Xizot Design System
-short_description: Build React/Next.js UI with the local Xizot component system.
-default_prompt: Build this UI using Xizot design-system components, semantic tokens, compact product UI patterns, and appropriate loading, empty, error, and responsive states.
+interface:
+  display_name: 'Xizot Design System'
+  short_description: 'Apply the Xizot Design System workflow.'
+  default_prompt: 'Use $xizot-design-system for this Xizot task.'

@@ -1,3 +1,4 @@
-display_name: Xizot Forms
-short_description: Build and audit RHF forms, validation, field grouping, and submit flows.
-default_prompt: Build this form with Xizot RHF wrappers, clear grouping, validation, pending state, and accessible errors.
+interface:
+  display_name: 'Xizot Forms'
+  short_description: 'Apply the Xizot Forms workflow.'
+  default_prompt: 'Use $xizot-forms for this Xizot task.'

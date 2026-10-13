@@ -1,17 +1,17 @@
-# Installation modes
+# Source ownership and installation
 
-Both CLI modes install the complete `.agents/skills` pack and `.agents/rules` into the application, and update only the marked design-system section of `AGENTS.md`. Read local skills and `.agents/rules/react.md` in either mode. Package mode copies guidance from the installed dependency revision; rerun its CLI after dependency upgrades to refresh guidance. Installer-owned guidance files are overwritten on setup; keep project-specific instructions outside those files and the marked AGENTS section. Unrelated skills and rules are preserved.
+The current `bin/install.cjs` supports source-copy installation only. `package.json` does not expose a compiled component package. Do not recommend `--package`, `--mode package`, `ui-design-system/styles.css` or runtime package imports for this revision.
 
-| Context | Component source to inspect | Application imports |
-| --- | --- | --- |
-| Source consumer | `design-system/components`, `hooks`, `lib`, `constants` | `@/design-system/components/ui/button` (adjust alias to project) |
-| Package consumer | `node_modules/ui-design-system/components`, `hooks`, `lib`, `constants` | `ui-design-system/components/ui/button` |
-| Library repository | `components`, `hooks`, `lib`, `constants` | Existing repository import conventions |
+| Context            | Inspect                                       | Import                                                                    |
+| ------------------ | --------------------------------------------- | ------------------------------------------------------------------------- |
+| Library repository | `components/`, `hooks/`, `lib/`, `constants/` | Follow existing repository aliases                                        |
+| Next/Vite consumer | `design-system/`                              | Usually `@/design-system/components/ui/button`; confirm tsconfig/jsconfig |
+| CRA consumer       | `src/design-system/`                          | Usually `design-system/components/ui/button`; confirm jsconfig/tsconfig   |
 
-Paths in component references are relative to the resolved source root. Package runtime and declarations come from public exports backed by `dist/`; never import `node_modules/...`, package source files, or private `dist/...` paths in application code. RHF imports use `ui-design-system/components/rhf`; hooks, lib and constants use their public subpaths. Package CSS is `@import 'ui-design-system/styles.css';` in global CSS processed by Tailwind v4.
+Both TypeScript and JavaScript consumers are supported; inspect `.tsx` or generated `.jsx` as installed. Advanced demos under `internal-components/` are not copied. Do not import those from a consumer.
 
-Run `python3 .agents/skills/xizot-design-system/scripts/ui-source.py --root . discover "input"`. Discovery reads the mode from the installer-marked AGENTS section. Without a marker it detects source or package; if both exist, pass `--mode source` or `--mode package` before `discover`. An explicitly selected missing mode fails instead of silently using another installation.
+The CLI installs local `.agents/skills`, `.agents/rules`, and a marked source-mode section in `AGENTS.md`. Re-run the CLI from the new revision to refresh guidance. Keep project-specific guidance outside installer-owned files/markers. Exact unchanged retired files are removed on upgrade; locally modified retired files are preserved with a warning and need manual reconciliation.
 
-Source consumers may edit copied components when authorized. Package consumers must not edit or fork `node_modules`: compose public components in the app, or change the library repository and install a new revision. Moving between modes does not migrate imports, CSS or remove the previous installation. Follow the active mode even if older files remain.
+Discovery retains recognition of historical package-mode markers to inspect old consumers. If one is encountered, inspect that installed version's actual exports; it does not mean this revision can create/update that installation. Do not edit `node_modules`.
 
-Source setup adds the copied folder to `.prettierignore` and, for a simple `eslint` npm lint script, adds `--ignore-pattern` for that folder. Existing ignore entries and unrelated scripts are preserved. If the application uses a custom lint command or invokes ESLint directly, configure that command to exclude `design-system/` (CRA: `src/design-system/`). The consumer still type-checks imported source; library lint and formatting belong in this repository.
+Source setup adds the copied folder to consumer lint/format ignores where supported. Type-check imported code in the consumer; check shared library edits here. Consumer theme decisions belong in application-owned files, not in installer-owned guidance.

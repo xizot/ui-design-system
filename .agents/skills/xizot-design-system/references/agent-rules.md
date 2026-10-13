@@ -1,75 +1,9 @@
 # Design system source mode
 
-These rules are installed into downstream `AGENTS.md` by the design-system CLI. Keep this file inside the skill folder so agent guidance ships with the skill instead of being split into `/docs`.
+Read `.agents/skills/xizot-design-system/SKILL.md` before React UI work. It routes page, form, shared API and verification tasks. Read `.agents/rules/react.md` for implementation constraints.
 
-## Source Of Truth
+Shared source lives in `design-system/` (CRA: `src/design-system/`). Inspect the installed source and actual aliases before using props/imports. Run `python .agents/skills/xizot-design-system/scripts/ui-source.py --root . discover "button"` for unfamiliar controls, or use rg/manual inspection if Python is unavailable.
 
-Read `.agents/rules/react.md` and `.agents/skills/xizot-design-system/references/installation-modes.md` for React policy and installation boundaries. This section selects source mode even when a package installation also exists.
+Choose website direction from the page-builder workflow. Preserve the application's existing theme and product decisions. Keep domain logic in feature code and use existing Xizot controls. Submitted forms use RHF wrappers; search/filter controls may use local/URL state.
 
-Before UI edits, read `.agents/skills/xizot-design-system/SKILL.md` from the target application root. For submitted forms read `xizot-forms/SKILL.md` in the same skills folder; for full pages use `xizot-page-builder`; finish with `xizot-quality`. Read files directly when the client does not discover skills.
-
-Choose controls through `.agents/skills/xizot-design-system/references/component-catalog.md`, then read the selected source files for exact props and exports.
-
-Run `python .agents/skills/xizot-design-system/scripts/ui-source.py --root . discover "rhf"`, then read selected source. Before finishing, run the same script with `review path/to/changed.tsx`, scoped lint on application code, types and relevant behavior checks. The copied design-system source is excluded from consumer lint/Prettier; validate library changes in the library repository. Requires Python 3.10+; use rg/manual review if unavailable. Heuristic findings are review prompts, not correctness certificates.
-
-Submitted product forms use RHF and existing wrappers. Search/filter controls may use local/URL state. Respect explicit user choices or existing native/server-action contracts and explain the exception. Review ownership, state and duplication using core `references/code-contract.md`.
-
-- Treat `design-system/` as the source of truth for shared UI primitives, RHF wrappers, hooks, constants, and utilities. Agent guidance lives in local `.agents/`.
-- Inspect `design-system/components/ui`, `design-system/components/rhf`, `design-system/hooks`, `design-system/constants`, and nearby app components before creating UI.
-- Do not create app-local copies of primitives already available in the design system.
-- Do not import lower-level third-party primitives directly when a design-system wrapper exists.
-- Use `lucide-react` icons for generic actions unless the product already has a specific icon set.
-
-## Imports
-
-Use the installed consumer path:
-
-```tsx
-import { Button } from '@/design-system/components/ui/button';
-import { Input } from '@/design-system/components/ui/input';
-import { DataTable } from '@/design-system/components/ui/data-table';
-```
-
-If the project uses a different alias, keep the `design-system/` folder boundary and adjust only the prefix.
-
-## Visual Direction
-
-- Build modern, restrained product UI: compact hierarchy, predictable layout, minimal decoration.
-- Build hierarchy with layout, grouping, spacing, type, weight, and alignment before adding decorative styling.
-- Use semantic tokens such as `bg-background`, `text-foreground`, `text-muted-foreground`, `border-border`, `bg-muted`, `bg-card`, `text-primary`, and `text-destructive`.
-- Use color for meaning: primary action, selected state, status, destructive risk, chart grouping, or useful attention.
-- Avoid hardcoded hex colors, broad custom palettes, oversized gradients, decorative blobs, and marketing hero sections in app UI.
-- Do not nest cards inside cards.
-- Keep border radius consistent with the system; default to `rounded-md` for controls.
-
-## Required Component Choices
-
-- Use `Button` and `ButtonGroup` for actions.
-- Use design-system form controls and `RHF*` wrappers for forms.
-- Use `DataTable` for list pages that need sorting, filters, pagination, loading, empty state, row selection, expanded rows, or pinned actions.
-- Use `PopoverPanel`, `DialogPanel`, and `SheetPanel` for application popovers, dialogs, and sheets. Select their built-in `size` instead of setting panel width or padding in `className`. Use the lower-level `*Content` primitives only inside reusable controls that require a different structure (for example, a calendar or command menu); document that exception.
-- Pass the same supported `size` through a composed control and its internal search/input elements. Use `Card size` for card density instead of overriding its spacing and text sizes.
-- Use the shared form-control surface from `lib/form-control-styles.ts` for editable fields and field-like triggers so border, background, and value text match in light and dark modes. Keep placeholder and invalid states semantic.
-- Use `Badge`, `Marker`, `Empty`, `Skeleton`, `Spinner`, and toast utilities for feedback states.
-
-## System Rules
-
-- Do not create a parallel color scale, spacing scale, typography scale, form wrapper layer, or table abstraction in feature code.
-- Add a design-system variant only for a repeated semantic role.
-- Keep feature/domain components outside the design-system layer unless the behavior is product-neutral.
-- Use `className` for contextual layout, not for replacing a component's visual contract.
-- In source installs, exclude the copied `design-system/` (CRA: `src/design-system/`) from the consumer project's ESLint and Prettier checks. Lint and format the library in its own repository.
-
-## Product UI Checklist
-
-Before finishing UI work, verify:
-
-1. Existing Xizot primitives are used instead of duplicated local UI.
-2. Forms have labels, required state, validation messages, disabled/pending states, and useful placeholders.
-3. Data regions have loading, empty, no-results, pagination, and error states when relevant.
-4. Mobile and desktop layouts do not overlap or hide primary actions.
-5. Text fits inside controls, badges, table cells, and overlays.
-6. Color choices are semantic, token-based, and readable in light/dark mode.
-7. Layout spacing communicates grouping and priority.
-8. Typography hierarchy is clear without oversized app text.
-9. Vietnamese copy is used consistently when the surrounding product is Vietnamese.
+Finish through `xizot-quality`: scoped lint/types plus relevant interaction/visual checks. Report unverified behavior explicitly. Keep project-specific instructions outside this installer-managed section and installer-owned skill files.
