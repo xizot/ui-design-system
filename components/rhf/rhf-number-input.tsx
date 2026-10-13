@@ -1,5 +1,5 @@
-import { ComponentProps } from 'react';
-import { Control, FieldValues, Path, useController } from 'react-hook-form';
+import type { ComponentProps } from 'react';
+import { type Control, type FieldValues, type Path, useController } from 'react-hook-form';
 import { NumberInput } from '../ui/number-input';
 
 type RHFFormattedInputProps<T extends FieldValues = FieldValues> = Omit<

@@ -4,11 +4,15 @@ const { spawnSync } = require('node:child_process');
 const fs = require('node:fs');
 const path = require('node:path');
 const readline = require('node:readline');
+const ts = require('typescript');
+const { planProject, setJson, slash } = require('./project.cjs');
 
 const packageRoot = path.resolve(__dirname, '..');
 const projectRoot = process.cwd();
-const installRootName = 'design-system';
-const targetRoot = path.join(projectRoot, installRootName);
+let installRootName = 'design-system';
+let targetRoot = path.join(projectRoot, installRootName);
+let projectPlan;
+let cliOptions;
 const directoriesToCopy = ['components', 'constants', 'hooks', 'lib'];
 const agentUsageRulesSource = '.agents/skills/xizot-design-system/references/agent-rules.md';
 const agentInstructionsSource = 'AGENTS.md';
@@ -19,18 +23,7 @@ const codexSkillSource = '.agents/skills';
 const codexSkillTarget = '.agents/skills';
 const agentRulesSource = '.agents/rules';
 const agentRulesTarget = '.agents/rules';
-const projectFilesToCopy = [
-  {
-    source: 'app/globals.css',
-    defaultTarget: 'app/globals.css',
-    prompt: 'Target path for globals.css (default: app/globals.css, type "skip" to skip): ',
-    label: 'globals.css',
-  },
-];
-const tailwindDependencies = ['tailwindcss@^4', '@tailwindcss/postcss@^4'];
 const runtimeDependencies = [
-  '@tanstack/react-virtual@3.14.13',
-  '@hookform/resolvers@5.9.1',
   'shadcn@4.21.0',
   'tw-animate-css@1.4.0',
   '@base-ui/react@1.8.0',
@@ -47,6 +40,7 @@ const runtimeDependencies = [
   'react@19.2.4',
   'react-day-picker@10.0.1',
   'react-dom@19.2.4',
+  'react-is@19.2.4',
   'react-hook-form@7.88.0',
   'react-resizable-panels@4.12.4',
   'recharts@3.10.1',
@@ -100,22 +94,36 @@ function printHelp() {
   console.log('  npx github:xizot/ui-design-system');
   console.log('');
   console.log('Commands:');
-  console.log('  init    Install the design system into ./design-system');
+  console.log('  init    Install into ./design-system (CRA: ./src/design-system)');
+  console.log('          React 19, Tailwind 4; Vite, Next 15.1/16, CRA 5 with CRACO');
   console.log('  help    Show this help message');
+  console.log(
+    'Options: --yes (install packages, keep existing source), --overwrite (with --yes), --mode source',
+  );
   console.log('');
 }
 
 function parseArguments(args) {
   let command = 'init';
+  let yes = false,
+    overwrite = false;
   if (args[0] && !args[0].startsWith('-')) command = args.shift();
-  for (const flag of args) {
+  for (let index = 0; index < args.length; index++) {
+    const flag = args[index];
     if (flag === '--help' || flag === '-h') {
       command = 'help';
+    } else if (flag === '--mode' && args[index + 1] === 'source') {
+      index++;
+    } else if (flag === '--yes' || flag === '-y') {
+      yes = true;
+    } else if (flag === '--overwrite') {
+      overwrite = true;
     } else {
       throw new Error(`Unknown option: ${flag}`);
     }
   }
-  return { command };
+  if (overwrite && !yes) throw new Error('--overwrite requires --yes.');
+  return { command, yes, overwrite };
 }
 
 function printList(items, limit = 10) {
@@ -139,7 +147,11 @@ function collectExistingFiles(sourceDir, targetDir, existingFiles = []) {
 
   for (const entry of fs.readdirSync(sourceDir, { withFileTypes: true })) {
     const sourcePath = path.join(sourceDir, entry.name);
-    const targetPath = path.join(targetDir, entry.name);
+    const targetName =
+      projectPlan && !projectPlan.typed
+        ? entry.name.replace(/\.tsx$/, '.jsx').replace(/\.ts$/, '.js')
+        : entry.name;
+    const targetPath = path.join(targetDir, targetName);
 
     if (entry.isDirectory()) {
       collectExistingFiles(sourcePath, targetPath, existingFiles);
@@ -155,6 +167,10 @@ function collectExistingFiles(sourceDir, targetDir, existingFiles = []) {
 }
 
 async function askConflictStrategy(existingFiles) {
+  if (cliOptions.yes) {
+    conflictState.defaultAction = cliOptions.overwrite ? 'overwrite' : 'skip';
+    return;
+  }
   if (existingFiles.length === 0) {
     conflictState.defaultAction = 'overwrite';
     return;
@@ -216,7 +232,11 @@ async function copyDirectory(sourceDir, targetDir) {
 
   for (const entry of fs.readdirSync(sourceDir, { withFileTypes: true })) {
     const sourcePath = path.join(sourceDir, entry.name);
-    const targetPath = path.join(targetDir, entry.name);
+    const targetName =
+      projectPlan && !projectPlan.typed
+        ? entry.name.replace(/\.tsx$/, '.jsx').replace(/\.ts$/, '.js')
+        : entry.name;
+    const targetPath = path.join(targetDir, targetName);
 
     if (entry.isDirectory()) {
       await copyDirectory(sourcePath, targetPath);
@@ -254,84 +274,43 @@ async function copyDirectory(sourceDir, targetDir) {
       conflictState.overwritten.push(relativePath(targetRoot, targetPath));
     }
 
-    fs.copyFileSync(sourcePath, targetPath);
-    if (targetPath.endsWith('.tsx')) {
-      const content = fs.readFileSync(targetPath, 'utf8');
-      if (content.includes("@/lib/utils")) {
-        fs.writeFileSync(targetPath, content.replaceAll("@/lib/utils", "@/design-system/lib/utils"));
-      }
-    }
+    if (projectPlan && !projectPlan.typed && /\.tsx?$/.test(sourcePath)) {
+      fs.writeFileSync(
+        targetPath,
+        ts.transpileModule(fs.readFileSync(sourcePath, 'utf8'), {
+          compilerOptions: {
+            jsx: ts.JsxEmit.Preserve,
+            module: ts.ModuleKind.ESNext,
+            target: ts.ScriptTarget.ES2020,
+          },
+          fileName: sourcePath,
+        }).outputText,
+      );
+    } else fs.copyFileSync(sourcePath, targetPath);
     conflictState.copied.push(relativePath(targetRoot, targetPath));
   }
 }
 
-function getTargetPackageJson() {
-  const packageJsonPath = path.join(projectRoot, 'package.json');
-
-  if (!fs.existsSync(packageJsonPath)) {
-    return null;
-  }
-
-  try {
-    return JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-  } catch {
-    console.warn(
-      color.yellow('Skipping dependency install because target package.json is invalid JSON.'),
-    );
-    return null;
-  }
-}
-
-function getMissingDependencies(packageJson, required = runtimeDependencies) {
-  const installed = new Set([
-    ...Object.keys(packageJson.dependencies || {}),
-    ...Object.keys(packageJson.devDependencies || {}),
-    ...Object.keys(packageJson.peerDependencies || {}),
-    ...Object.keys(packageJson.optionalDependencies || {}),
-  ]);
-
-  return required.filter((dependency) => {
-    const atIndex = dependency.startsWith('@')
-      ? dependency.indexOf('@', 1)
-      : dependency.indexOf('@');
-    const dependencyName = dependency.slice(0, atIndex);
-    return !installed.has(dependencyName);
-  });
-}
-
 function detectPackageManager() {
-  if (fs.existsSync(path.join(projectRoot, 'pnpm-lock.yaml'))) {
-    return 'pnpm';
-  }
-
-  if (fs.existsSync(path.join(projectRoot, 'yarn.lock'))) {
-    return 'yarn';
-  }
-
-  if (
-    fs.existsSync(path.join(projectRoot, 'bun.lockb')) ||
-    fs.existsSync(path.join(projectRoot, 'bun.lock'))
-  ) {
-    return 'bun';
-  }
-
-  if (fs.existsSync(path.join(projectRoot, 'package-lock.json'))) {
-    return 'npm';
-  }
-
-  return 'npm';
+  return projectPlan.manager;
 }
 
 function getInstallCommand(packageManager, dependencies, dev = false) {
   switch (packageManager) {
     case 'pnpm':
-      return { command: 'pnpm', args: ['add', ...(dev ? ['-D'] : []), ...dependencies] };
+      return {
+        command: 'pnpm',
+        args: ['add', '--save-exact', ...(dev ? ['-D'] : []), ...dependencies],
+      };
     case 'yarn':
-      return { command: 'yarn', args: ['add', ...(dev ? ['-D'] : []), ...dependencies] };
+      return { command: 'yarn', args: ['add', '--exact', ...(dev ? ['-D'] : []), ...dependencies] };
     case 'bun':
-      return { command: 'bun', args: ['add', ...(dev ? ['-d'] : []), ...dependencies] };
+      return { command: 'bun', args: ['add', '--exact', ...(dev ? ['-d'] : []), ...dependencies] };
     default:
-      return { command: 'npm', args: ['install', ...(dev ? ['-D'] : []), ...dependencies] };
+      return {
+        command: 'npm',
+        args: ['install', '--save-exact', ...(dev ? ['-D'] : []), ...dependencies],
+      };
   }
 }
 
@@ -342,114 +321,19 @@ function askQuestion(question, options = {}) {
     output: process.stdout,
   });
 
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
+    let answered = false;
+    rl.once('close', () => {
+      if (!answered)
+        reject(new Error('Input closed before an answer was received; installation stopped.'));
+    });
     rl.question(question, (answer) => {
+      answered = true;
       rl.close();
       const trimmedAnswer = answer.trim();
       resolve(preserveCase ? trimmedAnswer : trimmedAnswer.toLowerCase());
     });
   });
-}
-
-async function askTargetPath(fileConfig) {
-  const suggested = detectCssTarget();
-  const prompt = suggested
-    ? `Target path for globals.css (detected: ${suggested}, type "skip" to skip): `
-    : fileConfig.prompt;
-  const answer = await askQuestion(prompt, { preserveCase: true });
-
-  if (!answer) {
-    return suggested || fileConfig.defaultTarget;
-  }
-
-  if (answer.toLowerCase() === 'skip') {
-    return null;
-  }
-
-  return answer.replace(/\\/g, path.sep);
-}
-
-function isViteProject() {
-  const pkg = getTargetPackageJson();
-  return Boolean(pkg && (pkg.dependencies?.vite || pkg.devDependencies?.vite));
-}
-
-function detectCssTarget() {
-  const candidates = isViteProject()
-    ? ['src/index.css', 'src/App.css', 'src/globals.css', 'src/style.css', 'src/styles.css', 'index.css', 'style.css']
-    : ['app/globals.css', 'src/app/globals.css', 'styles/globals.css'];
-  return candidates.find((candidate) => fs.existsSync(path.join(projectRoot, candidate)))
-    || (isViteProject() ? 'src/index.css' : null);
-}
-
-function configureTailwind() {
-  if (!isViteProject()) return;
-  const configNames = ['postcss.config.js', 'postcss.config.cjs', 'postcss.config.mjs'];
-  const existing = configNames.find((name) => fs.existsSync(path.join(projectRoot, name)));
-  if (existing) {
-    const content = fs.readFileSync(path.join(projectRoot, existing), 'utf8');
-    if (!content.includes('@tailwindcss/postcss')) {
-      console.log(color.yellow(`Add '@tailwindcss/postcss' to ${existing} to enable Tailwind v4.`));
-    }
-    return;
-  }
-  fs.writeFileSync(path.join(projectRoot, 'postcss.config.mjs'),
-    "export default { plugins: { '@tailwindcss/postcss': {} } };\n");
-  conflictState.copied.push('postcss.config.mjs');
-  console.log(color.green('Added: postcss.config.mjs'));
-}
-
-function configureAlias() {
-  if (!isViteProject()) return;
-  const tsconfigName = fs.existsSync(path.join(projectRoot, 'tsconfig.app.json'))
-    ? 'tsconfig.app.json' : 'tsconfig.json';
-  const tsconfigPath = path.join(projectRoot, tsconfigName);
-  if (fs.existsSync(tsconfigPath)) {
-    const content = fs.readFileSync(tsconfigPath, 'utf8');
-    if (!content.includes('"@/*"')) {
-      const match = content.match(/"compilerOptions"\s*:\s*\{/);
-      if (match) {
-        const position = match.index + match[0].length;
-        const updated = `${content.slice(0, position)}\n    "baseUrl": ".",\n    "paths": { "@/*": ["./*"] },${content.slice(position)}`;
-        fs.writeFileSync(tsconfigPath, updated);
-        console.log(color.green(`Configured @ alias in ${tsconfigName}`));
-      }
-    }
-  }
-  const configName = ['vite.config.ts', 'vite.config.mts', 'vite.config.js', 'vite.config.mjs']
-    .find((name) => fs.existsSync(path.join(projectRoot, name)));
-  if (!configName) {
-    console.log(color.yellow('Configure Vite resolve.alias @ to the project root.'));
-    return;
-  }
-  const configPath = path.join(projectRoot, configName);
-  const content = fs.readFileSync(configPath, 'utf8');
-  if (/alias\s*:\s*\{[^}]*['"]@['"]\s*:/.test(content)) return;
-  if (!/defineConfig\s*\(\s*\{/.test(content) || /resolve\s*:/.test(content)) {
-    console.log(color.yellow(`Configure resolve.alias @ in ${configName} to the project root.`));
-    return;
-  }
-  const nodeUrlImport = "import { fileURLToPath, URL } from 'node:url';\n";
-  const updated = `${/import\s*\{[^}]*fileURLToPath[^}]*\}\s*from\s*['"]node:url['"]/.test(content) ? '' : nodeUrlImport}${content.replace(/defineConfig\s*\(\s*\{/, (match) => `${match}\n  resolve: { alias: { '@': fileURLToPath(new URL('./', import.meta.url)) } },`)}`;
-  fs.writeFileSync(configPath, updated);
-  console.log(color.green(`Configured @ alias in ${configName}`));
-}
-
-async function askProjectFileConflictAction(targetPath) {
-  const relativeTargetPath = relativePath(projectRoot, targetPath);
-  console.log('');
-  console.log(color.yellow(`Existing file: ${relativeTargetPath}`));
-  const answer = await askQuestion('Choose 1 to overwrite or 2 to skip (default: 2): ');
-
-  switch (answer) {
-    case '1':
-    case 'overwrite':
-      return 'overwrite';
-    case '2':
-    case 'skip':
-    default:
-      return 'skip';
-  }
 }
 
 function installDependencies(dependencies, dev = false) {
@@ -472,47 +356,6 @@ function installDependencies(dependencies, dev = false) {
 
   console.log(color.green('Dependencies installed successfully.'));
   return true;
-}
-
-async function maybeInstallDependencies() {
-  printSection('Step 2: Dependencies');
-  const packageJson = getTargetPackageJson();
-
-  if (!packageJson) {
-    console.log(
-      color.gray(
-        'No package.json found in the target project root. Skipping dependency installation.',
-      ),
-    );
-    return;
-  }
-
-  const missingDependencies = getMissingDependencies(packageJson);
-  const missingTailwind = getMissingDependencies(packageJson, tailwindDependencies);
-
-  if (missingDependencies.length === 0 && missingTailwind.length === 0) {
-    console.log(color.green('All required dependencies are already installed.'));
-    return;
-  }
-
-  console.log('Missing dependencies detected:');
-  for (const dependency of [...missingDependencies, ...missingTailwind]) {
-    console.log(`  - ${dependency}`);
-  }
-  console.log('');
-  console.log('Do you want to install these dependencies now?');
-  console.log('  1. Yes, install now');
-  console.log('  2. No, skip for now');
-
-  const answer = await askQuestion('Select an option (1/2, default: 2): ');
-
-  if (answer !== '1' && answer !== 'y' && answer !== 'yes') {
-    console.log(color.yellow('Skipped dependency installation.'));
-    return;
-  }
-
-  if (missingDependencies.length > 0 && !installDependencies(missingDependencies)) return;
-  if (missingTailwind.length > 0) installDependencies(missingTailwind, true);
 }
 
 function copyRootFiles() {
@@ -563,7 +406,11 @@ function buildAgentUsageRulesSection() {
     return null;
   }
 
-  const usageRules = fs.readFileSync(sourcePath, 'utf8').trim();
+  const usageRules = fs
+    .readFileSync(sourcePath, 'utf8')
+    .trim()
+    .replaceAll('@/design-system', projectPlan?.importPrefix || '@/design-system')
+    .replaceAll('`design-system/', `\`${installRootName}/`);
 
   return `${agentUsageRulesStartMarker}\n\n${usageRules}\n\n${agentUsageRulesEndMarker}`;
 }
@@ -654,54 +501,12 @@ function installCodexSkill() {
   console.log(color.green(`Added Codex skills: ${codexSkillTarget}`));
 }
 
-async function copyProjectFiles() {
-  printSection('Step 4: Project Files');
-
-  for (const fileConfig of projectFilesToCopy) {
-    const sourcePath = path.join(packageRoot, fileConfig.source);
-
-    if (!fs.existsSync(sourcePath)) {
-      console.log(color.gray(`Skipping missing file: ${fileConfig.source}`));
-      continue;
-    }
-
-    const targetPathInput = await askTargetPath(fileConfig);
-
-    if (!targetPathInput) {
-      console.log(color.yellow(`Skipped: ${fileConfig.label}`));
-      continue;
-    }
-
-    const targetPath = path.resolve(projectRoot, targetPathInput);
-    ensureDirectoryExists(path.dirname(targetPath));
-
-    if (fs.existsSync(targetPath)) {
-      const action = await askProjectFileConflictAction(targetPath);
-
-      if (action === 'skip') {
-        conflictState.skipped.push(relativePath(projectRoot, targetPath));
-        console.log(color.yellow(`Skipped: ${relativePath(projectRoot, targetPath)}`));
-        continue;
-      }
-
-      conflictState.overwritten.push(relativePath(projectRoot, targetPath));
-    }
-
-    fs.copyFileSync(sourcePath, targetPath);
-    conflictState.copied.push(relativePath(projectRoot, targetPath));
-    console.log(color.green(`Copied: ${relativePath(projectRoot, targetPath)}`));
-  }
-}
-
 function printSummary() {
   printSection('Summary');
   console.log(`Target: ${targetRoot}`);
   console.log(`Project root: ${projectRoot}`);
   console.log(`Install folder: ${installRootName}`);
   console.log(`Directories installed: ${directoriesToCopy.join(', ')}`);
-  console.log(
-    `Project files available: ${projectFilesToCopy.map((file) => file.label).join(', ')}`,
-  );
   console.log(`Files copied: ${conflictState.copied.length}`);
   console.log(`Files overwritten: ${conflictState.overwritten.length}`);
   console.log(`Files skipped: ${conflictState.skipped.length}`);
@@ -721,6 +526,7 @@ function printSummary() {
 
 async function main() {
   const options = parseArguments(process.argv.slice(2));
+  cliOptions = options;
   const { command } = options;
   if (command === 'help' || command === '--help' || command === '-h') {
     printHelp();
@@ -733,6 +539,27 @@ async function main() {
     printHelp();
     process.exitCode = 1;
     return;
+  }
+
+  // Validate dependencies and every configuration edit before copying source.
+  projectPlan = planProject(projectRoot, runtimeDependencies);
+  installRootName = projectPlan.sourceRoot;
+  targetRoot = path.join(projectRoot, installRootName);
+  printSection(
+    `Project: ${projectPlan.framework} (${projectPlan.typed ? 'TypeScript' : 'JavaScript'})`,
+  );
+  const missing = projectPlan.dependencies.flatMap((plan) => plan.add);
+  if (missing.length) {
+    console.log('Required packages:');
+    printList(missing, missing.length);
+    const answer = options.yes ? 'yes' : await askQuestion('Install required packages? (y/N): ');
+    if (!['y', 'yes', '1'].includes(answer)) {
+      console.log('Installation cancelled; no project files changed.');
+      return;
+    }
+    for (const plan of projectPlan.dependencies) {
+      if (plan.add.length && !installDependencies(plan.add, plan.dev)) return;
+    }
   }
 
   const copied = [];
@@ -775,15 +602,56 @@ async function main() {
     return;
   }
 
-  await maybeInstallDependencies();
   copyRootFiles();
-  await copyProjectFiles();
-  configureTailwind();
-  configureAlias();
+  for (const [name, value] of projectPlan.changes) {
+    const target = path.join(projectRoot, name);
+    ensureDirectoryExists(path.dirname(target));
+    // Dependency installation has already updated package.json. Only merge scripts.
+    let content = value;
+    if (name === 'package.json') {
+      const plannedPackage = JSON.parse(value);
+      content = setJson(fs.readFileSync(target, 'utf8'), ['scripts'], plannedPackage.scripts);
+      if (plannedPackage.eslintConfig)
+        content = setJson(content, ['eslintConfig'], plannedPackage.eslintConfig);
+    }
+    fs.writeFileSync(target, content);
+  }
+  installStyles();
   printSummary();
+  console.log(`Import components from '${projectPlan.importPrefix}/components/ui/button'.`);
 }
 
-main().catch((error) => {
-  console.error(color.red(String(error)));
-  process.exit(1);
-});
+function installStyles() {
+  const themeName = `${installRootName}/styles.css`;
+  const themeTarget = path.join(projectRoot, themeName);
+  // Keep application CSS intact; theme lives with the copied components.
+  if (!fs.existsSync(themeTarget))
+    fs.copyFileSync(path.join(packageRoot, 'app/globals.css'), themeTarget);
+  const entry = projectPlan.cssTarget || projectPlan.entry;
+  const entryPath = path.join(projectRoot, entry);
+  let relative = slash(path.relative(path.dirname(entryPath), themeTarget));
+  if (!relative.startsWith('.')) relative = './' + relative;
+  const original = fs.readFileSync(entryPath, 'utf8');
+  if (original.includes(relative)) return;
+  const statement = projectPlan.cssTarget ? `@import '${relative}';` : `import '${relative}';`;
+  let position = 0;
+  if (!projectPlan.cssTarget) {
+    const ast = ts.createSourceFile(entry, original, ts.ScriptTarget.Latest, true);
+    for (const node of ast.statements) {
+      if (!ts.isExpressionStatement(node) || !ts.isStringLiteral(node.expression)) break;
+      position = node.getEnd();
+    }
+  } else if (/^@charset\s/.test(original)) position = original.indexOf(';') + 1;
+  fs.writeFileSync(
+    entryPath,
+    `${original.slice(0, position)}\n${statement}\n${original.slice(position)}`,
+  );
+}
+
+module.exports = { runtimeDependencies, main };
+
+if (require.main === module)
+  main().catch((error) => {
+    console.error(color.red(String(error)));
+    process.exit(1);
+  });

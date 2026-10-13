@@ -6,7 +6,7 @@ import {
   normalizeNumberInput,
   parseNumber,
 } from '../../lib/number';
-import React, { ComponentProps, useLayoutEffect, useRef, useState } from 'react';
+import React, { type ComponentProps, useLayoutEffect, useRef, useState } from 'react';
 import { Input } from './input';
 
 export const inputRightClasses =

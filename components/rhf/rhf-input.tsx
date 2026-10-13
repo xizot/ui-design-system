@@ -1,11 +1,11 @@
 'use client';
 
-import { UseFormRegister, type FieldValues } from 'react-hook-form';
+import type { UseFormRegister, FieldValues } from 'react-hook-form';
 
 import { cn } from '../../lib/utils';
 import { Input } from '../ui/input';
 import { RHFErrorMessage } from './rhf-error-message';
-import { RHFControlProps } from './types';
+import type { RHFControlProps } from './types';
 
 const ERROR_CLASSES = [
   `has-[.input-error]:[&_input]:border-destructive`,

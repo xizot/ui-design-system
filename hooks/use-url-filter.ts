@@ -1,4 +1,4 @@
-import { PaginationState, SortingState, Updater } from '@tanstack/react-table';
+import type { PaginationState, SortingState, Updater } from '@tanstack/react-table';
 import type { inferParserType, ParserMap } from 'nuqs';
 import { createParser, parseAsInteger, parseAsString, useQueryStates } from 'nuqs';
 import { useCallback, useMemo } from 'react';

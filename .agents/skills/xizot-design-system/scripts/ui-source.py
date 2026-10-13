@@ -14,7 +14,7 @@ def locate(root, mode=None):
             selected = re.search(r'^# Design system (source|package) mode$', section[1], re.M)
             if selected:
                 mode = selected[1]
-    sources = [root / 'design-system', root]
+    sources = [root / 'design-system', root / 'src/design-system', root]
     package = root / 'node_modules/ui-design-system'
     valid = lambda p: (p / 'components/ui').is_dir() and (p / 'components/rhf').is_dir()
     source = next((p for p in sources if valid(p)), None)
@@ -38,7 +38,7 @@ def discover(root, query, mode=None):
     matches = []
     for folder in ('components/ui', 'components/rhf', 'hooks', 'lib', 'constants'):
         for file in sorted((source / folder).rglob('*')):
-            if file.suffix not in ('.ts', '.tsx'):
+            if file.suffix not in ('.ts', '.tsx', '.js', '.jsx'):
                 continue
             body = file.read_text(encoding='utf-8')
             if not terms or any(term in (file.stem + '\n' + body).lower() for term in terms):

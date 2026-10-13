@@ -49,7 +49,7 @@ import {
   PaginationPrevious,
 } from './pagination';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
-import { ComboboxBaseOption } from './single-combobox';
+import type { ComboboxBaseOption } from './single-combobox';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './table';
 
 declare module '@tanstack/react-table' {

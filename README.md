@@ -5,7 +5,7 @@ A reusable UI design system starter built on top of the shadcn ecosystem, Base U
 This repository serves two purposes:
 
 - 🏗️ a source workspace for building and documenting components
-- 📦 a CLI installer with editable Source mode and dependency-based Package mode
+- 📦 a CLI installer that copies editable source into React applications
 
 ## 📁 What This Project Includes
 
@@ -37,6 +37,22 @@ This repository serves two purposes:
 ## 🚀 Installation via CLI
 
 The CLI copies editable components into `design-system/`.
+
+For Create React App, the target is `src/design-system/` so the source stays inside CRA's compilation boundary. TypeScript projects receive TS/TSX; JavaScript projects receive JS/JSX.
+
+### Supported projects
+
+| Project | Requirements | Build integration | Consumer imports |
+| --- | --- | --- | --- |
+| Vite React | React 19, Tailwind 4 | Preserves Vite config and adds a specific alias; configures PostCSS | `@/design-system/...` |
+| Next.js | Next 15.1 or 16.x, React 19, Tailwind 4 | Merges tsconfig/jsconfig paths and PostCSS configuration | `@/design-system/...` |
+| Create React App | react-scripts 5, React 19, Tailwind 4 | Uses CRACO, keeps source under `src`, loads the PostCSS config | `design-system/...` with `baseUrl: "src"` |
+
+Node 20.19+ is required. Existing React 18, Tailwind 3, incompatible dependency versions, unsupported configs and ambiguous package-manager lockfiles stop installation before source/config files are changed. Upgrade those dependencies explicitly before rerunning; the installer does not force major upgrades.
+
+CRA TypeScript projects retain the TypeScript version required by react-scripts and install TypeScript 5.9 as `xizot-typescript` for the build checker and VS Code SDK. Select the workspace TypeScript SDK in VS Code. Existing CRA start/build/test command arguments and CRACO overrides are preserved.
+
+The installer checks declared ranges and installed versions, installs missing packages with exact versions, and respects `package.json#packageManager` before lockfile detection. Vite/Next aliases use the specific `@/design-system/*` prefix, so existing `@/*` and other aliases keep their meaning. JSONC comments and unrelated settings are preserved.
 
 After pushing this repository to GitHub as `xizot/ui-design-system`, consumers can install it with:
 
@@ -78,7 +94,9 @@ The installer uses a guided flow:
 3. 🤖 Agent rules
    It installs the complete `.agents/skills` pack and `.agents/rules` and creates or updates the target project's `AGENTS.md` with the rules from `.agents/skills/xizot-design-system/references/agent-rules.md`.
 4. 🎨 Project files
-   It asks where to copy theme files such as `app/globals.css`.
+   It merges framework configuration, stores the theme in the installed `styles.css`, and imports it from application CSS (or the app entry). Existing application CSS and customized installed theme files are retained.
+
+For automation, `init --yes` installs missing packages and skips existing component files. Add `--overwrite` explicitly to refresh component source. Repeating setup does not duplicate config wrappers or CSS imports. `--mode source` is accepted for compatibility; package mode is not implemented by this CLI.
 
 Supported package managers:
 
@@ -97,13 +115,13 @@ import { Button } from '@/design-system/components/ui/button';
 
 This is the public consumption path after the CLI copies files into a project.
 
-## Agent discovery in both modes
+## Agent discovery
 
 ```bash
 python3 .agents/skills/xizot-design-system/scripts/ui-source.py --root . discover "input"
 ```
 
-Discovery uses the mode in the installer-marked `AGENTS.md` section. If both installations exist without that marker, add `--mode source` or `--mode package` before `discover`. Component references are relative to the discovered source root. See [installation modes](.agents/skills/xizot-design-system/references/installation-modes.md). After a manual dependency upgrade, rerun package setup to synchronize local skills with that revision.
+Discovery uses the installer-marked `AGENTS.md` section and recognizes both `design-system/` and CRA's `src/design-system/`, including JS/JSX source. Component references are relative to the discovered source root. Rerun setup to refresh local installer-owned skills/rules; project-specific guidance belongs outside those files and the marked AGENTS section.
 
 ## 📖 Internal Docs App
 
@@ -209,6 +227,10 @@ Update both:
 
 ## 📝 Notes
 
-- Source mode rewrites repository aliases for copied components; package builds emit relative ESM imports.
-- Source component conflicts prompt before overwrite. Installer-owned skills/rules refresh on setup in both modes.
-- The docs app is internal to this repository; both installation modes include the consumer skills and rules needed for downstream projects.
+- Copied components use relative internal imports and framework-specific consumer imports.
+- Source component conflicts prompt before overwrite. Installer-owned skills/rules refresh on setup.
+- The docs app is internal to this repository; installation includes the consumer skills and rules needed for downstream projects.
+
+## Installer validation
+
+Run `npm run test:installer` for isolated configuration/dependency tests. Run `node scripts/installer-smoke.cjs vite`, `node scripts/installer-smoke.cjs next`, or `node scripts/installer-smoke.cjs cra` for actual npm installation and production builds in a temporary directory. Add `js` to exercise JavaScript output. Smoke checks require network access and retain the fixture/build logs for inspection.

@@ -2,7 +2,7 @@
 
 import {
   useController,
-  UseFormRegister,
+  type UseFormRegister,
   type Control,
   type FieldValues,
   type Path,
