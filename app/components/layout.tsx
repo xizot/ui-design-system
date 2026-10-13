@@ -95,16 +95,13 @@ export default function ComponentsLayout({
                         key={guide.slug}
                         href={path}
                         className={cn(
-                          'flex items-center justify-between rounded-xl px-3 py-2 text-sm transition',
+                          'flex items-center rounded-xl px-3 py-2 text-sm transition',
                           isActive
                             ? 'bg-accent text-foreground font-medium shadow-sm'
                             : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
                         )}
                       >
                         <span className="min-w-0 truncate">{guide.name}</span>
-                        <span className="border-border/70 text-muted-foreground shrink-0 rounded-full border px-2 py-0.5 text-[10px] tracking-[0.2em] uppercase">
-                          {guide.group}
-                        </span>
                       </Link>
                     );
                   })}

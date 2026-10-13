@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
-import { STYLE_PRESET_CSS } from '@/internal-components/style-preset-css';
+import { COLOR_SCHEMA_CSS } from '@/internal-components/color-schema-presets';
 import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Inter } from 'next/font/google';
@@ -61,7 +61,7 @@ export default function RootLayout({
           id="style-preset-data"
           type="application/json"
           strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(STYLE_PRESET_CSS) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(COLOR_SCHEMA_CSS) }}
         />
         <Script id="style-preset-bootstrap" strategy="beforeInteractive">{`
           (() => {

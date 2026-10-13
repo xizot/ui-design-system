@@ -1,5 +1,6 @@
 export const guides = [
   { slug: 'installation', name: 'Installation', group: 'guide' as const },
+  { slug: 'color', name: 'Color', group: 'guide' as const },
   { slug: 'accordion', name: 'Accordion', group: 'ui' as const },
   { slug: 'alert', name: 'Alert', group: 'ui' as const },
   { slug: 'alert-dialog', name: 'Alert Dialog', group: 'ui' as const },

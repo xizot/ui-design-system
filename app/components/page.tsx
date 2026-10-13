@@ -21,6 +21,12 @@ const guides = [
     importPath: 'npx github:xizot/ui-design-system init',
   },
   {
+    slug: 'color',
+    name: 'Color',
+    group: 'guide',
+    importPath: 'color-schema.md',
+  },
+  {
     slug: 'accordion',
     name: 'Accordion',
     group: 'ui',

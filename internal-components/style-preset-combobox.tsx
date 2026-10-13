@@ -3,8 +3,11 @@
 import * as React from 'react';
 
 import { SingleCombobox } from '@/components/ui/single-combobox';
-import { STYLE_PRESET_CSS } from '@/internal-components/style-preset-css';
-import { STYLE_PRESETS, type StylePresetId } from '@/internal-components/style-presets';
+import {
+  COLOR_SCHEMAS,
+  COLOR_SCHEMA_CSS,
+  type ColorSchemaId,
+} from '@/internal-components/color-schema-presets';
 
 const STORAGE_KEY = 'design-system-style-preset';
 const STYLE_ELEMENT_ID = 'design-system-style-preset';
@@ -21,19 +24,29 @@ function ensureStyleElement() {
   return styleElement;
 }
 
+function getStoredPreset(): ColorSchemaId {
+  if (typeof window === 'undefined') {
+    return 'palette-01';
+  }
+
+  const savedPreset = window.localStorage.getItem(STORAGE_KEY);
+  return savedPreset && COLOR_SCHEMAS.some((preset) => preset.id === savedPreset)
+    ? (savedPreset as ColorSchemaId)
+    : 'palette-01';
+}
+
 function StylePresetCombobox() {
-  const [value, setValue] = React.useState<StylePresetId>('default');
+  const value = React.useSyncExternalStore(
+    (onStoreChange) => {
+      window.addEventListener('color-schema-change', onStoreChange);
+      return () => window.removeEventListener('color-schema-change', onStoreChange);
+    },
+    getStoredPreset,
+    () => 'palette-01',
+  );
 
   React.useEffect(() => {
-    const savedPreset = window.localStorage.getItem(STORAGE_KEY);
-
-    if (savedPreset && STYLE_PRESETS.some((preset) => preset.id === savedPreset)) {
-      setValue(savedPreset as StylePresetId);
-    }
-  }, []);
-
-  React.useEffect(() => {
-    const cssText = STYLE_PRESET_CSS[value];
+    const cssText = COLOR_SCHEMA_CSS[value];
     const styleElement = ensureStyleElement();
 
     styleElement.textContent = cssText;
@@ -46,14 +59,16 @@ function StylePresetCombobox() {
     <div className="flex items-center gap-2">
       <SingleCombobox
         className="w-44"
-        options={[...STYLE_PRESETS]}
+        options={[...COLOR_SCHEMAS]}
         value={value}
         onChange={(nextValue) => {
           if (!nextValue) {
             return;
           }
 
-          setValue(nextValue as StylePresetId);
+          const nextPreset = nextValue as ColorSchemaId;
+          window.localStorage.setItem(STORAGE_KEY, nextPreset);
+          window.dispatchEvent(new Event('color-schema-change'));
         }}
         placeholder="Chọn preset"
         searchPlaceholder="Tìm preset..."
