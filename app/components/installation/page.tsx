@@ -53,14 +53,6 @@ AGENTS.md`,
 import { RHFInput } from '@/design-system/components/rhf';
 import { cn } from '@/design-system/lib/utils';`,
   },
-  {
-    id: 'updates',
-    title: '5. Cập nhật và đọc source',
-    paragraphs: [
-      'Chạy lại lệnh cài và kiểm tra các file trùng trước khi ghi đè chỉnh sửa local. Agent đọc skills trong .agents/skills và component trong design-system/.',
-    ],
-    code: 'python3 .agents/skills/xizot-design-system/scripts/ui-source.py --root . discover "input"',
-  },
 ];
 
 export default function InstallationGuidePage() {

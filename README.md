@@ -117,14 +117,6 @@ import { Button } from '@/design-system/components/ui/button';
 
 This is the public consumption path after the CLI copies files into a project.
 
-## Agent discovery
-
-```bash
-python3 .agents/skills/xizot-design-system/scripts/ui-source.py --root . discover "input"
-```
-
-Discovery uses the installer-marked `AGENTS.md` section and recognizes both `design-system/` and CRA's `src/design-system/`, including JS/JSX source. Component references are relative to the discovered source root. Rerun setup to refresh local installer-owned skills/rules; project-specific guidance belongs outside those files and the marked AGENTS section.
-
 ## 📖 Internal Docs App
 
 This repository includes an internal docs shell under `app/components`.
@@ -237,11 +229,4 @@ Update both:
 
 The installed page-builder skill chooses a page pattern and an inherited or selected visual direction before composing UI. Multi-module workspaces default to sidebar navigation; public landing pages use top navigation; lists, overviews, forms and reading pages have different structures.
 
-Retrieve only the guidance needed for the task:
-
-```sh
-python .agents/skills/xizot-design-system/scripts/ui-source.py pattern management-list
-python .agents/skills/xizot-design-system/scripts/ui-source.py recipe workbench
-```
-
-Omit the pattern/recipe name to list choices. Existing app branding takes precedence over defaults. Guidance covers layout, color, typography, component choices, responsive behavior and removing unnecessary UX. Rendered design and interactions still need verification in the actual application.
+Existing app branding takes precedence over defaults. The page-builder skill covers layout, color, typography, component choices, responsive behavior and removing unnecessary UX. Rendered design and interactions still need verification in the actual application.
