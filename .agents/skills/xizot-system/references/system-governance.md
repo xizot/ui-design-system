@@ -37,7 +37,7 @@ Add a variant only when:
 1. Keep one-off UI local.
 2. Extract repeated domain UI into the feature folder.
 3. Promote cross-feature domain UI to app shared components.
-4. Promote product-neutral repeated interaction to `design-system/components`.
+4. Promote product-neutral repeated interaction to the design-system layer. In package mode, implement library changes in its source repository and install a new revision; never edit node_modules.
 
 Do not extract just because a file is long. Extract because the boundary clarifies ownership and reduces repeat decisions.
 
@@ -46,6 +46,8 @@ Do not extract just because a file is long. Extract because the boundary clarifi
 When skills or components must ship to consumers:
 
 - `package.json` must include the shipped path.
-- `bin/install.cjs` must copy/update it safely.
+- Source mode copies components; package mode installs compiled public exports. Both modes copy the complete skills/rules into local `.agents` and update the marked AGENTS section.
+- Verify guidance refresh from the installed package revision, preservation of unrelated guidance, and discovery when both installations remain.
+- Follow [installation modes](../../xizot-design-system/references/installation-modes.md) for source ownership and import boundaries.
 - `npm pack --dry-run` must show the expected files.
 - The installer should not depend on `/docs` for agent rules.

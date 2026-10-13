@@ -33,6 +33,6 @@ When editing this source repo:
 
 When editing a consumer project:
 
-- Do not modify installed design-system files casually.
+- Resolve [installation mode](installation-modes.md) first. Source copies may be edited when authorized. Never modify package files in node_modules; update the library repository and install a new revision instead.
 - Prefer app-local composition first.
 - If a design-system change is required, say it belongs upstream in this repo.

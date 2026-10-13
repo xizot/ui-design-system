@@ -1,6 +1,6 @@
 # react implementation rules
 
-Apply these rules to every React component, hook, form, and page.
+Apply these rules to every React component, hook, form, and page in both installation modes. Resolve source ownership and imports using [installation modes](../skills/xizot-design-system/references/installation-modes.md); the React policy is the same for source and package.
 
 ## [thinking in react](https://react.dev/learn/thinking-in-react)
 

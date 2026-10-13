@@ -58,4 +58,4 @@ Do not extract merely because a component is long. Extract because the boundary 
 
 ## Package Rules
 
-When skills change, ensure `package.json` includes `.agents/skills` and `npm pack --dry-run` shows the skill files. The CLI should install both the design-system source and the complete skill pack into consumer projects.
+When skills change, ensure `package.json` includes `.agents/skills` and `npm pack --dry-run` shows the skill files. Both CLI modes install the complete skill pack and React rules locally. Source mode copies components; package mode installs compiled exports and copies guidance from the installed dependency revision. Verify both modes and mode selection in discovery; see [installation-modes.md](installation-modes.md).

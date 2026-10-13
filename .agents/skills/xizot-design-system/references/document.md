@@ -7,7 +7,7 @@ Use only when the user asks to document usage, create frontend skills, write age
 When documenting for AI agents:
 
 - Put stable, reusable rules in skill references.
-- Put downstream always-on rules in `references/agent-rules.md`, which the installer injects into `AGENTS.md`.
+- Put downstream always-on rules in `references/agent-rules.md` (source) and `references/package-agent-rules.md` (package), which the installer injects into `AGENTS.md` according to mode.
 - Keep component API guidance grounded in actual source files.
 - Avoid huge copied examples unless they clarify a non-obvious pattern.
 - Prefer routing references so agents load only what they need.

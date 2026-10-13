@@ -2,7 +2,7 @@
 
 ## Imports
 
-In consumer projects installed by the CLI, import from the copied folder:
+Resolve the active mode using [installation-modes.md](installation-modes.md). In source consumers, import from the copied folder:
 
 ```tsx
 import { Button } from '@/design-system/components/ui/button';
@@ -10,7 +10,9 @@ import { Input } from '@/design-system/components/ui/input';
 import { DataTable, DataColumnHeader } from '@/design-system/components/ui/data-table';
 ```
 
-Inside this source repo, use the existing relative import style.
+In package consumers, use `ui-design-system/components/ui/button`, `ui-design-system/components/rhf` and other public package exports. Inspect source under `node_modules/ui-design-system/`; do not edit it.
+
+Inside this source repo, follow existing import conventions. All source paths below are relative to the resolved source root.
 
 ## Component Discovery
 
@@ -82,7 +84,7 @@ For dashboards:
 When modifying this design-system repo:
 
 - Add component source under `components/` only when a reusable primitive or wrapper is truly needed.
-- Keep public consumption examples using `@/design-system/...`.
+- Label consumption examples by mode: `@/design-system/...` for source and `ui-design-system/...` for package.
 - Keep imports relative inside copied source.
 - If adding runtime packages, update both `package.json` and `runtimeDependencies` in `bin/install.cjs`.
 - If adding copied folders, update both `directoriesToCopy` in `bin/install.cjs` and `files` in `package.json`.

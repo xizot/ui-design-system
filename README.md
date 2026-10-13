@@ -5,7 +5,7 @@ A reusable UI design system starter built on top of the shadcn ecosystem, Base U
 This repository serves two purposes:
 
 - 🏗️ a source workspace for building and documenting components
-- 📦 a CLI-distributed template that can install the design system into another project
+- 📦 a CLI installer with editable Source mode and dependency-based Package mode
 
 ## 📁 What This Project Includes
 
@@ -41,7 +41,7 @@ The CLI copies editable components into `design-system/`.
 After pushing this repository to GitHub as `xizot/ui-design-system`, consumers can install it with:
 
 ```bash
-npx github:xizot/ui-design-system init
+npx github:xizot/ui-design-system init --mode source
 ```
 
 Shortcut:
@@ -67,7 +67,7 @@ design-system/
 AGENTS.md
 ```
 
-## 🤖 CLI Behavior
+### Source CLI behavior
 
 The installer uses a guided flow:
 
@@ -76,7 +76,7 @@ The installer uses a guided flow:
 2. 📦 Dependencies
    It checks the target project's `package.json`, detects missing runtime dependencies, and asks whether they should be installed automatically.
 3. 🤖 Agent rules
-   It installs the complete `.agents/skills` pack and creates or updates the target project's `AGENTS.md` with the rules from `.agents/skills/xizot-design-system/references/agent-rules.md`.
+   It installs the complete `.agents/skills` pack and `.agents/rules` and creates or updates the target project's `AGENTS.md` with the rules from `.agents/skills/xizot-design-system/references/agent-rules.md`.
 4. 🎨 Project files
    It asks where to copy theme files such as `app/globals.css`.
 
@@ -87,7 +87,7 @@ Supported package managers:
 - `bun`
 - `npm`
 
-## 📥 Import Path for Consumers
+### Source import path
 
 The usage guides should document imports from the installed target path, for example:
 
@@ -96,6 +96,14 @@ import { Button } from '@/design-system/components/ui/button';
 ```
 
 This is the public consumption path after the CLI copies files into a project.
+
+## Agent discovery in both modes
+
+```bash
+python3 .agents/skills/xizot-design-system/scripts/ui-source.py --root . discover "input"
+```
+
+Discovery uses the mode in the installer-marked `AGENTS.md` section. If both installations exist without that marker, add `--mode source` or `--mode package` before `discover`. Component references are relative to the discovered source root. See [installation modes](.agents/skills/xizot-design-system/references/installation-modes.md). After a manual dependency upgrade, rerun package setup to synchronize local skills with that revision.
 
 ## 📖 Internal Docs App
 
@@ -201,6 +209,6 @@ Update both:
 
 ## 📝 Notes
 
-- The source is written with relative imports so copied files do not depend on local alias configuration.
-- The CLI is designed to be safe for existing projects by prompting before overwriting files.
-- The docs app is internal to this repository; the CLI installs the design system source folders plus the consumer rules needed for downstream projects.
+- Source mode rewrites repository aliases for copied components; package builds emit relative ESM imports.
+- Source component conflicts prompt before overwrite. Installer-owned skills/rules refresh on setup in both modes.
+- The docs app is internal to this repository; both installation modes include the consumer skills and rules needed for downstream projects.

@@ -1,5 +1,7 @@
 # xizot implementation routing
 
+Both source and package consumers use local `.agents/skills` and `.agents/rules`. Follow the installer-marked mode in consumer `AGENTS.md`; see [installation modes](.agents/skills/xizot-design-system/references/installation-modes.md). In this library repository, inspect `components/` directly.
+
 Read [.agents/rules/react.md](.agents/rules/react.md) for the complete React implementation policy.
 
 For React/Next.js UI work, read [.agents/skills/xizot-design-system/SKILL.md](.agents/skills/xizot-design-system/SKILL.md) before editing. Read files directly when the agent client does not expose skills automatically.

@@ -16,7 +16,7 @@ spec.loader.exec_module(tool)
 
 class SkillToolingTests(unittest.TestCase):
     def test_source_and_installed_discovery(self):
-        for prefix in ('', 'design-system'):
+        for prefix in ('', 'design-system', 'node_modules/ui-design-system'):
             with tempfile.TemporaryDirectory() as directory:
                 root = Path(directory).resolve()
                 source = root / prefix
@@ -26,6 +26,29 @@ class SkillToolingTests(unittest.TestCase):
                 result = tool.discover(root, 'rhf')
                 self.assertEqual(len(result['files']), 1)
                 self.assertEqual(Path(result['source_root']), source)
+
+    def test_mixed_installations_require_selection_and_honor_marker(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            for prefix in ('design-system', 'node_modules/ui-design-system'):
+                (root / prefix / 'components/ui').mkdir(parents=True)
+                (root / prefix / 'components/rhf').mkdir()
+                (root / prefix / 'components/ui/button.tsx').write_text('export const Button = 1;')
+            with self.assertRaises(ValueError):
+                tool.discover(root, 'button')
+            for mode, prefix in [('source', 'design-system'), ('package', 'node_modules/ui-design-system')]:
+                self.assertEqual(Path(tool.discover(root, 'button', mode)['source_root']), root / prefix)
+                (root / 'AGENTS.md').write_text('<!-- BEGIN:design-system-usage-rules -->\n# Design system ' + mode + ' mode\n<!-- END:design-system-usage-rules -->')
+                self.assertEqual(Path(tool.discover(root, 'button')['source_root']), root / prefix)
+            self.assertEqual(Path(tool.discover(root, 'button', 'source')['source_root']), root / 'design-system')
+
+    def test_selected_missing_mode_does_not_fall_back(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            (root / 'design-system/components/ui').mkdir(parents=True)
+            (root / 'design-system/components/rhf').mkdir()
+            with self.assertRaises(ValueError):
+                tool.discover(root, '', 'package')
 
     def test_missing_root_and_invalid_review_paths_fail(self):
         with tempfile.TemporaryDirectory() as directory:

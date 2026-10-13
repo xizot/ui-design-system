@@ -1,8 +1,10 @@
-# Agent Rules
+# Design system source mode
 
 These rules are installed into downstream `AGENTS.md` by the design-system CLI. Keep this file inside the skill folder so agent guidance ships with the skill instead of being split into `/docs`.
 
 ## Source Of Truth
+
+Read `.agents/rules/react.md` and `.agents/skills/xizot-design-system/references/installation-modes.md` for React policy and installation boundaries. This section selects source mode even when a package installation also exists.
 
 Before UI edits, read `.agents/skills/xizot-design-system/SKILL.md` from the target application root. For submitted forms read `xizot-forms/SKILL.md` in the same skills folder; for full pages use `xizot-page-builder`; finish with `xizot-quality`. Read files directly when the client does not discover skills.
 
@@ -10,7 +12,7 @@ Run `python .agents/skills/xizot-design-system/scripts/ui-source.py --root . dis
 
 Submitted product forms use RHF and existing wrappers. Search/filter controls may use local/URL state. Respect explicit user choices or existing native/server-action contracts and explain the exception. Review ownership, state and duplication using core `references/code-contract.md`.
 
-- Treat `design-system/` as the source of truth for shared UI primitives, RHF wrappers, hooks, constants, utilities, and agent UI rules.
+- Treat `design-system/` as the source of truth for shared UI primitives, RHF wrappers, hooks, constants, and utilities. Agent guidance lives in local `.agents/`.
 - Inspect `design-system/components/ui`, `design-system/components/rhf`, `design-system/hooks`, `design-system/constants`, and nearby app components before creating UI.
 - Do not create app-local copies of primitives already available in the design system.
 - Do not import lower-level third-party primitives directly when a design-system wrapper exists.
