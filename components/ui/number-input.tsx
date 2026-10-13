@@ -1,4 +1,5 @@
 import { cn, hasValue } from '../../lib/utils';
+import { formControlSurface } from '../../lib/form-control-styles';
 import {
   DEFAULT_DECIMAL_PLACES,
   formatNumber,
@@ -9,8 +10,10 @@ import {
 import React, { type ComponentProps, useLayoutEffect, useRef, useState } from 'react';
 import { Input } from './input';
 
-export const inputRightClasses =
-  'w-25 h-10 px-3 py-2 text-tms-disabled border border-l-0 border-input rounded-r-lg';
+export const inputRightClasses = cn(
+  'h-10 w-25 rounded-r-lg border border-l-0 px-3 py-2',
+  formControlSurface,
+);
 
 export type NumberFormatType = 'integer' | 'decimal';
 

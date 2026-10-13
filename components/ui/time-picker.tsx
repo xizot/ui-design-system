@@ -5,6 +5,11 @@ import { cva } from 'class-variance-authority';
 import { ClockIcon, XCircleIcon } from 'lucide-react';
 
 import { cn } from '../../lib/utils';
+import {
+  formControlSurface,
+  formControlTriggerFocus,
+  formControlTriggerInvalidFocus,
+} from '../../lib/form-control-styles';
 import { FormErrorMessage } from './form-error-message';
 import { FormLabel } from './form-label';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
@@ -89,13 +94,13 @@ export type TimePickerPanelProps = {
 const timePickerHeaderVariants = cva('', {
   variants: {
     size: {
-      xxs: 'px-3 py-2 text-sm',
-      xs: 'px-3 py-2 text-sm',
-      sm: 'px-3 py-2 text-base',
-      md: 'px-4 py-3 text-lg',
-      lg: 'px-4 py-3 text-lg',
-      xl: 'px-5 py-4 text-xl',
-      xxl: 'px-5 py-4 text-xl',
+      xxs: 'px-3 py-2 text-xs',
+      xs: 'px-3 py-2 text-xs',
+      sm: 'px-3 py-2 text-sm',
+      md: 'px-4 py-3 text-sm',
+      lg: 'px-4 py-3 text-base',
+      xl: 'px-5 py-4 text-base',
+      xxl: 'px-5 py-4 text-lg',
     },
   },
   defaultVariants: {
@@ -106,13 +111,13 @@ const timePickerHeaderVariants = cva('', {
 const timePickerItemVariants = cva('', {
   variants: {
     size: {
-      xxs: 'px-1.5 py-1 text-xs',
-      xs: 'px-1.5 py-1 text-xs',
-      sm: 'px-2 py-1 text-sm',
-      md: 'px-2 py-1.5 text-sm',
-      lg: 'px-2.5 py-2 text-base',
-      xl: 'px-3 py-2 text-base',
-      xxl: 'px-3 py-2.5 text-lg',
+      xxs: 'text-xs',
+      xs: 'text-xs',
+      sm: 'text-sm',
+      md: 'text-sm',
+      lg: 'text-base',
+      xl: 'text-base',
+      xxl: 'text-lg',
     },
   },
   defaultVariants: {
@@ -123,18 +128,33 @@ const timePickerItemVariants = cva('', {
 const timePickerColumnVariants = cva('', {
   variants: {
     size: {
-      xxs: 'w-12',
-      xs: 'w-14',
-      sm: 'w-14',
-      md: 'w-16',
-      lg: 'w-20',
-      xl: 'w-20',
-      xxl: 'w-24',
+      xxs: 'w-11',
+      xs: 'w-12',
+      sm: 'w-12',
+      md: 'w-13',
+      lg: 'w-14',
+      xl: 'w-15',
+      xxl: 'w-16',
     },
   },
   defaultVariants: {
     size: 'md',
   },
+});
+
+const timePickerRowHeightVariants = cva('', {
+  variants: {
+    size: {
+      xxs: '[--time-row-height:24px]',
+      xs: '[--time-row-height:28px]',
+      sm: '[--time-row-height:28px]',
+      md: '[--time-row-height:32px]',
+      lg: '[--time-row-height:36px]',
+      xl: '[--time-row-height:40px]',
+      xxl: '[--time-row-height:44px]',
+    },
+  },
+  defaultVariants: { size: 'md' },
 });
 
 function TimePickerPanel({
@@ -255,24 +275,29 @@ function TimePickerPanel({
         </div>
       ) : null}
 
-      <div className="relative flex min-h-0 flex-1 gap-0.5">
-        <div className="bg-muted/50 pointer-events-none absolute inset-x-2 top-1/2 z-0 h-8 -translate-y-1/2 rounded-md" />
+      <div
+        className={cn(
+          'relative flex min-h-0 flex-1 gap-0.5 px-2',
+          timePickerRowHeightVariants({ size }),
+        )}
+      >
+        <div className="bg-muted/50 pointer-events-none absolute inset-x-3 top-1/2 z-0 h-(--time-row-height) -translate-y-1/2 rounded-md" />
         <ScrollArea
           className={cn(
-            'relative z-10 flex-1 overflow-hidden [&>[data-slot=scroll-area-viewport]]:rounded-l-md',
+            '[container-type:size] relative z-10 flex-1 overflow-hidden [&>[data-slot=scroll-area-viewport]]:rounded-l-md',
             timePickerColumnVariants({ size }),
           )}
         >
-          <div ref={hourContainerRef} className="px-2 py-[calc(50%_-_1rem)]">
+          <div ref={hourContainerRef} className="py-[calc(50cqh_-_var(--time-row-height)/2)] pr-4 pl-1">
             {hours.map((hour) => (
               <div
                 key={hour}
                 data-hour={hour}
                 onClick={() => handleHourClick(hour)}
                 className={cn(
-                  'cursor-pointer rounded-md text-left transition-colors',
+                  'flex h-(--time-row-height) cursor-pointer items-center justify-center rounded-md text-center transition-colors',
                   timePickerItemVariants({ size }),
-                  currentHour === hour ? 'bg-secondary' : 'hover:bg-accent',
+                  currentHour === hour ? 'bg-primary text-primary-foreground' : 'hover:bg-accent',
                 )}
               >
                 {hour.toString().padStart(2, '0')}
@@ -283,20 +308,25 @@ function TimePickerPanel({
 
         <ScrollArea
           className={cn(
-            'relative z-10 flex-1 [&>[data-slot=scroll-area-viewport]]:overflow-hidden',
+            '[container-type:size] relative z-10 flex-1 [&>[data-slot=scroll-area-viewport]]:overflow-hidden',
             timePickerColumnVariants({ size }),
           )}
         >
-          <div ref={minuteContainerRef} className="px-2 py-[calc(50%_-_1rem)]">
+          <div
+            ref={minuteContainerRef}
+            className="py-[calc(50cqh_-_var(--time-row-height)/2)] pr-4 pl-1"
+          >
             {minutes.map((minute) => (
               <div
                 key={minute}
                 data-minute={minute}
                 onClick={() => handleMinuteClick(minute)}
                 className={cn(
-                  'cursor-pointer rounded-md text-left transition-colors',
+                  'flex h-(--time-row-height) cursor-pointer items-center justify-center rounded-md text-center transition-colors',
                   timePickerItemVariants({ size }),
-                  currentMinute === minute ? 'bg-secondary' : 'hover:bg-accent',
+                  currentMinute === minute
+                    ? 'bg-primary text-primary-foreground'
+                    : 'hover:bg-accent',
                 )}
               >
                 {minute.toString().padStart(2, '0')}
@@ -308,20 +338,25 @@ function TimePickerPanel({
         {showSeconds && (
           <ScrollArea
             className={cn(
-              'relative z-10 flex-1 overflow-hidden [&>[data-slot=scroll-area-viewport]]:rounded-r-md',
+              '[container-type:size] relative z-10 flex-1 overflow-hidden [&>[data-slot=scroll-area-viewport]]:rounded-r-md',
               timePickerColumnVariants({ size }),
             )}
           >
-            <div ref={secondContainerRef} className="px-2 py-[calc(50%_-_1rem)]">
+            <div
+              ref={secondContainerRef}
+              className="py-[calc(50cqh_-_var(--time-row-height)/2)] pr-4 pl-1"
+            >
               {seconds.map((second) => (
                 <div
                   key={second}
                   data-second={second}
                   onClick={() => handleSecondClick(second)}
                   className={cn(
-                    'cursor-pointer rounded-md text-left transition-colors',
+                    'flex h-(--time-row-height) cursor-pointer items-center justify-center rounded-md text-center transition-colors',
                     timePickerItemVariants({ size }),
-                    currentSecond === second ? 'bg-secondary' : 'hover:bg-accent',
+                    currentSecond === second
+                      ? 'bg-primary text-primary-foreground'
+                      : 'hover:bg-accent',
                   )}
                 >
                   {second.toString().padStart(2, '0')}
@@ -383,10 +418,12 @@ function TimePicker({
         <FormLabel label={label} htmlFor={id} required={required} className={labelClassName} />
       ) : null}
       <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger className="w-full" disabled={disabled}>
+        <PopoverTrigger className="group/form-trigger w-full" disabled={disabled}>
           <div
             className={cn(
-              'group border-input dark:bg-input/30 relative inline-flex w-full items-center justify-between gap-x-3 rounded-md border bg-transparent shadow-xs transition-[color,box-shadow]',
+              'group relative inline-flex w-full items-center justify-between gap-x-3 rounded-md border shadow-xs transition-[color,box-shadow]',
+              formControlSurface,
+              error ? formControlTriggerInvalidFocus : formControlTriggerFocus,
               formControlRingStyles.focusWithin,
               open && (error ? formControlRingStyles.invalidOpen : formControlRingStyles.open),
               disabled && 'pointer-events-none cursor-not-allowed opacity-50',

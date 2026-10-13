@@ -36,6 +36,7 @@ Read these first when relevant:
 - `DataTable`: use for list pages with manual sorting, filters, pagination, loading states, empty states, selectable rows, expanded rows, and pinned action columns.
 - `PopoverPanel`, `DialogPanel`, `SheetPanel`: use these for application overlays and choose their `size`; do not recreate width or padding with `*Content` plus `className`. Reserve lower-level content primitives for reusable controls with a different structure, such as date pickers and command menus. `DrawerPanel` serves drawer flows.
 - `Card`: use its `size` (`xxs` through `xxl`; legacy `default` remains supported) to scale spacing and typography together.
+- Field controls and field-like triggers use `lib/form-control-styles.ts` for a consistent surface in light and dark modes. Preserve muted placeholders and destructive validation states.
 - `Badge`, `Marker`, `Empty`, `Skeleton`, `Spinner`, `CustomToast`/`sonner`: use existing feedback components instead of custom one-off UI.
 - `Sidebar`, `Breadcrumb`, `Tabs`, `ButtonGroup`, `InputGroup`, `Pagination`, `DropdownMenu`, `Command`: use for application navigation and dense workflows.
 

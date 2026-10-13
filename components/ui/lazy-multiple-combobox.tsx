@@ -6,6 +6,8 @@ import { cva } from 'class-variance-authority';
 import * as React from 'react';
 
 import { cn } from '../../lib/utils';
+import { formControlSurface } from '../../lib/form-control-styles';
+import { getSearchInputSize } from '../../lib/form-size';
 import { Badge } from './badge';
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxList } from './combobox';
 import { FormErrorMessage } from './form-error-message';
@@ -30,6 +32,21 @@ const comboboxTriggerVariants = cva('', {
   defaultVariants: {
     size: 'md',
   },
+});
+
+const comboboxAutoResizeVariants = cva('', {
+  variants: {
+    size: {
+      xxs: 'min-h-7 text-xs',
+      xs: 'min-h-8 text-xs',
+      sm: 'min-h-9 text-sm',
+      md: 'min-h-10 text-sm',
+      lg: 'min-h-11 text-base',
+      xl: 'min-h-12 text-base',
+      xxl: 'min-h-14 text-lg',
+    },
+  },
+  defaultVariants: { size: 'md' },
 });
 
 const comboboxPaddingVariants = cva('', {
@@ -448,20 +465,21 @@ function LazyMultipleCombobox<
         <div
           ref={anchorRef}
           className={cn(
-            'group/trigger border-input dark:bg-input/30 relative flex w-full min-w-0 rounded-md border bg-transparent shadow-xs transition-[color,box-shadow]',
-            autoResize ? 'items-start' : 'items-stretch overflow-hidden',
+            'group/trigger relative flex w-full min-w-0 rounded-md border shadow-xs transition-[color,box-shadow]',
+            formControlSurface,
+            autoResize ? 'items-center' : 'items-stretch overflow-hidden',
             formControlRingStyles.focusWithin,
             open && (error ? formControlRingStyles.invalidOpen : formControlRingStyles.open),
             disabled && 'pointer-events-none cursor-not-allowed opacity-50',
             error && formControlRingStyles.invalidWithin,
-            comboboxTriggerVariants({ size }),
+            autoResize ? comboboxAutoResizeVariants({ size }) : comboboxTriggerVariants({ size }),
           )}
         >
           <div
             className={cn(
               'flex min-w-0 flex-1 items-center gap-1',
               comboboxPaddingVariants({ size }),
-              autoResize ? 'flex-wrap' : 'overflow-hidden',
+              autoResize ? 'flex-wrap py-1' : 'overflow-hidden',
             )}
           >
             {externalValues.length > 0 ? (
@@ -574,7 +592,7 @@ function LazyMultipleCombobox<
               id={inputId}
               placeholder={searchPlaceholder}
               showClear={false}
-              formSize={size}
+              formSize={getSearchInputSize(size)}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />

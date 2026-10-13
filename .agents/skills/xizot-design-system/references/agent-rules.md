@@ -47,6 +47,7 @@ If the project uses a different alias, keep the `design-system/` folder boundary
 - Use `DataTable` for list pages that need sorting, filters, pagination, loading, empty state, row selection, expanded rows, or pinned actions.
 - Use `PopoverPanel`, `DialogPanel`, and `SheetPanel` for application popovers, dialogs, and sheets. Select their built-in `size` instead of setting panel width or padding in `className`. Use the lower-level `*Content` primitives only inside reusable controls that require a different structure (for example, a calendar or command menu); document that exception.
 - Pass the same supported `size` through a composed control and its internal search/input elements. Use `Card size` for card density instead of overriding its spacing and text sizes.
+- Use the shared form-control surface from `lib/form-control-styles.ts` for editable fields and field-like triggers so border, background, and value text match in light and dark modes. Keep placeholder and invalid states semantic.
 - Use `Badge`, `Marker`, `Empty`, `Skeleton`, `Spinner`, and toast utilities for feedback states.
 
 ## System Rules

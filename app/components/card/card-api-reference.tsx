@@ -24,7 +24,14 @@ const cardApiReferences: CardApiReferenceItem[] = [
     id: 'api-card',
     name: 'Card',
     description: 'is the root container for card content.',
-    props: [{ name: 'size', type: "'default' | 'sm'", defaultValue: "'default'" }, classNameProp],
+    props: [
+      {
+        name: 'size',
+        type: "'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'default'",
+        defaultValue: "'default'",
+      },
+      classNameProp,
+    ],
   },
   {
     id: 'api-card-header',

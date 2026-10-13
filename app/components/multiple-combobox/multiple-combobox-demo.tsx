@@ -11,13 +11,15 @@ const departments = [
   { id: 5, code: 'OPS', name: 'Vận hành' },
 ];
 
+type MultipleComboboxBasicDemoProps = {
+  size?: 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
+  label?: string;
+};
+
 export function MultipleComboboxBasicDemo({
   size,
   label = 'Phòng ban',
-}: {
-  size?: 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-  label?: string;
-}) {
+}: MultipleComboboxBasicDemoProps) {
   const [values, setValues] = useState<(string | number)[]>([]);
 
   return (

@@ -129,10 +129,16 @@ const guides = [
     importPath: '@/design-system/components/ui/collapsible',
   },
   {
-    slug: 'combobox',
-    name: 'Combobox',
+    slug: 'single-combobox',
+    name: 'Single Combobox',
     group: 'ui',
-    importPath: '@/design-system/components/ui/combobox',
+    importPath: '@/design-system/components/ui/single-combobox',
+  },
+  {
+    slug: 'multiple-combobox',
+    name: 'Multiple Combobox',
+    group: 'ui',
+    importPath: '@/design-system/components/ui/multiple-combobox',
   },
   {
     slug: 'command',

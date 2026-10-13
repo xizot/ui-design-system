@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 
 import { getGuide } from '../guide-data';
 import { CardApiReferenceContent, cardApiReferenceLinks } from './card-api-reference';
-import { CardSpacingExample, cardSpacingCode } from './card-spacing-example';
+import { CardSizeExample, cardSizeCode } from './card-size-example';
 import { CardWithImageExample, cardWithImageCode } from './card-with-image-example';
 import { DefaultCardExample, defaultCardCode } from './default-card-example';
 
@@ -21,10 +21,10 @@ const usageSamples = [
     code: defaultCardCode,
   },
   {
-    id: 'spacing',
-    label: 'Spacing',
-    preview: <CardSpacingExample />,
-    code: cardSpacingCode,
+    id: 'size',
+    label: 'Size',
+    preview: <CardSizeExample />,
+    code: cardSizeCode,
   },
   {
     id: 'with-image',

@@ -24,6 +24,13 @@ import { FormLabel } from './form-label';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
 import { Separator } from './separator';
 import { cn } from '../../lib/utils';
+import {
+  formControlFocusWithin,
+  formControlInvalidWithin,
+  formControlSurface,
+  formControlTriggerFocus,
+  formControlTriggerInvalidFocus,
+} from '../../lib/form-control-styles';
 import type { ComponentProps } from 'react';
 
 type FormSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
@@ -284,13 +291,18 @@ function DateRangePicker({
       <div>
         {' '}
         <Popover open={open} onOpenChange={handleOpenChange}>
-          <PopoverTrigger className="w-full">
+          <PopoverTrigger className="group/form-trigger w-full" disabled={disabled}>
             <div
               className={cn(
-                'group border-border bg-background ring-offset-background hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex w-full items-center justify-between gap-x-3 rounded-md border shadow-sm transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
+                'group relative inline-flex w-full items-center justify-between gap-x-3 rounded-md border shadow-xs transition-[color,box-shadow]',
+                formControlSurface,
+                formControlFocusWithin,
+                error ? formControlTriggerInvalidFocus : formControlTriggerFocus,
+                open && (error ? formControlInvalidWithin : 'border-ring ring-ring/50 ring-3'),
                 dateTriggerVariants({ size }),
                 !value?.from && 'text-muted-foreground',
-                error && 'border-destructive',
+                error && formControlInvalidWithin,
+                disabled && 'pointer-events-none cursor-not-allowed opacity-50',
                 triggerClassName,
               )}
             >

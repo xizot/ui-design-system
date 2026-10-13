@@ -15,6 +15,13 @@ import { cva } from 'class-variance-authority';
 import * as React from 'react';
 import type { PropsSingle } from 'react-day-picker';
 import { cn } from '../../lib/utils';
+import {
+  formControlFocusWithin,
+  formControlInvalidWithin,
+  formControlSurface,
+  formControlTriggerFocus,
+  formControlTriggerInvalidFocus,
+} from '../../lib/form-control-styles';
 import { Button } from './button';
 import { Calendar } from './calendar';
 import { FormErrorMessage } from './form-error-message';
@@ -93,7 +100,7 @@ const datePickerCalendarVariants = cva('', {
     size: {
       xxs: '!p-2 text-xs [--cell-size:--spacing(6)]',
       xs: '!p-2 text-xs [--cell-size:--spacing(7)]',
-      sm: '!p-2.5 text-sm [--cell-size:--spacing(7)]',
+      sm: '!p-2.5 text-sm [--cell-size:--spacing(8)]',
       md: '!p-3 text-sm [--cell-size:--spacing(8)]',
       lg: '!p-3 text-base [--cell-size:--spacing(9)]',
       xl: '!p-3.5 text-base [--cell-size:--spacing(10)]',
@@ -110,7 +117,7 @@ const datePickerPanelVariants = cva('', {
     size: {
       xxs: 'h-[280px]',
       xs: 'h-[300px]',
-      sm: 'h-[320px]',
+      sm: 'h-[350px]',
       md: 'h-[350px]',
       lg: 'h-[390px]',
       xl: 'h-[430px]',
@@ -355,13 +362,18 @@ function DatePicker({
       ) : null}
       <div>
         <Popover open={open} onOpenChange={handleOpenChange}>
-          <PopoverTrigger className="w-full">
+          <PopoverTrigger className="group/form-trigger w-full" disabled={disabled}>
             <div
               className={cn(
-                'group border-border bg-background ring-offset-background hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex w-full items-center justify-between gap-x-3 rounded-md border shadow-sm transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
+                'group relative inline-flex w-full items-center justify-between gap-x-3 rounded-md border shadow-xs transition-[color,box-shadow]',
+                formControlSurface,
+                formControlFocusWithin,
+                error ? formControlTriggerInvalidFocus : formControlTriggerFocus,
+                open && (error ? formControlInvalidWithin : 'border-ring ring-ring/50 ring-3'),
                 dateTriggerVariants({ size }),
                 !resolvedValue && 'text-muted-foreground',
-                error && 'border-destructive',
+                error && formControlInvalidWithin,
+                disabled && 'pointer-events-none cursor-not-allowed opacity-50',
                 triggerClassName,
               )}
             >
@@ -450,7 +462,7 @@ function DatePicker({
                     <TimePickerPanel
                       value={selectedTime}
                       onChange={setSelectedTime}
-                      size={size}
+                      size={size === 'sm' ? 'md' : size}
                       className="h-full min-h-0 shrink-0"
                     />
                   )}

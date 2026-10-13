@@ -2,6 +2,7 @@ import { cva } from 'class-variance-authority';
 import * as React from 'react';
 
 import { cn } from '../../lib/utils';
+import { formControlSurface } from '../../lib/form-control-styles';
 import { FormErrorMessage } from './form-error-message';
 import { FormLabel } from './form-label';
 import { Label } from './label';
@@ -60,7 +61,8 @@ function Textarea({
       <textarea
         data-slot="textarea"
         className={cn(
-          'border-input placeholder:text-muted-foreground dark:bg-input/30 flex field-sizing-content min-h-16 w-full rounded-md border bg-transparent shadow-xs transition-[color,box-shadow] outline-none disabled:cursor-not-allowed disabled:opacity-50',
+          'placeholder:text-muted-foreground flex field-sizing-content min-h-16 w-full rounded-md border shadow-xs transition-[color,box-shadow] outline-none disabled:cursor-not-allowed disabled:opacity-50',
+          formControlSurface,
           textareaRingStyles.focusVisible,
           textareaRingStyles.invalid,
           textareaVariants({ size }),

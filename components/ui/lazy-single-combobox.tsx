@@ -6,6 +6,8 @@ import { cva } from 'class-variance-authority';
 import * as React from 'react';
 
 import { cn } from '../../lib/utils';
+import { formControlSurface } from '../../lib/form-control-styles';
+import { getSearchInputSize } from '../../lib/form-size';
 import {
   Combobox,
   ComboboxContent,
@@ -482,7 +484,8 @@ function LazySingleCombobox<
         <div
           ref={anchorRef}
           className={cn(
-            'group/trigger border-input dark:bg-input/30 relative flex w-full items-center overflow-hidden rounded-md border bg-transparent shadow-xs transition-[color,box-shadow]',
+            'group/trigger relative flex w-full items-center overflow-hidden rounded-md border shadow-xs transition-[color,box-shadow]',
+            formControlSurface,
             formControlRingStyles.focusWithin,
             open && (error ? formControlRingStyles.invalidOpen : formControlRingStyles.open),
             disabled && 'pointer-events-none cursor-not-allowed opacity-50',
@@ -557,7 +560,7 @@ function LazySingleCombobox<
               id={inputId}
               placeholder={searchPlaceholder}
               showClear
-              formSize={size}
+              formSize={getSearchInputSize(size)}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
