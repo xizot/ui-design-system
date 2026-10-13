@@ -16,7 +16,7 @@ const props = [
   { name: 'format', type: "'integer' | 'decimal'", defaultValue: "'integer'" },
   { name: 'max', type: 'number', defaultValue: '999999999999' },
   { name: 'allowNegative', type: 'boolean', defaultValue: 'false' },
-  { name: 'decimalMaxFractionDigits', type: 'number', defaultValue: '3' },
+  { name: 'decimalMaxFractionDigits', type: 'number', defaultValue: '2' },
   { name: 'placeholder', type: 'string', defaultValue: '--' },
   { name: 'value', type: 'number', defaultValue: '--' },
   {

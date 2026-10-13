@@ -32,6 +32,241 @@ const props = [
   { name: 'collapsible', type: `"offcanvas" | "icon" | "none"`, defaultValue: `"offcanvas"` },
 ];
 
+const starterCode = `import type { ReactNode } from "react"
+import {
+  Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel,
+  SidebarInset, SidebarMenu, SidebarMenuButton, SidebarMenuItem,
+  SidebarProvider, SidebarTrigger,
+} from "@/design-system/components/ui/sidebar"
+
+const links = [
+  { title: "Dashboard", href: "/dashboard" },
+  { title: "Settings", href: "/settings" },
+]
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <SidebarProvider>
+          <Sidebar>
+            <SidebarContent>
+              <SidebarGroup>
+                <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+                <SidebarMenu>
+                  {links.map((link) => (
+                    <SidebarMenuItem key={link.href}>
+                      <SidebarMenuButton render={<a href={link.href} />}>
+                        {link.title}
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroup>
+            </SidebarContent>
+          </Sidebar>
+          <SidebarInset>
+            <header className="flex h-14 items-center px-4">
+              <SidebarTrigger />
+            </header>
+            {children}
+          </SidebarInset>
+        </SidebarProvider>
+      </body>
+    </html>
+  )
+}`;
+
+const sidebar07Code = `"use client"
+
+import * as React from "react"
+import {
+  AudioLinesIcon, BookOpenIcon, ChevronRightIcon, GalleryVerticalEndIcon,
+  Settings2Icon, TerminalIcon, TerminalSquareIcon,
+} from "lucide-react"
+import {
+  Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel,
+  SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuButton, SidebarMenuItem,
+  SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider,
+  SidebarRail, SidebarTrigger,
+} from "@/design-system/components/ui/sidebar"
+
+const teams = [
+  { name: "Acme Inc", icon: GalleryVerticalEndIcon },
+  { name: "Acme Corp.", icon: AudioLinesIcon },
+  { name: "Evil Corp.", icon: TerminalIcon },
+]
+const navigation = [
+  { title: "Playground", icon: TerminalSquareIcon, items: ["History", "Starred", "Settings"] },
+  { title: "Documentation", icon: BookOpenIcon, items: ["Introduction", "Get Started"] },
+  { title: "Settings", icon: Settings2Icon, items: ["General", "Team"] },
+]
+
+function AppSidebar() {
+  const [team, setTeam] = React.useState(teams[0])
+  const TeamIcon = team.icon
+  return (
+    <Sidebar collapsible="icon">
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" tooltip={team.name}>
+              <TeamIcon className="size-5" />
+              <span className="truncate">{team.name}</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          {teams.filter((item) => item.name !== team.name).map((item) => (
+            <SidebarMenuItem key={item.name}>
+              <SidebarMenuButton onClick={() => setTeam(item)} tooltip={item.name}>
+                <item.icon className="size-4" />{item.name}
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Platform</SidebarGroupLabel>
+          <SidebarMenu>
+            {navigation.map((section) => (
+              <SidebarMenuItem key={section.title}>
+                <SidebarMenuButton tooltip={section.title}>
+                  <section.icon className="size-4" />
+                  <span>{section.title}</span><ChevronRightIcon className="ml-auto size-4" />
+                </SidebarMenuButton>
+                <SidebarMenuSub>
+                  {section.items.map((item) => (
+                    <SidebarMenuSubItem key={item}>
+                      <SidebarMenuSubButton render={<a href="#" />}>{item}</SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  ))}
+                </SidebarMenuSub>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu><SidebarMenuItem>
+          <SidebarMenuButton tooltip="Account">shadcn · m@example.com</SidebarMenuButton>
+        </SidebarMenuItem></SidebarMenu>
+      </SidebarFooter>
+      <SidebarRail />
+    </Sidebar>
+  )
+}
+
+export default function Page() {
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-14 items-center px-4"><SidebarTrigger /></header>
+        <main className="p-4">Page content</main>
+      </SidebarInset>
+    </SidebarProvider>
+  )
+}`;
+
+const sidebar08Code = `"use client"
+
+import {
+  BookOpenIcon, FrameIcon, LifeBuoyIcon, MapIcon, PieChartIcon,
+  SendIcon, Settings2Icon, TerminalIcon, TerminalSquareIcon,
+} from "lucide-react"
+import {
+  Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel,
+  SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuButton, SidebarMenuItem,
+  SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider,
+  SidebarTrigger,
+} from "@/design-system/components/ui/sidebar"
+
+const navigation = [
+  { title: "Playground", icon: TerminalSquareIcon, items: ["History", "Starred", "Settings"] },
+  { title: "Documentation", icon: BookOpenIcon, items: ["Introduction", "Get Started"] },
+  { title: "Settings", icon: Settings2Icon, items: ["General", "Team"] },
+]
+const projects = [
+  { title: "Design Engineering", icon: FrameIcon },
+  { title: "Sales & Marketing", icon: PieChartIcon },
+  { title: "Travel", icon: MapIcon },
+]
+
+function AppSidebar() {
+  return (
+    <Sidebar variant="inset">
+      <SidebarHeader>
+        <SidebarMenu><SidebarMenuItem>
+          <SidebarMenuButton size="lg" render={<a href="#" />}>
+            <TerminalIcon className="size-5" />
+            <span className="grid text-left"><strong>Acme Inc</strong><small>Enterprise</small></span>
+          </SidebarMenuButton>
+        </SidebarMenuItem></SidebarMenu>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Platform</SidebarGroupLabel>
+          <SidebarMenu>
+            {navigation.map((section) => (
+              <SidebarMenuItem key={section.title}>
+                <SidebarMenuButton>
+                  <section.icon className="size-4" />{section.title}
+                </SidebarMenuButton>
+                <SidebarMenuSub>
+                  {section.items.map((item) => (
+                    <SidebarMenuSubItem key={item}>
+                      <SidebarMenuSubButton render={<a href="#" />}>{item}</SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  ))}
+                </SidebarMenuSub>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Projects</SidebarGroupLabel>
+          <SidebarMenu>
+            {projects.map((project) => (
+              <SidebarMenuItem key={project.title}>
+                <SidebarMenuButton render={<a href="#" />}>
+                  <project.icon className="size-4" />{project.title}
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
+        <SidebarGroup className="mt-auto">
+          <SidebarMenu>
+            <SidebarMenuItem><SidebarMenuButton render={<a href="#" />}>
+              <LifeBuoyIcon className="size-4" />Support
+            </SidebarMenuButton></SidebarMenuItem>
+            <SidebarMenuItem><SidebarMenuButton render={<a href="#" />}>
+              <SendIcon className="size-4" />Feedback
+            </SidebarMenuButton></SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu><SidebarMenuItem>
+          <SidebarMenuButton>shadcn · m@example.com</SidebarMenuButton>
+        </SidebarMenuItem></SidebarMenu>
+      </SidebarFooter>
+    </Sidebar>
+  )
+}
+
+export default function Page() {
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-14 items-center px-4"><SidebarTrigger /></header>
+        <main className="p-4">Page content</main>
+      </SidebarInset>
+    </SidebarProvider>
+  )
+}`;
+
 const usageSamples = [
   {
     id: 'sidebar-04',
@@ -244,274 +479,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarProvider>
       </div>
     ),
-    files: [
-      {
-        name: 'page.tsx',
-        code: `import { AppSidebar } from "./app-sidebar"
-import {
-  Breadcrumb, BreadcrumbItem, BreadcrumbLink,
-  BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator,
-} from "@/design-system/components/ui/breadcrumb"
-import { Separator } from "@/design-system/components/ui/separator"
-import {
-  SidebarInset, SidebarProvider, SidebarTrigger,
-} from "@/design-system/components/ui/sidebar"
-
-export default function Page() {
-  return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-16 items-center gap-2 px-4">
-          <SidebarTrigger className="-ml-1" />
-          <Separator orientation="vertical" className="mr-2 data-vertical:h-4" />
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">Build Your Application</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          {/* page content */}
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
-  )
-}`,
-      },
-      {
-        name: 'app-sidebar.tsx',
-        code: `"use client"
-
-import { NavMain } from "./nav-main"
-import { NavProjects } from "./nav-projects"
-import { NavUser } from "./nav-user"
-import { TeamSwitcher } from "./team-switcher"
-import {
-  Sidebar, SidebarContent, SidebarFooter,
-  SidebarHeader, SidebarRail,
-} from "@/design-system/components/ui/sidebar"
-
-const data = {
-  user: { name: "shadcn", email: "m@example.com", avatar: "/avatars/shadcn.jpg" },
-  teams: [
-    { name: "Acme Inc", logo: <GalleryVerticalEndIcon />, plan: "Enterprise" },
-    { name: "Acme Corp.", logo: <AudioLinesIcon />, plan: "Startup" },
-    { name: "Evil Corp.", logo: <TerminalIcon />, plan: "Free" },
-  ],
-  navMain: [
-    {
-      title: "Playground", url: "#", icon: <TerminalSquareIcon />, isActive: true,
-      items: [
-        { title: "History", url: "#" },
-        { title: "Starred", url: "#" },
-        { title: "Settings", url: "#" },
-      ],
-    },
-    // ...more items
-  ],
-  projects: [
-    { name: "Design Engineering", url: "#", icon: <FrameIcon /> },
-    { name: "Sales & Marketing", url: "#", icon: <PieChartIcon /> },
-  ],
-}
-
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  return (
-    <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
-      </SidebarHeader>
-      <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
-      </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={data.user} />
-      </SidebarFooter>
-      <SidebarRail />
-    </Sidebar>
-  )
-}`,
-      },
-      {
-        name: 'nav-main.tsx',
-        code: `"use client"
-
-import {
-  Collapsible, CollapsibleContent, CollapsibleTrigger,
-} from "@/design-system/components/ui/collapsible"
-import {
-  SidebarGroup, SidebarGroupLabel, SidebarMenu,
-  SidebarMenuAction, SidebarMenuButton, SidebarMenuItem,
-  SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem,
-} from "@/design-system/components/ui/sidebar"
-import { ChevronRightIcon } from "lucide-react"
-
-export function NavMain({
-  items,
-}: {
-  items: {
-    title: string
-    url: string
-    icon?: React.ReactNode
-    isActive?: boolean
-    items?: { title: string; url: string }[]
-  }[]
-}) {
-  return (
-    <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
-      <SidebarMenu>
-        {items.map((item) => (
-          <Collapsible
-            key={item.title}
-            defaultOpen={item.isActive}
-            className="group/collapsible"
-            render={<SidebarMenuItem />}
-          >
-            <CollapsibleTrigger render={<SidebarMenuButton tooltip={item.title} />}>
-              {item.icon}
-              <span>{item.title}</span>
-              <ChevronRightIcon className="ml-auto transition-transform duration-200 group-data-open/collapsible:rotate-90" />
-            </CollapsibleTrigger>
-            <CollapsibleContent>
-              <SidebarMenuSub>
-                {item.items?.map((subItem) => (
-                  <SidebarMenuSubItem key={subItem.title}>
-                    <SidebarMenuSubButton render={<a href={subItem.url} />}>
-                      <span>{subItem.title}</span>
-                    </SidebarMenuSubButton>
-                  </SidebarMenuSubItem>
-                ))}
-              </SidebarMenuSub>
-            </CollapsibleContent>
-          </Collapsible>
-        ))}
-      </SidebarMenu>
-    </SidebarGroup>
-  )
-}`,
-      },
-      {
-        name: 'nav-projects.tsx',
-        code: `"use client"
-
-import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
-  DropdownMenuSeparator, DropdownMenuTrigger,
-} from "@/design-system/components/ui/dropdown-menu"
-import {
-  SidebarGroup, SidebarGroupLabel, SidebarMenu,
-  SidebarMenuAction, SidebarMenuButton, SidebarMenuItem,
-  useSidebar,
-} from "@/design-system/components/ui/sidebar"
-import { MoreHorizontalIcon, FolderIcon, ArrowRightIcon, Trash2Icon } from "lucide-react"
-
-export function NavProjects({
-  projects,
-}: {
-  projects: { name: string; url: string; icon: React.ReactNode }[]
-}) {
-  const { isMobile } = useSidebar()
-  return (
-    <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Projects</SidebarGroupLabel>
-      <SidebarMenu>
-        {projects.map((item) => (
-          <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton render={<a href={item.url} />}>
-              {item.icon}
-              <span>{item.name}</span>
-            </SidebarMenuButton>
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                render={<SidebarMenuAction showOnHover className="aria-expanded:bg-muted" />}
-              >
-                <MoreHorizontalIcon />
-                <span className="sr-only">More</span>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="w-48 rounded-lg"
-                side={isMobile ? "bottom" : "right"}
-                align={isMobile ? "end" : "start"}
-              >
-                <DropdownMenuItem><FolderIcon className="text-muted-foreground" /> View Project</DropdownMenuItem>
-                <DropdownMenuItem><ArrowRightIcon className="text-muted-foreground" /> Share Project</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem><Trash2Icon className="text-muted-foreground" /> Delete Project</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        ))}
-      </SidebarMenu>
-    </SidebarGroup>
-  )
-}`,
-      },
-      {
-        name: 'nav-user.tsx',
-        code: `"use client"
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/design-system/components/ui/avatar"
-import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuGroup,
-  DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/design-system/components/ui/dropdown-menu"
-import {
-  SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar,
-} from "@/design-system/components/ui/sidebar"
-import { ChevronsUpDownIcon, SparklesIcon, BadgeCheckIcon, CreditCardIcon, BellIcon, LogOutIcon } from "lucide-react"
-
-export function NavUser({ user }: { user: { name: string; email: string; avatar: string } }) {
-  const { isMobile } = useSidebar()
-  return (
-    <SidebarMenu>
-      <SidebarMenuItem>
-        <DropdownMenu>
-          <DropdownMenuTrigger render={<SidebarMenuButton size="lg" className="aria-expanded:bg-muted" />}>
-            <Avatar>
-              <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-medium">{user.name}</span>
-              <span className="truncate text-xs">{user.email}</span>
-            </div>
-            <ChevronsUpDownIcon className="ml-auto size-4" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="min-w-56 rounded-lg"
-            side={isMobile ? "bottom" : "right"}
-            align="end"
-            sideOffset={4}
-          >
-            <DropdownMenuGroup>
-              <DropdownMenuItem><SparklesIcon /> Upgrade to Pro</DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem><BadgeCheckIcon /> Account</DropdownMenuItem>
-              <DropdownMenuItem><CreditCardIcon /> Billing</DropdownMenuItem>
-              <DropdownMenuItem><BellIcon /> Notifications</DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem><LogOutIcon /> Log out</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </SidebarMenuItem>
-    </SidebarMenu>
-  )
-}`,
-      },
-    ],
+    files: [{ name: 'page.tsx', code: sidebar07Code }],
   },
   {
     id: 'sidebar-08',
@@ -558,322 +526,7 @@ export function NavUser({ user }: { user: { name: string; email: string; avatar:
         </SidebarProvider>
       </div>
     ),
-    files: [
-      {
-        name: 'page.tsx',
-        code: `import { AppSidebar } from "./app-sidebar"
-import {
-  Breadcrumb, BreadcrumbItem, BreadcrumbLink,
-  BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator,
-} from "@/design-system/components/ui/breadcrumb"
-import { Separator } from "@/design-system/components/ui/separator"
-import {
-  SidebarInset, SidebarProvider, SidebarTrigger,
-} from "@/design-system/components/ui/sidebar"
-
-export default function Page() {
-  return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-16 items-center gap-2 px-4">
-          <SidebarTrigger className="-ml-1" />
-          <Separator orientation="vertical" className="mr-2 data-vertical:h-4" />
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">Build Your Application</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          {/* page content */}
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
-  )
-}`,
-      },
-      {
-        name: 'app-sidebar.tsx',
-        code: `"use client"
-
-import { NavMain } from "./nav-main"
-import { NavProjects } from "./nav-projects"
-import { NavSecondary } from "./nav-secondary"
-import { NavUser } from "./nav-user"
-import {
-  Sidebar, SidebarContent, SidebarFooter,
-  SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem,
-} from "@/design-system/components/ui/sidebar"
-import { TerminalIcon } from "lucide-react"
-
-const data = {
-  user: { name: "shadcn", email: "m@example.com", avatar: "/avatars/shadcn.jpg" },
-  navMain: [
-    {
-      title: "Playground", url: "#", icon: <TerminalSquareIcon />, isActive: true,
-      items: [
-        { title: "History", url: "#" },
-        { title: "Starred", url: "#" },
-        { title: "Settings", url: "#" },
-      ],
-    },
-    // ...more items
-  ],
-  navSecondary: [
-    { title: "Support", url: "#", icon: <LifeBuoyIcon /> },
-    { title: "Feedback", url: "#", icon: <SendIcon /> },
-  ],
-  projects: [
-    { name: "Design Engineering", url: "#", icon: <FrameIcon /> },
-    { name: "Sales & Marketing", url: "#", icon: <PieChartIcon /> },
-  ],
-}
-
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  return (
-    <Sidebar variant="inset" {...props}>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton size="lg" render={<a href="#" />}>
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                <TerminalIcon className="size-4" />
-              </div>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">Acme Inc</span>
-                <span className="truncate text-xs">Enterprise</span>
-              </div>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
-      <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
-      </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={data.user} />
-      </SidebarFooter>
-    </Sidebar>
-  )
-}`,
-      },
-      {
-        name: 'nav-main.tsx',
-        code: `"use client"
-
-import {
-  Collapsible, CollapsibleContent, CollapsibleTrigger,
-} from "@/design-system/components/ui/collapsible"
-import {
-  SidebarGroup, SidebarGroupLabel, SidebarMenu,
-  SidebarMenuAction, SidebarMenuButton, SidebarMenuItem,
-  SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem,
-} from "@/design-system/components/ui/sidebar"
-import { ChevronRightIcon } from "lucide-react"
-
-export function NavMain({
-  items,
-}: {
-  items: {
-    title: string
-    url: string
-    icon: React.ReactNode
-    isActive?: boolean
-    items?: { title: string; url: string }[]
-  }[]
-}) {
-  return (
-    <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
-      <SidebarMenu>
-        {items.map((item) => (
-          <Collapsible key={item.title} defaultOpen={item.isActive} render={<SidebarMenuItem />}>
-            <SidebarMenuButton tooltip={item.title} render={<a href={item.url} />}>
-              {item.icon}
-              <span>{item.title}</span>
-            </SidebarMenuButton>
-            {item.items?.length ? (
-              <>
-                <CollapsibleTrigger render={<SidebarMenuAction className="aria-expanded:rotate-90" />}>
-                  <ChevronRightIcon />
-                  <span className="sr-only">Toggle</span>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarMenuSub>
-                    {item.items.map((subItem) => (
-                      <SidebarMenuSubItem key={subItem.title}>
-                        <SidebarMenuSubButton render={<a href={subItem.url} />}>
-                          <span>{subItem.title}</span>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    ))}
-                  </SidebarMenuSub>
-                </CollapsibleContent>
-              </>
-            ) : null}
-          </Collapsible>
-        ))}
-      </SidebarMenu>
-    </SidebarGroup>
-  )
-}`,
-      },
-      {
-        name: 'nav-projects.tsx',
-        code: `"use client"
-
-import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
-  DropdownMenuSeparator, DropdownMenuTrigger,
-} from "@/design-system/components/ui/dropdown-menu"
-import {
-  SidebarGroup, SidebarGroupLabel, SidebarMenu,
-  SidebarMenuAction, SidebarMenuButton, SidebarMenuItem,
-  useSidebar,
-} from "@/design-system/components/ui/sidebar"
-import { MoreHorizontalIcon, FolderIcon, ShareIcon, Trash2Icon } from "lucide-react"
-
-export function NavProjects({
-  projects,
-}: {
-  projects: { name: string; url: string; icon: React.ReactNode }[]
-}) {
-  const { isMobile } = useSidebar()
-  return (
-    <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Projects</SidebarGroupLabel>
-      <SidebarMenu>
-        {projects.map((item) => (
-          <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton render={<a href={item.url} />}>
-              {item.icon}
-              <span>{item.name}</span>
-            </SidebarMenuButton>
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                render={<SidebarMenuAction showOnHover className="aria-expanded:bg-muted" />}
-              >
-                <MoreHorizontalIcon />
-                <span className="sr-only">More</span>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="w-48"
-                side={isMobile ? "bottom" : "right"}
-                align={isMobile ? "end" : "start"}
-              >
-                <DropdownMenuItem><FolderIcon className="text-muted-foreground" /> View Project</DropdownMenuItem>
-                <DropdownMenuItem><ShareIcon className="text-muted-foreground" /> Share Project</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem><Trash2Icon className="text-muted-foreground" /> Delete Project</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        ))}
-      </SidebarMenu>
-    </SidebarGroup>
-  )
-}`,
-      },
-      {
-        name: 'nav-secondary.tsx',
-        code: `"use client"
-
-import * as React from "react"
-import {
-  SidebarGroup, SidebarGroupContent,
-  SidebarMenu, SidebarMenuButton, SidebarMenuItem,
-} from "@/design-system/components/ui/sidebar"
-
-export function NavSecondary({
-  items,
-  ...props
-}: {
-  items: { title: string; url: string; icon: React.ReactNode }[]
-} & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
-  return (
-    <SidebarGroup {...props}>
-      <SidebarGroupContent>
-        <SidebarMenu>
-          {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton size="sm" render={<a href={item.url} />}>
-                {item.icon}
-                <span>{item.title}</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
-      </SidebarGroupContent>
-    </SidebarGroup>
-  )
-}`,
-      },
-      {
-        name: 'nav-user.tsx',
-        code: `"use client"
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/design-system/components/ui/avatar"
-import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuGroup,
-  DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/design-system/components/ui/dropdown-menu"
-import {
-  SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar,
-} from "@/design-system/components/ui/sidebar"
-import { ChevronsUpDownIcon, SparklesIcon, BadgeCheckIcon, CreditCardIcon, BellIcon, LogOutIcon } from "lucide-react"
-
-export function NavUser({ user }: { user: { name: string; email: string; avatar: string } }) {
-  const { isMobile } = useSidebar()
-  return (
-    <SidebarMenu>
-      <SidebarMenuItem>
-        <DropdownMenu>
-          <DropdownMenuTrigger render={<SidebarMenuButton size="lg" className="aria-expanded:bg-muted" />}>
-            <Avatar>
-              <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-medium">{user.name}</span>
-              <span className="truncate text-xs">{user.email}</span>
-            </div>
-            <ChevronsUpDownIcon className="ml-auto size-4" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="min-w-56 rounded-lg"
-            side={isMobile ? "bottom" : "right"}
-            align="end"
-            sideOffset={4}
-          >
-            <DropdownMenuGroup>
-              <DropdownMenuItem><SparklesIcon /> Upgrade to Pro</DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem><BadgeCheckIcon /> Account</DropdownMenuItem>
-              <DropdownMenuItem><CreditCardIcon /> Billing</DropdownMenuItem>
-              <DropdownMenuItem><BellIcon /> Notifications</DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem><LogOutIcon /> Log out</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </SidebarMenuItem>
-    </SidebarMenu>
-  )
-}`,
-      },
-    ],
+    files: [{ name: 'page.tsx', code: sidebar08Code }],
   },
 ];
 
@@ -921,9 +574,40 @@ export default function SidebarGuidePage() {
             </CardContent>
           </Card>
 
+          <Card id="quick-start" className="border-border/70 rounded-[24px]">
+            <CardHeader>
+              <CardTitle>2. Quick start after installation</CardTitle>
+              <CardDescription>
+                The installer copies the sidebar primitives, not an application navigation menu.
+                Copy this single-file example into your Next.js root layout, then replace the
+                example links with your routes. The import path is for Source mode with the default
+                <code className="mx-1">@/design-system</code> alias.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-muted-foreground text-sm">
+                If you already have a root layout, keep its existing HTML, providers, and global CSS; place
+                <code className="mx-1">SidebarProvider</code> inside its body around the
+                sidebar and page content. For Package mode, change the sidebar imports to
+                <code className="mx-1">ui-design-system/components/ui/sidebar</code> and follow
+                the package CSS setup in Installation.
+              </p>
+              <div className="border-border/70 bg-muted/30 overflow-x-auto rounded-2xl border p-5">
+                <p className="text-muted-foreground mb-3 text-xs font-medium">app/layout.tsx</p>
+                <pre className="text-sm leading-6"><code>{starterCode}</code></pre>
+              </div>
+              <p className="text-muted-foreground text-sm">
+                <code>SidebarProvider</code> owns open state; <code>SidebarTrigger</code> toggles
+                desktop and mobile views. Add <code>collapsible=&quot;icon&quot;</code> to
+                <code className="mx-1">Sidebar</code> only when menu items have icons and
+                tooltips. The component also supports Ctrl/Cmd+B.
+              </p>
+            </CardContent>
+          </Card>
+
           <Card id="props" className="border-border/70 rounded-[24px]">
             <CardHeader>
-              <CardTitle>2. Props</CardTitle>
+              <CardTitle>3. Props</CardTitle>
               <CardDescription>Sidebar component props.</CardDescription>
             </CardHeader>
             <CardContent>
@@ -955,8 +639,12 @@ export default function SidebarGuidePage() {
 
           <Card id="usages" className="border-border/70 rounded-[24px]">
             <CardHeader>
-              <CardTitle>3. Usages</CardTitle>
-              <CardDescription>Common sidebar patterns and configurations.</CardDescription>
+              <CardTitle>4. Advanced examples</CardTitle>
+              <CardDescription>
+                These previews use application files under internal-components in this repository.
+                The installer does not copy them. Start with the single-file example above, then
+                adapt these patterns to your own navigation.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">
@@ -1019,11 +707,14 @@ export default function SidebarGuidePage() {
             <a href="#import" className="hover:text-foreground block transition">
               Import
             </a>
+            <a href="#quick-start" className="hover:text-foreground block transition">
+              Quick start
+            </a>
             <a href="#props" className="hover:text-foreground block transition">
               Props
             </a>
             <a href="#usages" className="hover:text-foreground block transition">
-              Usages
+              Advanced examples
             </a>
           </nav>
         </div>

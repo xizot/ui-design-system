@@ -1,6 +1,12 @@
-import React, { ComponentProps, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { cn, formatNumber, hasValue } from '../../lib/utils';
-import { FormLabel } from './form-label';
+import { cn, hasValue } from '../../lib/utils';
+import {
+  DEFAULT_DECIMAL_PLACES,
+  formatNumber,
+  formatNumberInput,
+  normalizeNumberInput,
+  parseNumber,
+} from '../../lib/number';
+import React, { ComponentProps, useLayoutEffect, useRef, useState } from 'react';
 import { Input } from './input';
 
 export const inputRightClasses =
@@ -17,7 +23,7 @@ export type NumberInputProps = Omit<ComponentProps<typeof Input>, 'className'> &
   wrapperClassName?: ComponentProps<'div'>['className'];
   inputClassName?: ComponentProps<'input'>['className'];
   rightOutside?: React.ReactNode;
-  labelClassName?: ComponentProps<typeof FormLabel>['className'];
+  labelClassName?: ComponentProps<typeof Input>['labelClassName'];
   error?: string;
   id?: string;
 };
@@ -32,168 +38,100 @@ const NumberInput = ({
   required = false,
   max = 999_999_999_999,
   allowNegative = false,
-  decimalMaxFractionDigits = 3,
+  decimalMaxFractionDigits = DEFAULT_DECIMAL_PLACES,
   inputClassName,
   rightOutside,
-  error,
   labelClassName,
+  error,
   id,
   onChange = () => {},
   onKeyDown = () => {},
+  ref: forwardedRef,
   ...inputProps
 }: NumberInputProps) => {
-  const [display, setDisplay] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const pendingCursor = useRef<number | null>(null);
-
   const maxFrac = format === 'decimal' ? decimalMaxFractionDigits : 0;
-
-  const fmt = (n: number) => formatNumber(n, { decimalPlaces: maxFrac, showTrailingZeros: false });
-
-  const emit = (e: React.ChangeEvent<HTMLInputElement>, n: number | null) => {
-    e.target.value = n !== null ? String(n) : '';
-    onChange(e);
-  };
+  const numericValue = hasValue(value) && value !== '' ? Number(value) : NaN;
+  const fmt = (n: number) => formatNumber(n, { decimalPlaces: maxFrac });
+  const [draft, setDraft] = useState(() => ({
+    value: numericValue,
+    precision: maxFrac,
+    display: fmt(numericValue),
+  }));
+  if (!Object.is(draft.value, numericValue) || draft.precision !== maxFrac) {
+    setDraft({ value: numericValue, precision: maxFrac, display: fmt(numericValue) });
+  }
+  const display = draft.display;
 
   useLayoutEffect(() => {
     if (pendingCursor.current !== null && inputRef.current) {
-      const pos = pendingCursor.current;
-      inputRef.current.setSelectionRange(pos, pos);
+      inputRef.current.setSelectionRange(pendingCursor.current, pendingCursor.current);
       pendingCursor.current = null;
     }
-  }, [display]);
-
-  useEffect(() => {
-    if (!hasValue(value) || value === '') {
-      setDisplay('');
-      return;
-    }
-    const n = parseFloat(String(value));
-    setDisplay(isNaN(n) ? '' : fmt(n));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value, format]);
+  }, [draft]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value;
-    const cursorPos = e.target.selectionStart ?? raw.length;
-
-    const saveCursor = (nd: string) => {
-      pendingCursor.current = Math.max(
-        0,
-        Math.min(cursorPos + (nd.length - raw.length), nd.length),
-      );
-    };
-
-    if (!raw) {
-      pendingCursor.current = 0;
-      setDisplay('');
-      emit(e, null);
-      return;
+    const raw = normalizeNumberInput(e.target.value, maxFrac);
+    if (!allowNegative && raw.startsWith('-')) return;
+    const partial =
+      raw === '' || raw === '-' || (format === 'decimal' && (raw === '.' || raw === '-.'));
+    const n = partial ? NaN : parseNumber(raw, { integer: format === 'integer', editing: true });
+    if (!partial && (!Number.isFinite(n) || Math.abs(n) > max)) return;
+    if ((raw.split('.')[1]?.length ?? 0) > maxFrac) return;
+    const next = formatNumberInput(raw);
+    const cursor = e.target.selectionStart ?? raw.length;
+    const count = raw.slice(0, cursor).replace(/,/g, '').length;
+    let pos = 0;
+    let seen = 0;
+    while (pos < next.length && seen < count) {
+      if (next[pos] !== ',') seen++;
+      pos++;
     }
+    if (raw === '.' || raw === '-.') pos = next.length;
+    pendingCursor.current = pos;
+    setDraft({ value: Number.isNaN(n) ? NaN : n === 0 ? 0 : n, precision: maxFrac, display: next });
+    e.target.value = Number.isNaN(n) ? '' : String(n);
+    onChange(e);
+  };
 
-    if (format === 'integer') {
-      const isNeg = allowNegative && raw.startsWith('-');
-      const digits = raw.replace(/[^0-9]/g, '');
-      if (!digits) {
-        const nd = isNeg ? '-' : '';
-        saveCursor(nd);
-        setDisplay(nd);
-        emit(e, null);
-        return;
-      }
-      const n = parseInt(digits, 10) * (isNeg ? -1 : 1);
-      if (isNeg && n === 0) {
-        saveCursor('-');
-        setDisplay('-');
-        emit(e, null);
-        return;
-      }
-      if (Math.abs(n) > max) return;
-      const nd = fmt(n);
-      saveCursor(nd);
-      setDisplay(nd);
-      emit(e, n);
-      return;
-    }
-
-    const normalized = raw.endsWith('.') && !raw.includes(',') ? raw.slice(0, -1) + ',' : raw;
-    const noThousands = normalized.replace(/\./g, '');
-    const hasTrailingComma = noThousands.endsWith(',');
-
-    if (!allowNegative && noThousands.startsWith('-')) return;
-
-    if (noThousands === '-') {
-      saveCursor('-');
-      setDisplay('-');
-      emit(e, null);
-      return;
-    }
-    if (noThousands === ',') {
-      saveCursor('0,');
-      setDisplay('0,');
-      emit(e, null);
-      return;
-    }
-
-    const n = parseFloat(noThousands.replace(',', '.'));
-    if (isNaN(n) || Math.abs(n) > max) return;
-
-    const commaIdx = noThousands.indexOf(',');
-    const fracLen = commaIdx >= 0 ? noThousands.length - commaIdx - 1 : 0;
-    if (fracLen > maxFrac) return;
-
-    const intStr = commaIdx >= 0 ? noThousands.slice(0, commaIdx) : noThousands;
-    const fracStr = commaIdx >= 0 ? noThousands.slice(commaIdx + 1) : '';
-    const isNeg = intStr.startsWith('-');
-    const absIntStr = isNeg ? intStr.slice(1) : intStr;
-    const formattedInt =
-      (isNeg ? '-' : '') +
-      formatNumber(parseInt(absIntStr || '0', 10), { decimalPlaces: 0, showTrailingZeros: false });
-    const nd = formattedInt + (fracStr || hasTrailingComma ? ',' + fracStr : '');
-    saveCursor(nd);
-    setDisplay(nd);
-    emit(e, n);
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    inputProps.onPaste?.(e);
+    if (e.defaultPrevented) return;
+    const raw = normalizeNumberInput(e.clipboardData.getData('text'), maxFrac);
+    const n = parseNumber(raw, { integer: format === 'integer' });
+    if (
+      !Number.isFinite(n) ||
+      (!allowNegative && n < 0) ||
+      Math.abs(n) > max ||
+      (raw.split('.')[1]?.length ?? 0) > maxFrac
+    )
+      e.preventDefault();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const input = e.currentTarget;
     const pos = input.selectionStart ?? 0;
-    const selEnd = input.selectionEnd ?? pos;
-
-    if (pos === selEnd) {
-      if (e.key === 'Backspace' && pos > 0 && input.value[pos - 1] === '.') {
-        input.setSelectionRange(pos - 2, pos);
-      } else if (e.key === 'Delete' && input.value[pos] === '.') {
+    const end = input.selectionEnd ?? pos;
+    if (pos === end) {
+      if (e.key === 'Backspace' && pos > 0 && input.value[pos - 1] === ',') {
+        input.setSelectionRange(Math.max(0, pos - 2), pos);
+      } else if (e.key === 'Delete' && input.value[pos] === ',') {
         input.setSelectionRange(pos, pos + 2);
       }
     }
-
-    if (e.key === '-' && !allowNegative) {
+    const unselected = input.value.slice(0, pos) + input.value.slice(end);
+    if (
+      (e.key === '-' && !allowNegative) ||
+      e.key === ',' ||
+      (e.key === '.' && (format !== 'decimal' || unselected.includes('.')))
+    )
       e.preventDefault();
-    }
-
-    if (e.key === ',' && format === 'decimal' && input.value.includes(',')) {
-      e.preventDefault();
-    }
-
-    if (e.key === '.') {
-      const atEnd = pos === input.value.length;
-      const hasComma = input.value.includes(',');
-      if (format !== 'decimal' || !atEnd || hasComma) {
-        e.preventDefault();
-      }
-    }
-
     onKeyDown(e);
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    if (!display || display === '-') {
-      setDisplay('');
-    } else {
-      const n = parseFloat(display.replace(/\./g, '').replace(/,+$/, '').replace(',', '.'));
-      setDisplay(!isNaN(n) ? fmt(n) : '');
-    }
+    setDraft({ ...draft, display: fmt(draft.value) });
     inputProps.onBlur?.(e);
   };
 
@@ -202,29 +140,31 @@ const NumberInput = ({
       <div className="flex w-full">
         <div className="relative w-full">
           <Input
+            id={id}
             label={label}
-            ref={inputRef}
+            labelClassName={labelClassName}
             required={required}
+            error={error}
             placeholder={placeholder}
             {...inputProps}
+            ref={(element) => {
+              inputRef.current = element;
+              if (typeof forwardedRef === 'function') forwardedRef(element);
+              else if (forwardedRef) forwardedRef.current = element;
+            }}
             type="text"
             value={display}
             onChange={handleChange}
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}
-            error={error}
-            className={cn(
-              rightOutside && 'rounded-r-none!',
-              error &&
-                'border-error-300 outline-error-500 focus-visible:ring-error-500 pr-8 focus-visible:border-transparent focus-visible:ring-2',
-              inputClassName,
-            )}
+            onPaste={handlePaste}
+            inputMode={format === 'decimal' ? 'decimal' : 'numeric'}
+            className={cn(rightOutside && 'rounded-r-none!', inputClassName)}
             size={size}
           />
         </div>
         {rightOutside}
       </div>
-      {error && <p className="text-error-500 text-xs">{error}</p>}
     </div>
   );
 };
