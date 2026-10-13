@@ -1,531 +1,60 @@
+import { ArrowUpRight } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+
 import {
-  TypographyH1,
-  TypographyH2,
-  TypographyLead,
-  TypographyMuted,
-  TypographySmall,
-} from '@/components/ui/typography';
+  GuidePage,
+  GuideSection,
+  GuideSectionDescription,
+  GuideSectionHeader,
+  GuideSectionTitle,
+} from './_components/guide-page';
+import { guideGroups, guides } from './guide-data';
 
 export const metadata: Metadata = {
   title: 'Components - UI Design System',
-  description: 'Browse all UI components in the design system',
+  description: 'Tìm component, đọc API, thử ví dụ và copy code cho ứng dụng.',
 };
-
-const guides = [
-  {
-    slug: 'installation',
-    name: 'Installation',
-    group: 'guide',
-    importPath: 'npx github:xizot/ui-design-system init',
-  },
-  {
-    slug: 'color',
-    name: 'Color',
-    group: 'guide',
-    importPath: 'color-schema.md',
-  },
-  {
-    slug: 'accordion',
-    name: 'Accordion',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/accordion',
-  },
-  {
-    slug: 'alert',
-    name: 'Alert',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/alert',
-  },
-  {
-    slug: 'alert-dialog',
-    name: 'Alert Dialog',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/alert-dialog',
-  },
-  {
-    slug: 'aspect-ratio',
-    name: 'Aspect Ratio',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/aspect-ratio',
-  },
-  {
-    slug: 'avatar',
-    name: 'Avatar',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/avatar',
-  },
-  {
-    slug: 'badge',
-    name: 'Badge',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/badge',
-  },
-  {
-    slug: 'breadcrumb',
-    name: 'Breadcrumb',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/breadcrumb',
-  },
-  {
-    slug: 'bubble',
-    name: 'Bubble',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/bubble',
-  },
-  {
-    slug: 'button',
-    name: 'Button',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/button',
-  },
-  {
-    slug: 'button-group',
-    name: 'Button Group',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/button-group',
-  },
-  {
-    slug: 'calendar',
-    name: 'Calendar',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/calendar',
-  },
-  {
-    slug: 'card',
-    name: 'Card',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/card',
-  },
-  {
-    slug: 'chart',
-    name: 'Chart',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/chart',
-  },
-  {
-    slug: 'date-picker',
-    name: 'Date Picker',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/date-picker',
-  },
-  {
-    slug: 'date-range-picker',
-    name: 'Date Range Picker',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/date-range-picker',
-  },
-  {
-    slug: 'checkbox',
-    name: 'Checkbox',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/checkbox',
-  },
-  {
-    slug: 'collapsible',
-    name: 'Collapsible',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/collapsible',
-  },
-  {
-    slug: 'single-combobox',
-    name: 'Single Combobox',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/single-combobox',
-  },
-  {
-    slug: 'multiple-combobox',
-    name: 'Multiple Combobox',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/multiple-combobox',
-  },
-  {
-    slug: 'command',
-    name: 'Command',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/command',
-  },
-  {
-    slug: 'context-menu',
-    name: 'Context Menu',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/context-menu',
-  },
-  {
-    slug: 'dialog',
-    name: 'Dialog',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/dialog',
-  },
-  {
-    slug: 'dialog-panel',
-    name: 'Dialog Panel',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/dialog-panel',
-  },
-  {
-    slug: 'direction',
-    name: 'Direction',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/direction',
-  },
-  {
-    slug: 'dropdown-menu',
-    name: 'Dropdown Menu',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/dropdown-menu',
-  },
-  {
-    slug: 'empty',
-    name: 'Empty',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/empty',
-  },
-  {
-    slug: 'field',
-    name: 'Field',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/field',
-  },
-  {
-    slug: 'hover-card',
-    name: 'Hover Card',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/hover-card',
-  },
-  {
-    slug: 'input',
-    name: 'Input',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/input',
-  },
-  {
-    slug: 'input-group',
-    name: 'Input Group',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/input-group',
-  },
-  {
-    slug: 'input-otp',
-    name: 'Input OTP',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/input-otp',
-  },
-  {
-    slug: 'item',
-    name: 'Item',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/item',
-  },
-  {
-    slug: 'kbd',
-    name: 'Kbd',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/kbd',
-  },
-  {
-    slug: 'label',
-    name: 'Label',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/label',
-  },
-  {
-    slug: 'menubar',
-    name: 'Menubar',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/menubar',
-  },
-  {
-    slug: 'message',
-    name: 'Message',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/message',
-  },
-  {
-    slug: 'native-select',
-    name: 'Native Select',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/native-select',
-  },
-  {
-    slug: 'navigation-menu',
-    name: 'Navigation Menu',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/navigation-menu',
-  },
-  {
-    slug: 'number-input',
-    name: 'Number Input',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/number-input',
-  },
-  {
-    slug: 'pagination',
-    name: 'Pagination',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/pagination',
-  },
-  {
-    slug: 'popover',
-    name: 'Popover',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/popover',
-  },
-  {
-    slug: 'popover-panel',
-    name: 'Popover Panel',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/popover-panel',
-  },
-  {
-    slug: 'progress',
-    name: 'Progress',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/progress',
-  },
-  {
-    slug: 'radio-group',
-    name: 'Radio Group',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/radio-group',
-  },
-  {
-    slug: 'resizable',
-    name: 'Resizable',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/resizable',
-  },
-  {
-    slug: 'scroll-area',
-    name: 'Scroll Area',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/scroll-area',
-  },
-  {
-    slug: 'select',
-    name: 'Select',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/select',
-  },
-  {
-    slug: 'separator',
-    name: 'Separator',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/separator',
-  },
-  {
-    slug: 'drawer-panel',
-    name: 'Drawer Panel',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/drawer-panel',
-  },
-  {
-    slug: 'sheet',
-    name: 'Sheet',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/sheet',
-  },
-  {
-    slug: 'sheet-panel',
-    name: 'Sheet Panel',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/sheet-panel',
-  },
-  {
-    slug: 'sidebar',
-    name: 'Sidebar',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/sidebar',
-  },
-  {
-    slug: 'marker',
-    name: 'Marker',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/marker',
-  },
-  {
-    slug: 'skeleton',
-    name: 'Skeleton',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/skeleton',
-  },
-  {
-    slug: 'slider',
-    name: 'Slider',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/slider',
-  },
-  {
-    slug: 'sonner',
-    name: 'Sonner',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/sonner',
-  },
-  {
-    slug: 'spinner',
-    name: 'Spinner',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/spinner',
-  },
-  {
-    slug: 'switch',
-    name: 'Switch',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/switch',
-  },
-  {
-    slug: 'tabs',
-    name: 'Tabs',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/tabs',
-  },
-  {
-    slug: 'table',
-    name: 'Table',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/table',
-  },
-  {
-    slug: 'tooltip',
-    name: 'Tooltip',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/tooltip',
-  },
-  {
-    slug: 'typography',
-    name: 'Typography',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/typography',
-  },
-  {
-    slug: 'toggle',
-    name: 'Toggle',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/toggle',
-  },
-  {
-    slug: 'toggle-group',
-    name: 'Toggle Group',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/toggle-group',
-  },
-  {
-    slug: 'textarea',
-    name: 'Textarea',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/textarea',
-  },
-  {
-    slug: 'theme-toggle',
-    name: 'Theme Toggle',
-    group: 'ui',
-    importPath: '@/design-system/components/ui/theme-toggle',
-  },
-  {
-    slug: 'rhf-checkbox',
-    name: 'RHF Checkbox',
-    group: 'rhf',
-    importPath: '@/design-system/components/rhf',
-  },
-  {
-    slug: 'rhf-date-picker',
-    name: 'RHF Date Picker',
-    group: 'rhf',
-    importPath: '@/design-system/components/rhf',
-  },
-  {
-    slug: 'rhf-date-range-picker',
-    name: 'RHF Date Range Picker',
-    group: 'rhf',
-    importPath: '@/design-system/components/rhf',
-  },
-  {
-    slug: 'rhf-error-message',
-    name: 'RHF Error Message',
-    group: 'rhf',
-    importPath: '@/design-system/components/rhf',
-  },
-  {
-    slug: 'rhf-input',
-    name: 'RHF Input',
-    group: 'rhf',
-    importPath: '@/design-system/components/rhf',
-  },
-  {
-    slug: 'rhf-number-input',
-    name: 'RHF Number Input',
-    group: 'rhf',
-    importPath: '@/design-system/components/rhf',
-  },
-  {
-    slug: 'rhf-radio-group',
-    name: 'RHF Radio Group',
-    group: 'rhf',
-    importPath: '@/design-system/components/rhf',
-  },
-  {
-    slug: 'rhf-select',
-    name: 'RHF Select',
-    group: 'rhf',
-    importPath: '@/design-system/components/rhf',
-  },
-  {
-    slug: 'rhf-switch',
-    name: 'RHF Switch',
-    group: 'rhf',
-    importPath: '@/design-system/components/rhf',
-  },
-  {
-    slug: 'rhf-textarea',
-    name: 'RHF Textarea',
-    group: 'rhf',
-    importPath: '@/design-system/components/rhf',
-  },
-  {
-    slug: 'rhf-time-picker',
-    name: 'RHF Time Picker',
-    group: 'rhf',
-    importPath: '@/design-system/components/rhf',
-  },
-];
 
 export default function ComponentsIndexPage() {
   return (
-    <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_240px]">
-      <main className="min-w-0">
-        <section className="border-border/70 bg-card rounded-[24px] border px-6 py-8 shadow-sm md:px-8 md:py-10">
-          <TypographySmall className="text-muted-foreground tracking-[0.24em] uppercase">
-            Usage Guide
-          </TypographySmall>
-          <TypographyH1 className="mt-4 max-w-3xl">Component documentation template</TypographyH1>
-          <TypographyLead className="mt-4 max-w-2xl">
-            Đây là khung docs cho từng component. Mỗi page sẽ có tên component, import, props, và
-            các section usage gồm preview và code.
-          </TypographyLead>
-        </section>
-
-        <section className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {guides.map((guide) => (
-            <Link
-              key={guide.slug}
-              href={`/components/${guide.slug}`}
-              className="group border-border/70 bg-background hover:border-foreground/15 rounded-[20px] border px-5 py-5 transition hover:-translate-y-0.5 hover:shadow-sm"
-            >
-              <div className="flex items-center justify-between gap-3">
-                <TypographyH2 className="text-lg">{guide.name}</TypographyH2>
-                <span className="border-border/70 text-muted-foreground shrink-0 rounded-full border px-2.5 py-1 text-[10px] tracking-[0.2em] uppercase">
-                  {guide.group}
+    <GuidePage
+      title="Components"
+      category="Documentation"
+      description="Các thành phần để xây dựng giao diện với Xizot. Chọn một component để xem API, thử ví dụ và lấy code sử dụng."
+      toc={guideGroups.map((group) => ({ id: group.id, label: group.label }))}
+    >
+      {guideGroups.map((group) => {
+        const entries = guides.filter((guide) => guide.group === group.id);
+        return (
+          <GuideSection id={group.id} key={group.id}>
+            <GuideSectionHeader>
+              <GuideSectionTitle>
+                {group.label}{' '}
+                <span className="text-muted-foreground ml-2 text-sm font-normal tabular-nums">
+                  {entries.length}
                 </span>
-              </div>
-              <TypographyMuted className="mt-3 break-all">{guide.importPath}</TypographyMuted>
-              <TypographyMuted className="text-foreground/80 group-hover:text-foreground mt-5 font-medium transition">
-                Open guide
-              </TypographyMuted>
-            </Link>
-          ))}
-        </section>
-      </main>
-    </div>
+              </GuideSectionTitle>
+              <GuideSectionDescription>{group.description}</GuideSectionDescription>
+            </GuideSectionHeader>
+            <div className="grid gap-2 sm:grid-cols-2 2xl:grid-cols-3">
+              {entries.map((guide) => (
+                <Link
+                  key={guide.slug}
+                  href={`/components/${guide.slug}`}
+                  className="group border-border hover:bg-accent/50 focus-visible:ring-ring flex min-h-14 items-center justify-between gap-3 rounded-lg border px-4 py-3 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
+                >
+                  {guide.name}
+                  <ArrowUpRight
+                    className="text-muted-foreground group-hover:text-foreground size-4 shrink-0"
+                    aria-hidden="true"
+                  />
+                </Link>
+              ))}
+            </div>
+          </GuideSection>
+        );
+      })}
+    </GuidePage>
   );
 }

@@ -1,13 +1,14 @@
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { CodeBlock } from '@/components/ui/code-block';
+
+import { GuideCode as CodeBlock } from '../_components/guide-code';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
 
 import { getGuide } from '../guide-data';
+import { GuidePage, GuideSection, GuideSectionHeader, GuideSectionTitle, GuideSectionDescription, GuideSectionContent } from '../_components/guide-page';
 
 const guide = getGuide('avatar');
 
@@ -103,27 +104,19 @@ export default function AvatarGuidePage() {
     document.title = `${guide.name} - UI Design System`;
   }, []);
   return (
-    <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
-      <main className="min-w-0">
-        <section className="border-border/70 bg-card rounded-[28px] border px-8 py-10 shadow-sm">
-          <p className="text-muted-foreground text-sm font-medium tracking-[0.24em] uppercase">
-            {guide.group}
-          </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
-          <p className="text-muted-foreground mt-4 max-w-2xl text-base leading-7">
-            An image element with a fallback for representing a user or entity.
-          </p>
-        </section>
+    <GuidePage category={guide.group} title={<>{guide.name}</>} description={<>An image element with a fallback for representing a user or entity.</>} toc={[{"id":"import","label":"Import"},{"id":"props","label":"Props"},{"id":"usages","label":"Usages"}]}>
+      
+        
 
-        <div className="mt-8 space-y-6">
-          <Card id="import" className="border-border/70 rounded-[24px]">
-            <CardHeader>
-              <CardTitle>1. Import</CardTitle>
-              <CardDescription>
+        
+          <GuideSection id="import" >
+            <GuideSectionHeader>
+              <GuideSectionTitle>Import</GuideSectionTitle>
+              <GuideSectionDescription>
                 Import the avatar components from the design system.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
+              </GuideSectionDescription>
+            </GuideSectionHeader>
+            <GuideSectionContent>
               <CodeBlock
                 code={`import {
   Avatar,
@@ -133,17 +126,17 @@ export default function AvatarGuidePage() {
                 id="import"
                 className="bg-muted/30"
               />
-            </CardContent>
-          </Card>
+            </GuideSectionContent>
+          </GuideSection>
 
-          <Card id="props" className="border-border/70 rounded-[24px]">
-            <CardHeader>
-              <CardTitle>2. Props</CardTitle>
-              <CardDescription>Avatar component props.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="border-border/70 overflow-hidden rounded-2xl border">
-                <table className="w-full text-left text-sm">
+          <GuideSection id="props" >
+            <GuideSectionHeader>
+              <GuideSectionTitle>Props</GuideSectionTitle>
+              <GuideSectionDescription>Avatar component props.</GuideSectionDescription>
+            </GuideSectionHeader>
+            <GuideSectionContent>
+              <div className="overflow-x-auto rounded-xl border border-border">
+                <table className="guide-props-table">
                   <thead className="bg-muted/40 text-muted-foreground">
                     <tr>
                       <th className="px-4 py-3 font-medium">Prop</th>
@@ -165,28 +158,28 @@ export default function AvatarGuidePage() {
                   </tbody>
                 </table>
               </div>
-            </CardContent>
-          </Card>
+            </GuideSectionContent>
+          </GuideSection>
 
-          <Card id="usages" className="border-border/70 rounded-[24px]">
-            <CardHeader>
-              <CardTitle>3. Usages</CardTitle>
-              <CardDescription>Common avatar patterns and configurations.</CardDescription>
-            </CardHeader>
-            <CardContent>
+          <GuideSection id="usages" >
+            <GuideSectionHeader>
+              <GuideSectionTitle>Usages</GuideSectionTitle>
+              <GuideSectionDescription>Common avatar patterns and configurations.</GuideSectionDescription>
+            </GuideSectionHeader>
+            <GuideSectionContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">
-                <TabsList variant="line">
+                <div className="guide-example-tabs"><TabsList variant="line">
                   {usageSamples.map((sample) => (
                     <TabsTrigger key={sample.id} value={sample.id}>
                       {sample.label}
                     </TabsTrigger>
                   ))}
-                </TabsList>
+                </TabsList></div>
 
                 {usageSamples.map((sample) => (
                   <TabsContent key={sample.id} value={sample.id} className="space-y-5">
-                    <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-8">
-                      <div className="bg-background flex min-h-56 items-center justify-center rounded-[18px] px-6 shadow-sm">
+                    <div className="guide-preview">
+                      <div className="guide-preview-content">
                         {sample.preview}
                       </div>
                     </div>
@@ -195,29 +188,12 @@ export default function AvatarGuidePage() {
                   </TabsContent>
                 ))}
               </Tabs>
-            </CardContent>
-          </Card>
-        </div>
-      </main>
+            </GuideSectionContent>
+          </GuideSection>
+        
+      
 
-      <aside className="hidden xl:block">
-        <div className="border-border/70 bg-card sticky top-24 rounded-[24px] border p-5">
-          <p className="text-muted-foreground text-xs font-semibold tracking-[0.24em] uppercase">
-            TOC
-          </p>
-          <nav className="text-muted-foreground mt-4 space-y-3 text-sm">
-            <a href="#import" className="hover:text-foreground block transition">
-              Import
-            </a>
-            <a href="#props" className="hover:text-foreground block transition">
-              Props
-            </a>
-            <a href="#usages" className="hover:text-foreground block transition">
-              Usages
-            </a>
-          </nav>
-        </div>
-      </aside>
-    </div>
+      
+    </GuidePage>
   );
 }

@@ -1,3 +1,9 @@
+export const guideGroups = [
+  { id: 'guide', label: 'Bắt đầu', description: 'Cài đặt và thiết lập giao diện cho ứng dụng.' },
+  { id: 'ui', label: 'UI components', description: 'Các thành phần giao diện và ví dụ sử dụng.' },
+  { id: 'rhf', label: 'React Hook Form', description: 'Field có validation và trạng thái form.' },
+] as const;
+
 export const guides = [
   { slug: 'installation', name: 'Installation', group: 'guide' as const },
   { slug: 'color', name: 'Color', group: 'guide' as const },

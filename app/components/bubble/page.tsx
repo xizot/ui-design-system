@@ -1,12 +1,13 @@
 'use client';
 
 import { Bubble, BubbleContent, BubbleGroup, BubbleReactions } from '@/components/ui/bubble';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { CodeBlock } from '@/components/ui/code-block';
+
+import { GuideCode as CodeBlock } from '../_components/guide-code';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useEffect } from 'react';
 
 import { getGuide } from '../guide-data';
+import { GuidePage, GuideSection, GuideSectionHeader, GuideSectionTitle, GuideSectionDescription, GuideSectionContent } from '../_components/guide-page';
 
 const guide = getGuide('bubble');
 
@@ -32,42 +33,34 @@ export default function BubbleGuidePage() {
   }, []);
 
   return (
-    <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
-      <main className="min-w-0">
-        <section className="border-border/70 bg-card rounded-3xl border px-8 py-10 shadow-sm">
-          <p className="text-muted-foreground text-sm font-medium tracking-[0.24em] uppercase">
-            {guide.group}
-          </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
-          <p className="text-muted-foreground mt-4 max-w-2xl text-base leading-7">
-            Hiển thị nội dung hội thoại trong dạng bong bóng tin nhắn.
-          </p>
-        </section>
+    <GuidePage category={guide.group} title={<>{guide.name}</>} description={<>Hiển thị nội dung hội thoại trong dạng bong bóng tin nhắn.</>} toc={[{"id":"import","label":"Import"},{"id":"usage","label":"Usage"}]}>
+      
+        
 
-        <div className="mt-8 space-y-6">
-          <Card id="import" className="border-border/70 rounded-3xl">
-            <CardHeader>
-              <CardTitle>1. Import</CardTitle>
-              <CardDescription>Import bubble component từ design system.</CardDescription>
-            </CardHeader>
-            <CardContent>
+        
+          <GuideSection id="import" >
+            <GuideSectionHeader>
+              <GuideSectionTitle>Import</GuideSectionTitle>
+              <GuideSectionDescription>Import bubble component từ design system.</GuideSectionDescription>
+            </GuideSectionHeader>
+            <GuideSectionContent>
               <CodeBlock code={`import { Bubble } from "${guide.importPath}"`} id="import" />
-            </CardContent>
-          </Card>
+            </GuideSectionContent>
+          </GuideSection>
 
-          <Card id="usage" className="border-border/70 rounded-3xl">
-            <CardHeader>
-              <CardTitle>2. Usage</CardTitle>
-              <CardDescription>Cấu hình bubble phổ biến.</CardDescription>
-            </CardHeader>
-            <CardContent>
+          <GuideSection id="usage" >
+            <GuideSectionHeader>
+              <GuideSectionTitle>Usage</GuideSectionTitle>
+              <GuideSectionDescription>Cấu hình bubble phổ biến.</GuideSectionDescription>
+            </GuideSectionHeader>
+            <GuideSectionContent>
               <Tabs defaultValue="preview" className="gap-6">
-                <TabsList variant="line">
+                <div className="guide-example-tabs"><TabsList variant="line">
                   <TabsTrigger value="preview">Preview</TabsTrigger>
                   <TabsTrigger value="code">Code</TabsTrigger>
-                </TabsList>
+                </TabsList></div>
                 <TabsContent value="preview">
-                  <div className="border-border bg-muted/30 rounded-2xl border border-dashed p-8">
+                  <div className="guide-preview">
                     <BubbleGroup>
                       <Bubble variant="muted">
                         <BubbleContent>Tin nhắn hỗ trợ nhiều biến thể.</BubbleContent>
@@ -83,10 +76,10 @@ export default function BubbleGuidePage() {
                   <CodeBlock code={code} id="usage-code" />
                 </TabsContent>
               </Tabs>
-            </CardContent>
-          </Card>
-        </div>
-      </main>
-    </div>
+            </GuideSectionContent>
+          </GuideSection>
+        
+      
+    </GuidePage>
   );
 }
