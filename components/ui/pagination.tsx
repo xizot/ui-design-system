@@ -10,7 +10,7 @@ function Pagination({ className, ...props }: React.ComponentProps<'nav'>) {
       role="navigation"
       aria-label="pagination"
       data-slot="pagination"
-      className={cn('flex', className)}
+      className={cn('@container/pagination flex w-full min-w-0', className)}
       {...props}
     />
   );
@@ -20,7 +20,7 @@ function PaginationContent({ className, ...props }: React.ComponentProps<'ul'>) 
   return (
     <ul
       data-slot="pagination-content"
-      className={cn('flex items-center gap-1', className)}
+      className={cn('flex min-w-0 max-w-full flex-wrap items-center gap-1', className)}
       {...props}
     />
   );
@@ -41,7 +41,7 @@ function PaginationLink({ className, isActive, ...props }: PaginationLinkProps) 
       variant="ghost"
       type="button"
       className={cn(
-        'h-8 w-8',
+        'h-7 w-7 @xs/pagination:h-8 @xs/pagination:w-8',
         className,
         isActive &&
           'bg-primary/10! dark:bg-primary/25! text-primary! dark:border-primary border border-transparent dark:border',
@@ -63,11 +63,11 @@ function PaginationPrevious({
     <PaginationLink
       aria-label="Go to previous page"
       size="default"
-      className={cn('pl-2!', className)}
+      className={cn('w-auto min-w-7 gap-1 px-1.5 @xs/pagination:min-w-8 @xs/pagination:px-2', className)}
       {...props}
     >
       <ChevronLeftIcon data-icon="inline-start" />
-      {text && <span className="hidden sm:block">{text}</span>}
+      {text && <span className="hidden @xs/pagination:block">{text}</span>}
     </PaginationLink>
   );
 }
@@ -81,10 +81,10 @@ function PaginationNext({
     <PaginationLink
       aria-label="Go to next page"
       size="default"
-      className={cn('pr-2!', className)}
+      className={cn('w-auto min-w-7 gap-1 px-1.5 @xs/pagination:min-w-8 @xs/pagination:px-2', className)}
       {...props}
     >
-      {text && <span className="hidden sm:block">{text}</span>}
+      {text && <span className="hidden @xs/pagination:block">{text}</span>}
       <ChevronRightIcon data-icon="inline-end" />
     </PaginationLink>
   );
@@ -96,7 +96,7 @@ function PaginationEllipsis({ className, ...props }: React.ComponentProps<'span'
       aria-hidden
       data-slot="pagination-ellipsis"
       className={cn(
-        "flex size-9 items-center justify-center [&_svg:not([class*='size-'])]:size-4",
+        "flex size-7 items-center justify-center @xs/pagination:size-9 [&_svg:not([class*='size-'])]:size-4",
         className,
       )}
       {...props}

@@ -194,7 +194,7 @@ export default function SkeletonGuidePage() {
                 {usageSamples.map((sample) => (
                   <TabsContent key={sample.id} value={sample.id} className="space-y-5">
                     <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-8">
-                      <div className="bg-card flex min-h-56 items-center justify-center rounded-[18px] px-6 shadow-sm">
+                      <div className="bg-background flex min-h-56 items-center justify-center rounded-[18px] px-6 shadow-sm">
                         {sample.preview}
                       </div>
                     </div>

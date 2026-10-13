@@ -14,6 +14,7 @@ const props = [
   { name: 'defaultValue', type: 'string', defaultValue: '--' },
   { name: 'value', type: 'string', defaultValue: '--' },
   { name: 'onValueChange', type: '(value: string) => void', defaultValue: '--' },
+  { name: 'TabsList.variant', type: "'default' | 'line'", defaultValue: "'default'" },
   { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
@@ -49,6 +50,32 @@ export function TabsDemo() {
     </Tabs>
   );
 }`,
+  },
+  {
+    id: 'line',
+    label: 'Line',
+    preview: (
+      <Tabs defaultValue="overview" className="w-full max-w-sm">
+        <TabsList variant="line">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          <TabsTrigger value="reports">Reports</TabsTrigger>
+        </TabsList>
+        <TabsContent value="overview">Overview content</TabsContent>
+        <TabsContent value="analytics">Analytics content</TabsContent>
+        <TabsContent value="reports">Reports content</TabsContent>
+      </Tabs>
+    ),
+    code: `<Tabs defaultValue="overview">
+  <TabsList variant="line">
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="analytics">Analytics</TabsTrigger>
+    <TabsTrigger value="reports">Reports</TabsTrigger>
+  </TabsList>
+  <TabsContent value="overview">Overview content</TabsContent>
+  <TabsContent value="analytics">Analytics content</TabsContent>
+  <TabsContent value="reports">Reports content</TabsContent>
+</Tabs>`,
   },
   {
     id: 'vertical',
@@ -181,7 +208,7 @@ export default function TabsGuidePage() {
                 {usageSamples.map((sample) => (
                   <TabsContent key={sample.id} value={sample.id} className="space-y-5">
                     <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-8">
-                      <div className="bg-card flex min-h-56 items-center justify-center rounded-[18px] px-6 shadow-sm">
+                      <div className="bg-background flex min-h-56 items-center justify-center rounded-[18px] px-6 shadow-sm">
                         {sample.preview}
                       </div>
                     </div>

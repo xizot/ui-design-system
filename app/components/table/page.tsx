@@ -535,28 +535,28 @@ export default function TableGuidePage() {
                   </TabsList>
                   <TabsContent value="basic">
                     <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-8">
-                      <div className="bg-card flex h-100 items-center justify-center rounded-[18px] p-6 shadow-sm">
+                      <div className="bg-background flex h-100 items-center justify-center rounded-[18px] p-6 shadow-sm">
                         <BasicTableDemo />
                       </div>
                     </div>
                   </TabsContent>
                   <TabsContent value="selection">
                     <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-8">
-                      <div className="bg-card flex items-center justify-center rounded-[18px] p-6 shadow-sm">
+                      <div className="bg-background flex items-center justify-center rounded-[18px] p-6 shadow-sm">
                         <SelectionTableDemo />
                       </div>
                     </div>
                   </TabsContent>
                   <TabsContent value="actions">
                     <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-8">
-                      <div className="bg-card flex h-100 items-center justify-center rounded-[18px] p-6 shadow-sm">
+                      <div className="bg-background flex h-100 items-center justify-center rounded-[18px] p-6 shadow-sm">
                         <ActionTableDemo />
                       </div>
                     </div>
                   </TabsContent>
                   <TabsContent value="url-filter">
                     <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-8">
-                      <div className="bg-card flex h-100 items-center justify-center rounded-[18px] p-6 shadow-sm">
+                      <div className="bg-background flex h-100 items-center justify-center rounded-[18px] p-6 shadow-sm">
                         <UrlFilterTableDemo />
                       </div>
                     </div>

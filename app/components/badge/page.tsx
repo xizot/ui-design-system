@@ -1,11 +1,12 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
+import { Badge, BadgeAvatar, BadgeDismiss, BadgeDot, BadgeIcon } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CodeBlock } from '@/components/ui/code-block';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
-import { useEffect } from 'react';
+import { CheckIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 import { getGuide } from '../guide-data';
 
@@ -14,99 +15,127 @@ const guide = getGuide('badge');
 const props = [
   {
     name: 'variant',
-    type: `"default" | "secondary" | "destructive" | "outline" | "ghost" | "link"`,
-    defaultValue: `"default"`,
+    type: "'pill-color' | 'pill-outline' | 'badge-color' | 'badge-modern'",
+    defaultValue: "'badge-modern'",
   },
   {
-    name: 'size',
-    type: `"xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl"`,
-    defaultValue: `"sm"`,
+    name: 'color',
+    type: "'neutral' | 'brand' | 'error' | 'warning' | 'success' | 'info' | 'purple'",
+    defaultValue: "'neutral'",
   },
+  { name: 'size', type: "'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'", defaultValue: "'md'" },
+  { name: 'shape', type: "'default' | 'icon-only'", defaultValue: "'default'" },
   { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
+const colors = ['neutral', 'brand', 'error', 'warning', 'success', 'info', 'purple'] as const;
+const sizes = ['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'] as const;
+
 const usageSamples = [
   {
-    id: 'default',
-    label: 'Default',
+    id: 'variants',
+    label: 'Variants',
     preview: (
-      <div className="flex gap-2">
-        <Badge>Default</Badge>
-        <Badge variant="secondary">Secondary</Badge>
-        <Badge variant="destructive">Destructive</Badge>
-        <Badge variant="outline">Outline</Badge>
+      <div className="flex flex-wrap items-center gap-2">
+        <Badge variant="pill-color" color="brand">
+          Pill color
+        </Badge>
+        <Badge variant="pill-outline" color="brand">
+          Pill outline
+        </Badge>
+        <Badge variant="badge-color" color="brand">
+          Badge color
+        </Badge>
+        <Badge variant="badge-modern" color="brand">
+          Badge modern
+        </Badge>
       </div>
     ),
-    code: `import { Badge } from "@/design-system/components/ui/badge";
-
-export function Example() {
-  return (
-    <div className="flex gap-2">
-      <Badge>Default</Badge>
-      <Badge variant="secondary">Secondary</Badge>
-      <Badge variant="destructive">Destructive</Badge>
-      <Badge variant="outline">Outline</Badge>
-    </div>
-  );
-}`,
+    code: `<Badge variant="pill-color" color="brand">Pill color</Badge>
+<Badge variant="pill-outline" color="brand">Pill outline</Badge>
+<Badge variant="badge-color" color="brand">Badge color</Badge>
+<Badge variant="badge-modern" color="brand">Badge modern</Badge>`,
+  },
+  {
+    id: 'colors',
+    label: 'Colors',
+    preview: (
+      <div className="flex flex-wrap items-center gap-2">
+        {colors.map((color) => (
+          <Badge key={color} variant="pill-color" color={color}>
+            {color}
+          </Badge>
+        ))}
+      </div>
+    ),
+    code: `<Badge variant="pill-color" color="success">Success</Badge>
+<Badge variant="pill-outline" color="warning">Warning</Badge>
+<Badge variant="badge-modern" color="error">Error</Badge>`,
   },
   {
     id: 'sizes',
     label: 'Sizes',
     preview: (
       <div className="flex flex-wrap items-center gap-2">
-        <Badge>XXS</Badge>
-        <Badge>XS</Badge>
-        <Badge>SM</Badge>
-        <Badge>MD</Badge>
-        <Badge>LG</Badge>
-        <Badge>XL</Badge>
-        <Badge>XXL</Badge>
+        {sizes.map((size) => (
+          <Badge key={size} variant="badge-color" color="info" size={size}>
+            {size.toUpperCase()}
+          </Badge>
+        ))}
       </div>
     ),
-    code: `import { Badge } from "@/design-system/components/ui/badge";
-
-export function Example() {
-  return (
-    <div className="flex flex-wrap items-center gap-2">
-      <Badge size="xxs">XXS</Badge>
-      <Badge size="xs">XS</Badge>
-      <Badge size="sm">SM</Badge>
-      <Badge size="md">MD</Badge>
-      <Badge size="lg">LG</Badge>
-      <Badge size="xl">XL</Badge>
-      <Badge size="xxl">XXL</Badge>
-    </div>
-  );
-}`,
+    code: `<Badge size="xxs">XXS</Badge>
+<Badge size="xs">XS</Badge>
+<Badge size="sm">SM</Badge>
+<Badge size="md">MD</Badge>
+<Badge size="lg">LG</Badge>
+<Badge size="xl">XL</Badge>
+<Badge size="xxl">XXL</Badge>`,
   },
   {
-    id: 'custom',
-    label: 'Custom Variants',
-    preview: (
-      <div className="flex gap-2">
-        <Badge className="bg-primary text-primary-foreground hover:bg-primary/90">Success</Badge>
-        <Badge className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
-          Warning
-        </Badge>
-        <Badge className="bg-accent text-accent-foreground hover:bg-accent/80">Info</Badge>
-      </div>
-    ),
-    code: `import { Badge } from "@/design-system/components/ui/badge";
+    id: 'content',
+    label: 'Content',
+    preview: <BadgeContentDemo />,
+    code: `import { Badge, BadgeAvatar, BadgeDismiss, BadgeDot, BadgeIcon } from "@/design-system/components/ui/badge";
 
-export function Example() {
-  return (
-    <div className="flex gap-2">
-      <Badge className="bg-primary text-primary-foreground hover:bg-primary/90">Success</Badge>
-      <Badge className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
-        Warning
-      </Badge>
-      <Badge className="bg-accent text-accent-foreground hover:bg-accent/80">Info</Badge>
-    </div>
-  );
-}`,
+<Badge variant="pill-color" color="success"><BadgeDot />Active</Badge>
+<Badge variant="badge-modern" color="brand"><BadgeIcon><CheckIcon /></BadgeIcon>Verified</Badge>
+<Badge variant="pill-outline"><BadgeAvatar name="Nguyen Van An" />Nguyen Van An</Badge>
+<Badge variant="badge-color" color="info">Filter<BadgeDismiss label="Remove filter" onClick={removeFilter} /></Badge>
+<Badge variant="pill-color" color="success" shape="icon-only" aria-label="Active"><BadgeDot /></Badge>`,
   },
 ];
+
+function BadgeContentDemo() {
+  const [showFilter, setShowFilter] = useState(true);
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Badge variant="pill-color" color="success">
+        <BadgeDot />
+        Active
+      </Badge>
+      <Badge variant="badge-modern" color="brand">
+        <BadgeIcon>
+          <CheckIcon />
+        </BadgeIcon>
+        Verified
+      </Badge>
+      <Badge variant="pill-outline" color="neutral">
+        <BadgeAvatar name="Nguyen Van An" />
+        Nguyen Van An
+      </Badge>
+      {showFilter ? (
+        <Badge variant="badge-color" color="info">
+          Filter
+          <BadgeDismiss label="Remove filter" onClick={() => setShowFilter(false)} />
+        </Badge>
+      ) : null}
+      <Badge variant="pill-color" color="success" shape="icon-only" aria-label="Active">
+        <BadgeDot />
+      </Badge>
+    </div>
+  );
+}
 
 export default function BadgeGuidePage() {
   useEffect(() => {
@@ -133,7 +162,7 @@ export default function BadgeGuidePage() {
             </CardHeader>
             <CardContent>
               <CodeBlock
-                code={`import { Badge } from "${guide.importPath}"`}
+                code={`import { Badge, BadgeAvatar, BadgeDismiss, BadgeDot, BadgeIcon } from "${guide.importPath}"`}
                 id="import"
                 className="bg-muted/30"
               />
@@ -190,7 +219,7 @@ export default function BadgeGuidePage() {
                 {usageSamples.map((sample) => (
                   <TabsContent key={sample.id} value={sample.id} className="space-y-5">
                     <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-8">
-                      <div className="bg-card flex min-h-56 items-center justify-center rounded-[18px] px-6 shadow-sm">
+                      <div className="bg-background flex min-h-56 items-center justify-center rounded-[18px] px-6 shadow-sm">
                         {sample.preview}
                       </div>
                     </div>

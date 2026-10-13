@@ -288,7 +288,10 @@ function TimePickerPanel({
             timePickerColumnVariants({ size }),
           )}
         >
-          <div ref={hourContainerRef} className="py-[calc(50cqh_-_var(--time-row-height)/2)] pr-4 pl-1">
+          <div
+            ref={hourContainerRef}
+            className="py-[calc(50cqh_-_var(--time-row-height)/2)] pr-4 pl-1"
+          >
             {hours.map((hour) => (
               <div
                 key={hour}

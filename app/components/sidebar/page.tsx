@@ -7,6 +7,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { CodeBlock } from '@/components/ui/code-block';
 import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -553,8 +554,9 @@ export default function SidebarGuidePage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="border-border/70 bg-muted/30 overflow-x-auto rounded-2xl border p-4">
-                <code className="text-sm">{`import {
+              <CodeBlock
+                id="sidebar-import"
+                code={`import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
@@ -569,8 +571,8 @@ export default function SidebarGuidePage() {
   SidebarProvider,
   SidebarRail,
   SidebarTrigger,
-} from "${guide.importPath}";`}</code>
-              </div>
+} from "${guide.importPath}";`}
+              />
             </CardContent>
           </Card>
 
@@ -592,10 +594,8 @@ export default function SidebarGuidePage() {
                 <code className="mx-1">ui-design-system/components/ui/sidebar</code> and follow
                 the package CSS setup in Installation.
               </p>
-              <div className="border-border/70 bg-muted/30 overflow-x-auto rounded-2xl border p-5">
-                <p className="text-muted-foreground mb-3 text-xs font-medium">app/layout.tsx</p>
-                <pre className="text-sm leading-6"><code>{starterCode}</code></pre>
-              </div>
+              <p className="text-muted-foreground text-xs font-medium">app/layout.tsx</p>
+              <CodeBlock id="sidebar-quick-start" code={starterCode} />
               <p className="text-muted-foreground text-sm">
                 <code>SidebarProvider</code> owns open state; <code>SidebarTrigger</code> toggles
                 desktop and mobile views. Add <code>collapsible=&quot;icon&quot;</code> to
@@ -682,11 +682,11 @@ export default function SidebarGuidePage() {
                       </div>
                       {sample.files.map((file) => (
                         <TabsContent key={file.name} value={file.name} className="mt-0">
-                          <div className="border-border/70 bg-card text-card-foreground overflow-x-auto rounded-b-2xl border border-t-0 p-5">
-                            <pre className="text-sm leading-6">
-                              <code>{file.code}</code>
-                            </pre>
-                          </div>
+                          <CodeBlock
+                            id={`sidebar-${sample.id}-${file.name}`}
+                            code={file.code}
+                            className="[&>div:first-child]:rounded-t-none [&>div:first-child]:border-t-0"
+                          />
                         </TabsContent>
                       ))}
                     </Tabs>
