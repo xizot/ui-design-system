@@ -4,7 +4,6 @@ const { spawnSync } = require('node:child_process');
 const fs = require('node:fs');
 const path = require('node:path');
 const readline = require('node:readline');
-const { parseArguments, installPackageMode } = require('./package-mode.cjs');
 
 const packageRoot = path.resolve(__dirname, '..');
 const projectRoot = process.cwd();
@@ -97,17 +96,25 @@ function printHelp() {
   console.log('');
   console.log('Usage:');
   console.log('  npx github:xizot/ui-design-system init');
-  console.log('  npx github:xizot/ui-design-system init --mode package');
   console.log('  npx github:xizot/ui-design-system');
   console.log('');
   console.log('Commands:');
   console.log('  init    Install the design system into ./design-system');
   console.log('  help    Show this help message');
   console.log('');
-  console.log('Options:');
-  console.log('  --mode source|package   Copy source (default) or install a dependency');
-  console.log('  --package <spec>        Package mode: Git URL, tarball, or npm package spec');
-  console.log('  --css <path>            Package mode: global CSS path inside the project');
+}
+
+function parseArguments(args) {
+  let command = 'init';
+  if (args[0] && !args[0].startsWith('-')) command = args.shift();
+  for (const flag of args) {
+    if (flag === '--help' || flag === '-h') {
+      command = 'help';
+    } else {
+      throw new Error(`Unknown option: ${flag}`);
+    }
+  }
+  return { command };
 }
 
 function printList(items, limit = 10) {
@@ -646,15 +653,6 @@ async function main() {
     console.log('');
     printHelp();
     process.exitCode = 1;
-    return;
-  }
-
-  if (options.mode === 'package') {
-    installPackageMode(options, {
-      projectRoot,
-      installDependencies,
-      upsertAgentUsageRules,
-    });
     return;
   }
 

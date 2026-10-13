@@ -17,10 +17,7 @@
     "public",
     "AGENTS.md",
     "README.md",
-    "package.json",
-    "dist",
-    "scripts/build-package.cjs",
-    "tsconfig.package.json"
+    "package.json"
   ],
   "scripts": {
     "dev": "next dev --port 6001",
@@ -28,9 +25,7 @@
     "start": "next start",
     "lint": "eslint",
     "format": "prettier --write .",
-    "build:package": "node scripts/build-package.cjs",
-    "prepare": "npm run build:package",
-    "test:package": "node --test scripts/package.test.cjs"
+    "test:installer": "node --test scripts/installer.test.cjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
@@ -73,53 +68,10 @@
     "cn": "^0.3.0",
     "react-hook-form": "^7.72.1"
   },
-  "description": "React UI components with source-copy and ESM package installation modes.",
+  "description": "React UI components with a source-copy installer.",
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "peerDependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-hook-form": "^7.72.1",
-    "tailwindcss": "^4.0.0"
-  },
-  "sideEffects": [
-    "**/*.css"
-  ],
-  "exports": {
-    "./components/ui/*": {
-      "types": "./dist/components/ui/*.d.ts",
-      "import": "./dist/components/ui/*.js",
-      "default": "./dist/components/ui/*.js"
-    },
-    "./components/rhf/*": {
-      "types": "./dist/components/rhf/*.d.ts",
-      "import": "./dist/components/rhf/*.js",
-      "default": "./dist/components/rhf/*.js"
-    },
-    "./hooks/*": {
-      "types": "./dist/hooks/*.d.ts",
-      "import": "./dist/hooks/*.js",
-      "default": "./dist/hooks/*.js"
-    },
-    "./lib/*": {
-      "types": "./dist/lib/*.d.ts",
-      "import": "./dist/lib/*.js",
-      "default": "./dist/lib/*.js"
-    },
-    "./constants/*": {
-      "types": "./dist/constants/*.d.ts",
-      "import": "./dist/constants/*.js",
-      "default": "./dist/constants/*.js"
-    },
-    "./components/rhf": {
-      "types": "./dist/components/rhf/index.d.ts",
-      "import": "./dist/components/rhf/index.js",
-      "default": "./dist/components/rhf/index.js"
-    },
-    "./styles.css": "./dist/styles.css",
-    "./package.json": "./package.json"
-  },
   "engines": {
     "node": ">=20.19.0"
   }
