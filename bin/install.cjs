@@ -27,6 +27,7 @@ const projectFilesToCopy = [
     label: 'globals.css',
   },
 ];
+const tailwindDependencies = ['tailwindcss@^4', '@tailwindcss/postcss@^4'];
 const runtimeDependencies = [
   '@tanstack/react-virtual@3.14.13',
   '@hookform/resolvers@5.9.1',
@@ -254,6 +255,12 @@ async function copyDirectory(sourceDir, targetDir) {
     }
 
     fs.copyFileSync(sourcePath, targetPath);
+    if (targetPath.endsWith('.tsx')) {
+      const content = fs.readFileSync(targetPath, 'utf8');
+      if (content.includes("@/lib/utils")) {
+        fs.writeFileSync(targetPath, content.replaceAll("@/lib/utils", "@/design-system/lib/utils"));
+      }
+    }
     conflictState.copied.push(relativePath(targetRoot, targetPath));
   }
 }
@@ -275,7 +282,7 @@ function getTargetPackageJson() {
   }
 }
 
-function getMissingDependencies(packageJson) {
+function getMissingDependencies(packageJson, required = runtimeDependencies) {
   const installed = new Set([
     ...Object.keys(packageJson.dependencies || {}),
     ...Object.keys(packageJson.devDependencies || {}),
@@ -283,7 +290,7 @@ function getMissingDependencies(packageJson) {
     ...Object.keys(packageJson.optionalDependencies || {}),
   ]);
 
-  return runtimeDependencies.filter((dependency) => {
+  return required.filter((dependency) => {
     const atIndex = dependency.startsWith('@')
       ? dependency.indexOf('@', 1)
       : dependency.indexOf('@');
@@ -315,16 +322,16 @@ function detectPackageManager() {
   return 'npm';
 }
 
-function getInstallCommand(packageManager, dependencies) {
+function getInstallCommand(packageManager, dependencies, dev = false) {
   switch (packageManager) {
     case 'pnpm':
-      return { command: 'pnpm', args: ['add', ...dependencies] };
+      return { command: 'pnpm', args: ['add', ...(dev ? ['-D'] : []), ...dependencies] };
     case 'yarn':
-      return { command: 'yarn', args: ['add', ...dependencies] };
+      return { command: 'yarn', args: ['add', ...(dev ? ['-D'] : []), ...dependencies] };
     case 'bun':
-      return { command: 'bun', args: ['add', ...dependencies] };
+      return { command: 'bun', args: ['add', ...(dev ? ['-d'] : []), ...dependencies] };
     default:
-      return { command: 'npm', args: ['install', ...dependencies] };
+      return { command: 'npm', args: ['install', ...(dev ? ['-D'] : []), ...dependencies] };
   }
 }
 
@@ -345,10 +352,14 @@ function askQuestion(question, options = {}) {
 }
 
 async function askTargetPath(fileConfig) {
-  const answer = await askQuestion(fileConfig.prompt, { preserveCase: true });
+  const suggested = detectCssTarget();
+  const prompt = suggested
+    ? `Target path for globals.css (detected: ${suggested}, type "skip" to skip): `
+    : fileConfig.prompt;
+  const answer = await askQuestion(prompt, { preserveCase: true });
 
   if (!answer) {
-    return fileConfig.defaultTarget;
+    return suggested || fileConfig.defaultTarget;
   }
 
   if (answer.toLowerCase() === 'skip') {
@@ -356,6 +367,72 @@ async function askTargetPath(fileConfig) {
   }
 
   return answer.replace(/\\/g, path.sep);
+}
+
+function isViteProject() {
+  const pkg = getTargetPackageJson();
+  return Boolean(pkg && (pkg.dependencies?.vite || pkg.devDependencies?.vite));
+}
+
+function detectCssTarget() {
+  const candidates = isViteProject()
+    ? ['src/index.css', 'src/App.css', 'src/globals.css', 'src/style.css', 'src/styles.css', 'index.css', 'style.css']
+    : ['app/globals.css', 'src/app/globals.css', 'styles/globals.css'];
+  return candidates.find((candidate) => fs.existsSync(path.join(projectRoot, candidate)))
+    || (isViteProject() ? 'src/index.css' : null);
+}
+
+function configureTailwind() {
+  if (!isViteProject()) return;
+  const configNames = ['postcss.config.js', 'postcss.config.cjs', 'postcss.config.mjs'];
+  const existing = configNames.find((name) => fs.existsSync(path.join(projectRoot, name)));
+  if (existing) {
+    const content = fs.readFileSync(path.join(projectRoot, existing), 'utf8');
+    if (!content.includes('@tailwindcss/postcss')) {
+      console.log(color.yellow(`Add '@tailwindcss/postcss' to ${existing} to enable Tailwind v4.`));
+    }
+    return;
+  }
+  fs.writeFileSync(path.join(projectRoot, 'postcss.config.mjs'),
+    "export default { plugins: { '@tailwindcss/postcss': {} } };\n");
+  conflictState.copied.push('postcss.config.mjs');
+  console.log(color.green('Added: postcss.config.mjs'));
+}
+
+function configureAlias() {
+  if (!isViteProject()) return;
+  const tsconfigName = fs.existsSync(path.join(projectRoot, 'tsconfig.app.json'))
+    ? 'tsconfig.app.json' : 'tsconfig.json';
+  const tsconfigPath = path.join(projectRoot, tsconfigName);
+  if (fs.existsSync(tsconfigPath)) {
+    const content = fs.readFileSync(tsconfigPath, 'utf8');
+    if (!content.includes('"@/*"')) {
+      const match = content.match(/"compilerOptions"\s*:\s*\{/);
+      if (match) {
+        const position = match.index + match[0].length;
+        const updated = `${content.slice(0, position)}\n    "baseUrl": ".",\n    "paths": { "@/*": ["./*"] },${content.slice(position)}`;
+        fs.writeFileSync(tsconfigPath, updated);
+        console.log(color.green(`Configured @ alias in ${tsconfigName}`));
+      }
+    }
+  }
+  const configName = ['vite.config.ts', 'vite.config.mts', 'vite.config.js', 'vite.config.mjs']
+    .find((name) => fs.existsSync(path.join(projectRoot, name)));
+  if (!configName) {
+    console.log(color.yellow('Configure Vite resolve.alias @ to the project root.'));
+    return;
+  }
+  const configPath = path.join(projectRoot, configName);
+  const content = fs.readFileSync(configPath, 'utf8');
+  if (/alias\s*:\s*\{[^}]*['"]@['"]\s*:/.test(content)) return;
+  if (!/defineConfig\s*\(\s*\{/.test(content) || /resolve\s*:/.test(content)) {
+    console.log(color.yellow(`Configure resolve.alias @ in ${configName} to the project root.`));
+    return;
+  }
+  const nodeUrlImport = "import { fileURLToPath, URL } from 'node:url';\n";
+  const updated = `${/import\s*\{[^}]*fileURLToPath[^}]*\}\s*from\s*['"]node:url['"]/.test(content) ? '' : nodeUrlImport}${content.replace(/defineConfig\s*\(\s*\{/, (match) => `${match}\n  resolve: { alias: { '@': fileURLToPath(new URL('./', import.meta.url)) } },`)}`;
+  fs.writeFileSync(configPath, updated);
+  console.log(color.green(`Configured @ alias in ${configName}`));
 }
 
 async function askProjectFileConflictAction(targetPath) {
@@ -375,9 +452,9 @@ async function askProjectFileConflictAction(targetPath) {
   }
 }
 
-function installDependencies(dependencies) {
+function installDependencies(dependencies, dev = false) {
   const packageManager = detectPackageManager();
-  const { command, args } = getInstallCommand(packageManager, dependencies);
+  const { command, args } = getInstallCommand(packageManager, dependencies, dev);
 
   console.log(color.green(`Installing with ${packageManager}: ${dependencies.join(', ')}`));
 
@@ -411,14 +488,15 @@ async function maybeInstallDependencies() {
   }
 
   const missingDependencies = getMissingDependencies(packageJson);
+  const missingTailwind = getMissingDependencies(packageJson, tailwindDependencies);
 
-  if (missingDependencies.length === 0) {
+  if (missingDependencies.length === 0 && missingTailwind.length === 0) {
     console.log(color.green('All required dependencies are already installed.'));
     return;
   }
 
   console.log('Missing dependencies detected:');
-  for (const dependency of missingDependencies) {
+  for (const dependency of [...missingDependencies, ...missingTailwind]) {
     console.log(`  - ${dependency}`);
   }
   console.log('');
@@ -433,7 +511,8 @@ async function maybeInstallDependencies() {
     return;
   }
 
-  installDependencies(missingDependencies);
+  if (missingDependencies.length > 0 && !installDependencies(missingDependencies)) return;
+  if (missingTailwind.length > 0) installDependencies(missingTailwind, true);
 }
 
 function copyRootFiles() {
@@ -699,6 +778,8 @@ async function main() {
   await maybeInstallDependencies();
   copyRootFiles();
   await copyProjectFiles();
+  configureTailwind();
+  configureAlias();
   printSummary();
 }
 

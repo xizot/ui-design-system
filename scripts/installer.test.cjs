@@ -51,3 +51,34 @@ test('unsupported options exit before installing', (t) => {
     assert.deepEqual(fs.readdirSync(project), []);
   }
 });
+
+test('Vite install suggests src/index.css and configures Tailwind and alias', async (t) => {
+  const project = fixture(t);
+  fs.mkdirSync(path.join(project, 'src'));
+  fs.writeFileSync(path.join(project, 'package.json'), JSON.stringify({ devDependencies: { vite: '^7' } }));
+  fs.writeFileSync(path.join(project, 'tsconfig.app.json'), '{ "compilerOptions": { "strict": true } }\n');
+  fs.writeFileSync(path.join(project, 'vite.config.ts'), "import { defineConfig } from 'vite'\nexport default defineConfig({ plugins: [] })\n");
+  let output = '';
+  await new Promise((resolve, reject) => {
+    const child = spawn(process.execPath, [path.join(root, 'bin/install.cjs'), 'init'], { cwd: project });
+    const timer = setTimeout(() => { child.kill(); reject(new Error(`Vite installer timed out: ${output}`)); }, 15000);
+    child.stdout.on('data', (data) => {
+      output += data.toString();
+      if (output.includes('Select an option (1/2, default: 2): ')) {
+        output = output.replace('Select an option (1/2, default: 2): ', '');
+        child.stdin.write('2\n');
+      }
+      if (output.includes('detected: src/index.css')) {
+        output = output.replace('detected: src/index.css', '');
+        child.stdin.end('\n');
+      }
+    });
+    child.on('error', reject);
+    child.on('exit', (code) => { clearTimeout(timer); code === 0 ? resolve() : reject(new Error(`Installer exited ${code}: ${output}`)); });
+  });
+  assert.ok(fs.existsSync(path.join(project, 'src/index.css')));
+  assert.ok(fs.existsSync(path.join(project, 'postcss.config.mjs')));
+  assert.match(fs.readFileSync(path.join(project, 'vite.config.ts'), 'utf8'), /alias: \{ '@':/);
+  assert.match(fs.readFileSync(path.join(project, 'tsconfig.app.json'), 'utf8'), /"@\/\*"/);
+  assert.match(fs.readFileSync(path.join(project, 'design-system/components/ui/bubble.tsx'), 'utf8'), /@\/design-system\/lib\/utils/);
+});
