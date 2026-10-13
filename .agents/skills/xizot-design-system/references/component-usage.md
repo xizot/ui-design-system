@@ -1,5 +1,7 @@
 # Component Usage
 
+For every current UI, RHF, and provider module, including when to choose it and key value contracts, use [component-catalog.md](component-catalog.md). Read the actual component source for full props and exports.
+
 ## Imports
 
 Resolve the active mode using [installation-modes.md](installation-modes.md). In source consumers, import from the copied folder:

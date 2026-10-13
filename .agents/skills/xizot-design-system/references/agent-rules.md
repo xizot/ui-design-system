@@ -8,6 +8,8 @@ Read `.agents/rules/react.md` and `.agents/skills/xizot-design-system/references
 
 Before UI edits, read `.agents/skills/xizot-design-system/SKILL.md` from the target application root. For submitted forms read `xizot-forms/SKILL.md` in the same skills folder; for full pages use `xizot-page-builder`; finish with `xizot-quality`. Read files directly when the client does not discover skills.
 
+Choose controls through `.agents/skills/xizot-design-system/references/component-catalog.md`, then read the selected source files for exact props and exports.
+
 Run `python .agents/skills/xizot-design-system/scripts/ui-source.py --root . discover "rhf"`, then read selected source. Before finishing, run the same script with `review path/to/changed.tsx`, scoped lint on application code, types and relevant behavior checks. The copied design-system source is excluded from consumer lint/Prettier; validate library changes in the library repository. Requires Python 3.10+; use rg/manual review if unavailable. Heuristic findings are review prompts, not correctness certificates.
 
 Submitted product forms use RHF and existing wrappers. Search/filter controls may use local/URL state. Respect explicit user choices or existing native/server-action contracts and explain the exception. Review ownership, state and duplication using core `references/code-contract.md`.
