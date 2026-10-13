@@ -1,0 +1,368 @@
+{
+  "workspace-overview": {
+    "profile": "operations",
+    "intent": "Understand performance and decide what needs attention across a workspace.",
+    "shell": "Workspace sidebar on the left, compact context topbar, main canvas. Reuse the app shell; mobile navigation opens on demand.",
+    "default_recipe": "calm-business",
+    "regions": [
+      "Page identity and data/time scope",
+      "Verified decision-relevant metrics",
+      "Primary trend with supporting breakdown when available",
+      "Actionable exceptions or work queue when needed"
+    ],
+    "layout": "Start with a metric row sized to real content and a 2:1 main/supporting region when the relationship warrants it. Put urgent work before analytics for action-first users.",
+    "components": ["Sidebar", "Card", "ChartContainer", "Table", "DateRangePicker"],
+    "responsive": "Stack by decision priority; retain metric units and period labels; charts get a bounded readable region.",
+    "omit": [
+      "Invented KPIs or comparison periods",
+      "Charts, maps and recent activity that answer no user question",
+      "Global search, notifications or workspace switching without product behavior"
+    ],
+    "checks": [
+      "Metrics match their source and unit",
+      "Missing data differs from zero",
+      "Chart titles and labels explain the comparison",
+      "Keyboard navigation and supported theme contrast"
+    ]
+  },
+  "management-list": {
+    "profile": "operations",
+    "intent": "Find, compare and act on operational records repeatedly.",
+    "shell": "Workspace sidebar by default for a multi-module app; preserve an existing shell. A single-purpose tool may need only top navigation.",
+    "default_recipe": "workbench",
+    "regions": [
+      "Page title and primary action when available",
+      "Search and frequent filters",
+      "Applied-filter context when useful",
+      "Data table",
+      "Pagination and result context"
+    ],
+    "layout": "Give the table most of the canvas. Frequent filters stay visible; advanced filters can use a panel. Quick detail may open beside the list; substantial editing uses a route.",
+    "components": ["Sidebar", "DataTable", "Button", "Input", "SingleCombobox", "SheetPanel"],
+    "responsive": "Wrap actions and filters; keep table overflow local and identity/actions discoverable. Use mobile cards only when they preserve the task better than column comparison.",
+    "omit": [
+      "Hero section",
+      "KPI row without a prioritization need",
+      "Search, selection or bulk actions without a real contract",
+      "Duplicate create actions without a reason"
+    ],
+    "checks": [
+      "Controlled sort/filter/page matches supplied rows",
+      "Stable row IDs and selection scope",
+      "Empty versus filtered no-results",
+      "Filter on a later page and stale request protection",
+      "Quick detail preserves list context"
+    ]
+  },
+  "record-detail": {
+    "profile": "operations",
+    "intent": "Understand one entity and perform contextual actions.",
+    "shell": "Inherit the workspace shell; use a route for deep links or extended work, a sheet for quick list comparison.",
+    "default_recipe": "calm-business",
+    "regions": [
+      "Identity, status and contextual actions",
+      "Main entity information",
+      "Supporting summary or related context",
+      "History only when supplied and meaningful"
+    ],
+    "layout": "One column for linear content; 2:1 main/context when the information has distinct roles. Use label-value rows instead of a card per attribute.",
+    "components": ["Badge", "Button", "SheetPanel", "Tabs", "Table"],
+    "responsive": "Stack main then supporting context; preserve identity and action access without excessive sticky chrome.",
+    "omit": [
+      "Tabs for tiny groups of fields",
+      "Fabricated timeline events",
+      "Repeated status/name blocks",
+      "Cards around every property"
+    ],
+    "checks": [
+      "Direct navigation and entity switching",
+      "Long values and missing optional fields",
+      "Contextual actions follow permissions and result contracts",
+      "Focus returns on sheet close"
+    ]
+  },
+  "editor-form": {
+    "profile": "operations",
+    "intent": "Create or edit structured data with validation and recoverable submission.",
+    "shell": "Inherit the app shell for long work; a short contextual task may use a panel.",
+    "default_recipe": "calm-business",
+    "regions": [
+      "Task title and necessary context",
+      "Fields grouped by user decisions",
+      "Validation and server feedback",
+      "Submit and cancel actions"
+    ],
+    "layout": "One column by default; pair short related fields when width allows. Use sections for long forms; steps only for real stages/dependencies. Constrain form width instead of stretching inputs across a wide canvas.",
+    "components": [
+      "RHFInput",
+      "RHFNumberInput",
+      "RHFSingleCombobox",
+      "FieldGroup",
+      "Button",
+      "DialogPanel",
+      "SheetPanel"
+    ],
+    "responsive": "Stack fields in reading order; keep action bars from covering errors or keyboard focus; scroll long panel bodies.",
+    "omit": [
+      "Local state mirroring RHF values",
+      "A card per field",
+      "Stepper based only on field count",
+      "Confirmation for harmless edits without product reason"
+    ],
+    "checks": [
+      "Invalid and valid submit",
+      "Pending prevents duplicate activation",
+      "Failure preserves edits",
+      "Cancel/reopen and entity reset policy",
+      "Zero, long text, keyboard and labels"
+    ]
+  },
+  "settings": {
+    "profile": "operations",
+    "intent": "Change durable preferences with clear save scope.",
+    "shell": "Inherit the app shell; add local settings navigation only for meaningful groups.",
+    "default_recipe": "calm-business",
+    "regions": [
+      "Settings identity",
+      "Related preference groups",
+      "Save feedback/actions for the owning scope",
+      "Destructive account actions only when required"
+    ],
+    "layout": "Readable-width sections or setting rows. A small settings surface stays on one page. Separate save scopes only when their lifecycles are independent.",
+    "components": ["FieldGroup", "RHFInput", "RHFCheckbox", "RHFSwitch", "Button", "Alert"],
+    "responsive": "Stack label/help/control where needed and keep the save scope obvious.",
+    "omit": [
+      "Analytics or hero sections",
+      "A tab for every setting",
+      "Unexplained mixing of immediate-save and explicit Save",
+      "Warnings dominating harmless settings"
+    ],
+    "checks": [
+      "Reload reflects saved state",
+      "Dirty and pending states",
+      "Immediate-save failure can recover",
+      "Dangerous actions have proportional protection"
+    ]
+  },
+  "master-detail": {
+    "profile": "operations",
+    "intent": "Process a stream of records while retaining list context.",
+    "shell": "Workspace navigation plus list and detail; reduce columns when content no longer fits.",
+    "default_recipe": "workbench",
+    "regions": [
+      "Navigation and list scope",
+      "Search/filter and selectable record list",
+      "Selected record detail and actions"
+    ],
+    "layout": "Use a stable list pane and a larger detail pane. Keep identity and unread/status context scan-friendly. Independent scroll regions need usable keyboard paths.",
+    "components": ["Sidebar", "Item", "ScrollArea", "ResizablePanelGroup", "Button"],
+    "responsive": "Navigate list to detail on narrow screens with an obvious back action; preserve selection/scroll context when returning.",
+    "omit": [
+      "Three columns regardless of available width",
+      "Chains of nested dialogs",
+      "Losing the selected record on harmless refresh"
+    ],
+    "checks": [
+      "Selection, back/forward and reload policy",
+      "Unsaved detail changes on selection switch",
+      "Long list and empty selection",
+      "No unreachable content in nested scrolling"
+    ]
+  },
+  "service-landing": {
+    "profile": "marketing",
+    "intent": "Explain a real offer and help the visitor take the next step.",
+    "shell": "Top navigation, vertically ordered content and footer; no workspace sidebar by default.",
+    "default_recipe": "calm-business",
+    "regions": [
+      "Value proposition and primary destination/action",
+      "Product or service evidence",
+      "Relevant offer, benefits or process",
+      "Next step and footer"
+    ],
+    "layout": "Use a focused hero. Split text/media only when media adds evidence or identity; vary section rhythm according to content rather than repeating a card grid.",
+    "components": ["Button", "NavigationMenu", "AspectRatio", "Accordion", "RHFInput"],
+    "responsive": "Preserve reading order; scale headings and media without clipping; keep CTA destination clear.",
+    "omit": [
+      "Invented testimonials, client logos or metrics",
+      "Dashboard chrome",
+      "Mandatory six-feature grid",
+      "FAQ or pricing without content",
+      "Decorative interactions that delay the CTA"
+    ],
+    "checks": [
+      "Every CTA has a real destination or flow",
+      "Content/claims have a source",
+      "Long copy and image loading reflow",
+      "Contact form failure if present"
+    ]
+  },
+  "pricing": {
+    "profile": "marketing",
+    "intent": "Compare offers and understand cost and commitment.",
+    "shell": "Top navigation for a public site; existing workspace shell for in-app billing.",
+    "default_recipe": "calm-business",
+    "regions": [
+      "Offer and billing context",
+      "Comparable plans",
+      "Terms and decision-relevant differences",
+      "Purchase/contact action and genuine open questions"
+    ],
+    "layout": "Align comparable information across plans. Highlight a plan only with a product reason; detailed feature comparison can use a table.",
+    "components": ["Card", "Table", "Button", "RadioGroup", "Accordion"],
+    "responsive": "Stack plans with clear identities and repeated billing context; contain wide comparisons locally.",
+    "omit": [
+      "Invented most-popular labels",
+      "Fake discounts or urgency",
+      "Hidden renewal terms",
+      "A billing toggle without price data"
+    ],
+    "checks": [
+      "Price, currency, period and total clarity",
+      "Plan action destination",
+      "Comparison meaning on narrow screens",
+      "No color-only recommended state"
+    ]
+  },
+  "product-catalog": {
+    "profile": "commerce",
+    "intent": "Discover, narrow and compare products.",
+    "shell": "Commerce header with category/search and cart when supported; filter region belongs to results.",
+    "default_recipe": "product-led",
+    "regions": [
+      "Category/search context",
+      "Result count, filters and sort",
+      "Product grid",
+      "Pagination or load-more from the data contract"
+    ],
+    "layout": "Consistent media ratios and name/price hierarchy. Derive columns from usable card width. A B2B attribute-comparison task may use a table instead.",
+    "components": ["Card", "AspectRatio", "Input", "SingleCombobox", "SheetPanel", "Button"],
+    "responsive": "Reduce grid columns without shrinking text excessively; advanced filters open on demand and applied filters remain discoverable.",
+    "omit": [
+      "KPI/chart widgets",
+      "Fake stock or scarcity",
+      "Filter controls with no effect",
+      "Quick-buy actions that skip required variant selection"
+    ],
+    "checks": [
+      "Filter/sort reflect results",
+      "No-results recovery",
+      "Long product names and missing media",
+      "Actual price/stock and working product links"
+    ]
+  },
+  "product-detail": {
+    "profile": "commerce",
+    "intent": "Evaluate a product, choose valid options and buy with a clear total.",
+    "shell": "Inherit commerce navigation and cart context.",
+    "default_recipe": "product-led",
+    "regions": [
+      "Gallery and product identity",
+      "Price, options, quantity and availability",
+      "Purchase action",
+      "Description/specifications and relevant supporting information"
+    ],
+    "layout": "Gallery beside purchase information when width allows. Keep essential purchase conditions visible; supplementary details may be disclosed.",
+    "components": [
+      "AspectRatio",
+      "Carousel",
+      "RadioGroup",
+      "SingleCombobox",
+      "NumberInput",
+      "Button",
+      "Accordion"
+    ],
+    "responsive": "Stack by reading and decision order; sticky purchase controls are optional and must not obscure content/focus.",
+    "omit": [
+      "Fabricated reviews or related products",
+      "Urgency not supported by data",
+      "Accordion hiding essential price/conditions"
+    ],
+    "checks": [
+      "Unavailable option combinations",
+      "Quantity and total boundaries",
+      "Pending/failure preserve selection",
+      "Cart mutation does not duplicate"
+    ]
+  },
+  "reading": {
+    "profile": "content",
+    "intent": "Find and understand long-form information.",
+    "shell": "Editorial: compact header and centered reading column. Documentation: section navigation left and local TOC right only when content warrants them.",
+    "default_recipe": "editorial",
+    "regions": [
+      "Title and meaningful context",
+      "Article with semantic headings",
+      "Code, media or comparison tables where needed",
+      "Related/next content when useful"
+    ],
+    "layout": "Constrain reading measure; let code/tables overflow within their own region. A technical docs product can select the technical recipe while retaining this reading pattern.",
+    "components": ["Breadcrumb", "TypographyP", "Table", "CodeBlock", "Sidebar"],
+    "responsive": "Prioritize article width; collapse navigation/TOC into reachable controls; avoid document-wide horizontal scrolling.",
+    "omit": [
+      "Card around every paragraph",
+      "Display font for dense control labels",
+      "TOC for a short article",
+      "Unrelated CTA interrupting each section"
+    ],
+    "checks": [
+      "Heading and link meaning",
+      "Long code and tables",
+      "Reading measure and text spacing",
+      "Search no-results when search exists"
+    ]
+  },
+  "portfolio": {
+    "profile": "portfolio",
+    "intent": "Communicate identity through credible selected work.",
+    "shell": "Small top navigation; let project content determine composition.",
+    "default_recipe": "product-led",
+    "regions": [
+      "Identity and positioning",
+      "Selected projects",
+      "Case-study evidence and process",
+      "Contact destination or flow"
+    ],
+    "layout": "Use editorial project rows or media-led grids; permit distinctive art direction while keeping project identity and navigation readable.",
+    "components": ["AspectRatio", "Card", "Button", "RHFInput"],
+    "responsive": "Keep work accessible without hover; reserve media space and preserve project reading order.",
+    "omit": [
+      "Invented clients, awards or impact numbers",
+      "A dashboard shell",
+      "Animation blocking project access"
+    ],
+    "checks": [
+      "Real project evidence and links",
+      "Media alternatives and loading",
+      "Reduced motion",
+      "Contact completion if implemented"
+    ]
+  },
+  "focused-task": {
+    "profile": null,
+    "intent": "Complete login, recovery, checkout or a staged task with minimal distractions.",
+    "shell": "Focused shell with identity, back/help when needed and progress only for real stages; avoid carrying a whole workspace menu into the task.",
+    "default_recipe": "calm-business",
+    "regions": [
+      "Task identity and essential context",
+      "Current fields or decision",
+      "Primary completion/next action",
+      "Relevant recovery or alternate path"
+    ],
+    "layout": "Constrain the task width. A checkout summary can be a supporting column; a login form normally needs no second column. Split branding requires real content/assets.",
+    "components": ["FieldGroup", "RHFInput", "Button", "Alert"],
+    "responsive": "Single readable column; preserve purchase total or progress without obscuring fields.",
+    "omit": [
+      "Invented auth/payment behavior",
+      "Unnecessary navigation and upsells",
+      "A stepper for a single-step form",
+      "Distracting decorative panels"
+    ],
+    "checks": [
+      "Validation and recoverable server failure",
+      "Keyboard and password-manager/native semantics as applicable",
+      "Back/cancel preserves the required state",
+      "No duplicate completion action"
+    ]
+  }
+}

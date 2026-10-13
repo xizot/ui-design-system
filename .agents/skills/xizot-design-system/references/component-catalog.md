@@ -1,12 +1,12 @@
 # Component Catalog
 
-Use this catalog to choose a component, then read its implementation before writing props. It covers every current `components/ui/*.tsx` module, every `components/rhf/rhf-*.tsx` wrapper, and the theme provider. Paths below are relative to the source root selected by [installation modes](installation-modes.md). The catalog describes public intent and the contracts most likely to be misused; the source file is authoritative for complete props and exports.
+Use this catalog to choose a component, then read its implementation before writing props. It covers every current `components/ui/*.tsx` module, every `components/rhf/rhf-*.tsx` wrapper, and the theme provider. Paths below are relative to the source root selected by [source ownership](source-ownership.md). The catalog describes public intent and the contracts most likely to be misused; the source file is authoritative for complete props and exports.
 
 ## How to use this catalog
 
 1. Choose the row for the interaction and open its `components/...` file. Run `python .agents/skills/xizot-design-system/scripts/ui-source.py --root . discover "component-name"` if the file location or active installation is unclear.
 2. In submitted forms, read [xizot-forms](../../xizot-forms/SKILL.md) and choose an `RHF*` wrapper when one exists. Search and filter controls may use local or URL state.
-3. Import named exports from the specific module. Source consumers use their copied `design-system/components/...` path; package consumers use `ui-design-system/components/...`. Package CSS and source ownership are described in [installation modes](installation-modes.md).
+3. Import named exports from the specific module in the installed source tree. Confirm the application's aliases and file extensions using [source ownership](source-ownership.md); internal documentation demos are not consumer components.
 4. If the row says _primitive_, compose its documented exports. If it says _panel_, use that composition for an application overlay. Do not assume shadcn examples use the same props as these files.
 
 ## Actions and selection
@@ -115,7 +115,7 @@ Use this catalog to choose a component, then read its implementation before writ
 
 ## React Hook Form wrappers
 
-Import these named exports from the resolved source root's `components/rhf`; use the consumer alias described in [installation modes](installation-modes.md). The exported wrapper list is in `components/rhf/index.ts`; shared `control`, `name`, and label/description types are in `components/rhf/types.ts`. Define complete form `defaultValues` using the value types below, and verify validation/error behavior at the form owner.
+Import these named exports from the resolved source root's `components/rhf`; use the consumer alias described in [source ownership](source-ownership.md). The exported wrapper list is in `components/rhf/index.ts`; shared `control`, `name`, and label/description types are in `components/rhf/types.ts`. Define complete form `defaultValues` using the value types below, and verify validation/error behavior at the form owner.
 
 | Module / export                                              | Contract to check                                                                                                                     |
 | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |

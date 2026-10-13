@@ -44,11 +44,11 @@ For Create React App, the target is `src/design-system/` so the source stays ins
 
 ### Supported projects
 
-| Project | Requirements | Build integration | Consumer imports |
-| --- | --- | --- | --- |
-| Vite React | React 19, Tailwind 4 | Preserves Vite config and adds a specific alias; configures PostCSS | `@/design-system/...` |
-| Next.js | Next 15.1 or 16.x, React 19, Tailwind 4 | Merges tsconfig/jsconfig paths and PostCSS configuration | `@/design-system/...` |
-| Create React App | react-scripts 5, React 19, Tailwind 4 | Uses CRACO, keeps source under `src`, loads the PostCSS config | `design-system/...` with `baseUrl: "src"` |
+| Project          | Requirements                            | Build integration                                                   | Consumer imports                          |
+| ---------------- | --------------------------------------- | ------------------------------------------------------------------- | ----------------------------------------- |
+| Vite React       | React 19, Tailwind 4                    | Preserves Vite config and adds a specific alias; configures PostCSS | `@/design-system/...`                     |
+| Next.js          | Next 15.1 or 16.x, React 19, Tailwind 4 | Merges tsconfig/jsconfig paths and PostCSS configuration            | `@/design-system/...`                     |
+| Create React App | react-scripts 5, React 19, Tailwind 4   | Uses CRACO, keeps source under `src`, loads the PostCSS config      | `design-system/...` with `baseUrl: "src"` |
 
 Node 20.19+ is required. Existing React 18, Tailwind 3, incompatible dependency versions, unsupported configs and ambiguous package-manager lockfiles stop installation before source/config files are changed. Upgrade those dependencies explicitly before rerunning; the installer does not force major upgrades.
 
@@ -233,6 +233,15 @@ Update both:
 - Source component conflicts prompt before overwrite. Installer-owned skills/rules refresh on setup.
 - The docs app is internal to this repository; installation includes the consumer skills and rules needed for downstream projects.
 
-## Installer validation
+## Agent design workflow
 
-Run `npm run test:installer` for isolated configuration/dependency tests. Run `node scripts/installer-smoke.cjs vite`, `node scripts/installer-smoke.cjs next`, or `node scripts/installer-smoke.cjs cra` for actual npm installation and production builds in a temporary directory. Add `js` to exercise JavaScript output. Smoke checks require network access and retain the fixture/build logs for inspection.
+The installed page-builder skill chooses a page pattern and an inherited or selected visual direction before composing UI. Multi-module workspaces default to sidebar navigation; public landing pages use top navigation; lists, overviews, forms and reading pages have different structures.
+
+Retrieve only the guidance needed for the task:
+
+```sh
+python .agents/skills/xizot-design-system/scripts/ui-source.py pattern management-list
+python .agents/skills/xizot-design-system/scripts/ui-source.py recipe workbench
+```
+
+Omit the pattern/recipe name to list choices. Existing app branding takes precedence over defaults. Guidance covers layout, color, typography, component choices, responsive behavior and removing unnecessary UX. Rendered design and interactions still need verification in the actual application.

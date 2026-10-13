@@ -15,6 +15,24 @@ def profile(name):
     return {'profile': name, **profiles[name], 'authority': 'Design starting point; user requirements and verified local contracts take precedence.'}
 
 
+def design_reference(kind, name=None):
+    """Retrieve one explicit design choice; never infer branding or product behavior."""
+    filenames = {'pattern': 'page-patterns.json', 'recipe': 'visual-recipes.json'}
+    if kind not in filenames:
+        raise ValueError('Unknown design reference kind: ' + kind)
+    file = Path(__file__).resolve().parents[2] / 'xizot-page-builder/data' / filenames[kind]
+    entries = json.loads(file.read_text(encoding='utf-8'))
+    if name is None:
+        return {'kind': kind, 'choices': [
+            {'id': key, 'intent': value['intent']} for key, value in entries.items()
+        ]}
+    if name not in entries:
+        raise ValueError('Unknown ' + kind + '. Choose: ' + ', '.join(entries))
+    return {kind: name, **entries[name],
+            'authority': 'Design default, not a required scaffold. Preserve existing product decisions unless redesign is requested. Source contracts govern component APIs; inspect before composing.',
+            'verification': 'Guidance only; this lookup does not validate a palette, font, rendered layout or agent output.'}
+
+
 def locate(root, mode=None):
     if mode is None and (root / 'AGENTS.md').is_file():
         content = (root / 'AGENTS.md').read_text(encoding='utf-8')
@@ -92,11 +110,16 @@ def main():
     check.add_argument('paths', nargs='+')
     design = sub.add_parser('profile')
     design.add_argument('name')
+    for name in ('pattern', 'recipe'):
+        reference = sub.add_parser(name, help='List choices or retrieve one design reference')
+        reference.add_argument('name', nargs='?')
     args = parser.parse_args()
     root = args.root.resolve()
     try:
         if args.command == 'profile':
             result = profile(args.name)
+        elif args.command in ('pattern', 'recipe'):
+            result = design_reference(args.command, args.name)
         elif args.command == 'discover':
             result = discover(root, args.query, args.mode)
         else:

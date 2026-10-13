@@ -13,3 +13,9 @@ Read only the relevant row and inspect the real component source.
 | Motion               | Preserve established motion; custom animation must serve feedback or continuity                                               | Reduced motion and repeated/interrupted actions                                              |
 
 Use accessible component primitives, visible labels/focus and named icon actions. Check keyboard operation and actual rendered contrast for changed colors. Permission behavior comes from the product contract; do not invent authorization rules.
+
+## Mutation and feedback ownership
+
+Inspect the actual request wrapper and comparable callers: does failure throw, return a result envelope, or return an absent value? A resolved promise alone does not establish success. Close/reset/navigate only on confirmed success; retain edits and recovery on failure.
+
+Keep feedback with its owner. Field errors belong by the field, page/form errors where recovery happens, and transient notices follow the existing app pattern. Do not duplicate an interceptor's toast, swallow errors into empty data, or add success modals/toasts merely because an action is async. A loading spinner does not necessarily disable a control; verify repeat-activation behavior.

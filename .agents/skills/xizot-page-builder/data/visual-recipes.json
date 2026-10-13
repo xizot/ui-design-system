@@ -1,0 +1,127 @@
+{
+  "workbench": {
+    "intent": "Repeated operational work with scan-friendly data and restrained decoration.",
+    "use_for": ["Management lists", "Processing queues", "Dense admin workflows"],
+    "avoid_for": [
+      "Long editorial reading without adjusting type and measure",
+      "Expressive brand storytelling as the only direction"
+    ],
+    "color": "Low-chroma neutral canvas/surfaces; existing brand accent for actions and selection; status colors only for real meaning. A cool neutral plus blue is one starting direction when no brand exists, not an industry rule.",
+    "font": "Preserve the app font. For a new product use a tested system sans or an already integrated Inter/Geist; tabular numerals for comparable values.",
+    "type_start_px": {
+      "data_label": [13, 14],
+      "body": [14, 16],
+      "page_title": [24, 28],
+      "section_title": [16, 18]
+    },
+    "density": "Compact for the work area; comfortable for editing. Desktop page padding 16–24px and group gaps 12–16px are starting points, not overrides of control internals.",
+    "geometry": "Clear alignment, restrained radii, light boundaries; shadows express overlays/elevation rather than every region.",
+    "media_motion": "Icons aid recognition; avoid decorative imagery and staggered data-row animation.",
+    "checks": [
+      "Task area dominates chrome",
+      "Dense rows remain readable and operable",
+      "Long Vietnamese labels and values fit",
+      "Primary actions and statuses remain distinct"
+    ]
+  },
+  "calm-business": {
+    "intent": "Approachable professional UI with clear hierarchy and moderate spacing.",
+    "use_for": ["SaaS workspaces", "Forms and settings", "Service marketing"],
+    "avoid_for": [
+      "Treating every region as an elevated card",
+      "Using spacious marketing density inside dense tables"
+    ],
+    "color": "Quiet neutral background, readable surfaces and one main brand accent. Inherit an existing palette; keep supporting decoration lower emphasis than actions.",
+    "font": "One readable sans family for body and controls; a distinct heading family is optional only for a real brand role.",
+    "type_start_px": {
+      "body": [14, 16],
+      "page_title": [24, 30],
+      "section_title": [16, 20],
+      "marketing_hero_desktop": [40, 64],
+      "marketing_hero_mobile": [30, 40]
+    },
+    "density": "Comfortable: desktop page padding 24–32px, mobile around 16px, group gaps 16–24px; marketing sections may be wider-spaced.",
+    "geometry": "Consistent control/card/overlay radius roles. Inset workspace is an option when it clarifies the canvas; flat sections need no card.",
+    "media_motion": "Product/service evidence may support marketing; application screens use imagery sparingly. Preserve native component motion.",
+    "checks": [
+      "Page title, sections and controls have distinct emphasis",
+      "No repeated decorative cards",
+      "Primary action is clear within its group",
+      "Form and mobile reading order are coherent"
+    ]
+  },
+  "editorial": {
+    "intent": "Sustained reading with a deliberate editorial tone.",
+    "use_for": ["Articles", "Learning resources", "Content-led services"],
+    "avoid_for": [
+      "Serif/display styling imposed on all dense control labels",
+      "Multiple sidebars squeezing the reading column"
+    ],
+    "color": "Neutral or gently warm canvas with strong text contrast; accent used sparingly for navigation/actions. Warm neutral plus terracotta is an optional direction, not a prevalidated palette.",
+    "font": "Preserve existing typography. A serif such as Source Serif 4 is a candidate for prose/headings; use readable sans for controls. Verify actual font files, language coverage, license and fallback before adoption.",
+    "type_start_px": {
+      "article_body": [16, 18],
+      "section_title": [20, 28],
+      "page_title": [30, 44]
+    },
+    "density": "Start with 60–75ch reading measure and body line-height about 1.6–1.75; adjust to actual typeface/language. Use spacing between sections instead of boxing paragraphs.",
+    "geometry": "Editorial rhythm and alignment; modest borders where information changes type; little elevation.",
+    "media_motion": "Images, figures and pull quotes must add content. Motion must not interfere with reading or anchor navigation.",
+    "checks": [
+      "Long reading is comfortable",
+      "Semantic headings match structure",
+      "Code/tables do not break reflow",
+      "Diacritics and text-spacing changes remain readable"
+    ]
+  },
+  "product-led": {
+    "intent": "Let products or selected work supply visual identity and evidence.",
+    "use_for": ["Commerce", "Product presentations", "Portfolios"],
+    "avoid_for": [
+      "Stock imagery decorating operational tools",
+      "Media overwhelming price, identity or decision information"
+    ],
+    "color": "A neutral canvas that supports the actual media, with brand accent reserved for useful emphasis. Avoid using status color as sales decoration.",
+    "font": "Readable names, descriptions and prices; expressive headings may carry brand identity while controls stay clear.",
+    "type_start_px": {
+      "body": [16, 18],
+      "item_title": [16, 20],
+      "page_title": [28, 40],
+      "hero_desktop": [40, 64]
+    },
+    "density": "Consistent grid gaps and media ratios; choose minimum card width from real content rather than forcing a column count.",
+    "geometry": "Stable image proportions, controlled crops, consistent action placement; border/card treatment only where grouping helps.",
+    "media_motion": "Use real supplied assets with useful alternatives. Reserve space before load; all hover-revealed actions need a touch/keyboard path.",
+    "checks": [
+      "Product/project identity and next step are clear",
+      "Long names and prices fit",
+      "Media fallback and loading do not collapse layout",
+      "Evidence and claims are real"
+    ]
+  },
+  "technical": {
+    "intent": "Precise information architecture for developer tools, monitoring or technical docs.",
+    "use_for": ["Technical documentation", "Developer workspaces", "Monitoring"],
+    "avoid_for": [
+      "Monospace for every paragraph and control",
+      "Dark-only styling inferred from the product category"
+    ],
+    "color": "Restrained neutral surfaces with distinguishable selection and data-series roles. Support the app's actual theme policy; do not assume dark mode only.",
+    "font": "Sans for UI and prose, mono for code/IDs. Existing Geist Mono or an intentionally adopted IBM Plex Sans/Mono pair are candidates; verify actual loading and glyph coverage.",
+    "type_start_px": {
+      "body": [14, 16],
+      "article_body": [16, 18],
+      "code": [13, 14],
+      "page_title": [24, 32]
+    },
+    "density": "Task-dependent: compact for monitoring, readable measure for documentation. Keep code/table overflow local.",
+    "geometry": "Aligned grids, clear boundaries and restrained elevation; keep status meaning distinct from brand styling.",
+    "media_motion": "Diagrams and charts explain systems/data; avoid decorative particle effects or motion behind text.",
+    "checks": [
+      "Code and identifiers distinguish ambiguous characters",
+      "Chart states and units are clear",
+      "Long logs/commands remain accessible",
+      "Navigation and content hierarchy match the task"
+    ]
+  }
+}

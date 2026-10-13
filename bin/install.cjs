@@ -6,7 +6,6 @@ const path = require('node:path');
 const readline = require('node:readline');
 const ts = require('typescript');
 const { planProject, setJson, slash } = require('./project.cjs');
-const { retireGuidance } = require('./guidance.cjs');
 
 const packageRoot = path.resolve(__dirname, '..');
 const projectRoot = process.cwd();
@@ -16,7 +15,6 @@ let projectPlan;
 let cliOptions;
 const directoriesToCopy = ['components', 'constants', 'hooks', 'lib'];
 const agentUsageRulesSource = '.agents/skills/xizot-design-system/references/agent-rules.md';
-const agentInstructionsSource = 'AGENTS.md';
 const agentUsageRulesTarget = 'AGENTS.md';
 const agentUsageRulesStartMarker = '<!-- BEGIN:design-system-usage-rules -->';
 const agentUsageRulesEndMarker = '<!-- END:design-system-usage-rules -->';
@@ -361,7 +359,6 @@ function installDependencies(dependencies, dev = false) {
 
 function copyRootFiles() {
   printSection('Step 3: Agent Rules');
-  copyAgentInstructionsTemplate();
   upsertAgentUsageRules();
   installAgentRules();
   installCodexSkill();
@@ -379,24 +376,6 @@ function installAgentRules() {
   fs.cpSync(sourcePath, targetPath, { recursive: true, force: true });
   conflictState.overwritten.push(agentRulesTarget);
   console.log(color.green(`Updated: ${agentRulesTarget}`));
-}
-
-function copyAgentInstructionsTemplate() {
-  const sourcePath = path.join(packageRoot, agentInstructionsSource);
-  const targetPath = path.join(projectRoot, agentUsageRulesTarget);
-
-  if (!fs.existsSync(sourcePath)) {
-    console.log(color.gray(`Skipping missing agent instructions: ${agentInstructionsSource}`));
-    return;
-  }
-
-  if (fs.existsSync(targetPath)) {
-    return;
-  }
-
-  fs.copyFileSync(sourcePath, targetPath);
-  conflictState.copied.push(agentUsageRulesTarget);
-  console.log(color.green(`Added: ${agentUsageRulesTarget}`));
 }
 
 function buildAgentUsageRulesSection() {
@@ -490,7 +469,6 @@ function installCodexSkill() {
 
   const existed = fs.existsSync(targetPath);
 
-  retireGuidance(projectRoot, (message) => console.log(color.yellow(message)));
   copyDirectoryOverwrite(sourcePath, targetPath);
 
   if (existed) {
