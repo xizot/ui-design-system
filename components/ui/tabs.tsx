@@ -50,7 +50,7 @@ function TabsList({
         className={cn(
           'pointer-events-none absolute z-0 transition-[left,top,width,height] duration-200 ease-out motion-reduce:transition-none',
           variant === 'default'
-            ? 'bg-background top-(--active-tab-top) left-(--active-tab-left) h-(--active-tab-height) w-(--active-tab-width) rounded-md shadow-sm dark:border dark:border-input dark:bg-input/30'
+            ? 'bg-background dark:border-input dark:bg-input/30 top-(--active-tab-top) left-(--active-tab-left) h-(--active-tab-height) w-(--active-tab-width) rounded-md shadow-sm dark:border'
             : 'bg-foreground group-data-horizontal/tabs:bottom-[-5px] group-data-horizontal/tabs:left-(--active-tab-left) group-data-horizontal/tabs:h-0.5 group-data-horizontal/tabs:w-(--active-tab-width) group-data-vertical/tabs:top-(--active-tab-top) group-data-vertical/tabs:-right-1 group-data-vertical/tabs:h-(--active-tab-height) group-data-vertical/tabs:w-0.5',
         )}
       />

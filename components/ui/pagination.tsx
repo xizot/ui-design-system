@@ -20,7 +20,7 @@ function PaginationContent({ className, ...props }: React.ComponentProps<'ul'>) 
   return (
     <ul
       data-slot="pagination-content"
-      className={cn('flex min-w-0 max-w-full flex-wrap items-center gap-1', className)}
+      className={cn('flex max-w-full min-w-0 flex-wrap items-center gap-1', className)}
       {...props}
     />
   );
@@ -63,7 +63,10 @@ function PaginationPrevious({
     <PaginationLink
       aria-label="Go to previous page"
       size="default"
-      className={cn('w-auto min-w-7 gap-1 px-1.5 @xs/pagination:min-w-8 @xs/pagination:px-2', className)}
+      className={cn(
+        'w-auto min-w-7 gap-1 px-1.5 @xs/pagination:min-w-8 @xs/pagination:px-2',
+        className,
+      )}
       {...props}
     >
       <ChevronLeftIcon data-icon="inline-start" />
@@ -81,7 +84,10 @@ function PaginationNext({
     <PaginationLink
       aria-label="Go to next page"
       size="default"
-      className={cn('w-auto min-w-7 gap-1 px-1.5 @xs/pagination:min-w-8 @xs/pagination:px-2', className)}
+      className={cn(
+        'w-auto min-w-7 gap-1 px-1.5 @xs/pagination:min-w-8 @xs/pagination:px-2',
+        className,
+      )}
       {...props}
     >
       {text && <span className="hidden @xs/pagination:block">{text}</span>}
