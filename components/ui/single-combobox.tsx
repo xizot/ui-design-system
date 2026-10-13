@@ -282,7 +282,7 @@ function SingleCombobox<T extends ComboboxBaseOption>({
               id={inputId}
               placeholder={searchPlaceholder}
               showClear={true}
-              formSize="sm"
+              formSize={size}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />

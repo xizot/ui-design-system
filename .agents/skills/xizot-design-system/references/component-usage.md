@@ -34,7 +34,8 @@ Read these first when relevant:
 - `Field`, `FieldGroup`, `FieldSet`, `FieldLabel`, `FieldDescription`, `FieldError`: use for custom form layouts or grouped controls.
 - `RHF*` components: prefer these for `react-hook-form` screens.
 - `DataTable`: use for list pages with manual sorting, filters, pagination, loading states, empty states, selectable rows, expanded rows, and pinned action columns.
-- `DialogPanel`, `SheetPanel`, `DrawerPanel`, `PopoverPanel`: prefer panel variants when building composed surfaces with headers, bodies, and footers.
+- `PopoverPanel`, `DialogPanel`, `SheetPanel`: use these for application overlays and choose their `size`; do not recreate width or padding with `*Content` plus `className`. Reserve lower-level content primitives for reusable controls with a different structure, such as date pickers and command menus. `DrawerPanel` serves drawer flows.
+- `Card`: use its `size` (`xxs` through `xxl`; legacy `default` remains supported) to scale spacing and typography together.
 - `Badge`, `Marker`, `Empty`, `Skeleton`, `Spinner`, `CustomToast`/`sonner`: use existing feedback components instead of custom one-off UI.
 - `Sidebar`, `Breadcrumb`, `Tabs`, `ButtonGroup`, `InputGroup`, `Pagination`, `DropdownMenu`, `Command`: use for application navigation and dense workflows.
 

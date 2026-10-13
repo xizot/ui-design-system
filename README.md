@@ -38,6 +38,8 @@ This repository serves two purposes:
 
 The CLI copies editable components into `design-system/`.
 
+Source setup excludes the copied folder from Prettier through `.prettierignore` and from a simple `eslint` npm lint script through `--ignore-pattern`. For custom lint commands or direct ESLint invocations, exclude `design-system/` yourself (CRA: `src/design-system/`). The library source is linted and formatted in this repository.
+
 For Create React App, the target is `src/design-system/` so the source stays inside CRA's compilation boundary. TypeScript projects receive TS/TSX; JavaScript projects receive JS/JSX.
 
 ### Supported projects

@@ -194,6 +194,26 @@ test('reinstall is idempotent and skip preserves edited components', (t) => {
     before,
   );
 });
+
+for (const framework of ['vite', 'cra'])
+  test(`${framework} source install excludes copied source from lint and Prettier`, (t) => {
+    const dir = fixture(t, framework);
+    const ignored = framework === 'cra' ? 'src/design-system/' : 'design-system/';
+    write(dir, '.prettierignore', 'generated/\n');
+    const pkg = JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf8'));
+    pkg.scripts.lint = 'eslint .';
+    write(dir, 'package.json', pkg);
+    install(dir);
+    install(dir, '2\n');
+    assert.equal(
+      fs.readFileSync(path.join(dir, '.prettierignore'), 'utf8'),
+      `generated/\n${ignored}\n`,
+    );
+    assert.equal(
+      JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf8')).scripts.lint,
+      `eslint . --ignore-pattern "${ignored}**"`,
+    );
+  });
 test('incompatible dependencies fail before writes', (t) => {
   const dir = fixture(t),
     pkg = JSON.parse(fs.readFileSync(path.join(dir, 'package.json')));

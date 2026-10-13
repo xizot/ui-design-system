@@ -8,7 +8,7 @@ Read `.agents/rules/react.md` and `.agents/skills/xizot-design-system/references
 
 Before UI edits, read `.agents/skills/xizot-design-system/SKILL.md` from the target application root. For submitted forms read `xizot-forms/SKILL.md` in the same skills folder; for full pages use `xizot-page-builder`; finish with `xizot-quality`. Read files directly when the client does not discover skills.
 
-Run `python .agents/skills/xizot-design-system/scripts/ui-source.py --root . discover "rhf"`, then read selected source. Before finishing, run the same script with `review path/to/changed.tsx`, scoped lint/types and relevant behavior checks. Requires Python 3.10+; use rg/manual review if unavailable. Heuristic findings are review prompts, not correctness certificates.
+Run `python .agents/skills/xizot-design-system/scripts/ui-source.py --root . discover "rhf"`, then read selected source. Before finishing, run the same script with `review path/to/changed.tsx`, scoped lint on application code, types and relevant behavior checks. The copied design-system source is excluded from consumer lint/Prettier; validate library changes in the library repository. Requires Python 3.10+; use rg/manual review if unavailable. Heuristic findings are review prompts, not correctness certificates.
 
 Submitted product forms use RHF and existing wrappers. Search/filter controls may use local/URL state. Respect explicit user choices or existing native/server-action contracts and explain the exception. Review ownership, state and duplication using core `references/code-contract.md`.
 
@@ -45,7 +45,8 @@ If the project uses a different alias, keep the `design-system/` folder boundary
 - Use `Button` and `ButtonGroup` for actions.
 - Use design-system form controls and `RHF*` wrappers for forms.
 - Use `DataTable` for list pages that need sorting, filters, pagination, loading, empty state, row selection, expanded rows, or pinned actions.
-- Use `DialogPanel`, `SheetPanel`, `DrawerPanel`, and `PopoverPanel` for composed overlay surfaces.
+- Use `PopoverPanel`, `DialogPanel`, and `SheetPanel` for application popovers, dialogs, and sheets. Select their built-in `size` instead of setting panel width or padding in `className`. Use the lower-level `*Content` primitives only inside reusable controls that require a different structure (for example, a calendar or command menu); document that exception.
+- Pass the same supported `size` through a composed control and its internal search/input elements. Use `Card size` for card density instead of overriding its spacing and text sizes.
 - Use `Badge`, `Marker`, `Empty`, `Skeleton`, `Spinner`, and toast utilities for feedback states.
 
 ## System Rules
@@ -54,6 +55,7 @@ If the project uses a different alias, keep the `design-system/` folder boundary
 - Add a design-system variant only for a repeated semantic role.
 - Keep feature/domain components outside the design-system layer unless the behavior is product-neutral.
 - Use `className` for contextual layout, not for replacing a component's visual contract.
+- In source installs, exclude the copied `design-system/` (CRA: `src/design-system/`) from the consumer project's ESLint and Prettier checks. Lint and format the library in its own repository.
 
 ## Product UI Checklist
 

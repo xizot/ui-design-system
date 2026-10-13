@@ -616,9 +616,37 @@ async function main() {
     }
     fs.writeFileSync(target, content);
   }
+  configureConsumerChecks();
   installStyles();
   printSummary();
   console.log(`Import components from '${projectPlan.importPrefix}/components/ui/button'.`);
+}
+
+function configureConsumerChecks() {
+  const ignoredDirectory = `${installRootName.replaceAll('\\', '/')}/`;
+  const prettierIgnorePath = path.join(projectRoot, '.prettierignore');
+  const currentIgnore = fs.existsSync(prettierIgnorePath)
+    ? fs.readFileSync(prettierIgnorePath, 'utf8')
+    : '';
+  if (!currentIgnore.split(/\r?\n/).includes(ignoredDirectory)) {
+    fs.writeFileSync(
+      prettierIgnorePath,
+      `${currentIgnore}${currentIgnore && !currentIgnore.endsWith('\n') ? '\n' : ''}${ignoredDirectory}\n`,
+    );
+  }
+
+  const packagePath = path.join(projectRoot, 'package.json');
+  const packageText = fs.readFileSync(packagePath, 'utf8');
+  const lint = JSON.parse(packageText).scripts?.lint;
+  if (
+    typeof lint === 'string' &&
+    /^\s*eslint(?:\s|$)/.test(lint) &&
+    !/[;&|]/.test(lint) &&
+    !lint.includes(`--ignore-pattern "${ignoredDirectory}**"`)
+  ) {
+    const nextLint = `${lint} --ignore-pattern "${ignoredDirectory}**"`;
+    fs.writeFileSync(packagePath, setJson(packageText, ['scripts', 'lint'], nextLint));
+  }
 }
 
 function installStyles() {

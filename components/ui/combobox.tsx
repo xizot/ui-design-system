@@ -88,7 +88,7 @@ function ComboboxInput({
         {...props}
       />
       <InputGroupAddon>
-        <Search className="size-5" />
+        <Search className={comboboxIconVariants({ size: formSize })} />
       </InputGroupAddon>
       <InputGroupAddon align="inline-end">
         {showClear && <ComboboxClear disabled={disabled} formSize={formSize} />}

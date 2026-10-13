@@ -45,7 +45,8 @@ Use public package exports without an application alias. Never edit or fork node
 - Use `Button` and `ButtonGroup` for actions.
 - Use design-system form controls and `RHF*` wrappers for forms.
 - Use `DataTable` for list pages that need sorting, filters, pagination, loading, empty state, row selection, expanded rows, or pinned actions.
-- Use `DialogPanel`, `SheetPanel`, `DrawerPanel`, and `PopoverPanel` for composed overlay surfaces.
+- Use `PopoverPanel`, `DialogPanel`, and `SheetPanel` for application popovers, dialogs, and sheets. Select their built-in `size` instead of setting panel width or padding in `className`. Use the lower-level `*Content` primitives only inside reusable controls that require a different structure (for example, a calendar or command menu); document that exception.
+- Pass the same supported `size` through a composed control and its internal search/input elements. Use `Card size` for card density instead of overriding its spacing and text sizes.
 - Use `Badge`, `Marker`, `Empty`, `Skeleton`, `Spinner`, and toast utilities for feedback states.
 
 ## System Rules

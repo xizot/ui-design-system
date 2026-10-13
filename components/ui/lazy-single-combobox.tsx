@@ -557,7 +557,7 @@ function LazySingleCombobox<
               id={inputId}
               placeholder={searchPlaceholder}
               showClear
-              formSize="sm"
+              formSize={size}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />

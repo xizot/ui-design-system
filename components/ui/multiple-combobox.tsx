@@ -336,7 +336,7 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
               id={inputId}
               placeholder={searchPlaceholder}
               showClear={false}
-              formSize="sm"
+              formSize={size}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
