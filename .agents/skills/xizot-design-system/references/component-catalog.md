@@ -53,10 +53,10 @@ Use this catalog to choose a component, then read its implementation before writ
 
 | Module                            | Use and contract to check                                                                                                                                                                                                    |
 | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `components/ui/dialog-panel.tsx`  | `DialogPanelRoot`, `DialogPanelTrigger`, `DialogPanel`, `DialogPanelClose` for an application modal with header, scrollable body, and optional footer. Choose `size` and provide `title`; default confirm calls `onConfirm`. |
-| `components/ui/sheet-panel.tsx`   | `SheetPanel*` for a side/top/bottom application panel. Choose `side` and `size`; supply `footer` or `onConfirm` as needed.                                                                                                   |
-| `components/ui/drawer-panel.tsx`  | `DrawerPanel*` for a drawer flow with built-in header, body, and footer; inspect `size` and close behavior.                                                                                                                  |
-| `components/ui/popover-panel.tsx` | `PopoverPanel*` for a compact application popover with optional header/footer/close button; choose `size`.                                                                                                                   |
+| `components/ui/dialog-panel.tsx`  | `DialogPanel`, `DialogPanelTrigger`, `DialogPanelContent`, `DialogPanelFooter`, `DialogPanelClose` for an application modal with header, scrollable body, and optional footer. Choose `size` and provide `title` on `DialogPanelContent`; default confirm calls `onConfirm`. |
+| `components/ui/sheet-panel.tsx`   | `SheetPanel` root, `SheetPanelContent`, `SheetPanelFooter`, trigger and close for a side/top/bottom panel. Choose `side` and `size` on content. |
+| `components/ui/drawer-panel.tsx`  | `DrawerPanel` root, `DrawerPanelContent`, `DrawerPanelFooter`, trigger and close for a drawer flow. Choose `size` on content and `direction` on root. |
+| `components/ui/popover-panel.tsx` | `PopoverPanel` root, `PopoverPanelContent`, `PopoverPanelFooter`, trigger and close for a compact popover. Choose `size` on content. |
 | `components/ui/alert-dialog.tsx`  | `AlertDialog*` primitives for irreversible or high-impact confirmation; name the exact action and consequence.                                                                                                               |
 | `components/ui/dialog.tsx`        | Low-level `Dialog*` primitives for custom reusable dialog structure; prefer `DialogPanel` for application content.                                                                                                           |
 | `components/ui/sheet.tsx`         | Low-level `Sheet*` primitives; prefer `SheetPanel` for application content.                                                                                                                                                  |
@@ -150,7 +150,7 @@ Local and lazy comboboxes require options extending `ComboboxBaseOption` with `i
 
 ### Application panels
 
-`DialogPanel`, `SheetPanel`, `DrawerPanel`, and `PopoverPanel` supply a scrollable body, header, and a default footer. Set `showFooter={false}` for read-only content, or provide `footer` when form submit needs `type="submit"`, pending state, or validation. The default confirm button only calls `onConfirm`; it does not own a form or async mutation. Use the matching `*Root`/`*Trigger` and a controlled `open` state when the surrounding workflow needs to open or close the panel programmatically.
+`DialogPanelContent`, `SheetPanelContent`, `DrawerPanelContent`, and `PopoverPanelContent` supply a scrollable body, header, and a default footer. Set `showFooter={false}` for read-only content. For custom actions, place one matching `*PanelFooter` as a direct child of `*PanelContent`; it stays outside the scrollable body and replaces the default buttons. The default confirm button only calls `onConfirm`; it does not own a form or async mutation. Use the matching `*Panel` as the outer root with its trigger and content; use a controlled `open` state when the surrounding workflow needs to open or close the panel programmatically.
 
 ### Date and time values
 

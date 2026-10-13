@@ -12,6 +12,7 @@ import {
 } from './sheet';
 import { Button } from './button';
 import { ScrollArea } from './scroll-area';
+import { cn } from '../../lib/utils';
 
 const panelVariants = cva('flex h-full flex-col gap-0', {
   variants: {
@@ -69,12 +70,11 @@ const footerVariants = cva('flex gap-3 justify-end', {
   },
 });
 
-type SheetPanelProps = {
+type SheetPanelContentProps = {
   side?: 'top' | 'bottom' | 'left' | 'right';
   title?: React.ReactNode;
   description?: React.ReactNode;
   children: React.ReactNode;
-  footer?: React.ReactNode;
   showFooter?: boolean;
   confirmText?: string;
   cancelText?: string;
@@ -82,60 +82,101 @@ type SheetPanelProps = {
   className?: string;
 } & VariantProps<typeof panelVariants>;
 
-function SheetPanel({
+const SheetPanelSizeContext =
+  React.createContext<VariantProps<typeof panelVariants>['size']>(undefined);
+
+function SheetPanelFooter({
+  className,
+  ...props
+}: React.ComponentProps<'div'>) {
+  const size = React.useContext(SheetPanelSizeContext);
+
+  return (
+    <div
+      data-slot="sheet-panel-footer"
+      className={footerVariants({ size, className: cn('pt-0', className) })}
+      {...props}
+    />
+  );
+}
+
+function SheetPanelContent({
   side,
   size = 'md',
   title,
   description,
   children,
-  footer,
   showFooter = true,
   confirmText = 'Áp dụng',
   cancelText = 'Hủy',
   onConfirm,
   className,
-}: SheetPanelProps) {
+}: SheetPanelContentProps) {
   const hasHeader = title || description;
   const buttonSize = size === 'sm' ? 'sm' : 'default';
+  const panelChildren = React.Children.toArray(children);
+  const footer = panelChildren.find(
+    (child) => React.isValidElement(child) && child.type === SheetPanelFooter,
+  );
+  const body = panelChildren.filter(
+    (child) => !React.isValidElement(child) || child.type !== SheetPanelFooter,
+  );
 
   return (
-    <SheetContent side={side} className={panelVariants({ size, className })}>
-      {hasHeader && (
-        <div className={headerVariants({ size, className: 'pb-0' })}>
-          {title && <SheetTitle>{title}</SheetTitle>}
-          {description && <SheetDescription className="mt-1.5">{description}</SheetDescription>}
-        </div>
-      )}
+    <SheetPanelSizeContext.Provider value={size}>
+      <SheetContent side={side} className={panelVariants({ size, className })}>
+        {hasHeader && (
+          <div className={headerVariants({ size, className: 'pb-0' })}>
+            {title && <SheetTitle>{title}</SheetTitle>}
+            {description && (
+              <SheetDescription className="mt-1.5">
+                {description}
+              </SheetDescription>
+            )}
+          </div>
+        )}
 
-      <ScrollArea className="min-h-0 flex-1 overflow-y-auto">
-        <div className={bodyVariants({ size })}>{children}</div>
-      </ScrollArea>
+        <ScrollArea className="min-h-0 flex-1 overflow-y-auto">
+          <div className={bodyVariants({ size })}>{body}</div>
+        </ScrollArea>
 
-      {showFooter && (
-        <div className={footerVariants({ size, className: 'pt-0' })}>
-          {footer ?? (
-            <>
+        {showFooter &&
+          (footer ?? (
+            <SheetPanelFooter>
               <SheetClose
                 render={
-                  <Button variant="secondary" size={buttonSize} className="min-w-25">
+                  <Button
+                    variant="secondary"
+                    size={buttonSize}
+                    className="min-w-25"
+                  >
                     {cancelText}
                   </Button>
                 }
               />
-              <Button size={buttonSize} className="min-w-25" onClick={onConfirm}>
+              <Button
+                size={buttonSize}
+                className="min-w-25"
+                onClick={onConfirm}
+              >
                 {confirmText}
               </Button>
-            </>
-          )}
-        </div>
-      )}
-    </SheetContent>
+            </SheetPanelFooter>
+          ))}
+      </SheetContent>
+    </SheetPanelSizeContext.Provider>
   );
 }
 
-const SheetPanelRoot = Sheet;
+const SheetPanel = Sheet;
 const SheetPanelTrigger = SheetTrigger;
 const SheetPanelClose = SheetClose;
 
-export { SheetPanel, SheetPanelRoot, SheetPanelTrigger, SheetPanelClose };
-export type { SheetPanelProps };
+export {
+  SheetPanel,
+  SheetPanelClose,
+  SheetPanelContent,
+  SheetPanelFooter,
+  SheetPanelTrigger,
+};
+export type { SheetPanelContentProps };

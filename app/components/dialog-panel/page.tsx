@@ -3,7 +3,13 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CodeBlock } from '@/components/ui/code-block';
-import { DialogPanel, DialogPanelRoot, DialogPanelTrigger } from '@/components/ui/dialog-panel';
+import {
+  DialogPanel,
+  DialogPanelClose,
+  DialogPanelContent,
+  DialogPanelFooter,
+  DialogPanelTrigger,
+} from '@/components/ui/dialog-panel';
 import { Input } from '@/components/ui/input';
 import { MultipleCombobox } from '@/components/ui/multiple-combobox';
 import { SingleCombobox } from '@/components/ui/single-combobox';
@@ -16,11 +22,13 @@ import { getGuide } from '../guide-data';
 const guide = getGuide('dialog-panel');
 
 const props = [
-  { name: 'size', type: `"sm" | "md" | "lg" | "xl" | "auto"`, defaultValue: `"md"` },
+  { name: 'size', type: `"sm" | "md" | "lg" | "xl" | "fill"`, defaultValue: `"md"` },
   { name: 'title', type: 'React.ReactNode', defaultValue: '--' },
   { name: 'description', type: 'React.ReactNode', defaultValue: '--' },
-  { name: 'footer', type: 'React.ReactNode', defaultValue: '--' },
-  { name: 'showCloseButton', type: 'boolean', defaultValue: 'true' },
+  { name: 'showFooter', type: 'boolean', defaultValue: 'true' },
+  { name: 'confirmText', type: 'string', defaultValue: 'Áp dụng' },
+  { name: 'cancelText', type: 'string', defaultValue: 'Hủy' },
+  { name: 'onConfirm', type: '() => void', defaultValue: '--' },
   { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
@@ -39,18 +47,12 @@ function DialogComboboxScrollDemo() {
   const [multipleValues, setMultipleValues] = useState<(string | number)[]>([]);
 
   return (
-    <DialogPanelRoot>
+    <DialogPanel>
       <DialogPanelTrigger render={<Button variant="outline">Combobox scroll</Button>} />
-      <DialogPanel
+      <DialogPanelContent
         size="lg"
         title="Kiểm tra combobox trong dialog"
         description="Mở từng combobox để kiểm tra menu nhiều option và scroll trong dialog."
-        footer={
-          <>
-            <Button variant="outline">Hủy</Button>
-            <Button>Áp dụng</Button>
-          </>
-        }
       >
         <div className="grid gap-4">
           <SingleCombobox
@@ -80,8 +82,20 @@ function DialogComboboxScrollDemo() {
             ))}
           </div>
         </div>
-      </DialogPanel>
-    </DialogPanelRoot>
+        <DialogPanelFooter>
+          <DialogPanelClose
+            render={
+              <Button variant="outline" size="sm" className="min-w-25">
+                Hủy
+              </Button>
+            }
+          />
+          <Button size="sm" className="min-w-25">
+            Áp dụng
+          </Button>
+        </DialogPanelFooter>
+      </DialogPanelContent>
+    </DialogPanel>
   );
 }
 
@@ -90,28 +104,36 @@ const usageSamples = [
     id: 'default',
     label: 'Default',
     preview: (
-      <DialogPanelRoot>
+      <DialogPanel>
         <DialogPanelTrigger render={<Button variant="outline">Mở dialog</Button>} />
-        <DialogPanel
+        <DialogPanelContent
           title="Cập nhật hồ sơ"
           description="Dùng wrapper thống nhất cho dialog center."
-          footer={
-            <>
-              <Button variant="outline">Hủy</Button>
-              <Button>Lưu thay đổi</Button>
-            </>
-          }
         >
           <div className="grid gap-3">
             <Input label="Họ và tên" placeholder="Nguyễn Văn A" />
             <Input label="Email" placeholder="name@company.vn" />
           </div>
-        </DialogPanel>
-      </DialogPanelRoot>
+          <DialogPanelFooter>
+            <DialogPanelClose
+              render={
+                <Button variant="outline" size="sm" className="min-w-25">
+                  Hủy
+                </Button>
+              }
+            />
+            <Button size="sm" className="min-w-25">
+              Lưu thay đổi
+            </Button>
+          </DialogPanelFooter>
+        </DialogPanelContent>
+      </DialogPanel>
     ),
     code: `import {
   DialogPanel,
-  DialogPanelRoot,
+  DialogPanelClose,
+  DialogPanelContent,
+  DialogPanelFooter,
   DialogPanelTrigger,
 } from "@/design-system/components/ui/dialog-panel";
 import { Button } from "@/design-system/components/ui/button";
@@ -119,24 +141,19 @@ import { Input } from "@/design-system/components/ui/input";
 
 export function Example() {
   return (
-    <DialogPanelRoot>
+    <DialogPanel>
       <DialogPanelTrigger render={<Button variant="outline">Mở dialog</Button>} />
-      <DialogPanel
-        title="Cập nhật hồ sơ"
-        description="Dùng wrapper thống nhất cho dialog center."
-        footer={
-          <>
-            <Button variant="outline">Hủy</Button>
-            <Button>Lưu thay đổi</Button>
-          </>
-        }
-      >
+      <DialogPanelContent title="Cập nhật hồ sơ" description="Dùng wrapper thống nhất cho dialog center.">
         <div className="grid gap-3">
           <Input label="Họ và tên" placeholder="Nguyễn Văn A" />
           <Input label="Email" placeholder="name@company.vn" />
         </div>
-      </DialogPanel>
-    </DialogPanelRoot>
+        <DialogPanelFooter>
+          <DialogPanelClose render={<Button variant="outline" size="sm" className="min-w-25">Hủy</Button>} />
+          <Button size="sm" className="min-w-25">Lưu thay đổi</Button>
+        </DialogPanelFooter>
+      </DialogPanelContent>
+    </DialogPanel>
   );
 }`,
   },
@@ -146,27 +163,32 @@ export function Example() {
     preview: (
       <div className="flex flex-wrap items-center justify-center gap-3">
         {(['sm', 'md', 'lg', 'xl'] as const).map((size) => (
-          <DialogPanelRoot key={size}>
+          <DialogPanel key={size}>
             <DialogPanelTrigger render={<Button variant="outline">{size}</Button>} />
-            <DialogPanel
-              size={size}
-              title={`Dialog ${size}`}
-              footer={
-                <>
-                  <Button variant="outline">Hủy</Button>
-                  <Button>Lưu</Button>
-                </>
-              }
-            >
+            <DialogPanelContent size={size} title={`Dialog ${size}`}>
               <p className="text-muted-foreground text-sm">Preset kích thước {size} cho dialog.</p>
-            </DialogPanel>
-          </DialogPanelRoot>
+              <DialogPanelFooter>
+                <DialogPanelClose
+                  render={
+                    <Button variant="outline" size="sm" className="min-w-25">
+                      Hủy
+                    </Button>
+                  }
+                />
+                <Button size="sm" className="min-w-25">
+                  Lưu
+                </Button>
+              </DialogPanelFooter>
+            </DialogPanelContent>
+          </DialogPanel>
         ))}
       </div>
     ),
     code: `import {
   DialogPanel,
-  DialogPanelRoot,
+  DialogPanelClose,
+  DialogPanelContent,
+  DialogPanelFooter,
   DialogPanelTrigger,
 } from "@/design-system/components/ui/dialog-panel";
 import { Button } from "@/design-system/components/ui/button";
@@ -174,24 +196,21 @@ import { Button } from "@/design-system/components/ui/button";
 export function Example() {
   return (
     <div className="flex gap-3">
-      {(["sm", "md", "lg", "xl", "auto"] as const).map((size) => (
-        <DialogPanelRoot key={size}>
+      {(["sm", "md", "lg", "xl"] as const).map((size) => (
+        <DialogPanel key={size}>
           <DialogPanelTrigger render={<Button variant="outline">{size}</Button>} />
-          <DialogPanel
-            size={size}
-            title={\`Dialog \${size}\`}
-            footer={
-              <>
-                <Button variant="outline">Hủy</Button>
-                <Button>Lưu</Button>
-              </>
-            }
-          >
+          <DialogPanelContent size={size} title={\`Dialog \${size}\`}>
             <p className="text-sm text-muted-foreground">
-              \`Preset kích thước \${size} cho dialog\`
+              Preset kích thước {size} cho dialog
             </p>
-          </DialogPanel>
-        </DialogPanelRoot>
+            <DialogPanelFooter>
+              <DialogPanelClose
+                render={<Button variant="outline" size="sm" className="min-w-25">Hủy</Button>}
+              />
+              <Button size="sm" className="min-w-25">Lưu</Button>
+            </DialogPanelFooter>
+          </DialogPanelContent>
+        </DialogPanel>
       ))}
     </div>
   );
@@ -204,7 +223,9 @@ export function Example() {
     code: `import { Button } from "@/design-system/components/ui/button";
 import {
   DialogPanel,
-  DialogPanelRoot,
+  DialogPanelClose,
+  DialogPanelContent,
+  DialogPanelFooter,
   DialogPanelTrigger,
 } from "@/design-system/components/ui/dialog-panel";
 import { MultipleCombobox } from "@/design-system/components/ui/multiple-combobox";
@@ -218,13 +239,17 @@ const options = Array.from({ length: 60 }, (_, index) => ({
 
 export function Example() {
   return (
-    <DialogPanelRoot>
+    <DialogPanel>
       <DialogPanelTrigger render={<Button variant="outline">Combobox scroll</Button>} />
-      <DialogPanel size="lg" title="Kiểm tra combobox trong dialog">
+      <DialogPanelContent size="lg" title="Kiểm tra combobox trong dialog">
         <SingleCombobox options={options} placeholder="Chọn một tùy chọn" />
         <MultipleCombobox options={options} placeholder="Chọn nhiều tùy chọn" limitTags={4} />
-      </DialogPanel>
-    </DialogPanelRoot>
+        <DialogPanelFooter>
+          <DialogPanelClose render={<Button variant="outline" size="sm" className="min-w-25">Hủy</Button>} />
+          <Button size="sm" className="min-w-25">Áp dụng</Button>
+        </DialogPanelFooter>
+      </DialogPanelContent>
+    </DialogPanel>
   );
 }`,
   },
@@ -244,8 +269,8 @@ export default function DialogPanelGuidePage() {
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
           <p className="text-muted-foreground mt-4 max-w-2xl text-base leading-7">
-            Wrapper cho Dialog với layout chuẩn hóa, preset size và khả năng forward toàn bộ props
-            của DialogContent.
+            DialogPanel là root; DialogPanelContent chứa header, vùng nội dung cuộn và footer tùy
+            biến.
           </p>
         </section>
 
@@ -253,13 +278,15 @@ export default function DialogPanelGuidePage() {
           <Card id="import" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
-              <CardDescription>Import root, trigger và dialog panel wrapper.</CardDescription>
+              <CardDescription>Import root, trigger, content và footer tùy biến.</CardDescription>
             </CardHeader>
             <CardContent>
               <CodeBlock
                 code={`import {
   DialogPanel,
-  DialogPanelRoot,
+  DialogPanelClose,
+  DialogPanelContent,
+  DialogPanelFooter,
   DialogPanelTrigger,
 } from "${guide.importPath}"`}
                 id="import"
@@ -270,9 +297,10 @@ export default function DialogPanelGuidePage() {
 
           <Card id="props" className="border-border/70 rounded-[24px]">
             <CardHeader>
-              <CardTitle>2. Props</CardTitle>
+              <CardTitle>2. DialogPanelContent props</CardTitle>
               <CardDescription>
-                DialogPanel kế thừa toàn bộ props của DialogContent.
+                Đặt DialogPanelFooter trực tiếp trong DialogPanelContent để thay thế nút mặc định.
+                Footer nằm ngoài vùng cuộn nội dung.
               </CardDescription>
             </CardHeader>
             <CardContent>

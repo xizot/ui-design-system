@@ -1,9 +1,21 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { CodeBlock } from '@/components/ui/code-block';
-import { DrawerPanel, DrawerPanelRoot, DrawerPanelTrigger } from '@/components/ui/drawer-panel';
+import {
+  DrawerPanel,
+  DrawerPanelClose,
+  DrawerPanelContent,
+  DrawerPanelFooter,
+  DrawerPanelTrigger,
+} from '@/components/ui/drawer-panel';
 import { Input } from '@/components/ui/input';
 import { MultipleCombobox } from '@/components/ui/multiple-combobox';
 import { SingleCombobox } from '@/components/ui/single-combobox';
@@ -16,11 +28,16 @@ import { getGuide } from '../guide-data';
 const guide = getGuide('drawer-panel');
 
 const props = [
-  { name: 'size', type: `"sm" | "md" | "lg" | "xl" | "auto"`, defaultValue: `"sm"` },
-  { name: 'direction', type: `"top" | "bottom" | "left" | "right"`, defaultValue: `"bottom"` },
+  { name: 'size', type: `"sm" | "md" | "lg" | "xl"`, defaultValue: `"md"` },
+  {
+    name: 'direction',
+    type: `"top" | "bottom" | "left" | "right"`,
+    defaultValue: `"bottom"`,
+  },
   { name: 'title', type: 'React.ReactNode', defaultValue: '--' },
   { name: 'description', type: 'React.ReactNode', defaultValue: '--' },
-  { name: 'footer', type: 'React.ReactNode', defaultValue: '--' },
+  { name: 'showFooter', type: 'boolean', defaultValue: 'true' },
+  { name: 'showCloseButton', type: 'boolean', defaultValue: 'true' },
   { name: 'className', type: 'string', defaultValue: '--' },
 ];
 
@@ -39,20 +56,14 @@ function DrawerComboboxScrollDemo() {
   const [multipleValues, setMultipleValues] = useState<(string | number)[]>([]);
 
   return (
-    <DrawerPanelRoot direction="right">
+    <DrawerPanel direction="right">
       <DrawerPanelTrigger asChild>
         <Button variant="outline">Combobox scroll</Button>
       </DrawerPanelTrigger>
-      <DrawerPanel
+      <DrawerPanelContent
         size="lg"
         title="Kiểm tra combobox trong drawer"
         description="Mở từng combobox để kiểm tra menu nhiều option và scroll trong drawer."
-        footer={
-          <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
-            <Button variant="outline">Hủy</Button>
-            <Button>Áp dụng</Button>
-          </div>
-        }
       >
         <div className="grid gap-4">
           <SingleCombobox
@@ -82,8 +93,18 @@ function DrawerComboboxScrollDemo() {
             ))}
           </div>
         </div>
-      </DrawerPanel>
-    </DrawerPanelRoot>
+        <DrawerPanelFooter>
+          <DrawerPanelClose asChild>
+            <Button size="sm" className="min-w-25" variant="outline">
+              Hủy
+            </Button>
+          </DrawerPanelClose>
+          <Button size="sm" className="min-w-25">
+            Áp dụng
+          </Button>
+        </DrawerPanelFooter>
+      </DrawerPanelContent>
+    </DrawerPanel>
   );
 }
 
@@ -92,30 +113,36 @@ const usageSamples = [
     id: 'default',
     label: 'Default',
     preview: (
-      <DrawerPanelRoot>
+      <DrawerPanel>
         <DrawerPanelTrigger asChild>
           <Button variant="outline">Mở drawer</Button>
         </DrawerPanelTrigger>
-        <DrawerPanel
+        <DrawerPanelContent
           title="Tạo mới địa chỉ"
           description="Phù hợp cho mobile flow hoặc thao tác nhanh."
-          footer={
-            <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
-              <Button variant="outline">Đóng</Button>
-              <Button>Xác nhận</Button>
-            </div>
-          }
         >
           <div className="grid gap-3">
             <Input label="Tên người nhận" placeholder="Nguyễn Văn A" />
             <Input label="Số điện thoại" placeholder="0901234567" />
           </div>
-        </DrawerPanel>
-      </DrawerPanelRoot>
+          <DrawerPanelFooter>
+            <DrawerPanelClose asChild>
+              <Button size="sm" className="min-w-25" variant="outline">
+                Đóng
+              </Button>
+            </DrawerPanelClose>
+            <Button size="sm" className="min-w-25">
+              Xác nhận
+            </Button>
+          </DrawerPanelFooter>
+        </DrawerPanelContent>
+      </DrawerPanel>
     ),
     code: `import {
   DrawerPanel,
-  DrawerPanelRoot,
+  DrawerPanelClose,
+  DrawerPanelContent,
+  DrawerPanelFooter,
   DrawerPanelTrigger,
 } from "@/design-system/components/ui/drawer-panel";
 import { Button } from "@/design-system/components/ui/button";
@@ -123,26 +150,26 @@ import { Input } from "@/design-system/components/ui/input";
 
 export function Example() {
   return (
-    <DrawerPanelRoot>
+    <DrawerPanel>
       <DrawerPanelTrigger asChild>
         <Button variant="outline">Mở drawer</Button>
       </DrawerPanelTrigger>
-      <DrawerPanel
+      <DrawerPanelContent
         title="Tạo mới địa chỉ"
         description="Phù hợp cho mobile flow hoặc thao tác nhanh."
-        footer={
-          <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
-            <Button variant="outline">Đóng</Button>
-            <Button>Xác nhận</Button>
-          </div>
-        }
       >
         <div className="grid gap-3">
           <Input label="Tên người nhận" placeholder="Nguyễn Văn A" />
           <Input label="Số điện thoại" placeholder="0901234567" />
         </div>
-      </DrawerPanel>
-    </DrawerPanelRoot>
+        <DrawerPanelFooter>
+          <DrawerPanelClose asChild>
+            <Button size="sm" className="min-w-25" variant="outline">Đóng</Button>
+          </DrawerPanelClose>
+          <Button size="sm" className="min-w-25">Xác nhận</Button>
+        </DrawerPanelFooter>
+      </DrawerPanelContent>
+    </DrawerPanel>
   );
 }`,
   },
@@ -152,31 +179,34 @@ export function Example() {
     preview: (
       <div className="flex flex-wrap items-center justify-center gap-3">
         {(['sm', 'md', 'lg', 'xl'] as const).map((size) => (
-          <DrawerPanelRoot key={size} direction="right">
+          <DrawerPanel key={size} direction="right">
             <DrawerPanelTrigger asChild>
               <Button variant="outline">{`right ${size}`}</Button>
             </DrawerPanelTrigger>
-            <DrawerPanel
-              size={size}
-              title={`Drawer ${size}`}
-              footer={
-                <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
-                  <Button variant="outline">Đóng</Button>
-                  <Button>Xác nhận</Button>
-                </div>
-              }
-            >
+            <DrawerPanelContent size={size} title={`Drawer ${size}`}>
               <p className="text-muted-foreground text-sm">
                 Preset kích thước {size} cho drawer panel.
               </p>
-            </DrawerPanel>
-          </DrawerPanelRoot>
+              <DrawerPanelFooter>
+                <DrawerPanelClose asChild>
+                  <Button size="sm" className="min-w-25" variant="outline">
+                    Đóng
+                  </Button>
+                </DrawerPanelClose>
+                <Button size="sm" className="min-w-25">
+                  Xác nhận
+                </Button>
+              </DrawerPanelFooter>
+            </DrawerPanelContent>
+          </DrawerPanel>
         ))}
       </div>
     ),
     code: `import {
   DrawerPanel,
-  DrawerPanelRoot,
+  DrawerPanelClose,
+  DrawerPanelContent,
+  DrawerPanelFooter,
   DrawerPanelTrigger,
 } from "@/design-system/components/ui/drawer-panel";
 import { Button } from "@/design-system/components/ui/button";
@@ -184,26 +214,26 @@ import { Button } from "@/design-system/components/ui/button";
 export function Example() {
   return (
     <div className="flex gap-3">
-      {(["sm", "md", "lg", "xl", "auto"] as const).map((size) => (
-        <DrawerPanelRoot key={size} direction="right">
+      {(["sm", "md", "lg", "xl"] as const).map((size) => (
+        <DrawerPanel key={size} direction="right">
           <DrawerPanelTrigger asChild>
             <Button variant="outline">{\`right \${size}\`}</Button>
           </DrawerPanelTrigger>
-          <DrawerPanel
+          <DrawerPanelContent
             size={size}
             title={\`Drawer \${size}\`}
-            footer={
-              <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
-                <Button variant="outline">Đóng</Button>
-                <Button>Xác nhận</Button>
-              </div>
-            }
           >
             <p className="text-sm text-muted-foreground">
              \`Preset kích thước \${size} cho drawer panel.\`
             </p>
-          </DrawerPanel>
-        </DrawerPanelRoot>
+            <DrawerPanelFooter>
+              <DrawerPanelClose asChild>
+                <Button size="sm" className="min-w-25" variant="outline">Đóng</Button>
+              </DrawerPanelClose>
+              <Button size="sm" className="min-w-25">Xác nhận</Button>
+            </DrawerPanelFooter>
+          </DrawerPanelContent>
+        </DrawerPanel>
       ))}
     </div>
   );
@@ -216,7 +246,9 @@ export function Example() {
     code: `import { Button } from "@/design-system/components/ui/button";
 import {
   DrawerPanel,
-  DrawerPanelRoot,
+  DrawerPanelClose,
+  DrawerPanelContent,
+  DrawerPanelFooter,
   DrawerPanelTrigger,
 } from "@/design-system/components/ui/drawer-panel";
 import { MultipleCombobox } from "@/design-system/components/ui/multiple-combobox";
@@ -230,15 +262,15 @@ const options = Array.from({ length: 60 }, (_, index) => ({
 
 export function Example() {
   return (
-    <DrawerPanelRoot direction="right">
+    <DrawerPanel direction="right">
       <DrawerPanelTrigger asChild>
         <Button variant="outline">Combobox scroll</Button>
       </DrawerPanelTrigger>
-      <DrawerPanel size="lg" title="Kiểm tra combobox trong drawer">
+      <DrawerPanelContent size="lg" title="Kiểm tra combobox trong drawer">
         <SingleCombobox options={options} placeholder="Chọn một tùy chọn" />
         <MultipleCombobox options={options} placeholder="Chọn nhiều tùy chọn" limitTags={4} />
-      </DrawerPanel>
-    </DrawerPanelRoot>
+      </DrawerPanelContent>
+    </DrawerPanel>
   );
 }`,
   },
@@ -256,10 +288,11 @@ export default function DrawerPanelGuidePage() {
           <p className="text-muted-foreground text-sm font-medium tracking-[0.24em] uppercase">
             {guide.group}
           </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight">
+            {guide.name}
+          </h1>
           <p className="text-muted-foreground mt-4 max-w-2xl text-base leading-7">
-            Wrapper cho Drawer để chuẩn hóa header, body, footer và preset kích thước trong các flow
-            ưu tiên mobile.
+            DrawerPanel là root; DrawerPanelContent chứa header, nội dung cuộn và footer tùy biến.
           </p>
         </section>
 
@@ -267,13 +300,17 @@ export default function DrawerPanelGuidePage() {
           <Card id="import" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
-              <CardDescription>Import root, trigger và drawer panel wrapper.</CardDescription>
+              <CardDescription>
+                Import root, trigger và drawer panel wrapper.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <CodeBlock
                 code={`import {
   DrawerPanel,
-  DrawerPanelRoot,
+  DrawerPanelClose,
+  DrawerPanelContent,
+  DrawerPanelFooter,
   DrawerPanelTrigger,
 } from "${guide.importPath}"`}
                 id="import"
@@ -284,9 +321,10 @@ export default function DrawerPanelGuidePage() {
 
           <Card id="props" className="border-border/70 rounded-[24px]">
             <CardHeader>
-              <CardTitle>2. Props</CardTitle>
+              <CardTitle>2. DrawerPanelContent props</CardTitle>
               <CardDescription>
-                DrawerPanel kế thừa toàn bộ props của DrawerContent.
+                DrawerPanelContent nhận size và nội dung. Đặt DrawerPanelFooter
+                trực tiếp trong content để thay nút mặc định.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -303,11 +341,18 @@ export default function DrawerPanelGuidePage() {
                     {props.map((prop, index) => (
                       <tr
                         key={prop.name}
-                        className={cn(index !== props.length - 1 && 'border-border/70 border-b')}
+                        className={cn(
+                          index !== props.length - 1 &&
+                            'border-border/70 border-b',
+                        )}
                       >
                         <td className="px-4 py-3 font-medium">{prop.name}</td>
-                        <td className="text-muted-foreground px-4 py-3">{prop.type}</td>
-                        <td className="text-muted-foreground px-4 py-3">{prop.defaultValue}</td>
+                        <td className="text-muted-foreground px-4 py-3">
+                          {prop.type}
+                        </td>
+                        <td className="text-muted-foreground px-4 py-3">
+                          {prop.defaultValue}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -319,7 +364,9 @@ export default function DrawerPanelGuidePage() {
           <Card id="usages" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
-              <CardDescription>Các pattern phổ biến cho drawer wrapper.</CardDescription>
+              <CardDescription>
+                Các pattern phổ biến cho drawer wrapper.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">
@@ -332,7 +379,11 @@ export default function DrawerPanelGuidePage() {
                 </TabsList>
 
                 {usageSamples.map((sample) => (
-                  <TabsContent key={sample.id} value={sample.id} className="space-y-5">
+                  <TabsContent
+                    key={sample.id}
+                    value={sample.id}
+                    className="space-y-5"
+                  >
                     <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-8">
                       <div className="bg-background flex min-h-56 items-center justify-center rounded-[18px] px-6 shadow-sm">
                         {sample.preview}
@@ -354,13 +405,19 @@ export default function DrawerPanelGuidePage() {
             TOC
           </p>
           <nav className="text-muted-foreground mt-4 space-y-3 text-sm">
-            <a href="#import" className="hover:text-foreground block transition">
+            <a
+              href="#import"
+              className="hover:text-foreground block transition"
+            >
               Import
             </a>
             <a href="#props" className="hover:text-foreground block transition">
               Props
             </a>
-            <a href="#usages" className="hover:text-foreground block transition">
+            <a
+              href="#usages"
+              className="hover:text-foreground block transition"
+            >
               Usages
             </a>
           </nav>

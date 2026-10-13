@@ -13,6 +13,7 @@ import {
   DrawerTrigger,
 } from './drawer';
 import { ScrollArea } from './scroll-area';
+import { cn } from '../../lib/utils';
 
 const panelVariants = cva('flex h-full flex-col gap-0', {
   variants: {
@@ -69,11 +70,10 @@ const footerVariants = cva('flex gap-3 justify-end', {
   },
 });
 
-type DrawerPanelProps = {
+type DrawerPanelContentProps = {
   title?: React.ReactNode;
   description?: React.ReactNode;
   children: React.ReactNode;
-  footer?: React.ReactNode;
   showFooter?: boolean;
   confirmText?: string;
   cancelText?: string;
@@ -82,67 +82,112 @@ type DrawerPanelProps = {
   onConfirm?: () => void;
 } & VariantProps<typeof panelVariants>;
 
-function DrawerPanel({
+const DrawerPanelSizeContext =
+  React.createContext<VariantProps<typeof panelVariants>['size']>(undefined);
+
+function DrawerPanelFooter({
+  className,
+  ...props
+}: React.ComponentProps<'div'>) {
+  const size = React.useContext(DrawerPanelSizeContext);
+
+  return (
+    <div
+      data-slot="drawer-panel-footer"
+      className={footerVariants({ size, className: cn('pt-0', className) })}
+      {...props}
+    />
+  );
+}
+
+function DrawerPanelContent({
   size = 'md',
   title,
   description,
   children,
-  footer,
   showFooter = true,
   confirmText = 'Áp dụng',
   cancelText = 'Hủy',
   showCloseButton = true,
   className,
   onConfirm,
-}: DrawerPanelProps) {
+}: DrawerPanelContentProps) {
   const hasHeader = title || description;
   const buttonSize = size === 'sm' ? 'sm' : 'default';
+  const panelChildren = React.Children.toArray(children);
+  const footer = panelChildren.find(
+    (child) => React.isValidElement(child) && child.type === DrawerPanelFooter,
+  );
+  const body = panelChildren.filter(
+    (child) => !React.isValidElement(child) || child.type !== DrawerPanelFooter,
+  );
 
   return (
-    <DrawerContent className={panelVariants({ size, className })}>
-      {hasHeader && (
-        <div className={headerVariants({ size, className: 'pb-0' })}>
-          {title && <DrawerTitle>{title}</DrawerTitle>}
-          {description && <DrawerDescription className="mt-1.5">{description}</DrawerDescription>}
-        </div>
-      )}
+    <DrawerPanelSizeContext.Provider value={size}>
+      <DrawerContent className={panelVariants({ size, className })}>
+        {hasHeader && (
+          <div className={headerVariants({ size, className: 'pb-0' })}>
+            {title && <DrawerTitle>{title}</DrawerTitle>}
+            {description && (
+              <DrawerDescription className="mt-1.5">
+                {description}
+              </DrawerDescription>
+            )}
+          </div>
+        )}
 
-      <ScrollArea className="min-h-0 flex-1 overflow-y-auto">
-        <div className={bodyVariants({ size })}>{children}</div>
-      </ScrollArea>
+        <ScrollArea className="min-h-0 flex-1 overflow-y-auto">
+          <div className={bodyVariants({ size })}>{body}</div>
+        </ScrollArea>
 
-      {showFooter && (
-        <div className={footerVariants({ size, className: 'pt-0' })}>
-          {footer ?? (
-            <>
+        {showFooter &&
+          (footer ?? (
+            <DrawerPanelFooter>
               <DrawerClose asChild>
-                <Button variant="secondary" size={buttonSize} className="min-w-25">
+                <Button
+                  variant="secondary"
+                  size={buttonSize}
+                  className="min-w-25"
+                >
                   {cancelText}
                 </Button>
               </DrawerClose>
-              <Button size={buttonSize} className="min-w-25" onClick={onConfirm}>
+              <Button
+                size={buttonSize}
+                className="min-w-25"
+                onClick={onConfirm}
+              >
                 {confirmText}
               </Button>
-            </>
-          )}
-        </div>
-      )}
+            </DrawerPanelFooter>
+          ))}
 
-      {showCloseButton && (
-        <DrawerClose data-slot="drawer-close" asChild>
-          <Button className="absolute top-4 right-4 h-fit w-fit p-0" variant="ghost" size="icon">
-            <XIcon className="size-5" />
-            <span className="sr-only">Close</span>
-          </Button>
-        </DrawerClose>
-      )}
-    </DrawerContent>
+        {showCloseButton && (
+          <DrawerClose data-slot="drawer-close" asChild>
+            <Button
+              className="absolute top-4 right-4 h-fit w-fit p-0"
+              variant="ghost"
+              size="icon"
+            >
+              <XIcon className="size-5" />
+              <span className="sr-only">Close</span>
+            </Button>
+          </DrawerClose>
+        )}
+      </DrawerContent>
+    </DrawerPanelSizeContext.Provider>
   );
 }
 
-const DrawerPanelRoot = Drawer;
+const DrawerPanel = Drawer;
 const DrawerPanelTrigger = DrawerTrigger;
 const DrawerPanelClose = DrawerClose;
 
-export { DrawerPanel, DrawerPanelClose, DrawerPanelRoot, DrawerPanelTrigger };
-export type { DrawerPanelProps };
+export {
+  DrawerPanel,
+  DrawerPanelClose,
+  DrawerPanelContent,
+  DrawerPanelFooter,
+  DrawerPanelTrigger,
+};
+export type { DrawerPanelContentProps };

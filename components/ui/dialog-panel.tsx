@@ -12,6 +12,7 @@ import {
   DialogTrigger,
 } from './dialog';
 import { ScrollArea } from './scroll-area';
+import { cn } from '../../lib/utils';
 
 const panelVariants = cva(
   'max-h-[calc(100vh-2rem)] min-w-0 flex flex-col gap-0 overflow-hidden p-0',
@@ -76,11 +77,10 @@ const footerVariants = cva('flex gap-3 justify-end', {
   },
 });
 
-type DialogPanelProps = {
+type DialogPanelContentProps = {
   title?: React.ReactNode;
   description?: React.ReactNode;
   children: React.ReactNode;
-  footer?: React.ReactNode;
   showFooter?: boolean;
   confirmText?: string;
   cancelText?: string;
@@ -88,38 +88,59 @@ type DialogPanelProps = {
   className?: string;
 } & VariantProps<typeof panelVariants>;
 
-function DialogPanel({
+const DialogPanelSizeContext =
+  React.createContext<VariantProps<typeof panelVariants>['size']>(undefined);
+
+function DialogPanelFooter({ className, ...props }: React.ComponentProps<'div'>) {
+  const size = React.useContext(DialogPanelSizeContext);
+
+  return (
+    <div
+      data-slot="dialog-panel-footer"
+      className={footerVariants({ size, className: cn('pt-0', className) })}
+      {...props}
+    />
+  );
+}
+
+function DialogPanelContent({
   size,
   title,
   description,
   children,
-  footer,
   showFooter = true,
   confirmText = 'Áp dụng',
   cancelText = 'Hủy',
   onConfirm,
   className,
-}: DialogPanelProps) {
+}: DialogPanelContentProps) {
   const hasHeader = title || description;
   const buttonSize = size === 'sm' ? 'sm' : 'default';
+  const panelChildren = React.Children.toArray(children);
+  const footer = panelChildren.find(
+    (child) => React.isValidElement(child) && child.type === DialogPanelFooter,
+  );
+  const body = panelChildren.filter(
+    (child) => !React.isValidElement(child) || child.type !== DialogPanelFooter,
+  );
 
   return (
-    <DialogContent className={panelVariants({ size, className })}>
-      {hasHeader && (
-        <div className={headerVariants({ size, className: 'pb-0' })}>
-          {title && <DialogTitle>{title}</DialogTitle>}
-          {description && <DialogDescription className="mt-1.5">{description}</DialogDescription>}
-        </div>
-      )}
+    <DialogPanelSizeContext.Provider value={size}>
+      <DialogContent className={panelVariants({ size, className })}>
+        {hasHeader && (
+          <div className={headerVariants({ size, className: 'pb-0' })}>
+            {title && <DialogTitle>{title}</DialogTitle>}
+            {description && <DialogDescription className="mt-1.5">{description}</DialogDescription>}
+          </div>
+        )}
 
-      <ScrollArea className="min-h-0 min-w-0 flex-1 overflow-y-auto">
-        <div className={bodyVariants({ size })}>{children}</div>
-      </ScrollArea>
+        <ScrollArea className="min-h-0 min-w-0 flex-1 overflow-y-auto">
+          <div className={bodyVariants({ size })}>{body}</div>
+        </ScrollArea>
 
-      {showFooter && (
-        <div className={footerVariants({ size, className: 'pt-0' })}>
-          {footer ?? (
-            <>
+        {showFooter &&
+          (footer ?? (
+            <DialogPanelFooter>
               <DialogClose
                 render={
                   <Button variant="secondary" size={buttonSize} className="min-w-25">
@@ -130,16 +151,15 @@ function DialogPanel({
               <Button size={buttonSize} className="min-w-25" onClick={onConfirm}>
                 {confirmText}
               </Button>
-            </>
-          )}
-        </div>
-      )}
-    </DialogContent>
+            </DialogPanelFooter>
+          ))}
+      </DialogContent>
+    </DialogPanelSizeContext.Provider>
   );
 }
-const DialogPanelRoot = Dialog;
+const DialogPanel = Dialog;
 const DialogPanelTrigger = DialogTrigger;
 const DialogPanelClose = DialogClose;
 
-export { DialogPanel, DialogPanelClose, DialogPanelRoot, DialogPanelTrigger };
-export type { DialogPanelProps };
+export { DialogPanel, DialogPanelClose, DialogPanelContent, DialogPanelFooter, DialogPanelTrigger };
+export type { DialogPanelContentProps };

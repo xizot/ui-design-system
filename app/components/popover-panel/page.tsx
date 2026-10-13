@@ -1,11 +1,23 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { CodeBlock } from '@/components/ui/code-block';
 import { Input } from '@/components/ui/input';
 import { MultipleCombobox } from '@/components/ui/multiple-combobox';
-import { PopoverPanel, PopoverPanelRoot, PopoverPanelTrigger } from '@/components/ui/popover-panel';
+import {
+  PopoverPanel,
+  PopoverPanelClose,
+  PopoverPanelContent,
+  PopoverPanelFooter,
+  PopoverPanelTrigger,
+} from '@/components/ui/popover-panel';
 import { SingleCombobox } from '@/components/ui/single-combobox';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
@@ -16,12 +28,16 @@ import { getGuide } from '../guide-data';
 const guide = getGuide('popover-panel');
 
 const props = [
-  { name: 'size', type: `"sm" | "md" | "lg" | "xl" | "auto"`, defaultValue: `"md"` },
+  {
+    name: 'size',
+    type: `"sm" | "md" | "lg" | "xl" | "auto"`,
+    defaultValue: `"md"`,
+  },
   { name: 'title', type: 'React.ReactNode', defaultValue: '--' },
   { name: 'description', type: 'React.ReactNode', defaultValue: '--' },
-  { name: 'footer', type: 'React.ReactNode', defaultValue: '--' },
+  { name: 'showFooter', type: 'boolean', defaultValue: 'true' },
+  { name: 'showCloseButton', type: 'boolean', defaultValue: 'true' },
   { name: 'className', type: 'string', defaultValue: '--' },
-  { name: 'side', type: `"top" | "right" | "bottom" | "left"`, defaultValue: `"bottom"` },
 ];
 
 const comboboxOptions = Array.from({ length: 60 }, (_, index) => {
@@ -39,14 +55,15 @@ function PopoverComboboxScrollDemo() {
   const [multipleValues, setMultipleValues] = useState<(string | number)[]>([]);
 
   return (
-    <PopoverPanelRoot>
-      <PopoverPanelTrigger render={<Button variant="outline">Combobox scroll</Button>} />
-      <PopoverPanel
+    <PopoverPanel>
+      <PopoverPanelTrigger
+        render={<Button variant="outline">Combobox scroll</Button>}
+      />
+      <PopoverPanelContent
         size="xl"
         title="Kiểm tra combobox trong popover"
         description="Mở từng combobox để kiểm tra menu nhiều option và scroll trong popover."
         className="max-h-[calc(100vh-8rem)]"
-        footer={<Button>Áp dụng</Button>}
       >
         <div className="grid gap-4">
           <SingleCombobox
@@ -76,8 +93,13 @@ function PopoverComboboxScrollDemo() {
             ))}
           </div>
         </div>
-      </PopoverPanel>
-    </PopoverPanelRoot>
+        <PopoverPanelFooter>
+          <PopoverPanelClose render={<Button size="sm" className="min-w-25">
+            Áp dụng
+          </Button>} />
+        </PopoverPanelFooter>
+      </PopoverPanelContent>
+    </PopoverPanel>
   );
 }
 
@@ -86,23 +108,31 @@ const usageSamples = [
     id: 'default',
     label: 'Default',
     preview: (
-      <PopoverPanelRoot>
-        <PopoverPanelTrigger render={<Button variant="outline">Mở bộ lọc</Button>} />
-        <PopoverPanel
+      <PopoverPanel>
+        <PopoverPanelTrigger
+          render={<Button variant="outline">Mở bộ lọc</Button>}
+        />
+        <PopoverPanelContent
           title="Bộ lọc nhanh"
           description="Áp dụng các điều kiện lọc thường dùng."
-          footer={<Button>Lưu bộ lọc</Button>}
         >
           <div className="grid gap-3">
             <Input label="Từ khóa" placeholder="Nhập từ khóa" />
             <Input label="Mã đơn hàng" placeholder="VD: DH-1024" />
           </div>
-        </PopoverPanel>
-      </PopoverPanelRoot>
+          <PopoverPanelFooter>
+            <PopoverPanelClose render={<Button size="sm" className="min-w-25">
+              Lưu bộ lọc
+            </Button>} />
+          </PopoverPanelFooter>
+        </PopoverPanelContent>
+      </PopoverPanel>
     ),
     code: `import {
   PopoverPanel,
-  PopoverPanelRoot,
+  PopoverPanelClose,
+  PopoverPanelContent,
+  PopoverPanelFooter,
   PopoverPanelTrigger,
 } from "@/design-system/components/ui/popover-panel";
 import { Button } from "@/design-system/components/ui/button";
@@ -110,19 +140,21 @@ import { Input } from "@/design-system/components/ui/input";
 
 export function Example() {
   return (
-    <PopoverPanelRoot>
+    <PopoverPanel>
       <PopoverPanelTrigger render={<Button variant="outline">Mở bộ lọc</Button>} />
-      <PopoverPanel
+      <PopoverPanelContent
         title="Bộ lọc nhanh"
         description="Áp dụng các điều kiện lọc thường dùng."
-        footer={<Button>Lưu bộ lọc</Button>}
       >
         <div className="grid gap-3">
           <Input label="Từ khóa" placeholder="Nhập từ khóa" />
           <Input label="Mã đơn hàng" placeholder="VD: DH-1024" />
         </div>
-      </PopoverPanel>
-    </PopoverPanelRoot>
+        <PopoverPanelFooter>
+          <PopoverPanelClose render={<Button size="sm" className="min-w-25">Lưu bộ lọc</Button>} />
+        </PopoverPanelFooter>
+      </PopoverPanelContent>
+    </PopoverPanel>
   );
 }`,
   },
@@ -134,7 +166,9 @@ export function Example() {
 import { MultipleCombobox } from "@/design-system/components/ui/multiple-combobox";
 import {
   PopoverPanel,
-  PopoverPanelRoot,
+  PopoverPanelClose,
+  PopoverPanelContent,
+  PopoverPanelFooter,
   PopoverPanelTrigger,
 } from "@/design-system/components/ui/popover-panel";
 import { SingleCombobox } from "@/design-system/components/ui/single-combobox";
@@ -147,17 +181,17 @@ const options = Array.from({ length: 60 }, (_, index) => ({
 
 export function Example() {
   return (
-    <PopoverPanelRoot>
+    <PopoverPanel>
       <PopoverPanelTrigger render={<Button variant="outline">Combobox scroll</Button>} />
-      <PopoverPanel
+      <PopoverPanelContent
         size="xl"
         title="Kiểm tra combobox trong popover"
         className="max-h-[calc(100vh-8rem)]"
       >
         <SingleCombobox options={options} placeholder="Chọn một tùy chọn" />
         <MultipleCombobox options={options} placeholder="Chọn nhiều tùy chọn" limitTags={3} />
-      </PopoverPanel>
-    </PopoverPanelRoot>
+      </PopoverPanelContent>
+    </PopoverPanel>
   );
 }`,
   },
@@ -167,23 +201,33 @@ export function Example() {
     preview: (
       <div className="flex flex-wrap items-center justify-center gap-3">
         {(['sm', 'md', 'lg', 'xl', 'auto'] as const).map((size) => (
-          <PopoverPanelRoot key={size}>
-            <PopoverPanelTrigger render={<Button variant="outline">{size}</Button>} />
-            <PopoverPanel
+          <PopoverPanel key={size}>
+            <PopoverPanelTrigger
+              render={<Button variant="outline">{size}</Button>}
+            />
+            <PopoverPanelContent
               size={size}
               title={`Kích thước ${size}`}
               description="Có thể dùng preset size hoặc tự override bằng className."
-              footer={<Button size="sm">Xác nhận</Button>}
             >
-              <p className="text-muted-foreground text-sm">Nội dung mẫu cho {size}.</p>
-            </PopoverPanel>
-          </PopoverPanelRoot>
+              <p className="text-muted-foreground text-sm">
+                Nội dung mẫu cho {size}.
+              </p>
+              <PopoverPanelFooter>
+                <PopoverPanelClose
+                  render={<Button size="sm" className="min-w-25">Xác nhận</Button>}
+                />
+              </PopoverPanelFooter>
+            </PopoverPanelContent>
+          </PopoverPanel>
         ))}
       </div>
     ),
     code: `import {
   PopoverPanel,
-  PopoverPanelRoot,
+  PopoverPanelClose,
+  PopoverPanelContent,
+  PopoverPanelFooter,
   PopoverPanelTrigger,
 } from "@/design-system/components/ui/popover-panel";
 import { Button } from "@/design-system/components/ui/button";
@@ -192,17 +236,19 @@ export function Example() {
   return (
     <div className="flex gap-3">
       {(["sm", "md", "lg", "xl", "auto"] as const).map((size) => (
-        <PopoverPanelRoot key={size}>
+        <PopoverPanel key={size}>
           <PopoverPanelTrigger render={<Button variant="outline">{size}</Button>} />
-          <PopoverPanel
+          <PopoverPanelContent
             size={size}
             title={\`Kích thước \${size}\`}
             description="Có thể dùng preset size hoặc tự override bằng className."
-            footer={<Button size="sm">Xác nhận</Button>}
           >
             <p className="text-sm text-muted-foreground">Nội dung mẫu cho {size}.</p>
-          </PopoverPanel>
-        </PopoverPanelRoot>
+            <PopoverPanelFooter>
+              <PopoverPanelClose render={<Button size="sm" className="min-w-25">Xác nhận</Button>} />
+            </PopoverPanelFooter>
+          </PopoverPanelContent>
+        </PopoverPanel>
       ))}
     </div>
   );
@@ -222,10 +268,11 @@ export default function PopoverPanelGuidePage() {
           <p className="text-muted-foreground text-sm font-medium tracking-[0.24em] uppercase">
             {guide.group}
           </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight">{guide.name}</h1>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight">
+            {guide.name}
+          </h1>
           <p className="text-muted-foreground mt-4 max-w-2xl text-base leading-7">
-            Wrapper cấp cao cho Popover với layout chuẩn gồm header, body, footer và preset kích
-            thước để dùng đồng bộ giữa nhiều màn.
+            PopoverPanel là root; PopoverPanelContent chứa header, nội dung cuộn và footer tùy biến.
           </p>
         </section>
 
@@ -233,13 +280,17 @@ export default function PopoverPanelGuidePage() {
           <Card id="import" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>1. Import</CardTitle>
-              <CardDescription>Import các phần cần dùng cho popover panel.</CardDescription>
+              <CardDescription>
+                Import các phần cần dùng cho popover panel.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <CodeBlock
                 code={`import {
   PopoverPanel,
-  PopoverPanelRoot,
+  PopoverPanelClose,
+  PopoverPanelContent,
+  PopoverPanelFooter,
   PopoverPanelTrigger,
 } from "${guide.importPath}"`}
                 id="import"
@@ -250,9 +301,10 @@ export default function PopoverPanelGuidePage() {
 
           <Card id="props" className="border-border/70 rounded-[24px]">
             <CardHeader>
-              <CardTitle>2. Props</CardTitle>
+              <CardTitle>2. PopoverPanelContent props</CardTitle>
               <CardDescription>
-                PopoverPanel kế thừa toàn bộ props của PopoverContent.
+                PopoverPanelContent nhận size và nội dung. Đặt
+                PopoverPanelFooter trực tiếp trong content để thay nút mặc định.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -269,11 +321,18 @@ export default function PopoverPanelGuidePage() {
                     {props.map((prop, index) => (
                       <tr
                         key={prop.name}
-                        className={cn(index !== props.length - 1 && 'border-border/70 border-b')}
+                        className={cn(
+                          index !== props.length - 1 &&
+                            'border-border/70 border-b',
+                        )}
                       >
                         <td className="px-4 py-3 font-medium">{prop.name}</td>
-                        <td className="text-muted-foreground px-4 py-3">{prop.type}</td>
-                        <td className="text-muted-foreground px-4 py-3">{prop.defaultValue}</td>
+                        <td className="text-muted-foreground px-4 py-3">
+                          {prop.type}
+                        </td>
+                        <td className="text-muted-foreground px-4 py-3">
+                          {prop.defaultValue}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -285,7 +344,9 @@ export default function PopoverPanelGuidePage() {
           <Card id="usages" className="border-border/70 rounded-[24px]">
             <CardHeader>
               <CardTitle>3. Usages</CardTitle>
-              <CardDescription>Các pattern phổ biến khi dùng popover panel.</CardDescription>
+              <CardDescription>
+                Các pattern phổ biến khi dùng popover panel.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue={usageSamples[0]?.id} className="gap-6">
@@ -298,7 +359,11 @@ export default function PopoverPanelGuidePage() {
                 </TabsList>
 
                 {usageSamples.map((sample) => (
-                  <TabsContent key={sample.id} value={sample.id} className="space-y-5">
+                  <TabsContent
+                    key={sample.id}
+                    value={sample.id}
+                    className="space-y-5"
+                  >
                     <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-8">
                       <div className="bg-background flex min-h-56 items-center justify-center rounded-[18px] px-6 shadow-sm">
                         {sample.preview}
@@ -320,13 +385,19 @@ export default function PopoverPanelGuidePage() {
             TOC
           </p>
           <nav className="text-muted-foreground mt-4 space-y-3 text-sm">
-            <a href="#import" className="hover:text-foreground block transition">
+            <a
+              href="#import"
+              className="hover:text-foreground block transition"
+            >
               Import
             </a>
             <a href="#props" className="hover:text-foreground block transition">
               Props
             </a>
-            <a href="#usages" className="hover:text-foreground block transition">
+            <a
+              href="#usages"
+              className="hover:text-foreground block transition"
+            >
               Usages
             </a>
           </nav>

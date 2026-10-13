@@ -5,7 +5,11 @@ import Link from 'next/link';
 import { useState, type ReactNode } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { SheetPanel, SheetPanelRoot, SheetPanelTrigger } from '@/components/ui/sheet-panel';
+import {
+  SheetPanel,
+  SheetPanelContent,
+  SheetPanelTrigger,
+} from '@/components/ui/sheet-panel';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { StylePresetCombobox } from '@/internal-components/style-preset-combobox';
 import { GuideNavigation } from './_components/guide-navigation';
@@ -27,7 +31,7 @@ export default function ComponentsLayout({ children }: ComponentsLayoutProps) {
       <header className="border-border bg-background/95 sticky top-0 z-30 h-16 border-b backdrop-blur-sm">
         <div className="mx-auto flex h-full max-w-[1600px] items-center justify-between gap-4 px-4 lg:px-6">
           <div className="flex min-w-0 items-center gap-3">
-            <SheetPanelRoot open={navigationOpen} onOpenChange={setNavigationOpen}>
+            <SheetPanel open={navigationOpen} onOpenChange={setNavigationOpen}>
               <SheetPanelTrigger
                 render={
                   <Button
@@ -40,7 +44,7 @@ export default function ComponentsLayout({ children }: ComponentsLayoutProps) {
               >
                 <Menu />
               </SheetPanelTrigger>
-              <SheetPanel
+              <SheetPanelContent
                 title="Components"
                 description="Tìm và mở hướng dẫn sử dụng."
                 side="left"
@@ -48,10 +52,12 @@ export default function ComponentsLayout({ children }: ComponentsLayoutProps) {
                 showFooter={false}
               >
                 <div className="flex h-full min-h-0 flex-col">
-                  <GuideNavigation onNavigate={() => setNavigationOpen(false)} />
+                  <GuideNavigation
+                    onNavigate={() => setNavigationOpen(false)}
+                  />
                 </div>
-              </SheetPanel>
-            </SheetPanelRoot>
+              </SheetPanelContent>
+            </SheetPanel>
             <Link
               href="/"
               className="focus-visible:ring-ring flex shrink-0 items-center gap-2.5 rounded-md font-semibold tracking-tight focus-visible:ring-2 focus-visible:outline-none"
@@ -81,7 +87,11 @@ export default function ComponentsLayout({ children }: ComponentsLayoutProps) {
         <aside className="docs-navigation">
           <GuideNavigation />
         </aside>
-        <main id="guide-main" tabIndex={-1} className="docs-main focus:outline-none">
+        <main
+          id="guide-main"
+          tabIndex={-1}
+          className="docs-main focus:outline-none"
+        >
           {children}
         </main>
       </div>

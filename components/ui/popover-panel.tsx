@@ -4,6 +4,7 @@ import { ScrollArea } from './scroll-area';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { XIcon } from 'lucide-react';
 import * as React from 'react';
+import { cn } from '../../lib/utils';
 import { Button } from './button';
 import {
   Popover,
@@ -74,11 +75,10 @@ const footerVariants = cva('flex gap-3 justify-end', {
   },
 });
 
-type PopoverPanelProps = {
+type PopoverPanelContentProps = {
   title?: React.ReactNode;
   description?: React.ReactNode;
   children: React.ReactNode;
-  footer?: React.ReactNode;
   showFooter?: boolean;
   confirmText?: string;
   cancelText?: string;
@@ -87,72 +87,118 @@ type PopoverPanelProps = {
   onConfirm?: () => void;
 } & VariantProps<typeof panelVariants>;
 
-function PopoverPanel({
+const PopoverPanelSizeContext =
+  React.createContext<VariantProps<typeof panelVariants>['size']>(undefined);
+
+function PopoverPanelFooter({
+  className,
+  ...props
+}: React.ComponentProps<'div'>) {
+  const size = React.useContext(PopoverPanelSizeContext);
+
+  return (
+    <div
+      data-slot="popover-panel-footer"
+      className={footerVariants({ size, className: cn('pt-0', className) })}
+      {...props}
+    />
+  );
+}
+
+function PopoverPanelContent({
   size,
   title,
   description,
   children,
-  footer,
   showFooter = true,
   confirmText = 'Áp dụng',
   cancelText = 'Hủy',
   showCloseButton = true,
   className,
   onConfirm,
-}: PopoverPanelProps) {
+}: PopoverPanelContentProps) {
   const hasHeader = title || description;
   const buttonSize = size === 'sm' ? 'sm' : 'default';
+  const panelChildren = React.Children.toArray(children);
+  const footer = panelChildren.find(
+    (child) => React.isValidElement(child) && child.type === PopoverPanelFooter,
+  );
+  const body = panelChildren.filter(
+    (child) =>
+      !React.isValidElement(child) || child.type !== PopoverPanelFooter,
+  );
 
   return (
-    <PopoverContent className={panelVariants({ size, className })}>
-      {hasHeader && (
-        <div className={headerVariants({ size, className: 'pb-0' })}>
-          {title && <PopoverTitle>{title}</PopoverTitle>}
-          {description && <PopoverDescription className="mt-1.5">{description}</PopoverDescription>}
-        </div>
-      )}
+    <PopoverPanelSizeContext.Provider value={size}>
+      <PopoverContent className={panelVariants({ size, className })}>
+        {hasHeader && (
+          <div className={headerVariants({ size, className: 'pb-0' })}>
+            {title && <PopoverTitle>{title}</PopoverTitle>}
+            {description && (
+              <PopoverDescription className="mt-1.5">
+                {description}
+              </PopoverDescription>
+            )}
+          </div>
+        )}
 
-      <ScrollArea className="min-h-0 flex-1 overflow-y-auto">
-        <div className={bodyVariants({ size })}>{children}</div>
-      </ScrollArea>
+        <ScrollArea className="min-h-0 flex-1 overflow-y-auto">
+          <div className={bodyVariants({ size })}>{body}</div>
+        </ScrollArea>
 
-      {showFooter && (
-        <div className={footerVariants({ size, className: 'pt-0' })}>
-          {footer ?? (
-            <>
+        {showFooter &&
+          (footer ?? (
+            <PopoverPanelFooter>
               <PopoverClose
                 render={
-                  <Button variant="secondary" size={buttonSize} className="min-w-25">
+                  <Button
+                    variant="secondary"
+                    size={buttonSize}
+                    className="min-w-25"
+                  >
                     {cancelText}
                   </Button>
                 }
               />
-              <Button size={buttonSize} className="min-w-25" onClick={onConfirm}>
+              <Button
+                size={buttonSize}
+                className="min-w-25"
+                onClick={onConfirm}
+              >
                 {confirmText}
               </Button>
-            </>
-          )}
-        </div>
-      )}
+            </PopoverPanelFooter>
+          ))}
 
-      {showCloseButton && (
-        <PopoverClose
-          data-slot="popover-close"
-          render={
-            <Button className="absolute top-4 right-4 h-fit w-fit p-0" variant="ghost" size="icon">
-              <XIcon className="size-5" />
-              <span className="sr-only">Close</span>
-            </Button>
-          }
-        />
-      )}
-    </PopoverContent>
+        {showCloseButton && (
+          <PopoverClose
+            data-slot="popover-close"
+            render={
+              <Button
+                className="absolute top-4 right-4 h-fit w-fit p-0"
+                variant="ghost"
+                size="icon"
+              >
+                <XIcon className="size-5" />
+                <span className="sr-only">Close</span>
+              </Button>
+            }
+          />
+        )}
+      </PopoverContent>
+    </PopoverPanelSizeContext.Provider>
   );
 }
 
-const PopoverPanelRoot = Popover;
+const PopoverPanel = Popover;
 const PopoverPanelTrigger = PopoverTrigger;
 const PopoverPanelClose = PopoverClose;
 
-export { PopoverPanel, PopoverPanelRoot, PopoverPanelTrigger, PopoverPanelClose };
-export type { PopoverPanelProps };
+export {
+  PopoverPanel,
+  PopoverPanelClose,
+  PopoverPanelContent,
+  PopoverPanelFooter,
+  PopoverPanelTrigger,
+};
+export type { PopoverPanelContentProps };
