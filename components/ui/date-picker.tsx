@@ -419,10 +419,10 @@ function DatePicker({
           </PopoverTrigger>
 
           <PopoverContent
-            className={cn('flex w-auto flex-col gap-2 p-0', popoverClassName)}
+            className={cn('flex w-auto flex-col gap-2 p-0 pb-2', popoverClassName)}
             align="start"
           >
-            <div className="flex flex-col gap-2 pb-2">
+            <div className="flex flex-col gap-2">
               {timeOnly ? (
                 <div className={cn('flex', datePickerPanelVariants({ size }))}>
                   <TimePickerPanel
@@ -468,12 +468,12 @@ function DatePicker({
                   )}
                 </div>
               )}
-              <Separator className="shrink-0" />
-              <div className="flex shrink-0 items-center gap-2 px-2">
-                <Button className="flex-1" variant="secondary" size="sm" onClick={handleCancel}>
+              <Separator />
+              <div className="flex justify-end gap-2 px-2">
+                <Button size="sm" className="min-w-20" variant="secondary" onClick={handleCancel}>
                   {cancelText}
                 </Button>
-                <Button className="flex-1" size="sm" onClick={handleApply}>
+                <Button size="sm" className="min-w-20" onClick={handleApply}>
                   {applyText}
                 </Button>
               </div>
