@@ -349,7 +349,7 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
 
         {/* Popup: search input + items with checkboxes + footer */}
         <ComboboxContent anchor={anchorRef}>
-          <div className="px-2 pt-3">
+          <div className="shrink-0 px-2 pt-3">
             <ComboboxInput
               id={inputId}
               placeholder={searchPlaceholder}
@@ -360,7 +360,7 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
             />
           </div>
 
-          <ComboboxList className="px-2 [scrollbar-gutter:stable]">
+          <ComboboxList className="px-2">
             <ComboboxEmpty>{emptyMessage}</ComboboxEmpty>
             {filteredOptions.map((option) => (
               <ComboboxPrimitive.Item

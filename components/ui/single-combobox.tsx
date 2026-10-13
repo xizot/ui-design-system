@@ -280,7 +280,7 @@ function SingleCombobox<T extends ComboboxBaseOption>({
 
         {/* Search input lives inside the popup */}
         <ComboboxContent anchor={anchorRef}>
-          <div className="px-2 pt-3">
+          <div className="shrink-0 px-2 pt-3">
             <ComboboxInput
               id={inputId}
               placeholder={searchPlaceholder}
@@ -291,7 +291,7 @@ function SingleCombobox<T extends ComboboxBaseOption>({
             />
           </div>
 
-          <ComboboxList className="[scrollbar-gutter:stable]">
+          <ComboboxList>
             <ComboboxEmpty>{emptyMessage}</ComboboxEmpty>
             {filteredOptions.map((option) => (
               <ComboboxItem
