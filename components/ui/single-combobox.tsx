@@ -291,7 +291,7 @@ function SingleCombobox<T extends ComboboxBaseOption>({
             />
           </div>
 
-          <ComboboxList>
+          <ComboboxList className="[scrollbar-gutter:stable]">
             <ComboboxEmpty>{emptyMessage}</ComboboxEmpty>
             {filteredOptions.map((option) => (
               <ComboboxItem

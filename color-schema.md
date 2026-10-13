@@ -53,21 +53,21 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
 :root {
   --background: #ffffff;
   --foreground: #1f2328;
-  --card: #ffffff;
+  --card: #f6f8fa;
   --card-foreground: #1f2328;
-  --popover: #ffffff;
+  --popover: #f6f8fa;
   --popover-foreground: #1f2328;
   --primary: #0969da;
   --primary-foreground: #ffffff;
-  --secondary: #f6f8fa;
+  --secondary: #e4e6e9;
   --secondary-foreground: #1f2328;
-  --muted: #f6f8fa;
-  --muted-foreground: #656d76;
-  --accent: #ddf4ff;
+  --muted: #e4e6e9;
+  --muted-foreground: #4b535c;
+  --accent: #d3eaf4;
   --accent-foreground: #1f2328;
   --destructive: #d1242f;
-  --border: #d1d9e0;
-  --input: #d1d9e0;
+  --border: #a9b0b7;
+  --input: #898f96;
   --ring: #0969da;
   --chart-1: #0969da;
   --chart-2: #1a7f37;
@@ -78,9 +78,9 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --sidebar-foreground: #1f2328;
   --sidebar-primary: #0969da;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f6f8fa;
+  --sidebar-accent: #e2e6eb;
   --sidebar-accent-foreground: #1f2328;
-  --sidebar-border: #d1d9e0;
+  --sidebar-border: #a9b0b7;
   --sidebar-ring: #0969da;
 }
 ```
@@ -89,36 +89,36 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
 
 ```css
 :root {
-  --background: #f5f7fa;
-  --foreground: #24292f;
+  --background: #f6f8fa;
+  --foreground: #1f2328;
   --card: #ffffff;
-  --card-foreground: #24292f;
+  --card-foreground: #1f2328;
   --popover: #ffffff;
-  --popover-foreground: #24292f;
+  --popover-foreground: #1f2328;
   --primary: #0969da;
   --primary-foreground: #ffffff;
-  --secondary: #eaeef2;
+  --secondary: #e6e6e7;
   --secondary-foreground: #24292f;
-  --muted: #eaeef2;
-  --muted-foreground: #636e7b;
-  --accent: #ddf4ff;
+  --muted: #e6e6e7;
+  --muted-foreground: #4c535d;
+  --accent: #d3eaf4;
   --accent-foreground: #24292f;
   --destructive: #cf222e;
-  --border: #c8d1da;
-  --input: #c8d1da;
+  --border: #a9b0b7;
+  --input: #898f96;
   --ring: #0969da;
   --chart-1: #0969da;
   --chart-2: #1a7f37;
   --chart-3: #9a6700;
   --chart-4: #8250df;
   --chart-5: #bf3989;
-  --sidebar: #eaeef2;
-  --sidebar-foreground: #24292f;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1f2328;
   --sidebar-primary: #0969da;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #eaeef2;
+  --sidebar-accent: #e9edf2;
   --sidebar-accent-foreground: #24292f;
-  --sidebar-border: #c8d1da;
+  --sidebar-border: #afb6bc;
   --sidebar-ring: #0969da;
 }
 ```
@@ -129,21 +129,21 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
 :root {
   --background: #ffffff;
   --foreground: #0e1116;
-  --card: #ffffff;
+  --card: #f0f3f6;
   --card-foreground: #0e1116;
-  --popover: #ffffff;
+  --popover: #f0f3f6;
   --popover-foreground: #0e1116;
   --primary: #0550ae;
   --primary-foreground: #ffffff;
-  --secondary: #f0f3f6;
+  --secondary: #dee1e5;
   --secondary-foreground: #0e1116;
-  --muted: #f0f3f6;
+  --muted: #dee1e5;
   --muted-foreground: #424a53;
-  --accent: #ddf4ff;
+  --accent: #cfe5ef;
   --accent-foreground: #0e1116;
   --destructive: #a40e26;
   --border: #8c959f;
-  --input: #8c959f;
+  --input: #848c96;
   --ring: #0550ae;
   --chart-1: #0550ae;
   --chart-2: #116329;
@@ -154,7 +154,7 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --sidebar-foreground: #0e1116;
   --sidebar-primary: #0550ae;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f0f3f6;
+  --sidebar-accent: #dee1e6;
   --sidebar-accent-foreground: #0e1116;
   --sidebar-border: #8c959f;
   --sidebar-ring: #0550ae;
@@ -172,16 +172,16 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --popover: #ffffff;
   --popover-foreground: #18181b;
   --primary: #e85d4a;
-  --primary-foreground: #ffffff;
-  --secondary: #f4f4f5;
+  --primary-foreground: #000000;
+  --secondary: #e8e8ea;
   --secondary-foreground: #18181b;
-  --muted: #f4f4f5;
-  --muted-foreground: #71717a;
-  --accent: #ffe7e1;
+  --muted: #e8e8ea;
+  --muted-foreground: #4f4f57;
+  --accent: #fbe3de;
   --accent-foreground: #18181b;
   --destructive: #dc2626;
-  --border: #e4e4e7;
-  --input: #e4e4e7;
+  --border: #b0b0b5;
+  --input: #8f8f94;
   --ring: #e85d4a;
   --chart-1: #e85d4a;
   --chart-2: #0d9488;
@@ -191,10 +191,10 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --sidebar: #f4f4f5;
   --sidebar-foreground: #18181b;
   --sidebar-primary: #e85d4a;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f4f4f5;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: #e2e2e4;
   --sidebar-accent-foreground: #18181b;
-  --sidebar-border: #e4e4e7;
+  --sidebar-border: #acacb1;
   --sidebar-ring: #e85d4a;
 }
 ```
@@ -211,15 +211,15 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --popover-foreground: #18181b;
   --primary: #dc2626;
   --primary-foreground: #ffffff;
-  --secondary: #f4f4f5;
+  --secondary: #e8e8ea;
   --secondary-foreground: #18181b;
-  --muted: #f4f4f5;
-  --muted-foreground: #71717a;
+  --muted: #e8e8ea;
+  --muted-foreground: #4f4f57;
   --accent: #fee2e2;
   --accent-foreground: #18181b;
   --destructive: #b91c1c;
-  --border: #e4e4e7;
-  --input: #e4e4e7;
+  --border: #b0b0b5;
+  --input: #8f8f94;
   --ring: #dc2626;
   --chart-1: #dc2626;
   --chart-2: #059669;
@@ -230,9 +230,9 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --sidebar-foreground: #18181b;
   --sidebar-primary: #dc2626;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f4f4f5;
+  --sidebar-accent: #e2e2e4;
   --sidebar-accent-foreground: #18181b;
-  --sidebar-border: #e4e4e7;
+  --sidebar-border: #acacb1;
   --sidebar-ring: #dc2626;
 }
 ```
@@ -251,13 +251,13 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --primary-foreground: #ffffff;
   --secondary: #e2e8f0;
   --secondary-foreground: #0f172a;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --accent: #d1fae5;
+  --muted: #e4e8ed;
+  --muted-foreground: #455167;
+  --accent: #caf1de;
   --accent-foreground: #0f172a;
   --destructive: #dc2626;
-  --border: #cbd5e1;
-  --input: #cbd5e1;
+  --border: #a8b2bf;
+  --input: #87909f;
   --ring: #059669;
   --chart-1: #059669;
   --chart-2: #2563eb;
@@ -268,9 +268,9 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --sidebar-foreground: #0f172a;
   --sidebar-primary: #047857;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e2e8f0;
+  --sidebar-accent: #dde4ec;
   --sidebar-accent-foreground: #0f172a;
-  --sidebar-border: #cbd5e1;
+  --sidebar-border: #a4aebb;
   --sidebar-ring: #059669;
 }
 ```
@@ -287,15 +287,15 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --popover-foreground: #171717;
   --primary: #7c3aed;
   --primary-foreground: #ffffff;
-  --secondary: #f5f5f5;
+  --secondary: #e8e8e8;
   --secondary-foreground: #171717;
-  --muted: #f5f5f5;
-  --muted-foreground: #737373;
-  --accent: #ede9fe;
+  --muted: #e8e8e8;
+  --muted-foreground: #505051;
+  --accent: #e9e6fa;
   --accent-foreground: #171717;
   --destructive: #dc2626;
-  --border: #e5e5e5;
-  --input: #e5e5e5;
+  --border: #b1b1b3;
+  --input: #909092;
   --ring: #8b5cf6;
   --chart-1: #8b5cf6;
   --chart-2: #0d9488;
@@ -306,9 +306,9 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --sidebar-foreground: #171717;
   --sidebar-primary: #7c3aed;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f5f5f5;
+  --sidebar-accent: #e3e3e3;
   --sidebar-accent-foreground: #171717;
-  --sidebar-border: #e5e5e5;
+  --sidebar-border: #adadaf;
   --sidebar-ring: #8b5cf6;
 }
 ```
@@ -325,15 +325,15 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --popover-foreground: #172033;
   --primary: #3157c8;
   --primary-foreground: #ffffff;
-  --secondary: #e8edf7;
+  --secondary: #e2e7f2;
   --secondary-foreground: #172033;
-  --muted: #edf1f8;
-  --muted-foreground: #65718a;
-  --accent: #e0e8ff;
+  --muted: #e3e7ef;
+  --muted-foreground: #454e65;
+  --accent: #dfe7fe;
   --accent-foreground: #172033;
   --destructive: #d92d45;
-  --border: #d5ddec;
-  --input: #d5ddec;
+  --border: #a8b0c0;
+  --input: #8790a0;
   --ring: #4568d4;
   --chart-1: #4568d4;
   --chart-2: #0f9d8a;
@@ -344,9 +344,9 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --sidebar-foreground: #172033;
   --sidebar-primary: #3157c8;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e8edf7;
+  --sidebar-accent: #dae0ea;
   --sidebar-accent-foreground: #172033;
-  --sidebar-border: #d5ddec;
+  --sidebar-border: #a2aaba;
   --sidebar-ring: #4568d4;
 }
 ```
@@ -362,16 +362,16 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --popover: #ffffff;
   --popover-foreground: #2e3440;
   --primary: #5e81ac;
-  --primary-foreground: #ffffff;
-  --secondary: #e5e9f0;
+  --primary-foreground: #000000;
+  --secondary: #e1e5ed;
   --secondary-foreground: #2e3440;
-  --muted: #eceff4;
-  --muted-foreground: #687385;
-  --accent: #e5edf5;
+  --muted: #e2e5eb;
+  --muted-foreground: #474f5e;
+  --accent: #dee6ef;
   --accent-foreground: #2e3440;
   --destructive: #bf616a;
-  --border: #d8dee9;
-  --input: #d8dee9;
+  --border: #a8aeba;
+  --input: #888e9a;
   --ring: #5e81ac;
   --chart-1: #5e81ac;
   --chart-2: #8fbcbb;
@@ -381,10 +381,10 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --sidebar: #eceff4;
   --sidebar-foreground: #2e3440;
   --sidebar-primary: #5e81ac;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e5e9f0;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: #dadee5;
   --sidebar-accent-foreground: #2e3440;
-  --sidebar-border: #d8dee9;
+  --sidebar-border: #a2a8b4;
   --sidebar-ring: #5e81ac;
 }
 ```
@@ -401,15 +401,15 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --popover-foreground: #282a36;
   --primary: #6c5ce7;
   --primary-foreground: #ffffff;
-  --secondary: #eeedf5;
+  --secondary: #e6e5ee;
   --secondary-foreground: #282a36;
-  --muted: #eeedf5;
-  --muted-foreground: #696779;
-  --accent: #e8e3ff;
+  --muted: #e6e5ee;
+  --muted-foreground: #4c4b5b;
+  --accent: #e7e3fe;
   --accent-foreground: #282a36;
   --destructive: #d83a52;
-  --border: #dedbea;
-  --input: #dedbea;
+  --border: #aeaebc;
+  --input: #8d8d9b;
   --ring: #8b7cf6;
   --chart-1: #6c5ce7;
   --chart-2: #168f78;
@@ -420,9 +420,9 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --sidebar-foreground: #282a36;
   --sidebar-primary: #6c5ce7;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #eeedf5;
+  --sidebar-accent: #dddce4;
   --sidebar-accent-foreground: #282a36;
-  --sidebar-border: #dedbea;
+  --sidebar-border: #a7a6b5;
   --sidebar-ring: #8b7cf6;
 }
 ```
@@ -439,15 +439,15 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --popover-foreground: #343b58;
   --primary: #5a55d6;
   --primary-foreground: #ffffff;
-  --secondary: #e9eaf7;
+  --secondary: #e4e5f3;
   --secondary-foreground: #343b58;
-  --muted: #ededf8;
-  --muted-foreground: #686f91;
-  --accent: #e3e5ff;
+  --muted: #e4e5f1;
+  --muted-foreground: #444b6a;
+  --accent: #e2e4ff;
   --accent-foreground: #343b58;
   --destructive: #d83a64;
-  --border: #d7d9ee;
-  --input: #d7d9ee;
+  --border: #abaec4;
+  --input: #898da5;
   --ring: #6b63df;
   --chart-1: #5a55d6;
   --chart-2: #168b8b;
@@ -458,9 +458,9 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --sidebar-foreground: #343b58;
   --sidebar-primary: #5a55d6;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e9eaf7;
+  --sidebar-accent: #dbdcea;
   --sidebar-accent-foreground: #343b58;
-  --sidebar-border: #d7d9ee;
+  --sidebar-border: #a3a6bd;
   --sidebar-ring: #6b63df;
 }
 ```
@@ -477,15 +477,15 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --popover-foreground: #4c4f69;
   --primary: #8839ef;
   --primary-foreground: #ffffff;
-  --secondary: #e6e9ef;
-  --secondary-foreground: #4c4f69;
-  --muted: #e6e9ef;
-  --muted-foreground: #6c6f85;
-  --accent: #e6e0ff;
+  --secondary: #dcdfe7;
+  --secondary-foreground: #484b64;
+  --muted: #dcdfe7;
+  --muted-foreground: #464860;
+  --accent: #e2dcfb;
   --accent-foreground: #4c4f69;
   --destructive: #d20f39;
-  --border: #ccd0da;
-  --input: #ccd0da;
+  --border: #a6aab7;
+  --input: #86899b;
   --ring: #8839ef;
   --chart-1: #8839ef;
   --chart-2: #179299;
@@ -493,12 +493,12 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --chart-4: #1e66f5;
   --chart-5: #ea76cb;
   --sidebar: #e6e9ef;
-  --sidebar-foreground: #4c4f69;
+  --sidebar-foreground: #484b64;
   --sidebar-primary: #8839ef;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e6e9ef;
+  --sidebar-accent: #d5d8e1;
   --sidebar-accent-foreground: #4c4f69;
-  --sidebar-border: #ccd0da;
+  --sidebar-border: #a0a3b2;
   --sidebar-ring: #8839ef;
 }
 ```
@@ -514,16 +514,16 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --popover: #ffffff;
   --popover-foreground: #383a42;
   --primary: #4078f2;
-  --primary-foreground: #ffffff;
-  --secondary: #f0f0f1;
+  --primary-foreground: #000000;
+  --secondary: #e8e8ea;
   --secondary-foreground: #383a42;
-  --muted: #f0f0f1;
-  --muted-foreground: #696c77;
-  --accent: #e7edff;
+  --muted: #e8e8ea;
+  --muted-foreground: #4d4f59;
+  --accent: #e3e8fa;
   --accent-foreground: #383a42;
   --destructive: #e45649;
-  --border: #dcdfe4;
-  --input: #dcdfe4;
+  --border: #afb1b8;
+  --input: #8e9097;
   --ring: #4078f2;
   --chart-1: #4078f2;
   --chart-2: #50a14f;
@@ -533,10 +533,10 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --sidebar: #f0f0f1;
   --sidebar-foreground: #383a42;
   --sidebar-primary: #4078f2;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f0f0f1;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: #dedfe0;
   --sidebar-accent-foreground: #383a42;
-  --sidebar-border: #dcdfe4;
+  --sidebar-border: #a7a9b0;
   --sidebar-ring: #4078f2;
 }
 ```
@@ -546,22 +546,22 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
 ```css
 :root {
   --background: #fdf6e3;
-  --foreground: #586e75;
+  --foreground: #44565f;
   --card: #fffbef;
-  --card-foreground: #586e75;
+  --card-foreground: #475962;
   --popover: #fffbef;
-  --popover-foreground: #586e75;
+  --popover-foreground: #475962;
   --primary: #268bd2;
-  --primary-foreground: #ffffff;
-  --secondary: #eee8d5;
-  --secondary-foreground: #586e75;
-  --muted: #eee8d5;
-  --muted-foreground: #657b83;
-  --accent: #e4f1f8;
+  --primary-foreground: #000000;
+  --secondary: #eae5d2;
+  --secondary-foreground: #3e4e58;
+  --muted: #eae5d2;
+  --muted-foreground: #3c4b53;
+  --accent: #d9e7ee;
   --accent-foreground: #586e75;
   --destructive: #dc322f;
-  --border: #d8d1bd;
-  --input: #d8d1bd;
+  --border: #afafa2;
+  --input: #8a8f8a;
   --ring: #268bd2;
   --chart-1: #268bd2;
   --chart-2: #859900;
@@ -569,12 +569,12 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --chart-4: #6c71c4;
   --chart-5: #d33682;
   --sidebar: #eee8d5;
-  --sidebar-foreground: #586e75;
+  --sidebar-foreground: #3e4e58;
   --sidebar-primary: #268bd2;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #eee8d5;
-  --sidebar-accent-foreground: #586e75;
-  --sidebar-border: #d8d1bd;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: #dbd7c8;
+  --sidebar-accent-foreground: #546a71;
+  --sidebar-border: #a3a49a;
   --sidebar-ring: #268bd2;
 }
 ```
@@ -591,15 +591,15 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --popover-foreground: #383830;
   --primary: #8a6d00;
   --primary-foreground: #ffffff;
-  --secondary: #f1eee4;
+  --secondary: #e9e6dd;
   --secondary-foreground: #383830;
-  --muted: #f1eee4;
-  --muted-foreground: #777467;
-  --accent: #f5edc9;
+  --muted: #e9e6dd;
+  --muted-foreground: #4e4d45;
+  --accent: #efe7c4;
   --accent-foreground: #383830;
   --destructive: #c92a2a;
-  --border: #dedacd;
-  --input: #dedacd;
+  --border: #b2b0a6;
+  --input: #918f86;
   --ring: #a67c00;
   --chart-1: #a67c00;
   --chart-2: #16804a;
@@ -610,9 +610,9 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --sidebar-foreground: #383830;
   --sidebar-primary: #8a6d00;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f1eee4;
+  --sidebar-accent: #e0ddd3;
   --sidebar-accent-foreground: #383830;
-  --sidebar-border: #dedacd;
+  --sidebar-border: #aaa89e;
   --sidebar-ring: #a67c00;
 }
 ```
@@ -622,22 +622,22 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
 ```css
 :root {
   --background: #faf4ed;
-  --foreground: #575279;
+  --foreground: #534f75;
   --card: #fffaf3;
   --card-foreground: #575279;
   --popover: #fffaf3;
   --popover-foreground: #575279;
   --primary: #907aa9;
-  --primary-foreground: #ffffff;
-  --secondary: #f2e9e1;
-  --secondary-foreground: #575279;
-  --muted: #f2e9e1;
-  --muted-foreground: #797593;
-  --accent: #f2e9e1;
+  --primary-foreground: #000000;
+  --secondary: #eae2dc;
+  --secondary-foreground: #4c496d;
+  --muted: #eae2dc;
+  --muted-foreground: #4b476a;
+  --accent: #eae2dc;
   --accent-foreground: #575279;
   --destructive: #b4637a;
-  --border: #dfdad9;
-  --input: #dfdad9;
+  --border: #afabb4;
+  --input: #8e8a9d;
   --ring: #907aa9;
   --chart-1: #907aa9;
   --chart-2: #56949f;
@@ -645,12 +645,12 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --chart-4: #d7827e;
   --chart-5: #286983;
   --sidebar: #f2e9e1;
-  --sidebar-foreground: #575279;
+  --sidebar-foreground: #4c496d;
   --sidebar-primary: #907aa9;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f2e9e1;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: #e0d8d5;
   --sidebar-accent-foreground: #575279;
-  --sidebar-border: #dfdad9;
+  --sidebar-border: #a7a3ae;
   --sidebar-ring: #907aa9;
 }
 ```
@@ -667,15 +667,15 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --popover-foreground: #111111;
   --primary: #d91f4c;
   --primary-foreground: #ffffff;
-  --secondary: #f4f4f5;
+  --secondary: #ededed;
   --secondary-foreground: #111111;
-  --muted: #f4f4f5;
-  --muted-foreground: #666666;
+  --muted: #ededed;
+  --muted-foreground: #515151;
   --accent: #ffe4eb;
   --accent-foreground: #111111;
   --destructive: #b91c1c;
-  --border: #dddddd;
-  --input: #dddddd;
+  --border: #b5b5b5;
+  --input: #939394;
   --ring: #d91f4c;
   --chart-1: #d91f4c;
   --chart-2: #047857;
@@ -686,9 +686,9 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --sidebar-foreground: #111111;
   --sidebar-primary: #d91f4c;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f4f4f5;
+  --sidebar-accent: #e2e2e3;
   --sidebar-accent-foreground: #111111;
-  --sidebar-border: #dddddd;
+  --sidebar-border: #acacad;
   --sidebar-ring: #d91f4c;
 }
 ```
@@ -705,15 +705,15 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --popover-foreground: #292524;
   --primary: #b45309;
   --primary-foreground: #ffffff;
-  --secondary: #eeeae5;
+  --secondary: #e7e3df;
   --secondary-foreground: #292524;
-  --muted: #eeeae5;
-  --muted-foreground: #78716c;
-  --accent: #f5e7d8;
+  --muted: #e7e3df;
+  --muted-foreground: #514b49;
+  --accent: #efe2d3;
   --accent-foreground: #292524;
   --destructive: #b91c1c;
-  --border: #ded8d1;
-  --input: #ded8d1;
+  --border: #b1ada8;
+  --input: #918c89;
   --ring: #c16b27;
   --chart-1: #c16b27;
   --chart-2: #0f766e;
@@ -724,9 +724,9 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --sidebar-foreground: #292524;
   --sidebar-primary: #b45309;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #eeeae5;
+  --sidebar-accent: #ddd9d5;
   --sidebar-accent-foreground: #292524;
-  --sidebar-border: #ded8d1;
+  --sidebar-border: #a9a4a0;
   --sidebar-ring: #c16b27;
 }
 ```
@@ -743,15 +743,15 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --popover-foreground: #1f3327;
   --primary: #247447;
   --primary-foreground: #ffffff;
-  --secondary: #e3eee5;
+  --secondary: #dde8df;
   --secondary-foreground: #1f3327;
-  --muted: #e3eee5;
-  --muted-foreground: #627467;
-  --accent: #dcefe0;
+  --muted: #dde8df;
+  --muted-foreground: #3d4f44;
+  --accent: #d7eadc;
   --accent-foreground: #1f3327;
   --destructive: #c53030;
-  --border: #cbdccf;
-  --input: #cbdccf;
+  --border: #a2b3a8;
+  --input: #819288;
   --ring: #2f855a;
   --chart-1: #2f855a;
   --chart-2: #2563eb;
@@ -762,9 +762,9 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --sidebar-foreground: #1f3327;
   --sidebar-primary: #247447;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e3eee5;
+  --sidebar-accent: #d2ddd4;
   --sidebar-accent-foreground: #1f3327;
-  --sidebar-border: #cbdccf;
+  --sidebar-border: #99a99f;
   --sidebar-ring: #2f855a;
 }
 ```
@@ -781,16 +781,16 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --popover-foreground: #3b3020;
   --primary: #a16207;
   --primary-foreground: #ffffff;
-  --secondary: #f5ebd5;
+  --secondary: #f2e8d2;
   --secondary-foreground: #3b3020;
-  --muted: #f5ebd5;
-  --muted-foreground: #78684f;
-  --accent: #ffedb5;
+  --muted: #f2e8d2;
+  --muted-foreground: #574a36;
+  --accent: #fae8b1;
   --accent-foreground: #3b3020;
   --destructive: #c53030;
-  --border: #e5d7b8;
-  --input: #e5d7b8;
-  --ring: #ca8a04;
+  --border: #bcb096;
+  --input: #9b8f78;
+  --ring: #c38505;
   --chart-1: #a16207;
   --chart-2: #0f766e;
   --chart-3: #2563eb;
@@ -800,9 +800,9 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --sidebar-foreground: #3b3020;
   --sidebar-primary: #a16207;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f5ebd5;
+  --sidebar-accent: #e4dac5;
   --sidebar-accent-foreground: #3b3020;
-  --sidebar-border: #e5d7b8;
+  --sidebar-border: #b1a58c;
   --sidebar-ring: #ca8a04;
 }
 ```
@@ -819,15 +819,15 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --popover-foreground: #201c3b;
   --primary: #7c3aed;
   --primary-foreground: #ffffff;
-  --secondary: #eeeafd;
+  --secondary: #e7e3f7;
   --secondary-foreground: #201c3b;
-  --muted: #eeeafd;
-  --muted-foreground: #6d668b;
-  --accent: #d9fbff;
+  --muted: #e7e3f7;
+  --muted-foreground: #4d486a;
+  --accent: #ccecf2;
   --accent-foreground: #201c3b;
   --destructive: #d61f69;
-  --border: #d9d4f0;
-  --input: #d9d4f0;
+  --border: #b0acc8;
+  --input: #8f8ba8;
   --ring: #0891b2;
   --chart-1: #7c3aed;
   --chart-2: #0891b2;
@@ -838,9 +838,9 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --sidebar-foreground: #201c3b;
   --sidebar-primary: #7c3aed;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #eeeafd;
+  --sidebar-accent: #ddd9ed;
   --sidebar-accent-foreground: #201c3b;
-  --sidebar-border: #d9d4f0;
+  --sidebar-border: #a7a3bf;
   --sidebar-ring: #0891b2;
 }
 ```
@@ -857,15 +857,15 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --popover-foreground: #173b3b;
   --primary: #0f766e;
   --primary-foreground: #ffffff;
-  --secondary: #dff1ef;
+  --secondary: #d8eae9;
   --secondary-foreground: #173b3b;
-  --muted: #dff1ef;
-  --muted-foreground: #5d7776;
-  --accent: #d1f5f0;
+  --muted: #d8eae9;
+  --muted-foreground: #335252;
+  --accent: #caeeea;
   --accent-foreground: #173b3b;
   --destructive: #c53030;
-  --border: #c9e1df;
-  --input: #c9e1df;
+  --border: #9cb4b4;
+  --input: #799494;
   --ring: #0d9488;
   --chart-1: #0f766e;
   --chart-2: #2563eb;
@@ -876,9 +876,9 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --sidebar-foreground: #173b3b;
   --sidebar-primary: #0f766e;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #dff1ef;
+  --sidebar-accent: #cde0df;
   --sidebar-accent-foreground: #173b3b;
-  --sidebar-border: #c9e1df;
+  --sidebar-border: #93acac;
   --sidebar-ring: #0d9488;
 }
 ```
@@ -895,15 +895,15 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --popover-foreground: #3b1f2b;
   --primary: #9f2348;
   --primary-foreground: #ffffff;
-  --secondary: #f3e5e9;
+  --secondary: #f2e3e7;
   --secondary-foreground: #3b1f2b;
-  --muted: #f3e5e9;
-  --muted-foreground: #806873;
+  --muted: #f2e3e7;
+  --muted-foreground: #5c424e;
   --accent: #f8dfe7;
   --accent-foreground: #3b1f2b;
   --destructive: #b42318;
-  --border: #e4d1d8;
-  --input: #e4d1d8;
+  --border: #bdabb3;
+  --input: #9e8993;
   --ring: #b42348;
   --chart-1: #b42348;
   --chart-2: #0f766e;
@@ -914,9 +914,9 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --sidebar-foreground: #3b1f2b;
   --sidebar-primary: #9f2348;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f3e5e9;
+  --sidebar-accent: #e3d4d9;
   --sidebar-accent-foreground: #3b1f2b;
-  --sidebar-border: #e4d1d8;
+  --sidebar-border: #b29ea7;
   --sidebar-ring: #b42348;
 }
 ```
@@ -933,15 +933,15 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --popover-foreground: #252b4a;
   --primary: #4f46e5;
   --primary-foreground: #ffffff;
-  --secondary: #e8eaff;
+  --secondary: #e2e4fa;
   --secondary-foreground: #252b4a;
-  --muted: #e8eaff;
-  --muted-foreground: #686f98;
-  --accent: #e0e7ff;
+  --muted: #e2e4fa;
+  --muted-foreground: #43496d;
+  --accent: #dfe5fe;
   --accent-foreground: #252b4a;
   --destructive: #dc2626;
-  --border: #d4d8f3;
-  --input: #d4d8f3;
+  --border: #a9aec9;
+  --input: #888da9;
   --ring: #6366f1;
   --chart-1: #4f46e5;
   --chart-2: #0d9488;
@@ -952,9 +952,9 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --sidebar-foreground: #252b4a;
   --sidebar-primary: #4f46e5;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e8eaff;
+  --sidebar-accent: #d7d9ef;
   --sidebar-accent-foreground: #252b4a;
-  --sidebar-border: #d4d8f3;
+  --sidebar-border: #9fa4c0;
   --sidebar-ring: #6366f1;
 }
 ```
@@ -971,15 +971,15 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --popover-foreground: #382a23;
   --primary: #9a4f2f;
   --primary-foreground: #ffffff;
-  --secondary: #eee4dc;
+  --secondary: #eee3dc;
   --secondary-foreground: #382a23;
-  --muted: #eee4dc;
-  --muted-foreground: #806d62;
+  --muted: #eee3dc;
+  --muted-foreground: #56463f;
   --accent: #f3e1d4;
   --accent-foreground: #382a23;
   --destructive: #b91c1c;
-  --border: #e1d2c7;
-  --input: #e1d2c7;
+  --border: #baaca4;
+  --input: #998b83;
   --ring: #b7653b;
   --chart-1: #9a4f2f;
   --chart-2: #0f766e;
@@ -990,9 +990,9 @@ Use one light block and one dark block at a time. All values are HEX colors. Ver
   --sidebar-foreground: #382a23;
   --sidebar-primary: #9a4f2f;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #eee4dc;
+  --sidebar-accent: #ded3cc;
   --sidebar-accent-foreground: #382a23;
-  --sidebar-border: #e1d2c7;
+  --sidebar-border: #ac9f97;
   --sidebar-ring: #b7653b;
 }
 ```

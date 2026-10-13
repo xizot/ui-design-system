@@ -360,7 +360,7 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
             />
           </div>
 
-          <ComboboxList className="px-2">
+          <ComboboxList className="px-2 [scrollbar-gutter:stable]">
             <ComboboxEmpty>{emptyMessage}</ComboboxEmpty>
             {filteredOptions.map((option) => (
               <ComboboxPrimitive.Item
