@@ -13,6 +13,7 @@
     "components",
     "constants",
     ".agents/skills",
+    ".agents/AGENTS.md",
     ".agents/rules",
     "hooks",
     "lib",

@@ -256,3 +256,9 @@ The installed page-builder skill chooses a page pattern and an inherited or sele
 Existing app branding takes precedence over defaults. The page-builder skill covers layout, color, typography, component choices, responsive behavior and removing unnecessary UX. Rendered design and interactions still need verification in the actual application.
 
 The installer does not delete or move existing project files or folders. Overwrite applies to matching installed source files, not directory cleanup; unrelated files are retained. Package symlinks are skipped.
+
+### Optional lint and formatting setup
+
+The CLI asks `Extend lint and Prettier configuration? (y/N)`. Enter/No and `--yes` skip this step. Yes adds missing Prettier defaults and `prettier-plugin-tailwindcss`, preserving existing options, plugins and overrides. Existing JS configs are wrapped; JSON configs and `package.json` settings are merged. ESLint framework rules remain intact; the installed source folder is added to flat-config ignores or legacy `.eslintignore`, and to `.prettierignore`. Missing Prettier dependencies are included in the normal dependency installation step.
+
+Root `AGENTS.md` points AI agents to `.agents/AGENTS.md`. Both entry points use managed sections so user instructions outside those sections survive reinstalls.

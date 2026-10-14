@@ -1,6 +1,6 @@
 # Design system source mode
 
-Read `.agents/skills/xizot-design-system/SKILL.md` before React UI work. It routes page, form, shared API and verification tasks. Read `.agents/rules/react.md` for implementation constraints.
+Start at [.agents/AGENTS.md](.agents/AGENTS.md), the shared entry point for AI agents. It routes to the workflow and implementation rules.
 
 Shared source lives in `design-system/` (CRA: `src/design-system/`). Inspect the installed source and actual aliases before using props/imports. Run `python .agents/skills/xizot-design-system/scripts/ui-source.py --root . discover "button"` for unfamiliar controls, or use rg/manual inspection if Python is unavailable.
 

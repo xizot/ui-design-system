@@ -7,6 +7,7 @@ const readline = require('node:readline');
 const ts = require('typescript');
 const { planProject, setJson } = require('./project.cjs');
 const { installStyles, selectColorSchema } = require('./styles.cjs');
+const { planConsumerChecks } = require('./checks.cjs');
 
 const packageRoot = path.resolve(__dirname, '..');
 const projectRoot = process.cwd();
@@ -346,6 +347,10 @@ function installDependencies(dependencies, dev = false) {
 function copyRootFiles() {
   printSection('Step 3: Agent Rules');
   upsertAgentUsageRules();
+  upsertAgentUsageRules(
+    fs.readFileSync(path.join(packageRoot, '.agents/AGENTS.md'), 'utf8').trim(),
+    '.agents/AGENTS.md',
+  );
   installAgentRules();
   installCodexSkill();
 }
@@ -381,7 +386,7 @@ function buildAgentUsageRulesSection() {
   return `${agentUsageRulesStartMarker}\n\n${usageRules}\n\n${agentUsageRulesEndMarker}`;
 }
 
-function upsertAgentUsageRules(content) {
+function upsertAgentUsageRules(content, targetName = agentUsageRulesTarget) {
   const rulesSection = content
     ? `${agentUsageRulesStartMarker}\n\n${content}\n\n${agentUsageRulesEndMarker}`
     : buildAgentUsageRulesSection();
@@ -390,7 +395,7 @@ function upsertAgentUsageRules(content) {
     return;
   }
 
-  const targetPath = path.join(projectRoot, agentUsageRulesTarget);
+  const targetPath = path.join(projectRoot, targetName);
   ensureDirectoryExists(path.dirname(targetPath));
 
   const currentContent = fs.existsSync(targetPath) ? fs.readFileSync(targetPath, 'utf8') : '';
@@ -403,23 +408,23 @@ function upsertAgentUsageRules(content) {
     const nextContent = [before, rulesSection, after].filter(Boolean).join('\n\n');
 
     fs.writeFileSync(targetPath, `${nextContent}\n`);
-    conflictState.overwritten.push(agentUsageRulesTarget);
-    console.log(color.green(`Updated: ${agentUsageRulesTarget} design system rules`));
+    conflictState.overwritten.push(targetName);
+    console.log(color.green(`Updated: ${targetName} design system rules`));
     return;
   }
 
   if (startIndex !== -1 || endIndex !== -1) {
     console.log(
       color.yellow(
-        `Malformed design system rules markers found in ${agentUsageRulesTarget}; appending a fresh section.`,
+        `Malformed design system rules markers found in ${targetName}; appending a fresh section.`,
       ),
     );
   }
 
   const nextContent = [currentContent.trimEnd(), rulesSection].filter(Boolean).join('\n\n');
   fs.writeFileSync(targetPath, `${nextContent}\n`);
-  conflictState.copied.push(`${agentUsageRulesTarget} design system rules`);
-  console.log(color.green(`Added: ${agentUsageRulesTarget} design system rules`));
+  conflictState.copied.push(`${targetName} design system rules`);
+  console.log(color.green(`Added: ${targetName} design system rules`));
 }
 
 function copyDirectoryOverwrite(sourceDir, targetDir) {
@@ -515,6 +520,16 @@ async function main() {
   printSection(
     `Project: ${projectPlan.framework} (${projectPlan.typed ? 'TypeScript' : 'JavaScript'})`,
   );
+  printSection('Lint and Prettier');
+  const extendChecks = options.yes
+    ? ''
+    : await askQuestion('Extend lint and Prettier configuration? (y/N): ');
+  const checks = ['y', 'yes'].includes(extendChecks.trim().toLowerCase())
+    ? planConsumerChecks(projectRoot, installRootName)
+    : null;
+  if (checks?.dependencies.conflicts.length)
+    throw new Error(checks.dependencies.conflicts.join('\n'));
+  if (checks) projectPlan.dependencies.push(checks.dependencies);
   const missing = projectPlan.dependencies.flatMap((plan) => plan.add);
   if (missing.length) {
     console.log('Required packages:');
@@ -583,37 +598,20 @@ async function main() {
     }
     fs.writeFileSync(target, content);
   }
-  configureConsumerChecks();
+  if (checks) {
+    for (const [name, value] of checks.changes) {
+      const target = path.join(projectRoot, name);
+      ensureDirectoryExists(path.dirname(target));
+      const content =
+        name === 'package.json'
+          ? setJson(fs.readFileSync(target, 'utf8'), ['prettier'], JSON.parse(value).prettier)
+          : value;
+      fs.writeFileSync(target, content);
+    }
+  }
   installStyles(packageRoot, projectRoot, projectPlan, selectedTheme);
   printSummary();
   console.log(`Import components from '${projectPlan.importPrefix}/components/ui/button'.`);
-}
-
-function configureConsumerChecks() {
-  const ignoredDirectory = `${installRootName.replaceAll('\\', '/')}/`;
-  const prettierIgnorePath = path.join(projectRoot, '.prettierignore');
-  const currentIgnore = fs.existsSync(prettierIgnorePath)
-    ? fs.readFileSync(prettierIgnorePath, 'utf8')
-    : '';
-  if (!currentIgnore.split(/\r?\n/).includes(ignoredDirectory)) {
-    fs.writeFileSync(
-      prettierIgnorePath,
-      `${currentIgnore}${currentIgnore && !currentIgnore.endsWith('\n') ? '\n' : ''}${ignoredDirectory}\n`,
-    );
-  }
-
-  const packagePath = path.join(projectRoot, 'package.json');
-  const packageText = fs.readFileSync(packagePath, 'utf8');
-  const lint = JSON.parse(packageText).scripts?.lint;
-  if (
-    typeof lint === 'string' &&
-    /^\s*eslint(?:\s|$)/.test(lint) &&
-    !/[;&|]/.test(lint) &&
-    !lint.includes(`--ignore-pattern "${ignoredDirectory}**"`)
-  ) {
-    const nextLint = `${lint} --ignore-pattern "${ignoredDirectory}**"`;
-    fs.writeFileSync(packagePath, setJson(packageText, ['scripts', 'lint'], nextLint));
-  }
 }
 
 module.exports = { runtimeDependencies, main };
