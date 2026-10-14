@@ -66,18 +66,26 @@ export default function RootLayout({
         <Script id="style-preset-bootstrap" strategy="beforeInteractive">{`
           (() => {
             try {
-              const presetKey = 'design-system-style-preset';
-              const styleId = 'design-system-style-preset';
+              const presetKey = 'xizot-color-schema';
+              const legacyPresetKey = 'design-system-style-preset';
+              const styleId = 'xizot-color-schema';
               const presetDataElement = document.getElementById('style-preset-data');
-              const preset = window.localStorage.getItem(presetKey);
               const presetMap = presetDataElement ? JSON.parse(presetDataElement.textContent ?? '{}') : {};
+              const storedPreset = window.localStorage.getItem(presetKey);
+              const legacyPreset = window.localStorage.getItem(legacyPresetKey);
+              const preset = storedPreset || legacyPreset;
               const cssText = preset ? presetMap[preset] : '';
+
+              if (!storedPreset && legacyPreset && cssText) {
+                window.localStorage.setItem(presetKey, legacyPreset);
+              }
+              window.localStorage.removeItem(legacyPresetKey);
 
               if (!preset || !cssText) {
                 return;
               }
 
-              document.documentElement.dataset.stylePreset = preset;
+              document.documentElement.dataset.colorSchema = preset;
 
               let styleElement = document.getElementById(styleId);
 

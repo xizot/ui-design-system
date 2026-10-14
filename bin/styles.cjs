@@ -3,7 +3,7 @@ const path = require('node:path');
 const ts = require('typescript');
 const postcss = require('postcss');
 const { slash } = require('./project.cjs');
-const colorSchemas = require('../internal-components/color-schemas.json');
+const colorSchemas = require('../constants/color-schemas.json');
 
 const marker = '/* xizot-managed styles */\n';
 

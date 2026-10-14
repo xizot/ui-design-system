@@ -106,6 +106,41 @@ On first install, the CLI lists color schemas by number. Enter a number to selec
 
 Edit `design-system/theme.css` (`src/design-system/theme.css` for CRA). Fresh installs include all default color tokens in `:root` and `.dark`; replace those values with your palette. Tailwind mappings and base styles stay in `design-system/styles.css`. Missing tokens fall back to the managed defaults on fresh installs.
 
+For runtime switching among the 25 bundled light/dark pairs, use `useColorSchema` from `design-system/hooks/use-color-schema` (under `src/design-system/` for CRA). It returns `schemas`, `schemaId`, the selected `schema` (`null` for the application's default theme), and `setColorSchema`. The hook applies the selected pair to the document's semantic color tokens, saves the choice in `localStorage`, and synchronizes changes across tabs. Mount it in a client component that remains rendered while the palette is active. The application's `.dark` class still controls light/dark mode.
+
+For a ready-made palette trigger with a searchable popover, render `ColorSchemaSelect` beside `ThemeToggle`:
+
+```tsx
+import { ColorSchemaSelect } from '@/design-system/components/ui/color-schema-select';
+import { ThemeToggle } from '@/design-system/components/ui/theme-toggle';
+
+<div className="flex items-center gap-2">
+  <ColorSchemaSelect />
+  <ThemeToggle />
+</div>;
+```
+
+```tsx
+import { useColorSchema } from '@/design-system/hooks/use-color-schema';
+
+function ColorSchemaSelect() {
+  const { schemaId, schemas, setColorSchema } = useColorSchema();
+
+  return (
+    <select value={schemaId} onChange={(event) => setColorSchema(event.target.value)}>
+      <option value="default">Application default</option>
+      {schemas.map((schema) => (
+        <option key={schema.id} value={schema.id}>
+          {schema.lightName} / {schema.name}
+        </option>
+      ))}
+    </select>
+  );
+}
+```
+
+In Next.js, add `'use client';` to the component file. The hook applies a saved palette when its first client subscriber mounts; applications that need the palette before hydration can initialize it in their own document bootstrap.
+
 To switch palettes, add selectors in the same theme file:
 
 ```css
@@ -120,7 +155,7 @@ To switch palettes, add selectors in the same theme file:
 }
 ```
 
-Set `document.documentElement.dataset.colorScheme = 'blue'` to activate it; remove the attribute to restore the default palette. The `.dark` class continues to control light/dark mode. Palette selection and persistence belong to your application.
+Set `document.documentElement.dataset.colorScheme = 'blue'` to activate this custom palette; remove the attribute to restore the default palette. The `.dark` class continues to control light/dark mode. Your application owns persistence for custom palettes.
 
 For automation, `init --yes` installs missing packages and skips existing component files. Add `--overwrite` explicitly to refresh component source. Repeating setup does not duplicate config wrappers or CSS imports. `--mode source` is accepted for compatibility; package mode is not implemented by this CLI.
 

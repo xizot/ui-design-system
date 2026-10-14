@@ -9,7 +9,6 @@
     "bin",
     "app/globals.css",
     "app/theme.css",
-    "internal-components/color-schemas.json",
     "components",
     "constants",
     ".agents/skills",

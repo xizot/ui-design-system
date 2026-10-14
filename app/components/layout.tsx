@@ -5,13 +5,13 @@ import Link from 'next/link';
 import { useState, type ReactNode } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { ColorSchemaSelect } from '@/components/ui/color-schema-select';
 import {
   SheetPanel,
   SheetPanelContent,
   SheetPanelTrigger,
 } from '@/components/ui/sheet-panel';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
-import { StylePresetCombobox } from '@/internal-components/style-preset-combobox';
 import { GuideNavigation } from './_components/guide-navigation';
 import './guides.css';
 
@@ -76,9 +76,7 @@ export default function ComponentsLayout({ children }: ComponentsLayoutProps) {
             </Link>
           </div>
           <div className="flex shrink-0 items-center gap-3">
-            <div className="hidden md:block">
-              <StylePresetCombobox />
-            </div>
+            <ColorSchemaSelect />
             <ThemeToggle />
           </div>
         </div>

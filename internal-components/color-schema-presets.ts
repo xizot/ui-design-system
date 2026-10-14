@@ -1,4 +1,4 @@
-import COLOR_SCHEMAS from './color-schemas.json';
+import COLOR_SCHEMAS from '../constants/color-schemas.json';
 
 type ColorSchemaId = (typeof COLOR_SCHEMAS)[number]['id'];
 

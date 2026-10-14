@@ -1,7 +1,7 @@
 'use client';
 
 import { Check, Copy } from 'lucide-react';
-import { useCallback, useMemo, useState, useSyncExternalStore } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,21 +12,7 @@ import {
   TypographySmall,
 } from '@/components/ui/typography';
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard';
-import { COLOR_SCHEMAS, type ColorSchemaId } from '@/internal-components/color-schema-presets';
-
-const STORAGE_KEY = 'design-system-style-preset';
-const COLOR_CHANGE_EVENT = 'color-schema-change';
-
-function getSelectedSchema(): ColorSchemaId {
-  if (typeof window === 'undefined') {
-    return 'palette-01';
-  }
-
-  const savedSchema = window.localStorage.getItem(STORAGE_KEY);
-  return savedSchema && COLOR_SCHEMAS.some((schema) => schema.id === savedSchema)
-    ? (savedSchema as ColorSchemaId)
-    : 'palette-01';
-}
+import { useColorSchema, type ColorSchema, type ColorSchemaId } from '@/hooks/use-color-schema';
 
 function formatVariables(variables: Record<string, string>) {
   return Object.entries(variables)
@@ -34,11 +20,11 @@ function formatVariables(variables: Record<string, string>) {
     .join('\n');
 }
 
-function getSchemaConfig(schema: (typeof COLOR_SCHEMAS)[number]) {
+function getSchemaConfig(schema: ColorSchema) {
   return `:root {\n${formatVariables(schema.light)}\n}\n\n.dark {\n${formatVariables(schema.dark)}\n}`;
 }
 
-function getSchemaName(schema: (typeof COLOR_SCHEMAS)[number]) {
+function getSchemaName(schema: ColorSchema) {
   return schema.name.replace(/^\d+\.\s*/, '');
 }
 
@@ -55,26 +41,14 @@ const colorRoles = [
 ] as const;
 
 export default function ColorGuideClient() {
-  const selectedId = useSyncExternalStore(
-    (onStoreChange) => {
-      window.addEventListener(COLOR_CHANGE_EVENT, onStoreChange);
-      return () => window.removeEventListener(COLOR_CHANGE_EVENT, onStoreChange);
-    },
-    getSelectedSchema,
-    () => 'palette-01',
-  );
+  const { schemaId, schema: selectedSchema, schemas, setColorSchema } = useColorSchema();
   const { copyToClipboard } = useCopyToClipboard();
   const [copiedId, setCopiedId] = useState<ColorSchemaId | null>(null);
-  const schema = COLOR_SCHEMAS.find((entry) => entry.id === selectedId) ?? COLOR_SCHEMAS[0];
+  const schema = selectedSchema ?? schemas[0];
   const schemaConfig = useMemo(() => getSchemaConfig(schema), [schema]);
 
-  const selectSchema = useCallback((id: ColorSchemaId) => {
-    window.localStorage.setItem(STORAGE_KEY, id);
-    window.dispatchEvent(new Event(COLOR_CHANGE_EVENT));
-  }, []);
-
   const copySchema = useCallback(
-    async (entry: (typeof COLOR_SCHEMAS)[number]) => {
+    async (entry: ColorSchema) => {
       const success = await copyToClipboard(getSchemaConfig(entry));
       if (!success) {
         return;
@@ -111,19 +85,19 @@ export default function ColorGuideClient() {
             </CardHeader>
             <CardContent>
               <div className="grid gap-2 sm:grid-cols-2">
-                {COLOR_SCHEMAS.map((entry) => {
-                  const selected = entry.id === schema.id;
+                {schemas.map((entry) => {
+                  const selected = entry.id === schemaId;
                   return (
                     <div
                       key={entry.id}
                       role="button"
                       tabIndex={0}
                       aria-pressed={selected}
-                      onClick={() => selectSchema(entry.id)}
+                      onClick={() => setColorSchema(entry.id)}
                       onKeyDown={(event) => {
                         if (event.key === 'Enter' || event.key === ' ') {
                           event.preventDefault();
-                          selectSchema(entry.id);
+                          setColorSchema(entry.id);
                         }
                       }}
                       className={`border-border/70 hover:bg-accent/50 flex items-center gap-2 rounded-xl border px-3 py-2.5 transition ${
@@ -182,7 +156,9 @@ export default function ColorGuideClient() {
           <Card id="configuration" className="border-border/70 rounded-[24px]">
             <CardHeader className="flex-row items-start justify-between gap-4">
               <div>
-                <CardTitle>{getSchemaName(schema)}</CardTitle>
+                <CardTitle>
+                  {selectedSchema ? getSchemaName(schema) : `Preview: ${getSchemaName(schema)}`}
+                </CardTitle>
                 <CardDescription className="mt-1">
                   Light: {schema.lightName} · Dark: {schema.name}
                 </CardDescription>
@@ -229,22 +205,28 @@ export default function ColorGuideClient() {
           <TypographySmall className="text-muted-foreground tracking-[0.24em] uppercase">
             Selected schema
           </TypographySmall>
-          <p className="mt-3 text-lg font-semibold">{getSchemaName(schema)}</p>
-          <TypographyMuted className="mt-1 text-sm">{schema.lightName}</TypographyMuted>
-          <div className="mt-4 flex gap-2" aria-hidden="true">
-            <span
-              className="size-8 rounded-lg"
-              style={{ backgroundColor: schema.light['--primary'] }}
-            />
-            <span
-              className="size-8 rounded-lg"
-              style={{ backgroundColor: schema.light['--chart-2'] }}
-            />
-            <span
-              className="size-8 rounded-lg"
-              style={{ backgroundColor: schema.light['--chart-3'] }}
-            />
-          </div>
+          <p className="mt-3 text-lg font-semibold">
+            {selectedSchema ? getSchemaName(schema) : 'Mặc định'}
+          </p>
+          <TypographyMuted className="mt-1 text-sm">
+            {selectedSchema ? schema.lightName : 'Theme của ứng dụng đang được áp dụng.'}
+          </TypographyMuted>
+          {selectedSchema ? (
+            <div className="mt-4 flex gap-2" aria-hidden="true">
+              <span
+                className="size-8 rounded-lg"
+                style={{ backgroundColor: schema.light['--primary'] }}
+              />
+              <span
+                className="size-8 rounded-lg"
+                style={{ backgroundColor: schema.light['--chart-2'] }}
+              />
+              <span
+                className="size-8 rounded-lg"
+                style={{ backgroundColor: schema.light['--chart-3'] }}
+              />
+            </div>
+          ) : null}
         </div>
       </aside>
     </div>
