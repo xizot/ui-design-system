@@ -120,13 +120,21 @@ function dependencyPlan(root, pkg, required, dev = false) {
     let installed;
     const manifest = path.join(root, 'node_modules', name, 'package.json');
     if (fs.existsSync(manifest)) installed = JSON.parse(fs.readFileSync(manifest, 'utf8')).version;
-    if (
-      !semver.validRange(declared) ||
-      !semver.subset(declared, range) ||
-      (installed && !semver.satisfies(installed, range))
-    ) {
+    // A broad declaration (e.g. ^5) is valid when the resolved package satisfies
+    // both the project's declaration and our supported range. Without an installed
+    // version, only accept declarations whose entire range is supported.
+    const compatible =
+      semver.validRange(declared) &&
+      (installed
+        ? semver.satisfies(installed, declared) && semver.satisfies(installed, range)
+        : semver.subset(declared, range));
+    if (!compatible) {
       conflicts.push(
-        `${name}: ${declared}${installed ? ` (installed ${installed})` : ''}; requires ${range}`,
+        `${name}: ${declared}${installed ? ` (installed ${installed})` : ''}; requires ${range}${
+          !installed && semver.validRange(declared) && semver.intersects(declared, range)
+            ? '. Install project dependencies first to verify the resolved version, or narrow the declared range'
+            : ''
+        }`,
       );
     }
   }
@@ -135,7 +143,9 @@ function dependencyPlan(root, pkg, required, dev = false) {
 
 function planProject(root, runtimeDependencies) {
   if (!semver.satisfies(process.versions.node, libraryPackage.engines.node)) {
-    throw new Error(`Node ${libraryPackage.engines.node} is required; found ${process.versions.node}.`);
+    throw new Error(
+      `Node ${libraryPackage.engines.node} is required; found ${process.versions.node}.`,
+    );
   }
   if (!exists(root, 'package.json'))
     throw new Error('Run init from an existing React project containing package.json.');
@@ -173,7 +183,9 @@ function planProject(root, runtimeDependencies) {
   const typed = configName.startsWith('tsconfig');
   const otherExtension = typed ? 'jsx' : 'tsx';
   if (exists(root, `${sourceRoot}/components/ui/button.${otherExtension}`)) {
-    throw new Error('The existing design-system uses a different source language. Migrate or move it explicitly before reinstalling.');
+    throw new Error(
+      'The existing design-system uses a different source language. Migrate or move it explicitly before reinstalling.',
+    );
   }
   const changes = new Map();
   const queue = (name, value) => {
