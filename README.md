@@ -98,11 +98,11 @@ The installer uses a guided flow:
 4. 🎨 Project files
    It merges framework configuration and imports `design-system/styles.css` followed by the application-owned `design-system/theme.css` from application CSS (or the app entry). CRA uses these paths under `src/`. The installer refreshes managed base styles and fallback colors, but preserves customized `design-system/theme.css`, even with `--overwrite`. On legacy installs, color declarations are moved from `design-system/styles.css` into `design-system/theme.css`, preserving selectors and existing theme overrides. Size, typography and other styles remain in the base file.
 
-Existing installs with the former `styles/theme.css` location are migrated into `design-system/theme.css` when the destination does not exist; the application import is updated automatically. CRA uses paths under `src/`.
+Existing installs with the former `styles/theme.css` location are copied into `design-system/theme.css` when the destination does not exist; the application import is updated automatically and the original file is retained. CRA uses paths under `src/`.
 
 ### Customize colors
 
-On first install, the CLI lists color schemas by number. Enter a number to select a light/dark pair, or press Enter for the default (preserving legacy colors). Invalid numbers are prompted again. `--yes` uses the default without prompting. If `theme.css` already exists, the selector is skipped and your file is preserved, including with `--overwrite`.
+On first install, the CLI lists color schemas by number. Enter a number to select a light/dark pair, or press Enter for the default (preserving legacy colors). Invalid numbers are prompted again. `--yes` uses the default without prompting. If `theme.css` already exists, the CLI asks `Rewrite existing color schema? (y/N)`. Enter or No preserves it; Yes opens the numbered schema list and replaces only the color theme. `--yes`, including `--yes --overwrite`, preserves the existing theme without prompting.
 
 Edit `design-system/theme.css` (`src/design-system/theme.css` for CRA). Fresh installs include all default color tokens in `:root` and `.dark`; replace those values with your palette. Tailwind mappings and base styles stay in `design-system/styles.css`. Missing tokens fall back to the managed defaults on fresh installs.
 
@@ -254,3 +254,5 @@ Update both:
 The installed page-builder skill chooses a page pattern and an inherited or selected visual direction before composing UI. Multi-module workspaces default to sidebar navigation; public landing pages use top navigation; lists, overviews, forms and reading pages have different structures.
 
 Existing app branding takes precedence over defaults. The page-builder skill covers layout, color, typography, component choices, responsive behavior and removing unnecessary UX. Rendered design and interactions still need verification in the actual application.
+
+The installer does not delete or move existing project files or folders. Overwrite applies to matching installed source files, not directory cleanup; unrelated files are retained. Package symlinks are skipped.

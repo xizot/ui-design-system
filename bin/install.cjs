@@ -244,24 +244,9 @@ async function copyDirectory(sourceDir, targetDir) {
     }
 
     if (entry.isSymbolicLink()) {
-      if (fs.existsSync(targetPath)) {
-        const action = await askConflictAction(targetPath);
-        if (action === 'skip') {
-          conflictState.skipped.push(relativePath(targetRoot, targetPath));
-          continue;
-        }
-      }
-
-      const linkTarget = fs.readlinkSync(sourcePath);
-      try {
-        fs.unlinkSync(targetPath);
-      } catch (error) {
-        if (error.code !== 'ENOENT') {
-          throw error;
-        }
-      }
-      fs.symlinkSync(linkTarget, targetPath);
-      conflictState.overwritten.push(relativePath(targetRoot, targetPath));
+      // Never delete an existing user path to replace it with a package symlink.
+      console.warn(`Skipping symbolic link: ${sourcePath}`);
+      conflictState.skipped.push(relativePath(targetRoot, targetPath));
       continue;
     }
 

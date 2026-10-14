@@ -42,13 +42,17 @@ async function selectColorSchema(projectRoot, plan, options, askQuestion, log = 
     fs.existsSync(path.join(projectRoot, themeName)) ||
     fs.existsSync(path.join(projectRoot, oldThemeName))
   ) {
-    log(`Keeping existing color theme: ${themeName}`);
-    return;
+    log('\nColor schema');
+    const answer = options.yes ? '' : await askQuestion('Rewrite existing color schema? (y/N): ');
+    if (!['y', 'yes'].includes(answer.trim().toLowerCase())) {
+      log(`Keeping existing color theme: ${themeName}`);
+      return;
+    }
   }
   if (options.yes) return;
 
   log('\nColor schema');
-  log('  1. Default / keep existing colors');
+  log('  1. Default');
   colorSchemas.forEach((schema, index) => {
     log(`  ${index + 2}. ${schema.lightName} / ${schema.name}`);
   });
@@ -56,7 +60,8 @@ async function selectColorSchema(projectRoot, plan, options, askQuestion, log = 
     const answer = (
       await askQuestion(`Choose a number [1-${colorSchemas.length + 1}] (Enter = 1): `)
     ).trim();
-    if (answer === '' || answer === '1') return;
+    if (answer === '' || answer === '1')
+      return fs.readFileSync(path.join(__dirname, '../app/theme.css'), 'utf8');
     const choice = Number(answer);
     if (/^\d+$/.test(answer) && choice >= 2 && choice <= colorSchemas.length + 1) {
       const schema = colorSchemas[choice - 2];
@@ -83,29 +88,24 @@ function installStyles(packageRoot, projectRoot, plan, selectedTheme) {
     projectRoot,
     plan.framework === 'cra' ? 'src/styles/theme.css' : 'styles/theme.css',
   );
-  const moveTheme = !fs.existsSync(themeTarget) && fs.existsSync(oldThemeTarget);
+  const copyOldTheme = !fs.existsSync(themeTarget) && fs.existsSync(oldThemeTarget);
   const previous = fs.existsSync(stylesTarget) ? fs.readFileSync(stylesTarget, 'utf8') : null;
   const legacy = previous !== null && !previous.startsWith(marker);
   const defaults = fs.readFileSync(path.join(packageRoot, 'app/theme.css'), 'utf8');
-  const migrated = legacy ? splitLegacyColors(previous, defaults) : null;
-  const themeExists = fs.existsSync(themeTarget) || moveTheme;
-  const currentTheme = themeExists
-    ? fs.readFileSync(moveTheme ? oldThemeTarget : themeTarget, 'utf8')
-    : '';
-  const emptyTheme =
-    themeExists && postcss.parse(currentTheme).nodes.every((node) => node.type === 'comment');
+  const themeExists = fs.existsSync(themeTarget) || copyOldTheme;
+  const migrated =
+    legacy && (!themeExists || selectedTheme !== undefined)
+      ? splitLegacyColors(previous, defaults)
+      : null;
 
   fs.mkdirSync(path.dirname(themeTarget), { recursive: true });
-  if (moveTheme) fs.renameSync(oldThemeTarget, themeTarget);
-  if (!themeExists || emptyTheme) {
+  if (copyOldTheme) fs.copyFileSync(oldThemeTarget, themeTarget, fs.constants.COPYFILE_EXCL);
+  if (!themeExists || selectedTheme !== undefined) {
     fs.writeFileSync(
       themeTarget,
-      '/* Application-owned color tokens. The Xizot installer never overwrites this file. */\n' +
+      '/* User color tokens. Replaced only when you choose to rewrite the color schema. */\n' +
         (selectedTheme ?? (migrated?.theme || defaults)),
     );
-  } else if (migrated?.theme) {
-    // Existing overrides stay last; preserve legacy colors for tokens they omit.
-    fs.writeFileSync(themeTarget, `${migrated.theme}\n\n${currentTheme}`);
   }
 
   fs.mkdirSync(path.dirname(stylesTarget), { recursive: true });
@@ -125,7 +125,7 @@ function installStyles(packageRoot, projectRoot, plan, selectedTheme) {
   const entry = plan.cssTarget || plan.entry;
   const entryPath = path.join(projectRoot, entry);
   let content = fs.readFileSync(entryPath, 'utf8');
-  if (moveTheme) {
+  if (copyOldTheme) {
     const oldImport = relativeImport(entryPath, oldThemeTarget).replace(
       /[.*+?^${}()|[\]\\]/g,
       '\\$&',
