@@ -93,7 +93,7 @@ function ComboboxInput({
           <InputGroupInput
             disabled={disabled}
             size={formSize}
-            className="outline-none focus-visible:outline-none"
+            className="text-base outline-none focus-visible:outline-none"
           />
         }
         {...props}
