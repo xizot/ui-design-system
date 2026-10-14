@@ -6,7 +6,7 @@ const path = require('node:path');
 const readline = require('node:readline');
 const ts = require('typescript');
 const { planProject, setJson } = require('./project.cjs');
-const { installStyles } = require('./styles.cjs');
+const { installStyles, selectColorSchema } = require('./styles.cjs');
 
 const packageRoot = path.resolve(__dirname, '..');
 const projectRoot = process.cwd();
@@ -526,6 +526,7 @@ async function main() {
   projectPlan = planProject(projectRoot, runtimeDependencies);
   installRootName = projectPlan.sourceRoot;
   targetRoot = path.join(projectRoot, installRootName);
+  const selectedTheme = await selectColorSchema(projectRoot, projectPlan, options, askQuestion);
   printSection(
     `Project: ${projectPlan.framework} (${projectPlan.typed ? 'TypeScript' : 'JavaScript'})`,
   );
@@ -598,7 +599,7 @@ async function main() {
     fs.writeFileSync(target, content);
   }
   configureConsumerChecks();
-  installStyles(packageRoot, projectRoot, projectPlan);
+  installStyles(packageRoot, projectRoot, projectPlan, selectedTheme);
   printSummary();
   console.log(`Import components from '${projectPlan.importPrefix}/components/ui/button'.`);
 }

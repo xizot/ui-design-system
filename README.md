@@ -100,6 +100,8 @@ The installer uses a guided flow:
 
 ### Customize colors
 
+On first install, the CLI lists color schemas by number. Enter a number to select a light/dark pair, or press Enter for the default (preserving legacy colors). Invalid numbers are prompted again. `--yes` uses the default without prompting. If `theme.css` already exists, the selector is skipped and your file is preserved, including with `--overwrite`.
+
 Edit `styles/theme.css` (`src/styles/theme.css` for CRA). Fresh installs include all default color tokens in `:root` and `.dark`; replace those values with your palette. Tailwind mappings and base styles stay in `design-system/styles.css`. Missing tokens fall back to the managed defaults on fresh installs.
 
 To switch palettes, add selectors in the same theme file:

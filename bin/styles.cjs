@@ -2,6 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const ts = require('typescript');
 const { slash } = require('./project.cjs');
+const colorSchemas = require('../internal-components/color-schemas.json');
 
 const marker = '/* xizot-managed styles */\n';
 
@@ -10,7 +11,44 @@ function relativeImport(from, to) {
   return relative.startsWith('.') ? relative : './' + relative;
 }
 
-function installStyles(packageRoot, projectRoot, plan) {
+async function selectColorSchema(projectRoot, plan, options, askQuestion, log = console.log) {
+  const themeName = plan.framework === 'cra' ? 'src/styles/theme.css' : 'styles/theme.css';
+  if (fs.existsSync(path.join(projectRoot, themeName))) {
+    log(`Keeping existing color theme: ${themeName}`);
+    return;
+  }
+  if (options.yes) return;
+
+  log('\nColor schema');
+  log('  1. Default / keep existing colors');
+  colorSchemas.forEach((schema, index) => {
+    log(`  ${index + 2}. ${schema.lightName} / ${schema.name}`);
+  });
+  while (true) {
+    const answer = (
+      await askQuestion(`Choose a number [1-${colorSchemas.length + 1}] (Enter = 1): `)
+    ).trim();
+    if (answer === '' || answer === '1') return;
+    const choice = Number(answer);
+    if (/^\d+$/.test(answer) && choice >= 2 && choice <= colorSchemas.length + 1) {
+      const schema = colorSchemas[choice - 2];
+      log(`Selected: ${schema.lightName} / ${schema.name}`);
+      return (
+        [':root', '.dark']
+          .map((selector, index) => {
+            const tokens = index === 0 ? schema.light : schema.dark;
+            return `${selector} {\n${Object.entries(tokens)
+              .map(([key, value]) => `  ${key}: ${value};`)
+              .join('\n')}\n}`;
+          })
+          .join('\n\n') + '\n'
+      );
+    }
+    log(`Enter a whole number from 1 to ${colorSchemas.length + 1}.`);
+  }
+}
+
+function installStyles(packageRoot, projectRoot, plan, selectedTheme) {
   const stylesTarget = path.join(projectRoot, plan.sourceRoot, 'styles.css');
   const themeTarget = path.join(
     projectRoot,
@@ -25,9 +63,10 @@ function installStyles(packageRoot, projectRoot, plan) {
     fs.writeFileSync(
       themeTarget,
       '/* Application-owned color tokens. The Xizot installer never overwrites this file. */\n' +
-        (legacy
-          ? '/* Existing colors remain in design-system/styles.css. Add color overrides here. */\n'
-          : defaults),
+        (selectedTheme ??
+          (legacy
+            ? '/* Existing colors remain in design-system/styles.css. Add color overrides here. */\n'
+            : defaults)),
     );
   }
 
@@ -79,4 +118,4 @@ function installStyles(packageRoot, projectRoot, plan) {
   fs.writeFileSync(entryPath, content);
 }
 
-module.exports = { installStyles };
+module.exports = { installStyles, selectColorSchema };
