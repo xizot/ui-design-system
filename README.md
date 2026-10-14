@@ -54,7 +54,7 @@ Node 20.19+ is required. Existing React 18, Tailwind 3, incompatible dependency 
 
 CRA TypeScript projects retain the TypeScript version required by react-scripts and install TypeScript 5.9 as `xizot-typescript` for the build checker and VS Code SDK. Select the workspace TypeScript SDK in VS Code. Existing CRA start/build/test command arguments and CRACO overrides are preserved.
 
-The installer checks declared ranges and installed versions, installs missing packages with exact versions, and respects `package.json#packageManager` before lockfile detection. Vite/Next aliases use the specific `@/design-system/*` prefix, so existing `@/*` and other aliases keep their meaning. JSONC comments and unrelated settings are preserved.
+The installer checks declared ranges and installed versions. If `node_modules` contains an outdated package but the declared range is supported, it offers to run the project's package manager `install` and checks again before copying source. A newer installed version within the supported range is accepted when the project's declared range is also supported. Missing packages are installed with exact versions. The installer respects `package.json#packageManager` before lockfile detection. Vite/Next aliases use the specific `@/design-system/*` prefix, so existing `@/*` and other aliases keep their meaning. JSONC comments and unrelated settings are preserved.
 
 After pushing this repository to GitHub as `xizot/ui-design-system`, consumers can install it with:
 

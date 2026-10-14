@@ -87,7 +87,8 @@ function wrapConfig(text, filename, helper, exportName) {
 
 function dependencyPlan(root, pkg, required, dev = false) {
   const add = [],
-    conflicts = [];
+    conflicts = [],
+    stale = [];
   for (const spec of required) {
     const index = spec.indexOf('@', spec.startsWith('@') ? 1 : 0);
     const name = spec.slice(0, index),
@@ -120,28 +121,28 @@ function dependencyPlan(root, pkg, required, dev = false) {
     let installed;
     const manifest = path.join(root, 'node_modules', name, 'package.json');
     if (fs.existsSync(manifest)) installed = JSON.parse(fs.readFileSync(manifest, 'utf8')).version;
-    // A broad declaration (e.g. ^5) is valid when the resolved package satisfies
-    // both the project's declaration and our supported range. Without an installed
-    // version, only accept declarations whose entire range is supported.
-    const compatible =
-      semver.validRange(declared) &&
-      (installed
-        ? semver.satisfies(installed, declared) && semver.satisfies(installed, range)
-        : semver.subset(declared, range));
-    if (!compatible) {
+    const validDeclaration = semver.validRange(declared);
+    const safeDeclaration = validDeclaration && semver.subset(declared, range);
+    // A broad declaration is safe only when its resolved version is supported.
+    // A narrower, supported declaration can repair an outdated node_modules copy.
+    const resolvedSupported =
+      installed && semver.satisfies(installed, declared) && semver.satisfies(installed, range);
+    if (safeDeclaration && installed && !semver.satisfies(installed, range)) {
+      stale.push(`${name}: ${declared} (installed ${installed}); requires ${range}`);
+    } else if (!safeDeclaration && !resolvedSupported) {
       conflicts.push(
         `${name}: ${declared}${installed ? ` (installed ${installed})` : ''}; requires ${range}${
-          !installed && semver.validRange(declared) && semver.intersects(declared, range)
+          !installed && validDeclaration && semver.intersects(declared, range)
             ? '. Install project dependencies first to verify the resolved version, or narrow the declared range'
             : ''
         }`,
       );
     }
   }
-  return { add, conflicts, dev };
+  return { add, conflicts, stale, dev };
 }
 
-function planProject(root, runtimeDependencies) {
+function planProject(root, runtimeDependencies, dependenciesChanged = false) {
   if (!semver.satisfies(process.versions.node, libraryPackage.engines.node)) {
     throw new Error(
       `Node ${libraryPackage.engines.node} is required; found ${process.versions.node}.`,
@@ -395,7 +396,7 @@ function planProject(root, runtimeDependencies) {
   }
   if (conflicts.length)
     throw new Error(
-      `Incompatible dependencies; no project files changed. Update these explicitly and rerun:\n  - ${conflicts.join('\n  - ')}`,
+      `Incompatible dependencies; ${dependenciesChanged ? 'no design system files changed' : 'no project files changed'}. Update these explicitly and rerun:\n  - ${conflicts.join('\n  - ')}`,
     );
   if (semver.valid(deps.react)) {
     for (const plan of plans)

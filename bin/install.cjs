@@ -343,6 +343,24 @@ function installDependencies(dependencies, dev = false) {
   return true;
 }
 
+function syncDeclaredDependencies() {
+  const manager = detectPackageManager();
+  console.log(color.green(`Syncing installed dependencies with ${manager} install...`));
+  const result = spawnSync(manager, ['install'], {
+    cwd: projectRoot,
+    stdio: 'inherit',
+    shell: process.platform === 'win32',
+  });
+  if (result.status !== 0) {
+    console.error(
+      color.red(`Dependency sync failed with ${manager}; design system files were not changed.`),
+    );
+    process.exitCode = result.status || 1;
+    return false;
+  }
+  return true;
+}
+
 function copyRootFiles() {
   printSection('Step 3: Agent Rules');
   upsertAgentUsageRules();
@@ -513,6 +531,23 @@ async function main() {
 
   // Validate dependencies and every configuration edit before copying source.
   projectPlan = planProject(projectRoot, runtimeDependencies);
+  const stale = projectPlan.dependencies.flatMap((plan) => plan.stale);
+  if (stale.length) {
+    console.log('Installed packages differ from supported versions declared by this project:');
+    printList(stale, stale.length);
+    const answer = options.yes ? 'yes' : await askQuestion('Sync project dependencies? (y/N): ');
+    if (!['y', 'yes', '1'].includes(answer)) {
+      console.log('Installation cancelled; no project files changed.');
+      return;
+    }
+    if (!syncDeclaredDependencies()) return;
+    projectPlan = planProject(projectRoot, runtimeDependencies, true);
+    const remaining = projectPlan.dependencies.flatMap((plan) => plan.stale);
+    if (remaining.length)
+      throw new Error(
+        `Installed dependencies are still incompatible after ${projectPlan.manager} install; no design system files changed:\n  - ${remaining.join('\n  - ')}`,
+      );
+  }
   installRootName = projectPlan.sourceRoot;
   targetRoot = path.join(projectRoot, installRootName);
   const selectedTheme = await selectColorSchema(projectRoot, projectPlan, options, askQuestion);
