@@ -349,14 +349,6 @@ function planProject(root, runtimeDependencies) {
       'declare function withXizot<T>(config: T): T;\nexport = withXizot;\n',
     );
     let packageText = read(root, 'package.json');
-    if (
-      !pkg.eslintConfig &&
-      !['.eslintrc', '.eslintrc.json', '.eslintrc.js', '.eslintrc.cjs'].some((f) => exists(root, f))
-    ) {
-      packageText = setJson(packageText, ['eslintConfig'], {
-        extends: ['react-app', 'react-app/jest'],
-      });
-    }
     for (const script of ['start', 'build', 'test']) {
       const command = pkg.scripts?.[script];
       if (!command) continue;

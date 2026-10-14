@@ -12,4 +12,4 @@ Both TypeScript and JavaScript consumers are supported; inspect `.tsx` or genera
 
 Project-specific guidance belongs outside installer-owned files/markers. Product theme/font decisions belong in application-owned files. Website font loaders, theme preset pickers and application providers must not be assumed to accompany copied controls.
 
-Source setup adds the copied folder to consumer lint/format ignores where supported. Type-check imported code in the consumer; check shared library edits here. Consumer theme decisions belong in application-owned files, not in installer-owned guidance.
+Consumer projects own their lint and formatting configuration; the installer does not extend it. Type-check imported code in the consumer; check shared library edits here. Consumer theme decisions belong in application-owned files, not in installer-owned guidance.
