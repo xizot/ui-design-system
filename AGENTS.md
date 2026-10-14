@@ -1,6 +1,6 @@
 # Xizot agent entrypoint
 
-For React UI work read [.agents/skills/xizot-design-system/SKILL.md](.agents/skills/xizot-design-system/SKILL.md), then follow its task routing. Read files directly if the client does not discover skills.
+For Xizot code work, start at [.agents/AGENTS.md](.agents/AGENTS.md). Read its five skill entry points and [React rules](.agents/rules/react.md) before the first code change in each task. Then follow the relevant skill's routing. Read files directly if the client does not discover skills.
 
 For shared API, installer or harness changes also read [.agents/skills/xizot-system/SKILL.md](.agents/skills/xizot-system/SKILL.md).
 

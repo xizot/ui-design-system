@@ -22,14 +22,14 @@ Use the [component catalog](references/component-catalog.md) to narrow the choic
 | Task                                  | Read next                                                        | Concrete output before implementation                        |
 | ------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------ |
 | Small component/interaction fix       | Relevant source and [code contract](references/code-contract.md) | Changed behavior and its owner                               |
-| New page, site, or visual redesign    | [xizot-page-builder](../xizot-page-builder/SKILL.md)             | Page pattern, shell, visual direction and compact UI brief   |
+| New page, site, or visual redesign    | [xizot-page-builder](../xizot-page-builder/SKILL.md)             | Page pattern, shell, feature ownership and component plan    |
 | Submitted form                        | [xizot-forms](../xizot-forms/SKILL.md)                           | Values/defaults, validation, submit/reset ownership          |
 | Shared API, theme, installer, harness | [xizot-system](../xizot-system/SKILL.md)                         | Consumer impact and verification scope                       |
 | Requested audit                       | [xizot-quality](../xizot-quality/SKILL.md)                       | Findings with file/behavior evidence; edit only if requested |
 
 Combine rows only when the task crosses those boundaries. Do not load all references. A small fix does not require a site brief, new theme or rewritten page.
 
-For new/relocated application feature files, read [feature ownership](references/feature-structure.md). Keep library primitives in their existing owners.
+For new/relocated application feature files, read [feature architecture](references/feature-structure.md) before creating the page. Keep library primitives in their existing owners.
 
 ## 3. Implement from evidence
 

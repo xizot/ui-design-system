@@ -23,6 +23,8 @@ Omit the ID to list patterns. Multi-module dashboards default to a left sidebar,
 
 Profiles still describe the product family; use the existing `profile` command or [website profiles](../xizot-design-system/references/website-profiles.md) when needed. Hybrid surfaces share brand but may use different shells. If no pattern fits, derive one from the task rather than forcing it.
 
+For an application page, read [feature architecture](../xizot-design-system/references/feature-structure.md) before implementation. Name the route, feature and use case; assign the header, filters, table, form, state and API calls to their owners. List the meaningful page regions that deserve local components. Keep the route thin and the use-case entry responsible for composition. A visual region with its own behavior, state or substantial markup should be a named component; keep small coupled markup inline. Follow the consumer's actual source root and language.
+
 ## 3. Set the visual direction
 
 For a new design or a requested foundation change, read [visual foundations](references/visual-foundations.md) and retrieve one recipe:
@@ -37,7 +39,7 @@ Choices: `workbench`, `calm-business`, `editorial`, `product-led`, `technical`. 
 
 Use [component decisions](references/component-decisions.md) to resolve control/container choices and remove unnecessary UX. Each region/action must help the user understand, decide or do something supported by content/behavior. Do not invent KPIs, navigation features, permissions or social proof. Minimal composition still includes reachable error, pending and recovery states.
 
-State a compact brief: task; selected pattern and rationale; shell/ordered regions/action priority; inherited or chosen visual direction; component contracts; state ownership; narrow-screen behavior and acceptance checks. A short commentary is enough; a material missing product decision only blocks the dependent work.
+State a compact brief: task; selected pattern and rationale; shell/ordered regions/action priority; inherited or chosen visual direction; component contracts; feature/use-case and component ownership; state ownership; narrow-screen behavior and acceptance checks. A short commentary is enough; a material missing product decision only blocks the dependent work.
 
 ## 5. Build, render and refine
 

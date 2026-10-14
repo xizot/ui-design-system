@@ -1,6 +1,12 @@
 # React implementation rules
 
-Apply to new or changed React code, in the library and consumers. Explicit user requirements and verified source/caller contracts govern the change. Preserve unrelated code and public names; do not migrate files merely for consistency.
+Apply to new or changed React code, in the library and consumers. Explicit user requirements and verified source/caller contracts govern the change. Preserve unrelated code and public names; do not migrate files merely for consistency. Read application-owned coding conventions when they exist; resolve conflicts against explicit user requirements and verified local contracts.
+
+## Discover before creating
+
+- Inspect the owning feature/use case, nearby callers, public exports, schemas, API contracts, shared helpers and existing UI before adding a type, component, hook, utility or dependency. An installed package or generic framework example does not establish a project pattern.
+- Name the owner and responsibility of new code. Unclear contracts require more source discovery; do not turn uncertainty into optional fields, guessed property-name fallbacks, speculative runtime guards, duplicate types or new abstractions.
+- New application feature placement follows [feature architecture](../skills/xizot-design-system/references/feature-structure.md). Keep existing routes, imports and data-layer conventions when editing an established feature.
 
 ## Naming and readability
 
@@ -8,6 +14,8 @@ Apply to new or changed React code, in the library and consumers. Explicit user 
 - Name callback props `onXxx` and local handlers `handleXxx`. Boolean names communicate state, existence or capability (`is`, `has`, `can`, `should`); do not rename established component props such as `loading` or `disabled`.
 - Use SCREAMING_SNAKE_CASE for static constants; `const` alone does not make a local value a static constant. Schema names follow active project conventions.
 - Use `<ComponentName>Props` for two or more props or a structured/callback-heavy prop. Keep hooks before early returns, related declarations together, and blank lines between independent functions/types. Follow the local formatter.
+- Prefer concrete names that describe domain responsibility over `Wrapper`, `Content`, `processData` or `getValue`. Preserve existing public DTO/enumeration names and domain terms. Prefer `type` for new local shapes; use `interface` where extension or a public contract warrants it.
+- Organize a component as hooks, local state, derived values, handlers and return. Use clear loading, missing-data and error branches where applicable instead of deeply nested ternaries. Keep small related markup together; extract a named component for a substantial region or independent behavior.
 
 ## Types and boundaries
 
@@ -16,6 +24,13 @@ Apply to new or changed React code, in the library and consumers. Explicit user 
 - Validate unsafe input at its boundary (API JSON, storage, URL, untyped integration), then trust the validated type downstream. A TypeScript annotation alone does not validate external data. Do not add repeated guards/coercions merely because the agent is uncertain.
 - Keep form values distinct from API payloads when their semantics differ; schema-derived types can stay beside the schema. Fix contract mismatches at their owner within scope, not through `any`, double casts, suppressions or fake successful/empty results.
 - Inspect active usage before choosing dependencies, helpers or state libraries. Being installed does not establish a preferred architecture.
+- Trust a confirmed type after validation at the unsafe boundary. Avoid repeated coercion, `Array.isArray` checks or truthiness checks that mask uncertainty about a known contract. Optional chaining and fallbacks must reflect actual nullability and product behavior.
+
+## Errors and reuse
+
+- Inspect the project's request wrapper, interceptors and comparable flows before adding try/catch, logging, toasts, redirects or fallback results. A resolved promise does not by itself prove a mutation succeeded. Keep error feedback and recovery with their established owner.
+- Reuse existing formatters, label maps, request builders, UI compositions and store factories when semantics match. A new abstraction should improve ownership, behavior or readability; do not add passthrough hooks, one-line wrappers or shared code for hypothetical reuse.
+- Keep feature internals private. Export only required entries through a public index, prefer explicit named exports and avoid wildcard exports that conceal dependency cycles. Match the project's import grouping and alias conventions.
 
 ## React behavior
 
@@ -27,6 +42,6 @@ Apply to new or changed React code, in the library and consumers. Explicit user 
 6. Keep domain transformations in feature code. Extract shared behavior when semantics repeat; do not create passthrough wrappers solely to reduce line count, speculative configuration layers or generic service hierarchies for a UI task. Memoization needs a cost or identity reason.
 7. Submitted product forms use React Hook Form and existing RHF wrappers. Search/filter state may be local or URL-based. Explicit user choices and existing native/server-action contracts are exceptions; see the forms skill.
 
-For new or relocated feature files, read [feature ownership](../skills/xizot-design-system/references/feature-structure.md). Shared Xizot components retain the library's existing `components/`, `hooks/`, `lib/` and `constants/` owners.
+For new or relocated application feature files, read [feature architecture](../skills/xizot-design-system/references/feature-structure.md) and identify the use case and component boundaries before coding. Shared Xizot components retain the library's existing `components/`, `hooks/`, `lib/` and `constants/` owners.
 
-Review changed code against these rules. Run scoped lint/types and test the changed behavior. A regex scan cannot validate state ownership or Effect correctness.
+Review changed code against these rules, including naming, props, type reuse, optionality, fallbacks, error feedback, state ownership, imports and abstractions. Resolve deviations with concrete source or contract evidence. Run scoped lint/types and test the changed behavior; report any unverified runtime behavior. A regex scan cannot validate state ownership or Effect correctness.
