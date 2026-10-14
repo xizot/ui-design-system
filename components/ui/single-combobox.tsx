@@ -109,6 +109,7 @@ type SingleComboboxProps<T extends ComboboxBaseOption> = {
   onChange?: (value: string | number | undefined, option: T | undefined) => void;
   placeholder?: string;
   label?: string | React.ReactNode;
+  inlineLabel?: string | React.ReactNode;
   required?: boolean;
   disabled?: boolean;
   error?: string;
@@ -122,6 +123,8 @@ type SingleComboboxProps<T extends ComboboxBaseOption> = {
   className?: string;
   id?: string;
   size?: FormSize;
+  triggerRef?: React.Ref<HTMLButtonElement>;
+  openOnMount?: boolean;
 };
 
 function SingleCombobox<T extends ComboboxBaseOption>({
@@ -130,6 +133,7 @@ function SingleCombobox<T extends ComboboxBaseOption>({
   onChange,
   placeholder = 'Chọn...',
   label,
+  inlineLabel,
   required,
   disabled,
   error,
@@ -143,12 +147,18 @@ function SingleCombobox<T extends ComboboxBaseOption>({
   className,
   id,
   size = 'md',
+  triggerRef,
+  openOnMount = false,
 }: SingleComboboxProps<T>) {
   const generatedId = React.useId();
   const inputId = id ?? generatedId;
   const anchorRef = React.useRef<HTMLDivElement>(null);
   const [open, setOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState('');
+
+  React.useEffect(() => {
+    if (openOnMount) setOpen(true);
+  }, [openOnMount]);
 
   const optionsMap = React.useMemo(() => new Map(options.map((o) => [o.id, o])), [options]);
 
@@ -217,6 +227,7 @@ function SingleCombobox<T extends ComboboxBaseOption>({
         >
           {/* Full-area trigger button (invisible, z-0) */}
           <ComboboxPrimitive.Trigger
+            ref={triggerRef}
             className="absolute inset-0 z-0 cursor-pointer focus-visible:outline-none"
             disabled={disabled}
           />
@@ -224,11 +235,16 @@ function SingleCombobox<T extends ComboboxBaseOption>({
           {/* Selected label or placeholder */}
           <span
             className={cn(
-              'pointer-events-none flex-1 truncate',
+              'pointer-events-none flex min-w-0 flex-1 items-center gap-1.5 truncate',
               comboboxPaddingVariants({ size }),
               selectedLabel ? 'text-foreground' : 'text-muted-foreground',
             )}
           >
+            {inlineLabel ? (
+              <span className="text-muted-foreground shrink-0 font-normal whitespace-nowrap">
+                {inlineLabel}:
+              </span>
+            ) : null}
             {selectedLabel ?? placeholder}
           </span>
 

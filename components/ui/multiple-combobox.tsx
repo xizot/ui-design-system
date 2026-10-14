@@ -113,6 +113,7 @@ type MultipleComboboxProps<T extends ComboboxBaseOption> = {
   onChange?: (values: (string | number)[], options: T[]) => void;
   placeholder?: string;
   label?: string | React.ReactNode;
+  inlineLabel?: string | React.ReactNode;
   required?: boolean;
   disabled?: boolean;
   error?: string;
@@ -126,6 +127,7 @@ type MultipleComboboxProps<T extends ComboboxBaseOption> = {
   showArrowIcon?: boolean;
   showClearIcon?: boolean;
   onSelectedRender?: (selectedId: string | number, selectedOption: T) => React.ReactNode;
+  onOptionRender?: (option: T) => React.ReactNode;
   className?: string;
   id?: string;
   size?: FormSize;
@@ -137,6 +139,7 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
   onChange,
   placeholder = 'Chọn...',
   label,
+  inlineLabel,
   required,
   disabled,
   error,
@@ -150,6 +153,7 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
   showArrowIcon = true,
   showClearIcon = true,
   onSelectedRender,
+  onOptionRender,
   className,
   id,
   size = 'md',
@@ -244,6 +248,11 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
               autoResize ? 'flex-wrap py-1' : 'overflow-hidden',
             )}
           >
+            {inlineLabel ? (
+              <span className="text-muted-foreground shrink-0 font-normal whitespace-nowrap">
+                {inlineLabel}:
+              </span>
+            ) : null}
             {externalValues.length > 0 ? (
               <>
                 {displayedValues.map((id) => {
@@ -375,7 +384,11 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
                 )}
               >
                 <span className="min-w-0 flex-1 truncate">
-                  {showMenuCode ? `${option.code} - ${option.name}` : option.name}
+                  {onOptionRender
+                    ? onOptionRender(option)
+                    : showMenuCode
+                      ? `${option.code} - ${option.name}`
+                      : option.name}
                 </span>
                 <span className="text-primary pointer-events-none absolute right-2 flex size-4 items-center justify-center">
                   <Check

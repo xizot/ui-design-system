@@ -257,6 +257,7 @@ interface DataTableProps<TData> {
   totalCount?: number | null;
   testId?: string;
   getRowTestId?: (row: Row<TData>) => string | undefined;
+  getRowClassName?: (row: Row<TData>) => string | undefined;
 }
 
 export function DataTable<TData>({
@@ -278,6 +279,7 @@ export function DataTable<TData>({
   totalCount,
   testId,
   getRowTestId,
+  getRowClassName,
 }: DataTableProps<TData>) {
   const selectionColumn: ColumnDef<TData> = {
     id: 'select',
@@ -368,7 +370,10 @@ export function DataTable<TData>({
 
               return (
                 <Fragment key={row.id}>
-                  <TableRow data-testid={getRowTestId?.(row)} className="group">
+                  <TableRow
+                    data-testid={getRowTestId?.(row)}
+                    className={cn('group', getRowClassName?.(row))}
+                  >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell
                         key={cell.id}
