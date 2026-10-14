@@ -83,7 +83,10 @@ type PopoverPanelContentProps = {
   confirmText?: string;
   cancelText?: string;
   showCloseButton?: boolean;
+  scrollable?: boolean;
   className?: string;
+  bodyClassName?: string;
+  positionMethod?: React.ComponentProps<typeof PopoverContent>['positionMethod'];
   onConfirm?: () => void;
 } & VariantProps<typeof panelVariants>;
 
@@ -114,7 +117,10 @@ function PopoverPanelContent({
   confirmText = 'Áp dụng',
   cancelText = 'Hủy',
   showCloseButton = true,
+  scrollable = true,
   className,
+  bodyClassName,
+  positionMethod,
   onConfirm,
 }: PopoverPanelContentProps) {
   const hasHeader = title || description;
@@ -127,10 +133,14 @@ function PopoverPanelContent({
     (child) =>
       !React.isValidElement(child) || child.type !== PopoverPanelFooter,
   );
+  const bodyContent = <div className={cn(bodyVariants({ size }), bodyClassName)}>{body}</div>;
 
   return (
     <PopoverPanelSizeContext.Provider value={size}>
-      <PopoverContent className={panelVariants({ size, className })}>
+      <PopoverContent
+        className={panelVariants({ size, className })}
+        positionMethod={positionMethod}
+      >
         {hasHeader && (
           <div className={headerVariants({ size, className: 'pb-0' })}>
             {title && <PopoverTitle>{title}</PopoverTitle>}
@@ -142,9 +152,11 @@ function PopoverPanelContent({
           </div>
         )}
 
-        <ScrollArea className="min-h-0 flex-1 overflow-y-auto">
-          <div className={bodyVariants({ size })}>{body}</div>
-        </ScrollArea>
+        {scrollable ? (
+          <ScrollArea className="min-h-0 flex-1 overflow-y-auto">{bodyContent}</ScrollArea>
+        ) : (
+          bodyContent
+        )}
 
         {showFooter &&
           (footer ?? (

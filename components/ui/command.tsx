@@ -2,11 +2,13 @@
 
 import * as React from 'react';
 import { Command as CommandPrimitive } from 'cmdk';
+import { ScrollArea as ScrollAreaPrimitive } from '@base-ui/react/scroll-area';
 
 import { cn } from '../../lib/utils';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './dialog';
 import { InputGroup, InputGroupAddon } from './input-group';
 import { SearchIcon, CheckIcon } from 'lucide-react';
+import { ScrollBar } from './scroll-area';
 
 function Command({ className, ...props }: React.ComponentProps<typeof CommandPrimitive>) {
   return (
@@ -74,7 +76,30 @@ function CommandInput({
   );
 }
 
-function CommandList({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.List>) {
+function CommandList({
+  className,
+  withScrollArea = false,
+  ...props
+}: React.ComponentProps<typeof CommandPrimitive.List> & { withScrollArea?: boolean }) {
+  if (withScrollArea) {
+    return (
+      <ScrollAreaPrimitive.Root
+        data-slot="scroll-area"
+        className="relative flex min-h-0 min-w-0 flex-col"
+      >
+        <ScrollAreaPrimitive.Viewport
+          render={<CommandPrimitive.List {...props} />}
+          data-slot="command-list"
+          className={cn(
+            'max-h-[min(calc(--spacing(72)---spacing(9)),calc(var(--available-height)---spacing(9)))] min-h-0 scroll-py-1 overscroll-contain px-2 py-0 outline-none',
+            className,
+          )}
+        />
+        <ScrollBar />
+      </ScrollAreaPrimitive.Root>
+    );
+  }
+
   return (
     <CommandPrimitive.List
       data-slot="command-list"
@@ -138,13 +163,13 @@ function CommandItem({
     <CommandPrimitive.Item
       data-slot="command-item"
       className={cn(
-        "group/command-item data-selected:bg-muted data-selected:text-foreground data-selected:**:[svg]:text-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none in-data-[slot=dialog-content]:rounded-lg! data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "group/command-item data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none in-data-[slot=dialog-content]:rounded-lg! data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className,
       )}
       {...props}
     >
       {children}
-      <CheckIcon className="ml-auto opacity-0 group-has-data-[slot=command-shortcut]/command-item:hidden group-data-[checked=true]/command-item:opacity-100" />
+      <CheckIcon className="text-primary ml-auto opacity-0 group-has-data-[slot=command-shortcut]/command-item:hidden group-data-[checked=true]/command-item:opacity-100" />
     </CommandPrimitive.Item>
   );
 }
@@ -154,7 +179,7 @@ function CommandShortcut({ className, ...props }: React.ComponentProps<'span'>) 
     <span
       data-slot="command-shortcut"
       className={cn(
-        'text-muted-foreground group-data-selected/command-item:text-foreground ml-auto text-xs tracking-widest',
+        'text-muted-foreground group-data-[selected=true]/command-item:text-accent-foreground ml-auto text-xs tracking-widest',
         className,
       )}
       {...props}

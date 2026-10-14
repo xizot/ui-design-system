@@ -14,7 +14,15 @@ import {
   CommandItem,
   CommandList,
 } from './command';
-import { Popover, PopoverContent, PopoverTitle, PopoverTrigger } from './popover';
+import { PopoverTitle } from './popover';
+import {
+  PopoverPanel,
+  PopoverPanelContent,
+  PopoverPanelTrigger,
+} from './popover-panel';
+
+const COLOR_SCHEMA_ITEM_STYLES =
+  'mt-px w-full pr-8 pl-2 data-[checked=true]:bg-accent data-[checked=true]:text-accent-foreground hover:bg-accent hover:text-accent-foreground [&>svg:last-child]:absolute [&>svg:last-child]:right-2';
 
 export function ColorSchemaSelect() {
   const [open, setOpen] = useState(false);
@@ -30,20 +38,28 @@ export function ColorSchemaSelect() {
   };
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger
+    <PopoverPanel open={open} onOpenChange={setOpen}>
+      <PopoverPanelTrigger
         render={<Button variant="ghost" size="icon" aria-label={triggerLabel} title={triggerLabel} />}
       >
         <Palette aria-hidden="true" className="text-primary h-[1.2rem] w-[1.2rem]" />
-      </PopoverTrigger>
-      <PopoverContent align="center" className="w-72 gap-0 p-0">
+      </PopoverPanelTrigger>
+      <PopoverPanelContent
+        size="sm"
+        positionMethod="fixed"
+        bodyClassName="p-0"
+        scrollable={false}
+        showFooter={false}
+        showCloseButton={false}
+      >
         <PopoverTitle className="sr-only">Chọn bộ màu giao diện</PopoverTitle>
-        <Command className="h-auto">
+        <Command className="h-auto p-0 py-2">
           <CommandInput aria-label="Tìm bộ màu" placeholder="Tìm bộ màu..." />
-          <CommandList>
+          <CommandList withScrollArea>
             <CommandEmpty>Không tìm thấy bộ màu</CommandEmpty>
-            <CommandGroup heading="Bộ màu giao diện">
+            <CommandGroup heading="Bộ màu giao diện" className="p-0">
               <CommandItem
+                className={COLOR_SCHEMA_ITEM_STYLES}
                 value="default Mặc định"
                 data-checked={schemaId === 'default'}
                 onSelect={() => handleSelect('default')}
@@ -58,6 +74,7 @@ export function ColorSchemaSelect() {
               </CommandItem>
               {schemas.map((entry) => (
                 <CommandItem
+                  className={COLOR_SCHEMA_ITEM_STYLES}
                   key={entry.id}
                   value={`${entry.code} ${entry.lightName} ${entry.name}`}
                   data-checked={schemaId === entry.id}
@@ -78,7 +95,7 @@ export function ColorSchemaSelect() {
             </CommandGroup>
           </CommandList>
         </Command>
-      </PopoverContent>
-    </Popover>
+      </PopoverPanelContent>
+    </PopoverPanel>
   );
 }
