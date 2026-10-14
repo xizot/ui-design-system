@@ -1,13 +1,13 @@
 'use client';
 
 import { Combobox as ComboboxPrimitive } from '@base-ui/react';
-import { ChevronDownIcon, XCircleIcon } from 'lucide-react';
 import { cva } from 'class-variance-authority';
+import { ChevronDownIcon, XCircleIcon } from 'lucide-react';
 import * as React from 'react';
 
-import { cn } from '../../lib/utils';
 import { formControlSurface } from '../../lib/form-control-styles';
 import { getSearchInputSize } from '../../lib/form-size';
+import { cn } from '../../lib/utils';
 import {
   Combobox,
   ComboboxContent,
@@ -279,8 +279,8 @@ function SingleCombobox<T extends ComboboxBaseOption>({
         </div>
 
         {/* Search input lives inside the popup */}
-        <ComboboxContent anchor={anchorRef}>
-          <div className="shrink-0 px-2 pt-3">
+        <ComboboxContent anchor={anchorRef} className="min-w-50! py-2">
+          <div className="shrink-0 px-2">
             <ComboboxInput
               id={inputId}
               placeholder={searchPlaceholder}
@@ -291,7 +291,7 @@ function SingleCombobox<T extends ComboboxBaseOption>({
             />
           </div>
 
-          <ComboboxList>
+          <ComboboxList className="px-2 py-0">
             <ComboboxEmpty>{emptyMessage}</ComboboxEmpty>
             {filteredOptions.map((option) => (
               <ComboboxItem

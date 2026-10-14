@@ -7,6 +7,17 @@ const eslintConfig = defineConfig([
   ...nextTs,
   // Node CLI/build entry points are CommonJS, unlike the React application.
   {
+    rules: {
+      'react/jsx-curly-brace-presence': [
+        'error',
+        {
+          props: 'never',
+          children: 'never',
+        },
+      ],
+    },
+  },
+  {
     files: ['bin/**/*.cjs', 'scripts/**/*.cjs'],
     rules: { '@typescript-eslint/no-require-imports': 'off' },
   },
