@@ -21,6 +21,8 @@ import { Button } from '../../../components/ui/button';
 
 import { getGuide } from '../guide-data';
 
+import { tableExamples } from './table-examples';
+
 const guide = getGuide('table');
 
 type Payment = {
@@ -560,6 +562,7 @@ export default function TableGuidePage() {
                         <BasicTableDemo />
                       </div>
                     </div>
+                    <CodeBlock id="table-basic-example" code={tableExamples['basic']} />
                   </TabsContent>
                   <TabsContent value="selection">
                     <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-8">
@@ -567,6 +570,7 @@ export default function TableGuidePage() {
                         <SelectionTableDemo />
                       </div>
                     </div>
+                    <CodeBlock id="table-selection-example" code={tableExamples['selection']} />
                   </TabsContent>
                   <TabsContent value="actions">
                     <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-8">
@@ -574,6 +578,7 @@ export default function TableGuidePage() {
                         <ActionTableDemo />
                       </div>
                     </div>
+                    <CodeBlock id="table-actions-example" code={tableExamples['actions']} />
                   </TabsContent>
                   <TabsContent value="url-filter">
                     <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-8">
@@ -581,102 +586,18 @@ export default function TableGuidePage() {
                         <UrlFilterTableDemo />
                       </div>
                     </div>
+                    <CodeBlock id="table-url-filter-example" code={tableExamples['url-filter']} />
                   </TabsContent>
                 </Tabs>
-                <CodeBlock
-                  id="tanstack-sorting"
-                  code={`import { useCallback, useMemo } from "react";
-import { type ColumnFiltersState } from "@tanstack/react-table";
-import { parseAsArrayOf, parseAsInteger, parseAsString } from "nuqs";
-import { DataTable } from "@/components/ui/data-table";
-import { useUrlFilters } from "@/hooks/use-url-filter";
-
-const SORT_ORDER_ENUM = {
-  status_asc: 1,
-  status_desc: 2,
-  method_asc: 3,
-  method_desc: 4,
-  amount_asc: 5,
-  amount_desc: 6,
-  date_asc: 7,
-  date_desc: 8,
-} as const;
-
-const PARSERS = {
-  sortOrder: parseAsInteger,
-  status: parseAsArrayOf(parseAsString),
-  method: parseAsArrayOf(parseAsString),
-  category: parseAsArrayOf(parseAsString),
-};
-
-export function UrlFilterTableDemo() {
-  const {
-    filters: urlFilters,
-    paginationState,
-    setFilter,
-    onPaginationChange,
-    createSortingHandlers,
-  } = useUrlFilters(PARSERS);
-
-  const { sortingState, handleSortingChange } = createSortingHandlers(SORT_ORDER_ENUM);
-
-  const columnFilters = useMemo(() => {
-    const next: ColumnFiltersState = [];
-    if (urlFilters.status?.length) next.push({ id: "status", value: urlFilters.status });
-    if (urlFilters.method?.length) next.push({ id: "method", value: urlFilters.method });
-    if (urlFilters.category?.length) next.push({ id: "category", value: urlFilters.category });
-    return next;
-  }, [urlFilters]);
-
-  const handleColumnFiltersChange = useCallback(
-    (updater: ColumnFiltersState | ((old: ColumnFiltersState) => ColumnFiltersState)) => {
-      const next = typeof updater === "function" ? updater(columnFilters) : updater;
-      const toValue = (id: string) =>
-        (next.find((item) => item.id === id)?.value as string[]) ?? null;
-
-      setFilter({
-        status: toValue("status"),
-        method: toValue("method"),
-        category: toValue("category"),
-      });
-    },
-    [columnFilters, setFilter],
-  );
-
-  return (
-    <DataTable
-      data={payments}
-      columns={columns}
-      sorting={sortingState}
-      columnFilters={columnFilters}
-      pagination={paginationState}
-      onSortingChange={handleSortingChange}
-      onColumnFiltersChange={handleColumnFiltersChange}
-      onPaginationChange={onPaginationChange}
-    />
-  );
-}`}
-                />
-                <CodeBlock
-                  id="tanstack-pagination-note"
-                  code={`const table = useReactTable({
-  data,
-  columns,
-  autoResetPageIndex: false,
-  state: {
-    sorting,
-    columnFilters,
-    pagination,
-  },
-  onSortingChange,
-  onColumnFiltersChange,
-  onPaginationChange,
-  getCoreRowModel: getCoreRowModel(),
-  getSortedRowModel: getSortedRowModel(),
-  getFilteredRowModel: getFilteredRowModel(),
-  getPaginationRowModel: getPaginationRowModel(),
-});`}
-                />
+                <p className="text-muted-foreground text-sm">
+                  Each tab includes a complete file with imports, columns, sample data and state.
+                  The URL Filter example requires a NuqsAdapter at the app root
+                  (nuqs/adapters/next/app for Next App Router, or nuqs/adapters/react for a React
+                  SPA). DataTable uses manual pagination, sorting and filtering: your app or API
+                  must process the full dataset before passing the current page and totalCount.
+                  These examples paginate local sample data; connect the sorting/filter state to
+                  your API for production.
+                </p>
               </div>
             </CardContent>
           </Card>
