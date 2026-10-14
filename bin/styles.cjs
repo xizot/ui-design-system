@@ -36,8 +36,12 @@ function relativeImport(from, to) {
 }
 
 async function selectColorSchema(projectRoot, plan, options, askQuestion, log = console.log) {
-  const themeName = plan.framework === 'cra' ? 'src/styles/theme.css' : 'styles/theme.css';
-  if (fs.existsSync(path.join(projectRoot, themeName))) {
+  const themeName = `${plan.sourceRoot}/theme.css`;
+  const oldThemeName = plan.framework === 'cra' ? 'src/styles/theme.css' : 'styles/theme.css';
+  if (
+    fs.existsSync(path.join(projectRoot, themeName)) ||
+    fs.existsSync(path.join(projectRoot, oldThemeName))
+  ) {
     log(`Keeping existing color theme: ${themeName}`);
     return;
   }
@@ -74,20 +78,25 @@ async function selectColorSchema(projectRoot, plan, options, askQuestion, log = 
 
 function installStyles(packageRoot, projectRoot, plan, selectedTheme) {
   const stylesTarget = path.join(projectRoot, plan.sourceRoot, 'styles.css');
-  const themeTarget = path.join(
+  const themeTarget = path.join(projectRoot, plan.sourceRoot, 'theme.css');
+  const oldThemeTarget = path.join(
     projectRoot,
     plan.framework === 'cra' ? 'src/styles/theme.css' : 'styles/theme.css',
   );
+  const moveTheme = !fs.existsSync(themeTarget) && fs.existsSync(oldThemeTarget);
   const previous = fs.existsSync(stylesTarget) ? fs.readFileSync(stylesTarget, 'utf8') : null;
   const legacy = previous !== null && !previous.startsWith(marker);
   const defaults = fs.readFileSync(path.join(packageRoot, 'app/theme.css'), 'utf8');
   const migrated = legacy ? splitLegacyColors(previous, defaults) : null;
-  const themeExists = fs.existsSync(themeTarget);
-  const currentTheme = themeExists ? fs.readFileSync(themeTarget, 'utf8') : '';
+  const themeExists = fs.existsSync(themeTarget) || moveTheme;
+  const currentTheme = themeExists
+    ? fs.readFileSync(moveTheme ? oldThemeTarget : themeTarget, 'utf8')
+    : '';
   const emptyTheme =
     themeExists && postcss.parse(currentTheme).nodes.every((node) => node.type === 'comment');
 
   fs.mkdirSync(path.dirname(themeTarget), { recursive: true });
+  if (moveTheme) fs.renameSync(oldThemeTarget, themeTarget);
   if (!themeExists || emptyTheme) {
     fs.writeFileSync(
       themeTarget,
@@ -116,6 +125,16 @@ function installStyles(packageRoot, projectRoot, plan, selectedTheme) {
   const entry = plan.cssTarget || plan.entry;
   const entryPath = path.join(projectRoot, entry);
   let content = fs.readFileSync(entryPath, 'utf8');
+  if (moveTheme) {
+    const oldImport = relativeImport(entryPath, oldThemeTarget).replace(
+      /[.*+?^${}()|[\]\\]/g,
+      '\\$&',
+    );
+    content = content.replace(
+      new RegExp(`((?:@import|import)\\s*['"])${oldImport}(['"]\\s*;)`, 'g'),
+      (_, start, end) => `${start}${relativeImport(entryPath, themeTarget)}${end}`,
+    );
+  }
   const imports = [stylesTarget, themeTarget].map((target) => relativeImport(entryPath, target));
   // Append the user theme after the base import, including on legacy installations.
   for (let index = 0; index < imports.length; index++) {
