@@ -63,3 +63,19 @@ export function SingleComboboxSelectedCodeOnlyDemo() {
     </div>
   );
 }
+
+export function SingleComboboxInlineLabelDemo() {
+  const [value, setValue] = useState<string | number | undefined>();
+
+  return (
+    <div className="w-full max-w-sm p-4">
+      <SingleCombobox
+        inlineLabel="Phòng ban"
+        options={departments}
+        value={value}
+        onChange={(nextValue) => setValue(nextValue)}
+        placeholder="Chọn phòng ban..."
+      />
+    </div>
+  );
+}

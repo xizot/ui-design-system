@@ -15,6 +15,7 @@ import { useEffect } from 'react';
 import { getGuide } from '../guide-data';
 import { SingleCombobox } from '@/components/ui/single-combobox';
 import {
+  SingleComboboxInlineLabelDemo,
   SingleComboboxSelectedCodeOnlyDemo,
   SingleComboboxWithCodeDemo,
 } from './single-combobox-demo';
@@ -35,6 +36,7 @@ const singleComboboxProps = [
   { name: 'onChange', type: '(value, option) => void', defaultValue: '--' },
   { name: 'placeholder', type: 'string', defaultValue: "'Chọn...'" },
   { name: 'label', type: 'string | ReactNode', defaultValue: '--' },
+  { name: 'inlineLabel', type: 'string | ReactNode', defaultValue: '--' },
   { name: 'required', type: 'boolean', defaultValue: 'false' },
   { name: 'disabled', type: 'boolean', defaultValue: 'false' },
   { name: 'error', type: 'string', defaultValue: '--' },
@@ -56,6 +58,18 @@ const singleComboboxProps = [
 ];
 
 const singleUsageSamples = [
+  {
+    id: 'inline-label',
+    label: 'Inline label',
+    preview: <SingleComboboxInlineLabelDemo />,
+    code: `<SingleCombobox
+  inlineLabel="Phòng ban"
+  options={departments}
+  value={value}
+  onChange={(v) => setValue(v)}
+  placeholder="Chọn phòng ban..."
+/>`,
+  },
   {
     id: 'with-code',
     label: 'Hiện mã',

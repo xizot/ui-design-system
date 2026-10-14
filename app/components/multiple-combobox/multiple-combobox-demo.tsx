@@ -106,3 +106,19 @@ export function MultipleComboboxSelectedCodeOnlyDemo() {
     </div>
   );
 }
+
+export function MultipleComboboxInlineLabelDemo() {
+  const [values, setValues] = useState<(string | number)[]>([]);
+
+  return (
+    <div className="w-full max-w-sm p-4">
+      <MultipleCombobox
+        inlineLabel="Phòng ban"
+        options={departments}
+        value={values}
+        onChange={(nextValues) => setValues(nextValues)}
+        placeholder="Chọn phòng ban..."
+      />
+    </div>
+  );
+}

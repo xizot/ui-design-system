@@ -1,11 +1,12 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
 
 import { GuideCode as CodeBlock } from '../_components/guide-code';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
-import { ChevronRightIcon, PlusIcon } from 'lucide-react';
+import { ChevronRightIcon, PlusIcon, SaveIcon } from 'lucide-react';
 import { useEffect } from 'react';
 
 import { getGuide } from '../guide-data';
@@ -144,32 +145,30 @@ export function Example() {
 }`,
     },
     {
-      id: 'loading',
-      label: 'Loading',
+      id: 'pending',
+      label: 'Pending',
       preview: (
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <Button loading>Đang lưu</Button>
-          <Button loading variant="outline">
-            Đang tải dữ liệu
+          <Button>
+            <SaveIcon />
+            Lưu
           </Button>
-          <Button loading variant="secondary" size="sm">
-            Đang xử lý
+          <Button disabled aria-busy={true}>
+            <Spinner aria-hidden="true" />
+            Đang lưu
           </Button>
         </div>
       ),
       code: `import { Button } from "@/design-system/components/ui/button";
+import { Spinner } from "@/design-system/components/ui/spinner";
+import { SaveIcon } from "lucide-react";
 
-export function Example() {
+export function Example({ isSubmitting }: { isSubmitting: boolean }) {
   return (
-    <div className="flex items-center gap-4">
-      <Button loading>Đang lưu</Button>
-      <Button loading variant="outline">
-        Đang tải dữ liệu
-      </Button>
-      <Button loading variant="secondary" size="sm">
-        Đang xử lý
-      </Button>
-    </div>
+    <Button disabled={isSubmitting} aria-busy={isSubmitting}>
+      {isSubmitting ? <Spinner aria-hidden="true" /> : <SaveIcon />}
+      {isSubmitting ? "Đang lưu" : "Lưu"}
+    </Button>
   );
 }`,
     },
@@ -241,11 +240,6 @@ export function Example() {
                     { name: 'className', type: 'string', defaultValue: '--' },
                     {
                       name: 'disabled',
-                      type: 'boolean',
-                      defaultValue: 'false',
-                    },
-                    {
-                      name: 'loading',
                       type: 'boolean',
                       defaultValue: 'false',
                     },

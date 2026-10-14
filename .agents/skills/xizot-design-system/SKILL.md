@@ -33,7 +33,7 @@ For new/relocated application feature files, read [feature architecture](referen
 
 ## 3. Implement from evidence
 
-Use existing components and semantic tokens. Application dialogs, sheets, drawers, and popovers use their respective `*Panel` root with `*PanelContent`; place a `*PanelFooter` directly inside the content for custom actions. Follow each component's supported size and close API; reusable controls may need lower-level content primitives. Inspect the actual API. Use `DataTable` for controlled operational tables, simple `Table` for static comparisons, and cards/lists when the content is not tabular.
+Use existing components and semantic tokens. For page/section headings and prose, inspect `components/ui/typography.tsx` and use its matching `Typography*` export when no owning component already provides that text role. Preserve semantic heading order. Application dialogs, sheets, drawers, and popovers use their respective `*Panel` root with `*PanelContent`; place a `*PanelFooter` directly inside the content for custom actions. Follow each component's supported size and close API; reusable controls may need lower-level content primitives. Inspect the actual API. Use `DataTable` for controlled operational tables, simple `Table` for static comparisons, and cards/lists when the content is not tabular.
 
 Keep business rules in features. Implement loading, empty/no-results, error and pending states only where the flow can reach them. Do not fabricate API fields, permissions, testimonials, metrics or product claims. Read [interaction checks](references/interaction-checks.md) for data, overlays, async actions or navigation changes.
 

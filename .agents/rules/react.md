@@ -11,7 +11,7 @@ Apply to new or changed React code, in the library and consumers. Explicit user 
 ## Naming and readability
 
 - Use kebab-case files/folders, PascalCase components/types, `useXxx` hooks and meaningful camelCase functions. Preserve framework filenames, generated code and existing public contracts.
-- Name callback props `onXxx` and local handlers `handleXxx`. Boolean names communicate state, existence or capability (`is`, `has`, `can`, `should`); do not rename established component props such as `loading` or `disabled`.
+- Name callback props `onXxx` and local handlers `handleXxx`. Boolean names communicate state, existence or capability (`is`, `has`, `can`, `should`); do not rename established component props such as `disabled`.
 - Use SCREAMING_SNAKE_CASE for static constants; `const` alone does not make a local value a static constant. Schema names follow active project conventions.
 - Use `<ComponentName>Props` for two or more props or a structured/callback-heavy prop. Keep hooks before early returns, related declarations together, and blank lines between independent functions/types. Follow the local formatter.
 - Prefer concrete names that describe domain responsibility over `Wrapper`, `Content`, `processData` or `getValue`. Preserve existing public DTO/enumeration names and domain terms. Prefer `type` for new local shapes; use `interface` where extension or a public contract warrants it.

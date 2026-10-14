@@ -249,7 +249,7 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
             )}
           >
             {inlineLabel ? (
-              <span className="text-muted-foreground shrink-0 font-normal whitespace-nowrap">
+              <span className="text-foreground shrink-0 text-sm leading-none font-medium whitespace-nowrap select-none">
                 {inlineLabel}:
               </span>
             ) : null}

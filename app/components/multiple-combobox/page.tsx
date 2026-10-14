@@ -17,6 +17,7 @@ import { MultipleCombobox } from '@/components/ui/multiple-combobox';
 import {
   MultipleComboboxAutoResizeDemo,
   MultipleComboboxBasicDemo,
+  MultipleComboboxInlineLabelDemo,
   MultipleComboboxLimitTagsDemo,
   MultipleComboboxSelectedCodeOnlyDemo,
   MultipleComboboxWithCodeDemo,
@@ -38,6 +39,7 @@ const multipleComboboxProps = [
   { name: 'onChange', type: '(values, options) => void', defaultValue: '--' },
   { name: 'placeholder', type: 'string', defaultValue: "'Chọn...'" },
   { name: 'label', type: 'string | ReactNode', defaultValue: '--' },
+  { name: 'inlineLabel', type: 'string | ReactNode', defaultValue: '--' },
   { name: 'required', type: 'boolean', defaultValue: 'false' },
   { name: 'disabled', type: 'boolean', defaultValue: 'false' },
   { name: 'error', type: 'string', defaultValue: '--' },
@@ -61,6 +63,18 @@ const multipleComboboxProps = [
 ];
 
 const multipleUsageSamples = [
+  {
+    id: 'inline-label',
+    label: 'Inline label',
+    preview: <MultipleComboboxInlineLabelDemo />,
+    code: `<MultipleCombobox
+  inlineLabel="Phòng ban"
+  options={departments}
+  value={values}
+  onChange={(v) => setValues(v)}
+  placeholder="Chọn phòng ban..."
+/>`,
+  },
   {
     id: 'with-code',
     label: 'Hiện mã',
