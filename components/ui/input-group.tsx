@@ -32,6 +32,8 @@ const inputGroupVariants = cva('', {
 });
 
 const inputGroupRingStyles = {
+  focus:
+    'has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot=input-group-control]:focus-visible]:ring-3',
   invalid:
     'aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40',
 } as const;
@@ -45,6 +47,7 @@ type InputGroupProps = React.ComponentProps<'div'> & {
   errorClassName?: React.ComponentProps<'p'>['className'];
   error?: string;
   formSize?: FormSize;
+  focusStyles?: boolean;
 };
 
 function InputGroup({
@@ -55,6 +58,7 @@ function InputGroup({
   errorClassName,
   error,
   formSize = 'md',
+  focusStyles = true,
   ...props
 }: InputGroupProps) {
   return (
@@ -72,8 +76,9 @@ function InputGroup({
           data-slot="input-group"
           role="group"
           className={cn(
-            'group/input-group has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:border-destructive has-[[data-slot][aria-invalid=true]]:ring-destructive/20 dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 relative flex w-full min-w-0 items-center rounded-md border shadow-xs transition-[color,box-shadow] outline-none in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col has-[>textarea]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5',
+            'group/input-group has-[[data-slot][aria-invalid=true]]:border-destructive has-[[data-slot][aria-invalid=true]]:ring-destructive/20 dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 relative flex w-full min-w-0 items-center rounded-md border shadow-xs transition-[color,box-shadow] outline-none has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col has-[>textarea]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5',
             formControlSurface,
+            focusStyles && inputGroupRingStyles.focus,
             inputGroupRingStyles.invalid,
             inputGroupVariants({ formSize }),
             className,

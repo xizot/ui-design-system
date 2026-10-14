@@ -136,7 +136,7 @@ function DrawerPanelContent({
           </div>
         )}
 
-        <ScrollArea className="min-h-0 flex-1 overflow-y-auto">
+        <ScrollArea className="min-h-0 flex-1">
           <div className={bodyVariants({ size })}>{body}</div>
         </ScrollArea>
 

@@ -587,18 +587,19 @@ function LazyMultipleCombobox<
 
         {/* Dropdown */}
         <ComboboxContent anchor={anchorRef}>
-          <div className="px-2 pt-3">
+          <div className="px-2">
             <ComboboxInput
               id={inputId}
               placeholder={searchPlaceholder}
-              showClear={false}
+              showClear
+              onClear={() => setSearchQuery('')}
               formSize={getSearchInputSize(size)}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 
-          <ComboboxList className="px-2">
+          <ComboboxList>
             <ComboboxEmpty>
               {fetchError ? (
                 <div className="text-destructive">{fetchError}</div>

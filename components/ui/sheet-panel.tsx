@@ -42,7 +42,7 @@ const headerVariants = cva('shrink-0', {
   },
 });
 
-const bodyVariants = cva('min-h-0 flex-1 overflow-y-auto', {
+const bodyVariants = cva('', {
   variants: {
     size: {
       sm: 'p-4',
@@ -136,7 +136,7 @@ function SheetPanelContent({
           </div>
         )}
 
-        <ScrollArea className="min-h-0 flex-1 overflow-y-auto">
+        <ScrollArea className="min-h-0 flex-1">
           <div className={bodyVariants({ size })}>{body}</div>
         </ScrollArea>
 

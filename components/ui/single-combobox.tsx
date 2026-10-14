@@ -279,19 +279,20 @@ function SingleCombobox<T extends ComboboxBaseOption>({
         </div>
 
         {/* Search input lives inside the popup */}
-        <ComboboxContent anchor={anchorRef} className="min-w-50! py-2">
+        <ComboboxContent anchor={anchorRef}>
           <div className="shrink-0 px-2">
             <ComboboxInput
               id={inputId}
               placeholder={searchPlaceholder}
               showClear={true}
+              onClear={() => setSearchQuery('')}
               formSize={getSearchInputSize(size)}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 
-          <ComboboxList className="px-2 py-0">
+          <ComboboxList>
             <ComboboxEmpty>{emptyMessage}</ComboboxEmpty>
             {filteredOptions.map((option) => (
               <ComboboxItem
