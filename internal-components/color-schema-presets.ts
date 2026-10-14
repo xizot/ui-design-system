@@ -1,5 +1,3 @@
-import { STYLE_PRESET_CSS } from '@/internal-components/style-preset-css';
-
 const COLOR_SCHEMAS = [
   {
     id: 'palette-01',
@@ -1805,28 +1803,17 @@ const COLOR_SCHEMAS = [
 
 type ColorSchemaId = (typeof COLOR_SCHEMAS)[number]['id'];
 
-function replaceBlock(css: string, selector: ':root' | '.dark', variables: Record<string, string>) {
-  const nextBlock = `${selector} {
-${Object.entries(variables)
-  .map(([name, value]) => `  ${name}: ${value};`)
-  .join('\n')}
-}`;
-  const pattern =
-    selector === ':root'
-      ? /:root \{[\s\S]*?\n\}\n\n\.dark \{/
-      : /\.dark \{[\s\S]*?\n\}\n\n@layer base/;
-  const replacement =
-    selector === ':root' ? `${nextBlock}\n\n.dark {` : `${nextBlock}\n\n@layer base`;
-  return css.replace(pattern, replacement);
+function formatColorTokens(selector: ':root' | '.dark', variables: Record<string, string>) {
+  return `${selector} {\n${Object.entries(variables)
+    .map(([name, value]) => `  ${name}: ${value};`)
+    .join('\n')}\n}`;
 }
 
 const COLOR_SCHEMA_CSS = Object.fromEntries(
-  COLOR_SCHEMAS.map((schema) => {
-    let css: string = STYLE_PRESET_CSS.default;
-    css = replaceBlock(css, ':root', schema.light);
-    css = replaceBlock(css, '.dark', schema.dark);
-    return [schema.id, css];
-  }),
+  COLOR_SCHEMAS.map((schema) => [
+    schema.id,
+    `${formatColorTokens(':root', schema.light)}\n\n${formatColorTokens('.dark', schema.dark)}`,
+  ]),
 ) as Record<ColorSchemaId, string>;
 
 const COLOR_SCHEMA_IDS = COLOR_SCHEMAS.map((schema) => schema.id);

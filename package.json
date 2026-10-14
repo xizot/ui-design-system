@@ -8,6 +8,7 @@
   "files": [
     "bin",
     "app/globals.css",
+    "app/theme.css",
     "components",
     "constants",
     ".agents/skills",

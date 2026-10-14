@@ -5,7 +5,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 const readline = require('node:readline');
 const ts = require('typescript');
-const { planProject, setJson, slash } = require('./project.cjs');
+const { planProject, setJson } = require('./project.cjs');
+const { installStyles } = require('./styles.cjs');
 
 const packageRoot = path.resolve(__dirname, '..');
 const projectRoot = process.cwd();
@@ -597,7 +598,7 @@ async function main() {
     fs.writeFileSync(target, content);
   }
   configureConsumerChecks();
-  installStyles();
+  installStyles(packageRoot, projectRoot, projectPlan);
   printSummary();
   console.log(`Import components from '${projectPlan.importPrefix}/components/ui/button'.`);
 }
@@ -627,33 +628,6 @@ function configureConsumerChecks() {
     const nextLint = `${lint} --ignore-pattern "${ignoredDirectory}**"`;
     fs.writeFileSync(packagePath, setJson(packageText, ['scripts', 'lint'], nextLint));
   }
-}
-
-function installStyles() {
-  const themeName = `${installRootName}/styles.css`;
-  const themeTarget = path.join(projectRoot, themeName);
-  // Keep application CSS intact; theme lives with the copied components.
-  if (!fs.existsSync(themeTarget))
-    fs.copyFileSync(path.join(packageRoot, 'app/globals.css'), themeTarget);
-  const entry = projectPlan.cssTarget || projectPlan.entry;
-  const entryPath = path.join(projectRoot, entry);
-  let relative = slash(path.relative(path.dirname(entryPath), themeTarget));
-  if (!relative.startsWith('.')) relative = './' + relative;
-  const original = fs.readFileSync(entryPath, 'utf8');
-  if (original.includes(relative)) return;
-  const statement = projectPlan.cssTarget ? `@import '${relative}';` : `import '${relative}';`;
-  let position = 0;
-  if (!projectPlan.cssTarget) {
-    const ast = ts.createSourceFile(entry, original, ts.ScriptTarget.Latest, true);
-    for (const node of ast.statements) {
-      if (!ts.isExpressionStatement(node) || !ts.isStringLiteral(node.expression)) break;
-      position = node.getEnd();
-    }
-  } else if (/^@charset\s/.test(original)) position = original.indexOf(';') + 1;
-  fs.writeFileSync(
-    entryPath,
-    `${original.slice(0, position)}\n${statement}\n${original.slice(position)}`,
-  );
 }
 
 module.exports = { runtimeDependencies, main };

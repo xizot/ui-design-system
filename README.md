@@ -96,7 +96,27 @@ The installer uses a guided flow:
 3. 🤖 Agent rules
    It installs the complete `.agents/skills` pack and `.agents/rules` and creates or updates the target project's `AGENTS.md` with the rules from `.agents/skills/xizot-design-system/references/agent-rules.md`.
 4. 🎨 Project files
-   It merges framework configuration, stores the theme in the installed `styles.css`, and imports it from application CSS (or the app entry). Existing application CSS and customized installed theme files are retained.
+   It merges framework configuration and imports `design-system/styles.css` followed by the application-owned `styles/theme.css` from application CSS (or the app entry). CRA uses these paths under `src/`. The installer refreshes managed base styles and fallback colors, but never overwrites `styles/theme.css`, even with `--overwrite`. Existing legacy `design-system/styles.css` files are retained; their new theme file starts empty so existing colors are preserved.
+
+### Customize colors
+
+Edit `styles/theme.css` (`src/styles/theme.css` for CRA). Fresh installs include all default color tokens in `:root` and `.dark`; replace those values with your palette. Tailwind mappings and base styles stay in `design-system/styles.css`. Missing tokens fall back to the managed defaults on fresh installs.
+
+To switch palettes, add selectors in the same theme file:
+
+```css
+:root[data-color-scheme='blue'] {
+  --primary: oklch(0.55 0.2 250);
+  --primary-foreground: oklch(0.99 0 0);
+}
+
+:root.dark[data-color-scheme='blue'] {
+  --primary: oklch(0.75 0.14 250);
+  --primary-foreground: oklch(0.2 0.04 250);
+}
+```
+
+Set `document.documentElement.dataset.colorScheme = 'blue'` to activate it; remove the attribute to restore the default palette. The `.dark` class continues to control light/dark mode. Palette selection and persistence belong to your application.
 
 For automation, `init --yes` installs missing packages and skips existing component files. Add `--overwrite` explicitly to refresh component source. Repeating setup does not duplicate config wrappers or CSS imports. `--mode source` is accepted for compatibility; package mode is not implemented by this CLI.
 
