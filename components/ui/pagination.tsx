@@ -26,8 +26,8 @@ function PaginationContent({ className, ...props }: React.ComponentProps<'ul'>) 
   );
 }
 
-function PaginationItem({ ...props }: React.ComponentProps<'li'>) {
-  return <li data-slot="pagination-item shrink-0" {...props} />;
+function PaginationItem({ className, ...props }: React.ComponentProps<'li'>) {
+  return <li data-slot="pagination-item" className={cn('shrink-0', className)} {...props} />;
 }
 
 type PaginationLinkProps = {
@@ -64,7 +64,7 @@ function PaginationPrevious({
       aria-label="Go to previous page"
       size="default"
       className={cn(
-        'w-auto min-w-7 gap-1 px-1.5 @xs/pagination:min-w-8 @xs/pagination:px-2',
+        'w-auto min-w-7 gap-1 px-1.5 @xs/pagination:w-auto @xs/pagination:min-w-8 @xs/pagination:px-2',
         className,
       )}
       {...props}
@@ -85,7 +85,7 @@ function PaginationNext({
       aria-label="Go to next page"
       size="default"
       className={cn(
-        'w-auto min-w-7 gap-1 px-1.5 @xs/pagination:min-w-8 @xs/pagination:px-2',
+        'w-auto min-w-7 gap-1 px-1.5 @xs/pagination:w-auto @xs/pagination:min-w-8 @xs/pagination:px-2',
         className,
       )}
       {...props}
