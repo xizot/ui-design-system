@@ -89,13 +89,19 @@ function ComboboxInput({
   return (
     <InputGroup className={cn('w-auto', className)} formSize={formSize} focusStyles={false}>
       <ComboboxPrimitive.Input
-        render={<InputGroupInput disabled={disabled} size={formSize} className="outline-none focus-visible:outline-none" />}
+        render={
+          <InputGroupInput
+            disabled={disabled}
+            size={formSize}
+            className="outline-none focus-visible:outline-none"
+          />
+        }
         {...props}
       />
       <InputGroupAddon>
         <Search className={comboboxIconVariants({ size: formSize })} />
       </InputGroupAddon>
-      {showClear && Boolean(props.value) && (
+      {showClear && (!onClear || Boolean(props.value)) && (
         <InputGroupAddon align="inline-end">
           {onClear ? (
             <button
@@ -149,7 +155,7 @@ function ComboboxContent({
           data-slot="combobox-content"
           data-chips={!!anchor}
           className={cn(
-            'group/combobox-content bg-popover text-popover-foreground ring-foreground/10 data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 relative flex max-h-(--available-height) w-(--anchor-width) min-w-50! flex-col max-w-(--available-width) origin-(--transform-origin) overflow-hidden rounded-md py-2 shadow-md ring-1 duration-100 *:data-[slot=input-group]:shadow-none',
+            'group/combobox-content bg-popover text-popover-foreground ring-foreground/10 data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 relative flex max-h-(--available-height) w-(--anchor-width) max-w-(--available-width) min-w-50! origin-(--transform-origin) flex-col overflow-hidden rounded-md py-2 shadow-md ring-1 duration-100 *:data-[slot=input-group]:shadow-none',
             className,
           )}
           {...props}
@@ -169,7 +175,7 @@ function ComboboxList({ className, ...props }: ComboboxPrimitive.List.Props) {
         render={<ComboboxPrimitive.List {...props} />}
         data-slot="combobox-list"
         className={cn(
-          'min-h-0 max-h-[min(calc(--spacing(72)---spacing(9)),calc(var(--available-height)---spacing(9)))] scroll-py-1 overscroll-contain px-2 py-0 outline-none data-empty:p-0',
+          'max-h-[min(calc(--spacing(72)---spacing(9)),calc(var(--available-height)---spacing(9)))] min-h-0 scroll-py-1 overscroll-contain px-2 py-0 outline-none data-empty:p-0',
           className,
         )}
       />

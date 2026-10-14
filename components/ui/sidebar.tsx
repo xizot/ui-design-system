@@ -348,10 +348,7 @@ function SidebarContent({ className, children, ...props }: React.ComponentProps<
     <ScrollArea
       data-slot="sidebar-content"
       data-sidebar="content"
-      className={cn(
-        'min-h-0 flex-1 group-data-[collapsible=icon]:overflow-hidden',
-        className,
-      )}
+      className={cn('min-h-0 flex-1 group-data-[collapsible=icon]:overflow-hidden', className)}
       {...props}
     >
       <div className="flex flex-col gap-2">{children}</div>

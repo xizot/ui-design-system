@@ -56,12 +56,14 @@ function Button({
   children,
   className,
   loading = false,
+  type = 'button',
   variant = 'default',
   size = 'default',
   ...props
 }: ButtonProps) {
   return (
     <ButtonPrimitive
+      type={type}
       data-slot="button"
       aria-busy={props['aria-busy'] ?? (loading || undefined)}
       className={cn(buttonVariants({ variant, size, className }))}

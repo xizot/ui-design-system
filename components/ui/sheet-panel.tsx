@@ -85,10 +85,7 @@ type SheetPanelContentProps = {
 const SheetPanelSizeContext =
   React.createContext<VariantProps<typeof panelVariants>['size']>(undefined);
 
-function SheetPanelFooter({
-  className,
-  ...props
-}: React.ComponentProps<'div'>) {
+function SheetPanelFooter({ className, ...props }: React.ComponentProps<'div'>) {
   const size = React.useContext(SheetPanelSizeContext);
 
   return (
@@ -128,11 +125,7 @@ function SheetPanelContent({
         {hasHeader && (
           <div className={headerVariants({ size, className: 'pb-0' })}>
             {title && <SheetTitle>{title}</SheetTitle>}
-            {description && (
-              <SheetDescription className="mt-1.5">
-                {description}
-              </SheetDescription>
-            )}
+            {description && <SheetDescription className="mt-1.5">{description}</SheetDescription>}
           </div>
         )}
 
@@ -145,20 +138,12 @@ function SheetPanelContent({
             <SheetPanelFooter>
               <SheetClose
                 render={
-                  <Button
-                    variant="secondary"
-                    size={buttonSize}
-                    className="min-w-25"
-                  >
+                  <Button variant="secondary" size={buttonSize} className="min-w-25">
                     {cancelText}
                   </Button>
                 }
               />
-              <Button
-                size={buttonSize}
-                className="min-w-25"
-                onClick={onConfirm}
-              >
+              <Button size={buttonSize} className="min-w-25" onClick={onConfirm}>
                 {confirmText}
               </Button>
             </SheetPanelFooter>
@@ -172,11 +157,5 @@ const SheetPanel = Sheet;
 const SheetPanelTrigger = SheetTrigger;
 const SheetPanelClose = SheetClose;
 
-export {
-  SheetPanel,
-  SheetPanelClose,
-  SheetPanelContent,
-  SheetPanelFooter,
-  SheetPanelTrigger,
-};
+export { SheetPanel, SheetPanelClose, SheetPanelContent, SheetPanelFooter, SheetPanelTrigger };
 export type { SheetPanelContentProps };

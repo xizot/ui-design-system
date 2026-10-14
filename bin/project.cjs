@@ -101,7 +101,7 @@ function dependencyPlan(root, pkg, required, dev = false) {
       react: '>=19.0.0 <20',
       'react-dom': '>=19.0.0 <20',
       'react-is': '>=19.0.0 <20',
-      typescript: '>=5.5.0 <6',
+      typescript: '>=5.5.0 <7',
       tailwindcss: '^4.0.0',
       '@tailwindcss/postcss': '^4.0.0',
       '@types/react': '^19.0.0',

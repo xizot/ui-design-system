@@ -42,7 +42,6 @@ export const guides = [
   { slug: 'label', name: 'Label', group: 'ui' as const },
   { slug: 'menubar', name: 'Menubar', group: 'ui' as const },
   { slug: 'message', name: 'Message', group: 'ui' as const },
-  { slug: 'native-select', name: 'Native Select', group: 'ui' as const },
   { slug: 'navigation-menu', name: 'Navigation Menu', group: 'ui' as const },
   { slug: 'number-input', name: 'Number Input', group: 'ui' as const },
   { slug: 'pagination', name: 'Pagination', group: 'ui' as const },
@@ -51,7 +50,6 @@ export const guides = [
   { slug: 'radio-group', name: 'Radio Group', group: 'ui' as const },
   { slug: 'resizable', name: 'Resizable', group: 'ui' as const },
   { slug: 'scroll-area', name: 'Scroll Area', group: 'ui' as const },
-  { slug: 'select', name: 'Select', group: 'ui' as const },
   { slug: 'separator', name: 'Separator', group: 'ui' as const },
   { slug: 'sheet-panel', name: 'Sheet Panel', group: 'ui' as const },
   { slug: 'drawer-panel', name: 'Drawer Panel', group: 'ui' as const },
@@ -81,7 +79,6 @@ export const guides = [
   { slug: 'rhf-radio-group', name: 'RHF Radio Group', group: 'rhf' as const },
   { slug: 'rhf-single-combobox', name: 'RHF Single Combobox', group: 'rhf' as const },
   { slug: 'rhf-switch', name: 'RHF Switch', group: 'rhf' as const },
-  { slug: 'rhf-select', name: 'RHF Select', group: 'rhf' as const },
   { slug: 'rhf-textarea', name: 'RHF Textarea', group: 'rhf' as const },
   { slug: 'rhf-time-picker', name: 'RHF Time Picker', group: 'rhf' as const },
 ] as const;

@@ -85,10 +85,7 @@ type DrawerPanelContentProps = {
 const DrawerPanelSizeContext =
   React.createContext<VariantProps<typeof panelVariants>['size']>(undefined);
 
-function DrawerPanelFooter({
-  className,
-  ...props
-}: React.ComponentProps<'div'>) {
+function DrawerPanelFooter({ className, ...props }: React.ComponentProps<'div'>) {
   const size = React.useContext(DrawerPanelSizeContext);
 
   return (
@@ -128,11 +125,7 @@ function DrawerPanelContent({
         {hasHeader && (
           <div className={headerVariants({ size, className: 'pb-0' })}>
             {title && <DrawerTitle>{title}</DrawerTitle>}
-            {description && (
-              <DrawerDescription className="mt-1.5">
-                {description}
-              </DrawerDescription>
-            )}
+            {description && <DrawerDescription className="mt-1.5">{description}</DrawerDescription>}
           </div>
         )}
 
@@ -144,19 +137,11 @@ function DrawerPanelContent({
           (footer ?? (
             <DrawerPanelFooter>
               <DrawerClose asChild>
-                <Button
-                  variant="secondary"
-                  size={buttonSize}
-                  className="min-w-25"
-                >
+                <Button variant="secondary" size={buttonSize} className="min-w-25">
                   {cancelText}
                 </Button>
               </DrawerClose>
-              <Button
-                size={buttonSize}
-                className="min-w-25"
-                onClick={onConfirm}
-              >
+              <Button size={buttonSize} className="min-w-25" onClick={onConfirm}>
                 {confirmText}
               </Button>
             </DrawerPanelFooter>
@@ -164,11 +149,7 @@ function DrawerPanelContent({
 
         {showCloseButton && (
           <DrawerClose data-slot="drawer-close" asChild>
-            <Button
-              className="absolute top-4 right-4 h-fit w-fit p-0"
-              variant="ghost"
-              size="icon"
-            >
+            <Button className="absolute top-4 right-4 h-fit w-fit p-0" variant="ghost" size="icon">
               <XIcon className="size-5" />
               <span className="sr-only">Close</span>
             </Button>
@@ -183,11 +164,5 @@ const DrawerPanel = Drawer;
 const DrawerPanelTrigger = DrawerTrigger;
 const DrawerPanelClose = DrawerClose;
 
-export {
-  DrawerPanel,
-  DrawerPanelClose,
-  DrawerPanelContent,
-  DrawerPanelFooter,
-  DrawerPanelTrigger,
-};
+export { DrawerPanel, DrawerPanelClose, DrawerPanelContent, DrawerPanelFooter, DrawerPanelTrigger };
 export type { DrawerPanelContentProps };
