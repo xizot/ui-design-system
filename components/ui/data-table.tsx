@@ -39,15 +39,7 @@ import {
 } from './dropdown-menu';
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from './empty';
 import { InputGroup, InputGroupAddon, InputGroupInput } from './input-group';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from './pagination';
+import { PaginationControl } from './pagination-control';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
 import type { ComboboxBaseOption } from './single-combobox';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './table';
@@ -166,9 +158,9 @@ export function DataColumnHeader<TData>({
           </PopoverTrigger>
           <PopoverContent className="w-60 gap-0 p-0" align="center" sideOffset={8}>
             <div className="px-2 pt-2">
-              <InputGroup>
+              <InputGroup formSize="xs">
                 <InputGroupAddon>
-                  <Search className="size-5" />
+                  <Search className="size-4" />
                 </InputGroupAddon>
                 <InputGroupInput
                   data-testid={filterSearchInputTestId}
@@ -244,22 +236,6 @@ export function DataColumnHeader<TData>({
       )}
     </div>
   );
-}
-
-function getPageRange(currentPage: number, pageCount: number): (number | 'ellipsis')[] {
-  if (pageCount <= 7) return Array.from({ length: pageCount }, (_, i) => i);
-
-  const delta = 1;
-  const left = Math.max(1, currentPage - delta);
-  const right = Math.min(pageCount - 2, currentPage + delta);
-  const result: (number | 'ellipsis')[] = [0];
-
-  if (left > 1) result.push('ellipsis');
-  for (let i = left; i <= right; i++) result.push(i);
-  if (right < pageCount - 2) result.push('ellipsis');
-  result.push(pageCount - 1);
-
-  return result;
 }
 
 interface DataTableProps<TData> {
@@ -357,10 +333,16 @@ export function DataTable<TData>({
   });
 
   return (
-    <div data-testid={testId} className="relative flex h-full min-h-0 w-full flex-col gap-3">
-      <div className="relative min-h-0" aria-busy={loading ? true : undefined}>
+    <div
+      data-testid={testId}
+      className="relative flex h-full min-h-0 w-full min-w-0 flex-col gap-3"
+    >
+      <div
+        className="relative min-h-0 min-w-0 flex-1 overflow-hidden"
+        aria-busy={loading ? true : undefined}
+      >
         <Table containerClassName={cn('h-full', containerClassName)}>
-          <TableHeader>
+          <TableHeader className="z-30">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
@@ -423,48 +405,18 @@ export function DataTable<TData>({
       </div>
 
       {hasValue(totalCount) && totalCount > DEFAULT_PAGE_SIZE_OPTIONS[0] && (
-        <div className="mt-auto flex items-center justify-end gap-4">
-          <Pagination data-testid={testId ? `${testId}-pagination` : undefined}>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  data-testid={testId ? `${testId}-pagination-prev` : undefined}
-                  text=""
-                  size="sm"
-                  onClick={() => table.previousPage()}
-                  className={!table.getCanPreviousPage() ? 'pointer-events-none opacity-50' : ''}
-                />
-              </PaginationItem>
-              {getPageRange(table.getState().pagination.pageIndex, table.getPageCount()).map(
-                (page, i) =>
-                  page === 'ellipsis' ? (
-                    <PaginationItem key={`ellipsis-${i}`}>
-                      <PaginationEllipsis />
-                    </PaginationItem>
-                  ) : (
-                    <PaginationItem key={page}>
-                      <PaginationLink
-                        data-testid={testId ? `${testId}-pagination-page-${page + 1}` : undefined}
-                        size="sm"
-                        isActive={table.getState().pagination.pageIndex === page}
-                        onClick={() => table.setPageIndex(page)}
-                      >
-                        {page + 1}
-                      </PaginationLink>
-                    </PaginationItem>
-                  ),
-              )}
-              <PaginationItem>
-                <PaginationNext
-                  data-testid={testId ? `${testId}-pagination-next` : undefined}
-                  text=""
-                  size="sm"
-                  onClick={() => table.nextPage()}
-                  className={!table.getCanNextPage() ? 'pointer-events-none opacity-50' : ''}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+        <div className="flex min-w-0 shrink-0 items-center justify-end gap-2">
+          <PaginationControl
+            className="justify-end"
+            data-testid={testId ? `${testId}-pagination` : undefined}
+            totalCount={totalCount}
+            pageSize={table.getState().pagination.pageSize}
+            pageIndex={table.getState().pagination.pageIndex}
+            onPageChange={(pageIndex) => table.setPageIndex(pageIndex)}
+            disabled={loading}
+            previousText=""
+            nextText=""
+          />
           <DropdownMenu>
             <DropdownMenuTrigger
               render={

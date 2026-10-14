@@ -153,3 +153,5 @@ Local and lazy comboboxes require options extending `ComboboxBaseOption` with `i
 ### Date and time values
 
 `DatePicker` emits a string; `DateRangePicker` emits a range of `Date` objects; `TimePicker` emits a `TimeValue` object, while `RHFTimePicker` stores a string. Pick one representation for the form/API boundary and convert there. Use `locale`, disabled-date rules, and clear behavior from the real picker contract rather than guessing from a calendar example.
+
+`components/ui/pagination-control.tsx` exports `PaginationControl` and `PaginationControlProps`: controlled standalone pagination from `totalCount`, `pageSize`, zero-based `pageIndex`, and `onPageChange`. Supports `siblingCount`, `disabled`, `previousText`, and `nextText`. Empty totals render nothing; out-of-range indexes display the last page without changing parent state.

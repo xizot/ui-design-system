@@ -1,8 +1,10 @@
 'use client';
 
 import * as React from 'react';
+import { ScrollArea as ScrollAreaPrimitive } from '@base-ui/react/scroll-area';
 
 import { cn } from '../../lib/utils';
+import { ScrollBar } from './scroll-area';
 
 function Table({
   className,
@@ -10,16 +12,27 @@ function Table({
   ...props
 }: React.ComponentProps<'table'> & { containerClassName?: string }) {
   return (
-    <div
+    <ScrollAreaPrimitive.Root
       data-slot="table-container"
-      className={cn('table-scrollbar relative w-full overflow-auto', containerClassName)}
+      className="relative h-full max-h-full min-h-0 w-full max-w-full min-w-0 pr-2.5 pb-2.5"
     >
-      <table
-        data-slot="table"
-        className={cn('w-full caption-bottom text-sm', className)}
-        {...props}
-      />
-    </div>
+      <ScrollAreaPrimitive.Viewport
+        data-slot="table-viewport"
+        className={cn(
+          'focus-visible:ring-ring relative min-h-0 w-full min-w-0 outline-none focus-visible:ring-2',
+          containerClassName,
+        )}
+      >
+        <table
+          data-slot="table"
+          className={cn('w-full caption-bottom text-sm', className)}
+          {...props}
+        />
+      </ScrollAreaPrimitive.Viewport>
+      <ScrollBar className="z-40" />
+      <ScrollBar orientation="horizontal" className="z-40" />
+      <ScrollAreaPrimitive.Corner />
+    </ScrollAreaPrimitive.Root>
   );
 }
 

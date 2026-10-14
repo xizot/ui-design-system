@@ -1,6 +1,12 @@
 import * as React from 'react';
 
-import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from 'lucide-react';
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ChevronsLeftIcon,
+  ChevronsRightIcon,
+  MoreHorizontalIcon,
+} from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Button } from './button';
 
@@ -64,12 +70,14 @@ function PaginationPrevious({
       aria-label="Go to previous page"
       size="default"
       className={cn(
-        'w-auto min-w-7 gap-1 px-1.5 @xs/pagination:w-auto @xs/pagination:min-w-8 @xs/pagination:px-2',
+        text
+          ? 'gap-0 px-0 @xs/pagination:w-auto @xs/pagination:min-w-8 @xs/pagination:gap-1 @xs/pagination:px-2'
+          : 'gap-0 px-0',
         className,
       )}
       {...props}
     >
-      <ChevronLeftIcon data-icon="inline-start" />
+      <ChevronLeftIcon />
       {text && <span className="hidden @xs/pagination:block">{text}</span>}
     </PaginationLink>
   );
@@ -85,18 +93,39 @@ function PaginationNext({
       aria-label="Go to next page"
       size="default"
       className={cn(
-        'w-auto min-w-7 gap-1 px-1.5 @xs/pagination:w-auto @xs/pagination:min-w-8 @xs/pagination:px-2',
+        text
+          ? 'gap-0 px-0 @xs/pagination:w-auto @xs/pagination:min-w-8 @xs/pagination:gap-1 @xs/pagination:px-2'
+          : 'gap-0 px-0',
         className,
       )}
       {...props}
     >
       {text && <span className="hidden @xs/pagination:block">{text}</span>}
-      <ChevronRightIcon data-icon="inline-end" />
+      <ChevronRightIcon />
     </PaginationLink>
   );
 }
 
-function PaginationEllipsis({ className, ...props }: React.ComponentProps<'span'>) {
+type PaginationEllipsisProps =
+  | (React.ComponentProps<'span'> & { direction?: undefined })
+  | (React.ComponentProps<'button'> & { direction: 'previous' | 'next' });
+
+function PaginationEllipsis({ className, ...props }: PaginationEllipsisProps) {
+  if (props.direction) {
+    const { direction, ...buttonProps } = props;
+    const Icon = direction === 'previous' ? ChevronsLeftIcon : ChevronsRightIcon;
+    return (
+      <PaginationLink
+        aria-label={direction === 'previous' ? 'Go back 2 pages' : 'Go forward 2 pages'}
+        {...buttonProps}
+        data-slot="pagination-ellipsis"
+        className={cn('group/pagination-jump', className)}
+      >
+        <MoreHorizontalIcon className="group-hover/pagination-jump:hidden group-focus-visible/pagination-jump:hidden" />
+        <Icon className="hidden group-hover/pagination-jump:block group-focus-visible/pagination-jump:block" />
+      </PaginationLink>
+    );
+  }
   return (
     <span
       aria-hidden

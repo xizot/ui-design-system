@@ -279,7 +279,12 @@ function BasicTableDemo() {
   return (
     <div className="h-full w-full">
       <DataTable
-        data={payments}
+        containerClassName="max-h-72"
+        totalCount={payments.length}
+        data={payments.slice(
+          pagination.pageIndex * pagination.pageSize,
+          (pagination.pageIndex + 1) * pagination.pageSize,
+        )}
         columns={basicColumns}
         sorting={sorting}
         onSortingChange={setSorting}
@@ -304,8 +309,8 @@ function SelectionTableDemo() {
   const selectedCount = Object.keys(rowSelection).length;
 
   return (
-    <div className="h-100 h-full w-full space-y-4">
-      <div className="flex items-center justify-between">
+    <div className="flex h-full min-h-0 w-full min-w-0 flex-col gap-4">
+      <div className="flex shrink-0 items-center justify-between gap-2">
         <div className="text-muted-foreground text-sm">
           {selectedCount > 0 ? (
             <span>
@@ -324,18 +329,24 @@ function SelectionTableDemo() {
           </button>
         )}
       </div>
-      <DataTable
-        data={payments}
-        columns={basicColumns}
-        sorting={sorting}
-        onSortingChange={setSorting}
-        columnFilters={columnFilters}
-        onColumnFiltersChange={setColumnFilters}
-        pagination={pagination}
-        onPaginationChange={setPagination}
-        rowSelection={rowSelection}
-        onRowSelectionChange={setRowSelection}
-      />
+      <div className="min-h-0 min-w-0 flex-1">
+        <DataTable
+          totalCount={payments.length}
+          data={payments.slice(
+            pagination.pageIndex * pagination.pageSize,
+            (pagination.pageIndex + 1) * pagination.pageSize,
+          )}
+          columns={basicColumns}
+          sorting={sorting}
+          onSortingChange={setSorting}
+          columnFilters={columnFilters}
+          onColumnFiltersChange={setColumnFilters}
+          pagination={pagination}
+          onPaginationChange={setPagination}
+          rowSelection={rowSelection}
+          onRowSelectionChange={setRowSelection}
+        />
+      </div>
     </div>
   );
 }
@@ -351,7 +362,12 @@ function ActionTableDemo() {
   return (
     <div className="h-full w-full">
       <DataTable
-        data={payments}
+        containerClassName="max-h-72"
+        totalCount={payments.length}
+        data={payments.slice(
+          pagination.pageIndex * pagination.pageSize,
+          (pagination.pageIndex + 1) * pagination.pageSize,
+        )}
         columns={actionColumns}
         sorting={sorting}
         onSortingChange={setSorting}
@@ -425,7 +441,12 @@ function UrlFilterTableDemo() {
   return (
     <div className="h-full w-full">
       <DataTable
-        data={payments}
+        containerClassName="max-h-72"
+        totalCount={payments.length}
+        data={payments.slice(
+          paginationState.pageIndex * paginationState.pageSize,
+          (paginationState.pageIndex + 1) * paginationState.pageSize,
+        )}
         columns={basicColumns}
         sorting={sortingState}
         columnFilters={columnFilters}
@@ -535,28 +556,28 @@ export default function TableGuidePage() {
                   </TabsList>
                   <TabsContent value="basic">
                     <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-8">
-                      <div className="bg-background flex h-100 items-center justify-center rounded-[18px] p-6 shadow-sm">
+                      <div className="bg-background flex h-100 min-h-0 min-w-0 items-center justify-center rounded-[18px] p-6 shadow-sm">
                         <BasicTableDemo />
                       </div>
                     </div>
                   </TabsContent>
                   <TabsContent value="selection">
                     <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-8">
-                      <div className="bg-background flex items-center justify-center rounded-[18px] p-6 shadow-sm">
+                      <div className="bg-background flex h-100 min-h-0 min-w-0 items-center justify-center rounded-[18px] p-6 shadow-sm">
                         <SelectionTableDemo />
                       </div>
                     </div>
                   </TabsContent>
                   <TabsContent value="actions">
                     <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-8">
-                      <div className="bg-background flex h-100 items-center justify-center rounded-[18px] p-6 shadow-sm">
+                      <div className="bg-background flex h-100 min-h-0 min-w-0 items-center justify-center rounded-[18px] p-6 shadow-sm">
                         <ActionTableDemo />
                       </div>
                     </div>
                   </TabsContent>
                   <TabsContent value="url-filter">
                     <div className="border-border bg-muted/30 rounded-[20px] border border-dashed p-8">
-                      <div className="bg-background flex h-100 items-center justify-center rounded-[18px] p-6 shadow-sm">
+                      <div className="bg-background flex h-100 min-h-0 min-w-0 items-center justify-center rounded-[18px] p-6 shadow-sm">
                         <UrlFilterTableDemo />
                       </div>
                     </div>
