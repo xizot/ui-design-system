@@ -301,7 +301,11 @@ function MultipleCombobox<T extends ComboboxBaseOption>({
                 )}
               </>
             ) : (
-              <span className="text-muted-foreground truncate">{placeholder}</span>
+              <span
+                className={cn('truncate', inlineLabel ? 'text-foreground' : 'text-muted-foreground')}
+              >
+                {placeholder}
+              </span>
             )}
           </div>
 

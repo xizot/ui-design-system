@@ -237,7 +237,7 @@ function SingleCombobox<T extends ComboboxBaseOption>({
             className={cn(
               'pointer-events-none flex min-w-0 flex-1 items-center gap-1.5 truncate',
               comboboxPaddingVariants({ size }),
-              selectedLabel ? 'text-foreground' : 'text-muted-foreground',
+              selectedLabel || inlineLabel ? 'text-foreground' : 'text-muted-foreground',
             )}
           >
             {inlineLabel ? (
