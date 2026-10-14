@@ -1,10 +1,34 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const ts = require('typescript');
+const postcss = require('postcss');
 const { slash } = require('./project.cjs');
 const colorSchemas = require('../internal-components/color-schemas.json');
 
 const marker = '/* xizot-managed styles */\n';
+
+function splitLegacyColors(css, defaults) {
+  const colorTokens = new Set();
+  postcss.parse(defaults).walkDecls((declaration) => colorTokens.add(declaration.prop));
+  const base = postcss.parse(css);
+  const theme = postcss.root();
+  // Preserve selectors, media queries and cascade layers around color declarations.
+  function extract(container, target) {
+    for (const node of [...(container.nodes || [])]) {
+      if (node.type === 'decl' && colorTokens.has(node.prop)) {
+        target.append(node.clone());
+        node.remove();
+      } else if (node.nodes) {
+        const branch = node.clone({ nodes: [] });
+        extract(node, branch);
+        if (branch.nodes.length) target.append(branch);
+        if (!node.nodes.length) node.remove();
+      }
+    }
+  }
+  extract(base, theme);
+  return { base: base.toString(), theme: theme.toString() };
+}
 
 function relativeImport(from, to) {
   const relative = slash(path.relative(path.dirname(from), to));
@@ -57,20 +81,26 @@ function installStyles(packageRoot, projectRoot, plan, selectedTheme) {
   const previous = fs.existsSync(stylesTarget) ? fs.readFileSync(stylesTarget, 'utf8') : null;
   const legacy = previous !== null && !previous.startsWith(marker);
   const defaults = fs.readFileSync(path.join(packageRoot, 'app/theme.css'), 'utf8');
+  const migrated = legacy ? splitLegacyColors(previous, defaults) : null;
+  const themeExists = fs.existsSync(themeTarget);
+  const currentTheme = themeExists ? fs.readFileSync(themeTarget, 'utf8') : '';
+  const emptyTheme =
+    themeExists && postcss.parse(currentTheme).nodes.every((node) => node.type === 'comment');
 
   fs.mkdirSync(path.dirname(themeTarget), { recursive: true });
-  if (!fs.existsSync(themeTarget)) {
+  if (!themeExists || emptyTheme) {
     fs.writeFileSync(
       themeTarget,
       '/* Application-owned color tokens. The Xizot installer never overwrites this file. */\n' +
-        (selectedTheme ??
-          (legacy
-            ? '/* Existing colors remain in design-system/styles.css. Add color overrides here. */\n'
-            : defaults)),
+        (selectedTheme ?? (migrated?.theme || defaults)),
     );
+  } else if (migrated?.theme) {
+    // Existing overrides stay last; preserve legacy colors for tokens they omit.
+    fs.writeFileSync(themeTarget, `${migrated.theme}\n\n${currentTheme}`);
   }
 
   fs.mkdirSync(path.dirname(stylesTarget), { recursive: true });
+  if (migrated?.theme) fs.writeFileSync(stylesTarget, migrated.base);
   if (!legacy) {
     fs.writeFileSync(
       path.join(path.dirname(stylesTarget), 'theme-defaults.css'),
@@ -116,6 +146,12 @@ function installStyles(packageRoot, projectRoot, plan, selectedTheme) {
     content = `${content.slice(0, position)}\n${statement}\n${content.slice(position)}`;
   }
   fs.writeFileSync(entryPath, content);
+  console.log(
+    `Color theme: ${slash(path.relative(projectRoot, themeTarget))} (edit light/dark colors here)`,
+  );
+  console.log(
+    `Base styles: ${slash(path.relative(projectRoot, stylesTarget))} (size, typography and Tailwind mappings)`,
+  );
 }
 
 module.exports = { installStyles, selectColorSchema };

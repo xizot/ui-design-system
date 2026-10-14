@@ -96,7 +96,7 @@ The installer uses a guided flow:
 3. 🤖 Agent rules
    It installs the complete `.agents/skills` pack and `.agents/rules` and creates or updates the target project's `AGENTS.md` with the rules from `.agents/skills/xizot-design-system/references/agent-rules.md`.
 4. 🎨 Project files
-   It merges framework configuration and imports `design-system/styles.css` followed by the application-owned `styles/theme.css` from application CSS (or the app entry). CRA uses these paths under `src/`. The installer refreshes managed base styles and fallback colors, but never overwrites `styles/theme.css`, even with `--overwrite`. Existing legacy `design-system/styles.css` files are retained; their new theme file starts empty so existing colors are preserved.
+   It merges framework configuration and imports `design-system/styles.css` followed by the application-owned `styles/theme.css` from application CSS (or the app entry). CRA uses these paths under `src/`. The installer refreshes managed base styles and fallback colors, but preserves customized `styles/theme.css`, even with `--overwrite`. On legacy installs, color declarations are moved from `design-system/styles.css` into `styles/theme.css`, preserving selectors and existing theme overrides. Size, typography and other styles remain in the base file.
 
 ### Customize colors
 
