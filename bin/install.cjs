@@ -95,7 +95,7 @@ function printHelp() {
   console.log('');
   console.log('Commands:');
   console.log('  init    Install into ./design-system (CRA: ./src/design-system)');
-  console.log('          React 19, Tailwind 4; Vite, Next 15.1/16, CRA 5 with CRACO');
+  console.log('          React 19, Tailwind 4; Vite, WXT, Next 15.1/16, CRA 5 with CRACO');
   console.log('  help    Show this help message');
   console.log(
     'Options: --yes (install packages, keep existing source), --overwrite (with --yes), --mode source',

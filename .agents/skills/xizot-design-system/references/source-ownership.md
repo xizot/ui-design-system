@@ -6,6 +6,7 @@ Use the source present in the project. Confirm aliases and component contracts b
 | ------------------ | --------------------------------------------- | ------------------------------------------------------------------------- |
 | Library repository | `components/`, `hooks/`, `lib/`, `constants/` | Follow existing repository aliases                                        |
 | Next/Vite consumer | `design-system/`                              | Usually `@/design-system/components/ui/button`; confirm tsconfig/jsconfig |
+| WXT consumer       | `design-system/`                              | `~~/design-system/components/ui/button` via WXT's root alias              |
 | CRA consumer       | `src/design-system/`                          | Usually `design-system/components/ui/button`; confirm jsconfig/tsconfig   |
 
 Both TypeScript and JavaScript consumers are supported; inspect `.tsx` or generated `.jsx` as installed. Advanced demos under `internal-components/` are not copied. Do not import those from a consumer.
