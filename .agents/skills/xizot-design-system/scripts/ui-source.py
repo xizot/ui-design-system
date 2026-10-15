@@ -86,6 +86,7 @@ def review(root, paths):
         checked.append(name)
         rules = [
             ('native-control', r'<(?:input|select|textarea)\b', 'Check whether an existing Xizot/RHF wrapper owns this control; primitives may legitimately use native elements.'),
+            ('primitive-table', r'<Table\b', 'Check whether this is a fixed presentation-only comparison; application record/result tables should use DataTable.'),
             ('raw-overlay-content', r'<(?:Popover|Dialog|Sheet)Content\b', 'Application overlays should use the matching *Panel and its size. Check whether this is a reusable control with a different structure.'),
             ('unsafe-type', r'\bas\s+any\b|:\s*any\b|\bas\s+unknown\s+as\b', 'Use the actual contract; explain any unavoidable boundary cast.'),
             ('suppression', r'eslint-disable|@ts-ignore|@ts-nocheck', 'Resolve the underlying issue or document a narrow justified exception.'),

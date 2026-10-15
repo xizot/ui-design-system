@@ -15,7 +15,7 @@ For each unfamiliar control, run from the application root:
 python .agents/skills/xizot-design-system/scripts/ui-source.py --root . discover "combobox"
 ```
 
-Use the [component catalog](references/component-catalog.md) to narrow the choice, then read the matched implementation and caller. Discovery returns candidates, not prop contracts. If Python is unavailable, use `rg --files` and read the corresponding files. Never invent exports from shadcn familiarity.
+Before writing JSX, map each requested UI region to an existing Xizot composition in the [component catalog](references/component-catalog.md), then read the matched implementation and a caller. Search both the requested noun and its higher-level composition (for example, `table` and `data-table`, or `popover` and `popover-panel`). Discovery returns candidates, not a component choice or prop contract. If Python is unavailable, use `rg --files` and read the corresponding files. Never invent exports from shadcn familiarity.
 
 ## 2. Route once
 
@@ -33,7 +33,16 @@ For new/relocated application feature files, read [feature architecture](referen
 
 ## 3. Implement from evidence
 
-Use existing components and semantic tokens. For page/section headings and prose, inspect `components/ui/typography.tsx` and use its matching `Typography*` export when no owning component already provides that text role. Preserve semantic heading order. Application dialogs, sheets, drawers, and popovers use their respective `*Panel` root with `*PanelContent`; place a `*PanelFooter` directly inside the content for custom actions. Follow each component's supported size and close API; reusable controls may need lower-level content primitives. Inspect the actual API. Use `DataTable` for controlled operational tables, simple `Table` for static comparisons, and cards/lists when the content is not tabular.
+Use existing components and semantic tokens. For page/section headings and prose, inspect `components/ui/typography.tsx` and use its matching `Typography*` export when no owning component already provides that text role. Preserve semantic heading order.
+
+Choose the application composition before its lower-level primitives:
+
+| Requested UI                                                                                   | Choose                                                                             | Use the lower-level primitive when                                                                                                                                                                                                                        |
+| ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Table of application records, results, or entities, including a request that only says "table" | `DataTable`                                                                        | The rows are a fixed, presentation-only comparison with no data operations, row actions, selection, expansion, loading, or pagination; use `Table*` for that static case. Do not infer "static" merely because the request omitted sort or page controls. |
+| Application dialog, sheet, drawer, or anchored popover with content/actions                    | Matching `DialogPanel`, `SheetPanel`, `DrawerPanel`, or `PopoverPanel` composition | Building an embedded control such as a picker, menu, or reusable low-level overlay that needs a different structure.                                                                                                                                      |
+
+For `DataTable`, wire its controlled state and callbacks to the actual data owner; do not add fake sorting, filtering, or pagination just to satisfy props. For application panels, use the matching `*Panel` root with `*PanelContent`; place a `*PanelFooter` directly inside the content for custom actions. Inspect the selected source for its size, close, and state API. If the component choice differs from these defaults, identify the concrete use case that requires it.
 
 Keep business rules in features. Implement loading, empty/no-results, error and pending states only where the flow can reach them. Do not fabricate API fields, permissions, testimonials, metrics or product claims. Read [interaction checks](references/interaction-checks.md) for data, overlays, async actions or navigation changes.
 

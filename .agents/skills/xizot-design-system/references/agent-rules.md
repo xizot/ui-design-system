@@ -4,6 +4,8 @@ Before the first Xizot code change in each task, read `.agents/AGENTS.md` and al
 
 Shared source lives in `design-system/` (CRA: `src/design-system/`). Inspect the installed source and actual aliases before using props/imports. Run `python .agents/skills/xizot-design-system/scripts/ui-source.py --root . discover "button"` for unfamiliar controls, or use rg/manual inspection if Python is unavailable.
 
+Before composing UI, follow the component-choice step in [Xizot workflow](../SKILL.md): check the [component catalog](component-catalog.md), the selected source, and a nearby caller. A discovery result or a familiar primitive name does not settle which composition belongs in the application.
+
 For pages/sites, use the page-builder workflow to choose an actual page pattern, shell and visual direction. For application pages, read [feature architecture](feature-structure.md) and identify the route, feature/use case, component boundaries, state and service owner before coding. Multi-module workspaces default to sidebar navigation; public landing pages use top navigation. Preserve existing product decisions. The `pattern` and `recipe` commands retrieve only the selected design guidance; a small fix needs no redesign. Keep domain logic in features and use existing Xizot controls. Submitted forms use RHF wrappers; search/filter controls may use local/URL state.
 
 For page/section headings and prose, inspect `components/ui/typography.tsx` and use the matching `TypographyH1`–`TypographyH4`, `TypographyLead`, `TypographyP`, `TypographyMuted`, `TypographySmall`, or `TypographyCode` export. Keep semantic heading order. Use a container's own text component, such as `CardTitle` or `AlertTitle`, when it owns that role.
