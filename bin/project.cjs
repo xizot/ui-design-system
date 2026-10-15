@@ -157,7 +157,11 @@ function findWxtCssImports(root) {
           continue;
         }
         if (!/\.[cm]?[jt]sx?$/.test(item.name)) continue;
-        const source = ts.createSourceFile(file, fs.readFileSync(file, 'utf8'), ts.ScriptTarget.Latest);
+        const source = ts.createSourceFile(
+          file,
+          fs.readFileSync(file, 'utf8'),
+          ts.ScriptTarget.Latest,
+        );
         for (const statement of source.statements) {
           if (!ts.isImportDeclaration(statement)) continue;
           const specifier = statement.moduleSpecifier.text;

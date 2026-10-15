@@ -127,42 +127,42 @@ function installStyles(packageRoot, projectRoot, plan, selectedTheme) {
     const isCss = entry.endsWith('.css');
     let content = fs.readFileSync(entryPath, 'utf8');
     if (copyOldTheme) {
-    const oldImport = relativeImport(entryPath, oldThemeTarget).replace(
-      /[.*+?^${}()|[\]\\]/g,
-      '\\$&',
-    );
+      const oldImport = relativeImport(entryPath, oldThemeTarget).replace(
+        /[.*+?^${}()|[\]\\]/g,
+        '\\$&',
+      );
       content = content.replace(
-      new RegExp(`((?:@import|import)\\s*['"])${oldImport}(['"]\\s*;)`, 'g'),
-      (_, start, end) => `${start}${relativeImport(entryPath, themeTarget)}${end}`,
-    );
+        new RegExp(`((?:@import|import)\\s*['"])${oldImport}(['"]\\s*;)`, 'g'),
+        (_, start, end) => `${start}${relativeImport(entryPath, themeTarget)}${end}`,
+      );
     }
     const imports = [stylesTarget, themeTarget].map((target) => relativeImport(entryPath, target));
     // Append the user theme after the base import, including on legacy installations.
     for (let index = 0; index < imports.length; index++) {
-    const relative = imports[index];
-    const escaped = relative.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const existing = new RegExp(`(?:@import|import)\\s*['"]${escaped}['"]\\s*;`);
-    if (existing.test(content)) continue;
+      const relative = imports[index];
+      const escaped = relative.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const existing = new RegExp(`(?:@import|import)\\s*['"]${escaped}['"]\\s*;`);
+      if (existing.test(content)) continue;
       const statement = isCss ? `@import '${relative}';` : `import '${relative}';`;
-    let position = 0;
-    const baseImport =
-      index === 1 &&
-      content.match(
-        new RegExp(
-          `(?:@import|import)\\s*['"]${imports[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}['"]\\s*;`,
-        ),
-      );
-    if (baseImport) {
-      position = baseImport.index + baseImport[0].length;
-    } else if (!isCss) {
-      const ast = ts.createSourceFile(entry, content, ts.ScriptTarget.Latest, true);
-      for (const node of ast.statements) {
-        if (!ts.isExpressionStatement(node) || !ts.isStringLiteral(node.expression)) break;
-        position = node.getEnd();
+      let position = 0;
+      const baseImport =
+        index === 1 &&
+        content.match(
+          new RegExp(
+            `(?:@import|import)\\s*['"]${imports[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}['"]\\s*;`,
+          ),
+        );
+      if (baseImport) {
+        position = baseImport.index + baseImport[0].length;
+      } else if (!isCss) {
+        const ast = ts.createSourceFile(entry, content, ts.ScriptTarget.Latest, true);
+        for (const node of ast.statements) {
+          if (!ts.isExpressionStatement(node) || !ts.isStringLiteral(node.expression)) break;
+          position = node.getEnd();
+        }
+      } else if (/^@charset\s/.test(content)) {
+        position = content.indexOf(';') + 1;
       }
-    } else if (/^@charset\s/.test(content)) {
-      position = content.indexOf(';') + 1;
-    }
       content = `${content.slice(0, position)}\n${statement}\n${content.slice(position)}`;
     }
     fs.writeFileSync(entryPath, content);
