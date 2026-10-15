@@ -122,27 +122,28 @@ function installStyles(packageRoot, projectRoot, plan, selectedTheme) {
     );
   }
 
-  const entry = plan.cssTarget || plan.entry;
-  const entryPath = path.join(projectRoot, entry);
-  let content = fs.readFileSync(entryPath, 'utf8');
-  if (copyOldTheme) {
+  for (const entry of plan.cssTargets?.length ? plan.cssTargets : [plan.cssTarget || plan.entry]) {
+    const entryPath = path.join(projectRoot, entry);
+    const isCss = entry.endsWith('.css');
+    let content = fs.readFileSync(entryPath, 'utf8');
+    if (copyOldTheme) {
     const oldImport = relativeImport(entryPath, oldThemeTarget).replace(
       /[.*+?^${}()|[\]\\]/g,
       '\\$&',
     );
-    content = content.replace(
+      content = content.replace(
       new RegExp(`((?:@import|import)\\s*['"])${oldImport}(['"]\\s*;)`, 'g'),
       (_, start, end) => `${start}${relativeImport(entryPath, themeTarget)}${end}`,
     );
-  }
-  const imports = [stylesTarget, themeTarget].map((target) => relativeImport(entryPath, target));
-  // Append the user theme after the base import, including on legacy installations.
-  for (let index = 0; index < imports.length; index++) {
+    }
+    const imports = [stylesTarget, themeTarget].map((target) => relativeImport(entryPath, target));
+    // Append the user theme after the base import, including on legacy installations.
+    for (let index = 0; index < imports.length; index++) {
     const relative = imports[index];
     const escaped = relative.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const existing = new RegExp(`(?:@import|import)\\s*['"]${escaped}['"]\\s*;`);
     if (existing.test(content)) continue;
-    const statement = plan.cssTarget ? `@import '${relative}';` : `import '${relative}';`;
+      const statement = isCss ? `@import '${relative}';` : `import '${relative}';`;
     let position = 0;
     const baseImport =
       index === 1 &&
@@ -153,7 +154,7 @@ function installStyles(packageRoot, projectRoot, plan, selectedTheme) {
       );
     if (baseImport) {
       position = baseImport.index + baseImport[0].length;
-    } else if (!plan.cssTarget) {
+    } else if (!isCss) {
       const ast = ts.createSourceFile(entry, content, ts.ScriptTarget.Latest, true);
       for (const node of ast.statements) {
         if (!ts.isExpressionStatement(node) || !ts.isStringLiteral(node.expression)) break;
@@ -162,9 +163,10 @@ function installStyles(packageRoot, projectRoot, plan, selectedTheme) {
     } else if (/^@charset\s/.test(content)) {
       position = content.indexOf(';') + 1;
     }
-    content = `${content.slice(0, position)}\n${statement}\n${content.slice(position)}`;
+      content = `${content.slice(0, position)}\n${statement}\n${content.slice(position)}`;
+    }
+    fs.writeFileSync(entryPath, content);
   }
-  fs.writeFileSync(entryPath, content);
   console.log(
     `Color theme: ${slash(path.relative(projectRoot, themeTarget))} (edit light/dark colors here)`,
   );

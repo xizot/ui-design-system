@@ -142,6 +142,35 @@ function dependencyPlan(root, pkg, required, dev = false) {
   return { add, conflicts, stale, dev };
 }
 
+function findWxtCssImports(root) {
+  const css = new Set();
+  for (const entryRoot of ['entrypoints', 'src/entrypoints']) {
+    const directory = path.join(root, entryRoot);
+    if (!fs.existsSync(directory)) continue;
+    const pending = [directory];
+    while (pending.length) {
+      const current = pending.pop();
+      for (const item of fs.readdirSync(current, { withFileTypes: true })) {
+        const file = path.join(current, item.name);
+        if (item.isDirectory()) {
+          pending.push(file);
+          continue;
+        }
+        if (!/\.[cm]?[jt]sx?$/.test(item.name)) continue;
+        const source = ts.createSourceFile(file, fs.readFileSync(file, 'utf8'), ts.ScriptTarget.Latest);
+        for (const statement of source.statements) {
+          if (!ts.isImportDeclaration(statement)) continue;
+          const specifier = statement.moduleSpecifier.text;
+          if (!specifier.startsWith('.') || !specifier.endsWith('.css')) continue;
+          const imported = path.resolve(current, specifier);
+          if (fs.existsSync(imported)) css.add(slash(path.relative(root, imported)));
+        }
+      }
+    }
+  }
+  return [...css].sort();
+}
+
 function planProject(root, runtimeDependencies, dependenciesChanged = false) {
   if (!semver.satisfies(process.versions.node, libraryPackage.engines.node)) {
     throw new Error(
@@ -152,10 +181,18 @@ function planProject(root, runtimeDependencies, dependenciesChanged = false) {
     throw new Error('Run init from an existing React project containing package.json.');
   const pkg = parseJson(read(root, 'package.json'), 'package.json');
   const deps = { ...pkg.devDependencies, ...pkg.dependencies };
-  const framework = deps.next ? 'next' : deps['react-scripts'] ? 'cra' : deps.vite ? 'vite' : null;
+  const framework = deps.next
+    ? 'next'
+    : deps['react-scripts']
+      ? 'cra'
+      : deps.wxt
+        ? 'wxt'
+        : deps.vite
+          ? 'vite'
+          : null;
   if (!framework)
     throw new Error(
-      'Supported projects: Next.js, Vite React, or Create React App (react-scripts 5).',
+      'Supported projects: Next.js, Vite React, WXT React, or Create React App (react-scripts 5).',
     );
   if (
     framework === 'cra' &&
@@ -202,18 +239,15 @@ function planProject(root, runtimeDependencies, dependenciesChanged = false) {
     ? read(root, configName)
     : '{\n  "compilerOptions": {}\n}\n';
   const config = parseJson(configText, configName);
-  const parsed = ts.parseJsonConfigFileContent(
-    config,
-    ts.sys,
-    root,
-    undefined,
-    path.join(root, configName),
-  );
+  const parsed =
+    framework === 'wxt'
+      ? { options: {}, errors: [] }
+      : ts.parseJsonConfigFileContent(config, ts.sys, root, undefined, path.join(root, configName));
   const configErrors = parsed.errors.filter((e) => ![18003, 18002].includes(e.code));
   if (configErrors.length)
     throw new Error(ts.flattenDiagnosticMessageText(configErrors[0].messageText, '\n'));
   let updatedConfig = configText;
-  let importPrefix = '@/design-system';
+  let importPrefix = framework === 'wxt' ? '~~/design-system' : '@/design-system';
   if (framework === 'cra') {
     if (
       parsed.options.baseUrl &&
@@ -229,7 +263,7 @@ function planProject(root, runtimeDependencies, dependenciesChanged = false) {
       parsed.options.baseUrl && path.resolve(parsed.options.baseUrl) === path.resolve(root)
         ? 'src/design-system'
         : 'design-system';
-  } else {
+  } else if (framework !== 'wxt') {
     const aliasTarget =
       './' +
       slash(path.relative(parsed.options.baseUrl || root, path.join(root, sourceRoot))) +
@@ -271,7 +305,7 @@ function planProject(root, runtimeDependencies, dependenciesChanged = false) {
     if (!include.includes(sourceRoot))
       updatedConfig = setJson(updatedConfig, ['include'], [...include, sourceRoot]);
   }
-  queue(configName, updatedConfig);
+  if (framework !== 'wxt') queue(configName, updatedConfig);
 
   const helperDir = '.xizot';
   if (framework === 'vite') {
@@ -409,6 +443,7 @@ function planProject(root, runtimeDependencies, dependenciesChanged = false) {
       ? ['app/globals.css', 'src/app/globals.css', 'styles/globals.css', 'src/styles/globals.css']
       : ['src/index.css', 'src/App.css', 'src/globals.css', 'src/style.css', 'src/styles.css'];
   const cssTarget = cssCandidates.find((f) => exists(root, f));
+  const wxtCssTargets = framework === 'wxt' ? findWxtCssImports(root) : [];
   const entryCandidates =
     framework === 'next'
       ? [
@@ -429,7 +464,11 @@ function planProject(root, runtimeDependencies, dependenciesChanged = false) {
         ? ['src/main.tsx', 'src/main.jsx', 'src/main.js']
         : ['src/index.tsx', 'src/index.jsx', 'src/index.js'];
   const entry = entryCandidates.find((f) => exists(root, f));
-  if (!cssTarget && !entry)
+  if (framework === 'wxt' && !wxtCssTargets.length)
+    throw new Error(
+      'WXT CSS import not found. Import a shared CSS file from an entrypoint before installing.',
+    );
+  if (framework !== 'wxt' && !cssTarget && !entry)
     throw new Error(
       'Cannot locate the application CSS or entry point. Add a global CSS import before installing.',
     );
@@ -443,7 +482,8 @@ function planProject(root, runtimeDependencies, dependenciesChanged = false) {
     importPrefix,
     changes,
     dependencies: plans,
-    cssTarget,
+    cssTarget: framework === 'wxt' ? null : cssTarget,
+    cssTargets: wxtCssTargets,
     entry,
   };
 }

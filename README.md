@@ -47,10 +47,11 @@ For Create React App, the target is `src/design-system/` so the source stays ins
 | Project          | Requirements                            | Build integration                                                   | Consumer imports                          |
 | ---------------- | --------------------------------------- | ------------------------------------------------------------------- | ----------------------------------------- |
 | Vite React       | React 19, Tailwind 4                    | Preserves Vite config and adds a specific alias; configures PostCSS | `@/design-system/...`                     |
+| WXT React        | React 19, Tailwind 4, CSS imported by an entrypoint | Uses WXT's root alias and adds styles to imported CSS files | `~~/design-system/...` |
 | Next.js          | Next 15.1 or 16.x, React 19, Tailwind 4 | Merges tsconfig/jsconfig paths and PostCSS configuration            | `@/design-system/...`                     |
 | Create React App | react-scripts 5, React 19, Tailwind 4   | Uses CRACO, keeps source under `src`, loads the PostCSS config      | `design-system/...` with `baseUrl: "src"` |
 
-Node 20.19+ is required. Existing React 18, Tailwind 3, incompatible dependency versions, unsupported configs and ambiguous package-manager lockfiles stop installation before source/config files are changed. Upgrade those dependencies explicitly before rerunning; the installer does not force major upgrades.
+Node 20.19+ is required. Existing React 18, Tailwind 3, incompatible dependency versions, unsupported configs and ambiguous package-manager lockfiles stop installation before source/config files are changed. Upgrade those dependencies explicitly before rerunning; the installer does not force major upgrades. WXT projects use `wxt.config.*` and must import their UI CSS from an entrypoint; the installer does not require a `vite.config.*` file.
 
 CRA TypeScript projects retain the TypeScript version required by react-scripts and install TypeScript 5.9 as `xizot-typescript` for the build checker and VS Code SDK. Select the workspace TypeScript SDK in VS Code. Existing CRA start/build/test command arguments and CRACO overrides are preserved.
 
