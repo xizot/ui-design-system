@@ -5,7 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const readline = require('node:readline');
 const ts = require('typescript');
-const { planProject, setJson } = require('./project.cjs');
+const { planProject, planSourceProject, setJson } = require('./project.cjs');
 const { installStyles, selectColorSchema } = require('./styles.cjs');
 
 const packageRoot = path.resolve(__dirname, '..');
@@ -95,10 +95,11 @@ function printHelp() {
   console.log('');
   console.log('Commands:');
   console.log('  init    Install into ./design-system (CRA: ./src/design-system)');
-  console.log('          React 19, Tailwind 4; Vite, WXT, Next 15.1/16, CRA 5 with CRACO');
+  console.log('          Copies source in any Node.js project with package.json');
+  console.log('          Configures builds automatically for supported React stacks');
   console.log('  help    Show this help message');
   console.log(
-    'Options: --yes (install packages, keep existing source), --overwrite (with --yes), --mode source',
+    'Options: --yes (accept prompts, keep existing source), --overwrite (with --yes), --mode source',
   );
   console.log('');
 }
@@ -529,8 +530,14 @@ async function main() {
     return;
   }
 
-  // Validate dependencies and every configuration edit before copying source.
-  projectPlan = planProject(projectRoot, runtimeDependencies);
+  // Prefer automatic integration, but allow source installation in any Node.js project.
+  try {
+    projectPlan = planProject(projectRoot, runtimeDependencies);
+  } catch (error) {
+    projectPlan = planSourceProject(projectRoot);
+    console.log(color.yellow(`Automatic integration unavailable: ${error.message}`));
+    console.log(color.yellow('Installing editable source without changing the project build or dependencies.'));
+  }
   const stale = projectPlan.dependencies.flatMap((plan) => plan.stale);
   if (stale.length) {
     console.log('Installed packages differ from supported versions declared by this project:');
@@ -622,7 +629,11 @@ async function main() {
   }
   installStyles(packageRoot, projectRoot, projectPlan, selectedTheme);
   printSummary();
-  console.log(`Import components from '${projectPlan.importPrefix}/components/ui/button'.`);
+  if (projectPlan.integrated) {
+    console.log(`Import components from '${projectPlan.importPrefix}/components/ui/button'.`);
+  } else {
+    console.log('Components installed in design-system/. Configure React dependencies, CSS processing, and an import path for this project before using them.');
+  }
 }
 
 module.exports = { runtimeDependencies, main };

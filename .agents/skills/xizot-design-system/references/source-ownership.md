@@ -8,6 +8,7 @@ Use the source present in the project. Confirm aliases and component contracts b
 | Next/Vite consumer | `design-system/`                              | Usually `@/design-system/components/ui/button`; confirm tsconfig/jsconfig |
 | WXT consumer       | `design-system/`                              | `~~/design-system/components/ui/button` via WXT's root alias              |
 | CRA consumer       | `src/design-system/`                          | Usually `design-system/components/ui/button`; confirm jsconfig/tsconfig   |
+| Other Node project | `design-system/`                              | Configure the project's own imports and CSS build before using components |
 
 Both TypeScript and JavaScript consumers are supported; inspect `.tsx` or generated `.jsx` as installed. Advanced demos under `internal-components/` are not copied. Do not import those from a consumer.
 

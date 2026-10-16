@@ -36,13 +36,13 @@ This repository serves two purposes:
 
 ## 🚀 Installation via CLI
 
-The CLI copies editable components into `design-system/`.
+The CLI copies editable components into `design-system/`. Any Node.js project with a `package.json` can receive the source. Automatic dependency and build integration is available for the React stacks below.
 
 Lint and Prettier configuration is managed by the consumer project. The installer does not modify lint/format rules, ignore files or scripts.
 
 For Create React App, the target is `src/design-system/` so the source stays inside CRA's compilation boundary. TypeScript projects receive TS/TSX; JavaScript projects receive JS/JSX.
 
-### Supported projects
+### Automatic integration
 
 | Project          | Requirements                                        | Build integration                                                   | Consumer imports                          |
 | ---------------- | --------------------------------------------------- | ------------------------------------------------------------------- | ----------------------------------------- |
@@ -51,7 +51,7 @@ For Create React App, the target is `src/design-system/` so the source stays ins
 | Next.js          | Next 15.1 or 16.x, React 19, Tailwind 4             | Merges tsconfig/jsconfig paths and PostCSS configuration            | `@/design-system/...`                     |
 | Create React App | react-scripts 5, React 19, Tailwind 4               | Uses CRACO, keeps source under `src`, loads the PostCSS config      | `design-system/...` with `baseUrl: "src"` |
 
-Node 20.19+ is required. Existing React 18, Tailwind 3, incompatible dependency versions, unsupported configs and ambiguous package-manager lockfiles stop installation before source/config files are changed. Upgrade those dependencies explicitly before rerunning; the installer does not force major upgrades. WXT projects use `wxt.config.*` and must import their UI CSS from an entrypoint; the installer does not require a `vite.config.*` file.
+Automatic integration requires Node 20.19+. If a project does not match these stacks or its integration checks fail, `init` copies the component source, styles, theme, and agent guidance without modifying dependencies or build configuration. This includes React 18 and custom Webpack projects. The CLI prints the reason automatic integration was unavailable. The copied React components still need compatible dependencies and a CSS build that processes Tailwind 4 before the application can use them. WXT projects use `wxt.config.*` and must import their UI CSS from an entrypoint; the installer does not require a `vite.config.*` file.
 
 CRA TypeScript projects retain the TypeScript version required by react-scripts and install TypeScript 5.9 as `xizot-typescript` for the build checker and VS Code SDK. Select the workspace TypeScript SDK in VS Code. Existing CRA start/build/test command arguments and CRACO overrides are preserved.
 
@@ -97,7 +97,7 @@ The installer uses a guided flow:
 3. 🤖 Agent rules
    It installs the complete `.agents/skills` pack and `.agents/rules` and creates or updates the target project's `AGENTS.md` with the rules from `.agents/skills/xizot-design-system/references/agent-rules.md`.
 4. 🎨 Project files
-   It merges framework configuration and imports `design-system/styles.css` followed by the application-owned `design-system/theme.css` from application CSS (or the app entry). CRA uses these paths under `src/`. The installer refreshes managed base styles and fallback colors, but preserves customized `design-system/theme.css`, even with `--overwrite`. On legacy installs, color declarations are moved from `design-system/styles.css` into `design-system/theme.css`, preserving selectors and existing theme overrides. Size, typography and other styles remain in the base file.
+   For automatic integration, it merges framework configuration and imports `design-system/styles.css` followed by the application-owned `design-system/theme.css` from application CSS (or the app entry). For other Node.js projects, it creates these CSS files without editing the app entry or build configuration. CRA uses these paths under `src/`. The installer refreshes managed base styles and fallback colors, but preserves customized `design-system/theme.css`, even with `--overwrite`. On legacy installs, color declarations are moved from `design-system/styles.css` into `design-system/theme.css`, preserving selectors and existing theme overrides. Size, typography and other styles remain in the base file.
 
 Existing installs with the former `styles/theme.css` location are copied into `design-system/theme.css` when the destination does not exist; the application import is updated automatically and the original file is retained. CRA uses paths under `src/`.
 

@@ -175,6 +175,27 @@ function findWxtCssImports(root) {
   return [...css].sort();
 }
 
+function planSourceProject(root) {
+  if (!exists(root, 'package.json'))
+    throw new Error('Run init from a Node.js project containing package.json.');
+  const pkg = parseJson(read(root, 'package.json'), 'package.json');
+  const typed = exists(root, 'tsconfig.json') || exists(root, 'tsconfig.app.json');
+  return {
+    root,
+    pkg,
+    framework: 'node',
+    sourceRoot: 'design-system',
+    typed,
+    importPrefix: null,
+    changes: new Map(),
+    dependencies: [],
+    cssTarget: null,
+    cssTargets: [],
+    entry: null,
+    integrated: false,
+  };
+}
+
 function planProject(root, runtimeDependencies, dependenciesChanged = false) {
   if (!semver.satisfies(process.versions.node, libraryPackage.engines.node)) {
     throw new Error(
@@ -489,11 +510,13 @@ function planProject(root, runtimeDependencies, dependenciesChanged = false) {
     cssTarget: framework === 'wxt' ? null : cssTarget,
     cssTargets: wxtCssTargets,
     entry,
+    integrated: true,
   };
 }
 
 module.exports = {
   planProject,
+  planSourceProject,
   dependencyPlan,
   packageManager,
   wrapConfig,

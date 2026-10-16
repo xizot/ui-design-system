@@ -122,6 +122,12 @@ function installStyles(packageRoot, projectRoot, plan, selectedTheme) {
     );
   }
 
+  if (!plan.integrated) {
+    console.log(`Color theme: ${slash(path.relative(projectRoot, themeTarget))} (edit light/dark colors here)`);
+    console.log(`Base styles: ${slash(path.relative(projectRoot, stylesTarget))} (import through your CSS build when using components)`);
+    return;
+  }
+
   for (const entry of plan.cssTargets?.length ? plan.cssTargets : [plan.cssTarget || plan.entry]) {
     const entryPath = path.join(projectRoot, entry);
     const isCss = entry.endsWith('.css');
